@@ -1,0 +1,286 @@
+.login-form {
+  margin-right: 40px;
+  margin-left: 40px;
+  left: 30%;
+  font-size: 15px !important;
+}
+
+.form-content{
+  margin-top: 30px !important;
+}
+
+.login-form-button {
+  height: 28px !important;
+  width: 68% !important;
+  margin: auto;
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.field-icon{
+  color: rgba(0,0,0,.25)
+}
+
+.url-form{
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 0.1px !important;
+}
+
+.submit{
+  text-align: center;
+}
+
+.login-button-text{
+  font-size: 14px;
+  width: 100%;
+  overflow: hidden;
+  height: 80%;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: auto;
+}
+
+.for-links{
+  margin-top: 10px !important;
+}
+
+.login-form-button1 {
+  width: 60%;
+  align-content: center;
+  left: 25%;
+}
+
+.div-logo{
+  text-align: center;
+}
+
+.logo{
+  width: 70%;
+  margin-left: 0px;
+  border-radius: 5px;
+  margin-top: 55px;
+  margin-bottom: 50px;
+  border: 3px solid #1890ff;
+}
+
+.logo-confirmed{
+  width: 70%;
+  margin-left: 0px;
+  border-radius: 5px;
+  margin-top: 55px;
+  margin-bottom: 65px;
+  border: 3px solid #1890ff;
+}
+
+/* Login buttons */
+.ant-form-explain{
+  color: #39a0ff !important;
+}
+
+.has-error .ant-select-selection{
+  border-color: #39a0ff !important;
+}
+
+.has-error .ant-input-affix-wrapper .ant-input:not(.ant-input-disabled){
+  border-color: #39a0ff !important;
+}
+
+.info{
+  font-size: 14px;
+  font-family: "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+.logo2{
+  width: 65%;
+  margin-left: 10px;
+  border-radius: 5px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: 3px solid #1890ff;
+}
+
+.confirm_account{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.confirm_account_text{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: white;
+  font-size: 14px;
+  text-align: justify;
+}
+
+.question-button{
+  font-size: 23px !important;
+  color: #1890ff !important; 
+  margin-right: 5px;
+}
+
+@media only screen and (max-width: 500px) {
+  .logo{
+    width: 75%;
+    margin-left: 20px;
+    border-radius: 5px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border: 3px solid #1890ff;
+  }
+
+  .logo2{
+    width: 70%;
+    margin-left: 20px;
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-bottom: 35px;
+    border: 3px solid #1890ff;
+  }
+}
+
+
+
+.shop{
+  width: 100%;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  opacity: 0.95;
+  filter: alpha(opacity=10);
+  background-size: cover !important;
+  
+}
+
+.login-card{
+  font-size: 10px !important;
+  width: 300px;
+  margin-left: 50px;
+  /*margin-right: 20px;*/ /*set to a negative number 1/2 of your width*/
+  background-color: #000;
+  opacity: 0.9;
+  /*box-shadow: 5px 5px 5px grey;*/
+  border-radius: 5px;
+  border: 0.5px solid #1890ff;
+}
+
+.login-card-confirmed{
+  font-size: 10px !important;
+  width: 300px;
+  margin-left: 50px;
+  /*margin-right: 20px;*/ /*set to a negative number 1/2 of your width*/
+  background-color: #000;
+  opacity: 0.9;
+  /*box-shadow: 5px 5px 5px grey;*/
+  border-radius: 5px;
+  border: 0.5px solid #1890ff;
+}
+
+.bottom-title{
+  margin-top: 50px;
+  text-align: center;
+  color: #0c0c0c;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.bottom-title2{
+  margin-top: 30px;
+  text-align: center;
+  color: #0c0c0c;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.content-layout{
+  background-color: #fff;
+  background-size: cover !important;
+}
+
+.login-title{
+  color: white;
+  width: 90%;
+  overflow: hidden;
+  height: 80%;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin: auto;
+  font-weight: bold;
+}
+
+@media only screen and (max-width:500px) {
+  .background-picture-login {
+    display: none;
+    background-color: white !important;
+  }
+
+  .background-sider{
+    width: 0% !important;
+    background-color: white !important;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+
+  .login-card{
+    overflow:auto;
+    width: 80%;
+    /*margin-top: -8em;*/ /*set to a negative number 1/2 of your height*/
+    left: 15%;
+    right: 15%;
+    top: 30%;
+  }
+
+  .login-form {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+  }
+
+  .login-form-button {
+    width: 100%;
+    left: 0;
+  }
+
+  .login-button{
+    margin-right: 30% !important;
+  }
+
+  .login-button1{
+    text-align: center;
+  }
+
+  .form-options{
+    font-size: 12px;
+  }
+}
+
+h2 {
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.form-options{
+  margin-top: 10px;
+  text-align: center;
+  color: #e67817;
+}
+
+.form-options:hover{
+  text-align: center;
+  color: #e67817;
+}
+
+.error_message{
+  color:#1890ff;
+}

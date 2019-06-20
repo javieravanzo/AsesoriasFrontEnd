@@ -1,0 +1,59 @@
+.header-menu1{
+  padding: 0 0 !important;
+  width: 100% !important; 
+  height: 5px !important;
+  position: fixed;
+  margin-right: 20px;
+  background-color: #fff !important;
+  z-index: 1000 !important;
+}
+
+.log-out-modal{
+  text-align: center;
+  font-size: 12px;
+}
+
+.menu-style{
+  line-height: 34px;
+  font-size: 14px;
+  width: 100% !important;
+}
+
+.menu-logo{
+  margin-top: 5px;
+  height: 40px;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #1890ff;
+}
+
+.menu-key-home{
+  margin-left: 33% !important;
+  margin-right: 10px;
+}
+
+.menu-key-users, .menu-key-customers, .menu-key-projects{
+  margin-right: 10px !important; 
+  margin-left: 20px !important;
+}
+
+.menu-key-logout{
+  margin-left: 20% !important;
+}
+
+.footer-div{
+  text-align: center !important;
+}
+
+
+@media only screen and (max-width: 1027px) {
+
+  .menu-key-home{
+    margin-left: 20% !important;
+    margin-right: 10px;
+  }
+
+  .menu-key-logout{
+    margin-left: 10px !important;
+  }
+
+}
