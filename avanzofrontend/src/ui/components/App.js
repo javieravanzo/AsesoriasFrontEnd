@@ -47,7 +47,7 @@ class App extends Component {
   render(){
 
     let signedIn = this.isSignedIn();
-
+    console.log(signedIn);
     if(!signedIn){
       return( <Login/> );
     }else{
@@ -62,7 +62,7 @@ class App extends Component {
                 <br/>
                 <Divider className={"divider"}/>
                 <div className={"footer-div"}>
-                  SoftGallery 2019 ©
+                  Avanzo © 2019 
                 </div>
               </Footer>
             </Layout>

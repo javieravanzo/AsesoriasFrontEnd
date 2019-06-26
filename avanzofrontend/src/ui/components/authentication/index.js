@@ -29,7 +29,7 @@ const WrappedConfirmPassword = Form.create()(ConfirmResetPassword);
 
 
 class Login extends Component {
-  1
+  
   render() {
   
     return (

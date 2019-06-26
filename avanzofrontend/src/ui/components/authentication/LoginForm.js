@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button } from 'antd';
 import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
+import {withRouter} from 'react-router-dom';
 //import connect from 'react-redux/es/connect/connect';
 //import PropTypes from 'prop-types';
 
@@ -44,6 +45,10 @@ class LoginForm extends Component {
   };
 
   sendMessage = (e) => {
+    localStorage.setItem('isLogged', true);
+    this.setState({
+      isLogin: true,
+    });
     SUCCESS_MODAL("Acción realizada satisfactoriamente", 
       "Ha ingresado a nuestra plataforma exitosamente.")
   };
@@ -82,7 +87,7 @@ class LoginForm extends Component {
                     <p className={"login-button-text"}>Iniciar Sesión</p>
                   </Button>
                   {isLogin &&
-                    <Redirect to={"/home"}/>
+                    <Redirect to={routes.admin}/>
                   }
                   <div className={"for-links"}>
                     <Link to={routes.forgot_password}>
@@ -124,4 +129,4 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);*/
 
-export default LoginForm;
+export default withRouter(LoginForm);

@@ -6,11 +6,9 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
 //Components
-/*import Home from "../home/index";
-import Upload from "../upload/index";
-import Album from "../album/index";
-import Profile from "../users/index";
-import Gallery from "../gallery/index";*/
+import Admin from "../admin/index";
+import Company from "../company/index";
+import Customer from "../customer/index";
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
@@ -18,14 +16,7 @@ import routes from "../../../configuration/routing/Routes";
 //Styles
 //import '../../../../styles/general/layout/router.css';
 
-/* <Switch>
-            <Route path={routes.home} component={Home}/>
-            <Route path={routes.upload} component={Upload}/>
-            <Route path={routes.album} component={Album}/>
-            <Route path={routes.gallery} component={Gallery}/>
-            <Route path={routes.profile} component={Profile}/>
-            <Route render = {()=><Redirect to={routes.home}/>}/>
-          </Switch>
+/* 
  */         
 
 class Router extends Component {
@@ -34,7 +25,12 @@ class Router extends Component {
 
     return (
         <Layout.Content className={"content"}>
-            Hola
+            <Switch>
+              <Route path={routes.admin} component={Admin}/>
+              <Route path={routes.company} component={Company}/>
+              <Route path={routes.customer} component={Customer}/>
+              <Route render = {()=><Redirect to={routes.home}/>}/>
+          </Switch>
         </Layout.Content>  
     );
   };
