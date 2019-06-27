@@ -1,0 +1,23 @@
+.transactions-div{
+  margin-top: 70px !important;
+  margin-bottom: 0px !important;
+  width: 80%;
+  margin: auto;
+}
+
+.field-title-visible{
+  visibility: visible;
+  white-space: nowrap;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+@media only screen and (max-width:500px) {
+  .transactions-div{
+    margin-top: 70px !important;
+    margin-bottom: 0px !important;
+    width: 95%;
+    margin: auto;
+  }
+}

@@ -9,6 +9,12 @@
   margin-top: 30px !important;
 }
 
+.form-select-content{
+  margin-top: 30px !important;
+  width: 70% !important;
+  left: 0% !important;
+}
+
 .login-form-button {
   height: 28px !important;
   width: 68% !important;
@@ -60,11 +66,11 @@
 }
 
 .logo{
-  width: 70%;
+  width: 60%;
   margin-left: 0px;
   border-radius: 5px;
-  margin-top: 55px;
-  margin-bottom: 50px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   border: 3px solid #1890ff;
 }
 
@@ -187,7 +193,7 @@
 }
 
 .bottom-title{
-  margin-top: 50px;
+  margin-top: 35px;
   text-align: center;
   color: #0c0c0c;
   font-size: 15px;

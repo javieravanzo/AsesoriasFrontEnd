@@ -53,14 +53,14 @@ class App extends Component {
     }else{
       return(
           <div>
-            <MainMenu viewPortWidth={this.state.viewportWidth}/> );
+            <MainMenu viewPortWidth={this.state.viewportWidth}/>
             <Layout className={'back-home'}>
               <Router/>
             </Layout>
             <Layout >
               <Footer className={'back-home2'}>
                 <br/>
-                <Divider className={"divider"}/>
+                <Divider className={"layout-divider"}/>
                 <div className={"footer-div"}>
                   Avanzo © 2019 
                 </div>

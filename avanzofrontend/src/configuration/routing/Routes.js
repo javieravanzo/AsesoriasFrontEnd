@@ -7,5 +7,7 @@ export default {
   confirm_password: "/account_confirmed",
   admin: "/admin-home",
   company: "/company-home",
-  customer: "/customer-home"
+  customer: "/customer-home",
+  customer_transactions: "/customer-transactions",
+  customer_request: "/customer-request"
 };  

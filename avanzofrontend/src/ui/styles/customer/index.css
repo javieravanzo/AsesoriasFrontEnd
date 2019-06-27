@@ -1,0 +1,111 @@
+.customer-div{
+  margin-top: 70px !important;
+  margin-bottom: 0px !important;
+  width: 80%;
+  margin: auto;
+}
+
+.customer-row-card{
+  margin-bottom: 20px !important;
+}
+
+.customer-card{
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+  box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+.customer-title{
+  margin-top: 60px !important;
+  margin-left: 30px !important;
+  color: #02609d !important;
+}
+
+.customer-credit-row{
+  margin-left: 20px !important;
+}
+
+.customer-credit-card{
+  text-align: center !important;
+  margin-top: 20px !important;
+  margin-right: 25px !important;
+  box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
+  background-color: #42a4ff !important;
+  border: 5px !important;
+  border-color: black !important;
+}
+
+.row-table{
+  width: 95% !important;
+  margin: auto !important;
+}
+
+.row-request{
+  width: 95% !important;
+  margin: auto !important;
+}
+
+.request-button{
+  font-size: 30px !important;
+  color: #42a4ff !important;
+}
+
+.request-title{
+  font-size: 23px !important;
+  margin-top: -10px !important;
+  color: #42a4ff !important;
+}
+
+.request-button-none{
+  border: none !important;
+}
+
+
+
+@media only screen and (max-width:500px) {
+  .customer-div{
+    margin-top: 70px !important;
+    margin-bottom: 0px !important;
+    width: 100%;
+    margin: auto;
+  }
+
+  .customer-card{
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    box-shadow: none;
+  }
+
+  .customer-row-card{
+    margin-bottom: 20px !important;
+  }
+  
+  .customer-row-content{
+    margin-top: 40px !important;
+    text-align: center !important;
+  }
+
+  .customer-title{
+    margin-top: 5px !important;
+    margin-left: 20px !important;
+  }
+  
+  .customer-credit-card{
+    text-align: center !important;
+    margin-top: 20px !important;
+    margin-right: 0px !important;
+    box-shadow: none;
+    background-color: #42a4ff !important;
+    border: 2px #01609b !important;
+  }
+  
+  
+  .customer-credit-row{
+    margin-left: 20px !important;
+  }
+  
+  .customer-credit-card{
+    text-align: center !important;
+    box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
+  }
+}

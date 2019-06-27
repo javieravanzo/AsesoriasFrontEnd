@@ -3,8 +3,6 @@ import {Layout, Menu, Modal, Icon} from 'antd';
 import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {withRouter, NavLink} from 'react-router-dom';
-import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
@@ -62,7 +60,7 @@ class MainMenu extends Component {
     
     let {loggedIn} = this.state;
     //let {role} = this.props;
-    let defaultSelectedKeys = this.props.location.pathname;
+    let role = localStorage.role;
 
     return(
       <Layout className="layout" >
@@ -73,60 +71,84 @@ class MainMenu extends Component {
               <Menu.Item>
                 <img src={icon} alt="menulogo" className="menu-logo" />
               </Menu.Item>
-              <Menu.Item key={routes.home} className={"menu-key-home"}>
-                <NavLink to={routes.home}><Icon type="home"/>Inicio</NavLink>
-              </Menu.Item>
               {
-                defaultSelectedKeys === "/admin-home" && 
+                (parseInt(role,10) === 2) && 
+                <Menu.Item className={"menu-key-home"}>
+                  <NavLink to={routes.admin}>
+                    <Icon type="home"/>Inicio
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (parseInt(role,10) === 2) && 
                 <Menu.Item>
                   <Icon type="cluster"/>Gestionar Empresas
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/admin-home" && 
+                (parseInt(role,10) === 2) && 
                 <Menu.Item>
                   <Icon type="idcard"/>Gestionar Clientes
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/admin-home" && 
+                (parseInt(role,10) === 2) && 
                 <Menu.Item>
                   <Icon type="percentage"/>Gestionar Créditos
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/company-home" && 
+                (parseInt(role,10) === 1) && 
+                <Menu.Item className={"menu-key-home"}>
+                  <NavLink to={routes.company}>
+                    <Icon type="home"/>Inicio
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (parseInt(role,10) === 1) && 
                 <Menu.Item>
                   <Icon type="file-done"/>Aprobación créditos
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/company-home" && 
+                (parseInt(role,10) === 1) && 
                 <Menu.Item>
                   <Icon type="file-text"/>Generar informes
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/company-home" && 
+                (parseInt(role,10) === 1) && 
                 <Menu.Item>
                   <Icon type="percentage"/>Gestionar créditos
                 </Menu.Item>
               }
-              
               {
-                defaultSelectedKeys === "/customer-home" && 
-                <Menu.Item>
-                  <Icon type="dollar"/>Solicitar préstamo
+                (parseInt(role,10) === 0) && 
+                <Menu.Item className={"menu-key-home"}>
+                  <NavLink to={routes.customer}>
+                    <Icon type="home"/>Inicio
+                  </NavLink>
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/customer-home" && 
+                (parseInt(role,10) === 0) && 
                 <Menu.Item>
-                  <Icon type="profile"/>Transacciones
+                  <NavLink to={routes.customer_request}>
+                    <Icon type="dollar"/>Solicitar préstamo
+                  </NavLink>
                 </Menu.Item>
               }
               {
-                defaultSelectedKeys === "/customer-home" && 
+                (parseInt(role,10) === 0) && 
+                <Menu.Item>
+                  <NavLink to={routes.customer_transactions}>
+                    <Icon type="profile"/>Transacciones
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (parseInt(role,10) === 0) && 
                 <Menu.Item>
                   <Icon type="schedule"/>Revisar solicitudes
                 </Menu.Item>

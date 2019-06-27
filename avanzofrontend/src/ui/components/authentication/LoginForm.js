@@ -1,5 +1,5 @@
 //Libraries
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, Select } from 'antd';
 import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
@@ -29,19 +29,27 @@ class LoginForm extends Component {
       login_success: 0,
       email: '',
       password: '',
+      rol: null,
       isLogin: false,
       token: null,
       loginError: null,
     };
 
+    this.changeRol = this.changeRol.bind(this);
+
   };
 
-  onChangeEmail (email) {
+  onChangeEmail(email) {
     this.setState({ email: email.target.value })
   };
 
-  onChangePassword (password) {
+  onChangePassword(password) {
     this.setState({ password: password.target.value })
+  };
+
+  changeRol(role){
+    localStorage.setItem('role', role);
+    this.setState({ role: role});
   };
 
   sendMessage = (e) => {
@@ -56,7 +64,8 @@ class LoginForm extends Component {
   render() {
 
     const { getFieldDecorator } = this.props.form;
-    const { email, password, isLogin } = this.state;
+    const { email, password, isLogin, role } = this.state;
+    console.log(isLogin, role);
 
     return (
       <div>
@@ -66,29 +75,41 @@ class LoginForm extends Component {
         <div className={"login-card"}>
           <div className="login-form">
             <Form onSubmit={this.handleSubmit} className="login-form">
-              <div> 
+              <div>
+                <FormItem>
+                {getFieldDecorator('role', {
+                  rules: [{ required: true, message: 'Por ingrese su rol' }],
+                })(
+                    <Select className={"form-select-content"} placeholder="Rol" onChange={(e) => this.changeRol(e)}>
+                      <Select.Option value={0}>Usuario</Select.Option>
+                      <Select.Option value={1}>Empresa</Select.Option>
+                      <Select.Option value={2}>Administrador</Select.Option>
+                    </Select>)
+                }
+                </FormItem>
                 <FormItem>
                   {getFieldDecorator('text', { initialValue: '',
                     rules: [
                       {type: "email", message: "Ingrese un correo válido, por favor."},
                       {required: true, message: 'Por favor, ingrese su correo electrónico.'}],
                   })(
-                    <Input className={"form-content"} prefix={<Icon type="user" className={"field-icon"} />} placeholder="Email" 
+                    <Input prefix={<Icon type="user" className={"field-icon"} />} placeholder="Email" 
                     onChange={(value) => this.onChangeEmail(value)}/>
                   )}
                 </FormItem>
                 <FormItem>
+                  {getFieldDecorator('password', {
+                    rules: [{ required: true, message: 'Por ingrese su contraseña' }],
+                  })(
                   <Input prefix={<Icon type="lock" className={"field-icon"} />} type="password" placeholder="Contraseña"
-                    onChange={(value) => this.onChangePassword(value)}/>
+                    onChange={(value) => this.onChangePassword(value)}/>)
+                  }
                 </FormItem>
                 <FormItem className={"submit"}>
                   <Button type="primary" htmlType="submit" className="login-form-button" 
                           onClick={() => this.sendMessage()}>
                     <p className={"login-button-text"}>Iniciar Sesión</p>
                   </Button>
-                  {isLogin &&
-                    <Redirect to={routes.admin}/>
-                  }
                   <div className={"for-links"}>
                     <Link to={routes.forgot_password}>
                       <p className={"url-form"}>¿Olvidó su contraseña?</p>
@@ -100,11 +121,21 @@ class LoginForm extends Component {
                 </FormItem>
               </div>
             </Form>
+            
           </div>
         </div>
         <div className={"bottom-title"}>
           Avanzo © 2019
         </div>
+        {(isLogin && (role===0)) &&
+          <Redirect to={routes.customer}/>
+        }
+        {(isLogin && (role===1)) &&
+          <Redirect to={routes.company}/>
+        }
+        {(isLogin && (role===2)) &&
+          <Redirect to={routes.admin}/>
+        }
       </div>
     );
   }

@@ -1,0 +1,61 @@
+.request-div{
+  margin-top: 70px !important;
+  margin-bottom: 0px !important;
+  width: 80%;
+  margin: auto;
+}
+
+.form-request-rows{
+  width: 90% !important;
+  margin: auto !important;
+}
+
+.form-input-number{
+  width: 100% !important;
+}
+
+.form-request-divider{
+  margin-top: 5px !important;
+}
+
+.custom-button{
+  background-color: #01609b !important;
+  color: white !important;
+  width: 100% !important;
+}
+
+.request-confirm-button{
+  background-color: #42a4ff !important;
+  color: white !important;
+  width: 100% !important;
+}
+
+@media only screen and (max-width:500px) {
+  .request-div{
+    margin-top: 70px !important;
+    margin-bottom: 0px !important;
+    width: 90%;
+    margin: auto;
+  }
+
+  .form-request-rows{
+    width: 90% !important;
+    margin: auto !important;
+  }
+
+  .form-input-number{
+    width: 100% !important;
+  }
+
+  .form-request-divider{
+    margin-top: 5px !important;
+  }
+
+  .custom-button{
+    background-color: #01609b !important;
+    color: white !important;
+    margin: auto !important;
+    margin-bottom: 20px !important;
+  }
+
+}

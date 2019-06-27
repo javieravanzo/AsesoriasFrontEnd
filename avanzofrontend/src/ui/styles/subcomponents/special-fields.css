@@ -1,0 +1,46 @@
+.field-title-visible{
+  visibility: visible;
+  white-space: nowrap;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.field-title-hidden{
+  visibility: hidden;
+  white-space: nowrap;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.breadcrumber{
+  margin: auto;
+  width: 95%;
+}
+
+.custom-divider{
+  border-color: #a9a9a9;
+  background-color: #a9a9a9
+}
+
+.special-col{
+  margin-top: 15px
+}
+
+.bread-title{
+
+  color: #444;
+}
+
+.delete-modal{
+  color: red;
+  margin-left: 6px !important;
+  font-size: 20px !important;
+  position: fixed;
+  z-index: 10;
+}
+
+.title-delete-modal{
+  margin-left: 35px;
+}

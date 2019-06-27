@@ -9,6 +9,9 @@ import connect from "react-redux/es/connect/connect";
 import Admin from "../admin/index";
 import Company from "../company/index";
 import Customer from "../customer/index";
+import Customer_Transactions from "../customer/Transactions";
+import Customer_RequestForm from "../customer/RequestForm";
+
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
@@ -29,6 +32,8 @@ class Router extends Component {
               <Route path={routes.admin} component={Admin}/>
               <Route path={routes.company} component={Company}/>
               <Route path={routes.customer} component={Customer}/>
+              <Route path={routes.customer_transactions} component={Customer_Transactions}/>
+              <Route path={routes.customer_request} component={Customer_RequestForm}/>
               <Route render = {()=><Redirect to={routes.home}/>}/>
           </Switch>
         </Layout.Content>  
