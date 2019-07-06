@@ -1,22 +1,27 @@
+//Libraries
 import React, {Component} from 'react';
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Form, Input, Button, Icon} from 'antd';
-import secondIcon from "../../assets/authentication/avanzo.jpg"
 
-//import {resetPassword} from '../../../../store/redux/actions/account/accountActions';
+//Assets
+import secondIcon from "../../assets/authentication/avanzo.jpg";
+
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
 
 class ResetPassword extends Component{
+  
   constructor(props) {
+    
     super(props);
+    
     this.state = {
       requestSent: false,
     };
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.compareToFirstPassword = this.compareToFirstPassword.bind(this);
+
   }
 
   handleSubmit(e){
@@ -24,14 +29,14 @@ class ResetPassword extends Component{
 
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err){
-        const {code} = this.props.match.params;
+        //const {code} = this.props.match.params;
         
-        const resetPasswordInfo = {
+        /*const resetPasswordInfo = {
           email: values.email,
           password: values.password,
           confirmPassword: values.confirmPassword,
           code
-        };
+        };*/
 
         //this.props.resetPassword(resetPasswordInfo);
         this.setState({requestSent: true});

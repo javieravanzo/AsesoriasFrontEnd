@@ -45,14 +45,14 @@ const table = [
 ];
 
 //Functions
-function itemRender(current, type, originalElement) {
+/*function itemRender(current, type, originalElement) {
   if (type === 'prev' || type === 'Previous Page') {
     return <span title={'Anterior'} className={"item-renderer"}>{"<"}</span>;
   } if (type === 'next') {
     return <span title={'Siguiente'} className={"item-renderer"}>{">"}</span>;
   }
   return originalElement;
-};
+};*/
 
 class Customer extends Component {
 
@@ -111,20 +111,23 @@ class Customer extends Component {
         <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
           <Card className={"customer-card"}>
             <Row className={"customer-row-card"}>
-              <Col xxl={16} lg={16} md={16} sm={24} xs={24}>
+              <Col xxl={13} lg={13} md={13} sm={24} xs={24}>
                 <Typography >
                   <Typography.Title level={3} className={"customer-title"}>
                     ¡Bienvenido, Juan Camilo!
                   </Typography.Title>       
                 </Typography>
               </Col>      
-              <Col xxl={8} lg={8} md={8} sm={24} xs={24}>
+              <Col xxl={11} lg={11} md={11} sm={24} xs={24}>
                 <Card className={"customer-credit-card"}>
-                  <Row gutter={16}>
-                    <Col span={12}>
-                      <Statistic title={<h3>Cupo actual</h3>} value={112893} prefix={"$"}/>
+                  <Row gutter={4}>
+                    <Col span={8}>
+                      <Statistic title={<h3>Cupo disponible</h3>} value={187107} prefix={"$"}/>
                     </Col>
-                    <Col span={12}>
+                    <Col span={8}>
+                      <Statistic title={<h3>Cupo usado</h3>} value={112893} prefix={"$"}/>
+                    </Col>
+                    <Col span={8}>
                       <Statistic title={<h3>Cupo total</h3>} value={300000} prefix={"$"}/>
                     </Col>
                   </Row>    
@@ -155,7 +158,7 @@ class Customer extends Component {
       </Row>
       {
         loan &&
-        <Redirect to={routes.customer_request}/>
+        <Redirect to={routes.customer_form_request}/>
       }
     </div>
     );

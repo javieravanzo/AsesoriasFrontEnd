@@ -5,9 +5,14 @@ export default {
   forgot_password: "/forgot_password",
   reset_password: "/confirm_password",
   confirm_password: "/account_confirmed",
-  admin: "/admin-home",
-  company: "/company-home",
+  admin_company_management: "/admin-company-management",
+  admin_customer_management: "/admin-customer-management",
+  admin_request_management: "/admin-request-management",
+  admin_generate_reports: "/admin-generate-reports",
+  company_request_management: "/company-request-management",
+  company_generate_reports: "/company-generate-reports",
   customer: "/customer-home",
   customer_transactions: "/customer-transactions",
-  customer_request: "/customer-request"
+  customer_form_request: "/customer-form-request",
+  customer_review_requests: "/customer-review-requests"
 };  

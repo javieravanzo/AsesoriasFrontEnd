@@ -2,8 +2,8 @@
 import {Form, Icon, Input, Button} from 'antd';
 import {Link, Redirect} from "react-router-dom";
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import PropTypes from "prop-types";
+//import {connect} from 'react-redux';
+//import PropTypes from "prop-types";
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
@@ -52,7 +52,7 @@ class ForgotPassword extends Component {
   render() {
 
     const { getFieldDecorator } = this.props.form;
-    const {requestSent, modal} = this.state;
+    const {requestSent} = this.state;
 
     return (
         <div>

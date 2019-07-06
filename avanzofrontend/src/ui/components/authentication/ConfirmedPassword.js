@@ -1,17 +1,16 @@
 //Libraries
-import {Form, Icon, Input, Button, Alert} from 'antd';
-import {Link, Redirect, NavLink} from "react-router-dom";
+import {Form, Icon, Button} from 'antd';
+import {Redirect, NavLink} from "react-router-dom";
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import PropTypes from "prop-types";
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
 
 //Actions
-//import {recoverPassword} from '../../../../../../../../GeekCore/InspektorFrontEnd/Inspektor.Frontend/inspektor.frontend/src/app/store/redux/actions/account/accountActions';
-import secondIcon from "../../assets/authentication/avanzo.jpg"
 import { SUCCESS_MODAL } from '../subcomponents/modalMessages';
+
+//Assets
+import secondIcon from "../../assets/authentication/avanzo.jpg";
 
 //Constants
 const FormItem = Form.Item;
@@ -51,8 +50,8 @@ class ConfirmedPassword extends Component {
 
   render() {
 
-    const { getFieldDecorator } = this.props.form;
-    const {requestSent, modal} = this.state;
+    //const { getFieldDecorator } = this.props.form;
+    const {requestSent} = this.state;
 
     return (
         <div>

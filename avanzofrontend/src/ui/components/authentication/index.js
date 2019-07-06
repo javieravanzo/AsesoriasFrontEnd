@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import { Form, Layout } from 'antd';
+import {Form, Layout} from 'antd';
 import {Route, Switch} from "react-router-dom";
 import {Redirect} from "react-router";
 

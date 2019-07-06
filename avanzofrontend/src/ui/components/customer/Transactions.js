@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Divider, Button, Card, Input, Table} from 'antd';
+import {Row, Col, Divider, Card, Input, Table} from 'antd';
 //import connect from 'react-redux/es/connect/connect';
 //import PropTypes from 'prop-types';
 
@@ -12,7 +12,6 @@ import '../../styles/customer/transactions.css'
 
 //Subcomponents
 //import TableButtons from './subcomponents/SocialTableButtons';
-//import { WARNING_MODAL } from '../../subComponents/modals/responseModals';
 //import LoadingComponent from "../../general/LoadingComponent";
 
 //Constants
@@ -78,7 +77,6 @@ class Transactions extends Component {
     this.setData = this.setData.bind(this);
     this.inputLinkName = this.inputLinkName.bind(this);
 
-
   };
 
   setData(linkList){
@@ -109,7 +107,7 @@ class Transactions extends Component {
 
   render() {
 
-    let {getLinksResponse} = this.props;
+    //let {getLinksResponse} = this.props;
     //let tableData = this.setData(getLinksResponse);
     let tableData = [
       {
@@ -128,8 +126,8 @@ class Transactions extends Component {
       },
       {
         key: 3,
-        transaction: "Retiro",
-        quantity: 89000,
+        transaction: "Cuota de manejo",
+        quantity: 8500,
         date: "23-06-19",
         date2: "24-06-19"
       },
@@ -149,8 +147,8 @@ class Transactions extends Component {
       },
       {
         key: 6,
-        transaction: "Retiro",
-        quantity: 13900,
+        transaction: "Intereses",
+        quantity: 4870,
         date: "27-06-19",
         date2: "28-06-19"
       }     

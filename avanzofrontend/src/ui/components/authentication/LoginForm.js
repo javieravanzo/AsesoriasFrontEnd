@@ -4,14 +4,12 @@ import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
 import {withRouter} from 'react-router-dom';
-//import connect from 'react-redux/es/connect/connect';
-//import PropTypes from 'prop-types';
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
 
 //Actions
-import {ERROR_MODAL, SUCCESS_MODAL} from "../subcomponents/modalMessages";
+import {SUCCESS_MODAL} from "../subcomponents/modalMessages";
 import secondIcon from "../../assets/authentication/avanzo.jpg"
 
 //Constants
@@ -64,8 +62,7 @@ class LoginForm extends Component {
   render() {
 
     const { getFieldDecorator } = this.props.form;
-    const { email, password, isLogin, role } = this.state;
-    console.log(isLogin, role);
+    const { isLogin, role } = this.state;
 
     return (
       <div>
@@ -131,10 +128,10 @@ class LoginForm extends Component {
           <Redirect to={routes.customer}/>
         }
         {(isLogin && (role===1)) &&
-          <Redirect to={routes.company}/>
+          <Redirect to={routes.company_request_management}/>
         }
         {(isLogin && (role===2)) &&
-          <Redirect to={routes.admin}/>
+          <Redirect to={routes.admin_company_management}/>
         }
       </div>
     );

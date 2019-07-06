@@ -1,5 +1,5 @@
 .request-div{
-  margin-top: 70px !important;
+  margin-top: 50px !important;
   margin-bottom: 0px !important;
   width: 80%;
   margin: auto;
@@ -8,6 +8,12 @@
 .form-request-rows{
   width: 90% !important;
   margin: auto !important;
+}
+
+.request-form-title{
+  margin-top: 50px !important;
+  margin-left: 40px !important;
+  color: black !important;
 }
 
 .form-input-number{
@@ -24,8 +30,20 @@
   width: 100% !important;
 }
 
+.form-checkbox{
+  margin-bottom: 20px !important;
+}
+
 .request-confirm-button{
-  background-color: #42a4ff !important;
+  margin-top: 20px !important;
+  background-color: #01609b !important;
+  color: white !important;
+  width: 100% !important;
+}
+
+.request-reject-button{
+  margin-top: 20px !important;
+  background-color: #c50000 !important;
   color: white !important;
   width: 100% !important;
 }

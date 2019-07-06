@@ -1,0 +1,188 @@
+.request-state-div{
+  margin-top: 70px !important;
+  margin-bottom: 0px !important;
+  width: 80%;
+  margin: auto;
+}
+
+.request-state-list-item{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  color: #000 !important;
+  width: 80% !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Requested */
+.request-state-item-requested{
+  background-color: #fff !important;
+  margin-bottom: 20px;
+  text-align: center !important;
+  width: 863px !important;
+  background-color: '#fff';
+  min-height: 90px !important;
+  border-radius: 5px !important;
+  border-color: #000 !important;
+  position: 'relative';
+  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
+  padding: 25px 20px 20px 20px !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.request-item-button-requested{
+  border: none !important;
+  border-color: white !important; 
+  background-color: white !important;
+  box-shadow: none !important;
+}
+
+.request-item-badge-requested{
+  background-color: white !important;
+}
+
+/* Analysys */
+.request-item-badge-analysis{
+  background-color: yellow !important;
+}
+
+/* Approved */
+.request-item-badge-approved{
+  background-color: #6cff55 !important;
+}
+
+/* Rejected */
+.request-item-badge-rejected{
+  background-color: #ff4747 !important;
+}
+
+.request-item-icon{
+  font-size: 30px !important;
+  color: #3ab5ff !important;
+  margin-top: 5px !important;
+  margin-right: 10px !important;
+}
+
+.request-state-steps{
+  width: 94% !important;
+}
+
+.request-item-requested-alert{
+  background-color: #62b3ff !important;
+  margin-bottom: 20px;
+  text-align: center !important;
+  width: 763px !important;
+  background-color: '#fff';
+  min-height: 90px !important;
+  border-radius: 5px !important;
+  border-color: #000 !important;
+  position: 'relative';
+  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
+  padding: 25px 20px 20px 20px !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.request-item-alert-icon{
+  font-size: 28px !important;
+}
+
+
+@media only screen and (max-width:500px) {
+  
+  .request-state-div{
+    margin-top: 70px !important;
+    margin-bottom: 0px !important;
+    width: 85%;
+    margin: auto;
+  }
+  
+  .request-state-list-item{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    color: #000 !important;
+    width: 95% !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .request-item-initial-col{
+    margin-bottom: 10px !important;
+  }
+  
+  /* Requested */
+  .request-state-item-requested{
+    background-color: #fff !important;
+    margin-bottom: 20px;
+    text-align: center !important;
+    width: 100% !important;
+    background-color: '#fff';
+    min-height: 90px !important;
+    border-radius: 5px !important;
+    border-color: #000 !important;
+    position: 'relative';
+    box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
+    padding: 25px 20px 20px 20px !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .request-item-button-requested{
+    border: none !important;
+    border-color: white !important; 
+    background-color: white !important;
+    box-shadow: none !important;
+  }
+  
+  .request-item-badge-requested{
+    background-color: white !important;
+  }
+  
+  /* Analysys */
+  .request-item-badge-analysis{
+    background-color: yellow !important;
+  }
+  
+  /* Approved */
+  .request-item-badge-approved{
+    background-color: #6cff55 !important;
+  }
+  
+  /* Rejected */
+  .request-item-badge-rejected{
+    background-color: #ff4747 !important;
+  }
+  
+  .request-item-icon{
+    font-size: 30px !important;
+    color: #3ab5ff !important;
+    margin-top: 5px !important;
+    margin-right: 10px !important;
+  }
+  
+  .request-state-steps{
+    width: 94% !important;
+  }
+  
+  .request-item-requested-alert{
+    background-color: #62b3ff !important;
+    margin-bottom: 20px;
+    text-align: center !important;
+    width: 90% !important;
+    background-color: '#fff';
+    min-height: 90px !important;
+    border-radius: 5px !important;
+    border-color: #000 !important;
+    position: 'relative';
+    box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
+    padding: 25px 20px 20px 20px !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .request-item-alert-icon{
+    font-size: 28px !important;
+  }
+  
+}

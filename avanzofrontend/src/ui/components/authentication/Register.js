@@ -57,7 +57,6 @@ class Register extends Component {
         if(names !== "" && names !== null && username !== "" && username !== null && description !== "" &&
           description !== null && email !== "" && email !== null && password !== "" && password !== null ){
             let name = names.split(" ");
-            console.log(names, name);
             let data = {     
               first_name: name[0],
               last_name: name[1],

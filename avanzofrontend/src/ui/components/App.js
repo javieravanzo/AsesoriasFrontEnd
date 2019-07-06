@@ -47,7 +47,6 @@ class App extends Component {
   render(){
 
     let signedIn = this.isSignedIn();
-    console.log(signedIn);
     if(!signedIn){
       return( <Login/> );
     }else{

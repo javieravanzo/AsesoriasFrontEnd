@@ -35,6 +35,16 @@
   margin-right: 10px;
 }
 
+.menu-admin-home{
+  margin-left: 22% !important;
+  margin-right: 10px;
+}
+
+.menu-company-home{
+  margin-left: 35% !important;
+  margin-right: 10px;
+}
+
 .menu-key-users, .menu-key-customers, .menu-key-projects{
   margin-right: 10px !important; 
   margin-left: 20px !important;

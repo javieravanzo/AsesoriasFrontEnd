@@ -73,48 +73,51 @@ class MainMenu extends Component {
               </Menu.Item>
               {
                 (parseInt(role,10) === 2) && 
-                <Menu.Item className={"menu-key-home"}>
-                  <NavLink to={routes.admin}>
-                    <Icon type="home"/>Inicio
+                <Menu.Item className={"menu-admin-home"}>
+                  <NavLink to={routes.admin_company_management}>
+                    <Icon type="cluster"/>Gestionar Empresas
+                  </NavLink>
+                  
+                </Menu.Item>
+              }
+              {
+                (parseInt(role,10) === 2) && 
+                <Menu.Item>
+                  <NavLink to={routes.admin_customer_management}>
+                    <Icon type="idcard"/>Gestionar Clientes
                   </NavLink>
                 </Menu.Item>
               }
               {
                 (parseInt(role,10) === 2) && 
                 <Menu.Item>
-                  <Icon type="cluster"/>Gestionar Empresas
+                  <NavLink to={routes.admin_request_management}>
+                    <Icon type="percentage"/>Gestionar Créditos
+                  </NavLink>
                 </Menu.Item>
               }
               {
                 (parseInt(role,10) === 2) && 
                 <Menu.Item>
-                  <Icon type="idcard"/>Gestionar Clientes
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 2) && 
-                <Menu.Item>
-                  <Icon type="percentage"/>Gestionar Créditos
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 1) && 
-                <Menu.Item className={"menu-key-home"}>
-                  <NavLink to={routes.company}>
-                    <Icon type="home"/>Inicio
+                  <NavLink to={routes.admin_generate_reports}>
+                    <Icon type="file"/>Generar Reportes
                   </NavLink>
                 </Menu.Item>
               }
               {
                 (parseInt(role,10) === 1) && 
-                <Menu.Item>
-                  <Icon type="file-done"/>Aprobación créditos
+                <Menu.Item className={"menu-company-home"}>
+                  <NavLink to={routes.company_request_management}>
+                    <Icon type="file-done"/>Aprobación créditos
+                  </NavLink>  
                 </Menu.Item>
               }
               {
                 (parseInt(role,10) === 1) && 
                 <Menu.Item>
-                  <Icon type="file-text"/>Generar informes
+                  <NavLink to={routes.company_generate_reports}>
+                    <Icon type="file-text"/>Generar informes
+                  </NavLink>
                 </Menu.Item>
               }
               {
@@ -134,7 +137,7 @@ class MainMenu extends Component {
               {
                 (parseInt(role,10) === 0) && 
                 <Menu.Item>
-                  <NavLink to={routes.customer_request}>
+                  <NavLink to={routes.customer_form_request}>
                     <Icon type="dollar"/>Solicitar préstamo
                   </NavLink>
                 </Menu.Item>
@@ -150,7 +153,9 @@ class MainMenu extends Component {
               {
                 (parseInt(role,10) === 0) && 
                 <Menu.Item>
-                  <Icon type="schedule"/>Revisar solicitudes
+                  <NavLink to={routes.customer_review_requests}>
+                    <Icon type="schedule"/>Revisar solicitudes
+                  </NavLink>
                 </Menu.Item>
               }
               <Menu.Item onClick={() => this.setState({visible: true})}>
