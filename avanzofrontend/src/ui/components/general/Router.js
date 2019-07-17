@@ -43,6 +43,7 @@ class Router extends Component {
               <Route path={routes.admin_generate_reports} component={AdminGenerateReports}/>
               <Route path={routes.company_request_management} component={Company}/>
               <Route path={routes.company_generate_reports} component={CompanyGenerateReports}/>
+              
               <Route path={routes.customer} component={Customer}/>
               <Route path={routes.customer_transactions} component={Customer_Transactions}/>
               <Route path={routes.customer_form_request} component={Customer_RequestForm}/>

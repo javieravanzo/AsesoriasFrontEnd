@@ -12,6 +12,7 @@ export default {
   company_request_management: "/company-request-management",
   company_generate_reports: "/company-generate-reports",
   customer: "/customer-home",
+  customer_register: "/customer-register",
   customer_transactions: "/customer-transactions",
   customer_form_request: "/customer-form-request",
   customer_review_requests: "/customer-review-requests"
