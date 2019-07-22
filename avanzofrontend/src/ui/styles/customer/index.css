@@ -1,5 +1,5 @@
 .customer-div{
-  margin-top: 70px !important;
+  margin-top: 20px !important;
   margin-bottom: 0px !important;
   width: 80%;
   margin: auto;
@@ -16,7 +16,7 @@
 }
 
 .customer-title{
-  margin-top: 60px !important;
+  margin-top: 50px !important;
   margin-left: 30px !important;
   color: #02609d !important;
 }
@@ -27,8 +27,10 @@
 
 .customer-credit-card{
   text-align: center !important;
-  margin-top: 20px !important;
+  margin-top: 10px !important;
   margin-right: 25px !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
   box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
   background-color: #42a4ff !important;
   border: 5px !important;
@@ -56,10 +58,24 @@
   color: #42a4ff !important;
 }
 
+.request-pendings{
+  
+  font-size: 20px !important;
+  margin-top: -10px !important;
+  color: #01609b !important;
+}
+
+.request-pending-col{
+  text-align: right;
+}
+
 .request-button-none{
   border: none !important;
 }
 
+.request-pending-button{
+  border: none !important;
+}
 
 
 @media only screen and (max-width:500px) {
@@ -91,6 +107,8 @@
   }
   
   .customer-credit-card{
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
     text-align: center !important;
     margin-top: 20px !important;
     margin-right: 0px !important;

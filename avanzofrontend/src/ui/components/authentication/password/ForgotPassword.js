@@ -6,12 +6,12 @@ import React, {Component} from 'react';
 //import PropTypes from "prop-types";
 
 //Subcomponents
-import routes from "../../../configuration/routing/Routes";
+import routes from "../../../../configuration/routing/Routes";
 
 //Actions
 //import {recoverPassword} from '../../../../../../../../GeekCore/InspektorFrontEnd/Inspektor.Frontend/inspektor.frontend/src/app/store/redux/actions/account/accountActions';
-import secondIcon from "../../assets/authentication/avanzo.jpg"
-import { SUCCESS_MODAL } from '../subcomponents/modalMessages';
+import secondIcon from "../../../assets/authentication/avanzo.jpg"
+import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
 
 //Constants
 const FormItem = Form.Item;

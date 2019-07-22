@@ -1,6 +1,6 @@
 //Libraries
 import React, { Component } from 'react';
-import { Col, Row, List, Divider} from 'antd';
+import {Row, List} from 'antd';
 
 //Subcomponents
 import RequestModal from "./RequestStateModal";

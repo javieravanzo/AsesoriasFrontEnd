@@ -4,13 +4,13 @@ import {Redirect, NavLink} from "react-router-dom";
 import React, {Component} from 'react';
 
 //Subcomponents
-import routes from "../../../configuration/routing/Routes";
+import routes from "../../../../configuration/routing/Routes";
 
 //Actions
-import { SUCCESS_MODAL } from '../subcomponents/modalMessages';
+import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
 
 //Assets
-import secondIcon from "../../assets/authentication/avanzo.jpg";
+import secondIcon from "../../../assets/authentication/avanzo.jpg";
 
 //Constants
 const FormItem = Form.Item;

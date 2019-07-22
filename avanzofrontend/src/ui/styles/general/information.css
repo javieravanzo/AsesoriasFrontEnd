@@ -1,0 +1,52 @@
+.general-row{
+  position: relative !important;
+}
+
+.row-information{
+  margin-top: 50px !important;
+  background-color: #01609b;
+  color: white;
+  
+}
+
+.information-divider{
+  margin-top: 1px !important;
+  margin-bottom: 1px !important;
+  color: #f7f7f7 !important;
+}
+
+.information-name{
+  margin-left: 5px;
+  font-size: 16px !important;
+}
+
+.information-page{
+  font-size: 16px !important;
+  text-align: center !important;
+  color: white !important;
+}
+
+.information-clock{
+  margin-right: 5px !important; 
+}
+
+.a{
+  color: white !important;
+}
+
+.page-link{
+  color: white !important;
+}
+
+.clock-col{
+  padding-top: 2px !important;
+  text-align: right !important;
+}
+
+.name-col{
+  text-align: left !important;
+}
+
+.page-col{
+  text-align: center !important;
+}

@@ -5,11 +5,11 @@ import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
 
 //Assets
-import secondIcon from "../../assets/authentication/avanzo.jpg"
+import secondIcon from "../../../assets/authentication/avanzo.jpg"
 
 //Subcomponents
-import {ERROR_MODAL, SUCCESS_MODAL} from "../subcomponents/modalMessages";
-import routes from "../../../configuration/routing/Routes";
+import {ERROR_MODAL, SUCCESS_MODAL} from "../../subcomponents/modalMessages";
+import routes from "../../../../configuration/routing/Routes";
 
 //Constants
 const FormItem = Form.Item;

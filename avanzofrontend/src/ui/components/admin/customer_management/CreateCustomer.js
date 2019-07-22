@@ -49,7 +49,7 @@ class CustomerManagement extends Component {
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {particular_modal, multiple_modal} = this.state;
+    //let {particular_modal, multiple_modal} = this.state;
     const props = {
       name: 'file',
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',

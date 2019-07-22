@@ -1,6 +1,6 @@
 //Libraries
 import React, { Component } from 'react';
-import { Col, Row, List, Divider} from 'antd';
+import { Row, List} from 'antd';
 
 //Subcomponents
 import RequestModal from "./RequestStateModal";
@@ -40,8 +40,11 @@ class ApproveRequest extends Component {
 
     let tableData = [
       {
-        key: 1,
+        key: 82,
         requestState: "En aprobación",
+        idNumber: "108213771",
+        name: "Juan Camilo",
+        lastName: "Hernandez",
         requestStateId: 3,
         quantity: 150000,
         date: "20-06-19",
@@ -52,9 +55,12 @@ class ApproveRequest extends Component {
         accountNumber: 1827381732
       },
       {
-        key: 3,
+        key: 123,
         requestState: "En aprobación",
         requestStateId: 3,
+        name: "Anibal Andrés",
+        lastName: "Torrado",
+        idNumber: "12177211",
         quantity: 8500,
         date: "23-06-19",
         date2: "24-06-19",
@@ -64,8 +70,11 @@ class ApproveRequest extends Component {
         accountNumber: 838400023
       },
       {
-        key: 5,
+        key: 432,
         requestState: "En aprobación",
+        idNumber: "1967643771",
+        name: "Duvan ",
+        lastName: "Zapata",
         requestStateId: 3,
         quantity: 275000,
         date: "26-06-19",
@@ -76,9 +85,12 @@ class ApproveRequest extends Component {
         accountNumber: 9349823,
       },
       {
-        key: 6,
+        key: 8,
         requestState: "En aprobación",
         requestStateId: 3,
+        name: "Diego Alejandro",
+        lastName: "Esparta",
+        idNumber: "108213771",
         quantity: 4870,
         date: "27-06-19",
         date2: "28-06-19",

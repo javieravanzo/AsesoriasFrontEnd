@@ -6,6 +6,7 @@ import {withRouter} from 'react-router-dom';
 //Components
 import MainMenu from "../components/general/MainMenu";
 import Login from "../components/authentication/index";
+import Information from "../components/general/Information";
 
 //Subcomponents
 import Router from "../components/general/Router";
@@ -47,12 +48,15 @@ class App extends Component {
   render(){
 
     let signedIn = this.isSignedIn();
+    console.log(this.props);
     if(!signedIn){
-      return( <Login/> );
+      return( <Login pathname={this.props.location.pathname}/> );
     }else{
       return(
           <div>
+            
             <MainMenu viewPortWidth={this.state.viewportWidth}/>
+            <Information/>
             <Layout className={'back-home'}>
               <Router/>
             </Layout>

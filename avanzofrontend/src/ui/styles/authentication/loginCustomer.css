@@ -8,13 +8,14 @@
 }
 
 .sign-in-background{
-  width: 100%;
+  width: 170%;
   object-fit: contain;
   background-position: center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  opacity: 0.8;
 }
 
 .background2{
@@ -25,7 +26,6 @@
   margin-top: 10px;
   right: 5%;
   height: 30px !important;
-  border-color: #0068b0 !important;
   background-color: #0068b0 !important;
   color: white !important;
   z-index: 5;
@@ -40,13 +40,13 @@
 .home-form{
   width: 480px;
   padding: 35px 35px 25px 35px !important;
-  opacity: 0.8;
-  left: 47%;
-  margin: 40px 0 20px -200px !important;
+  opacity: 1;
+  left: 46%;
+  margin: 40px 0px 20px -200px !important;
   position: absolute;
 
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color:#0000004d;
   box-shadow: 0 6px 10px 7px rgba(0, 0, 0, 0.2) !important;
 }
 
@@ -176,23 +176,24 @@
 
 /* - - - - - - - - - - - - Home logo - - - - - - - - - - - -  */
 .home-logo-div {
+  margin-top: 40px;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 40px;
 }
 
 .home-logo-container {
   padding: 10px;
-  max-width: 160px;
-  max-height: 160px;
-  border-radius: 80px;
+  max-width: 220px;
+  max-height: 220px;
+  border-radius: 20px;
   display: inline-flex;
   background-color: white;
-  border: 3px solid #ffe800;
+  border: 3px solid #096dd9;
 }
 
 .home-logo {
-  max-width: 120px;
-  max-height: 120px;
+  max-width: 200px;
+  max-height: 200px;
 }
 
 /* - - - - - - - - - - - - End Home logo - - - - - - - - - -  */
@@ -211,7 +212,8 @@
 /* ------------------------- Buttons section ---------------------------- */
 .home-buttons-div{
   text-align: center;
-  margin-top: 8px;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .home-buttons-div button{
@@ -222,11 +224,11 @@
   fill: rgba(0, 0, 0, 0.65);
   font-size: 14px !important;
   cursor: pointer !important;
-  color: #006eb6;
+  color: #096dd9;
 }
 .home-buttons-div .question-button:hover{
-  fill: #006eb6 !important;
-  color: #006eb6 !important;
+  fill: #096dd9 !important;
+  color: #096dd9 !important;
 }
 /* ------------------------------------------------------- */
 .terms-color{
@@ -257,8 +259,28 @@
   border-color: #d8d51c !important;
 }
 
-.request-button, .schedule-button{
+.register-button {
+  background-color: #0068b0 !important; 
+  border-color: #0068b0 !important;
+  color: white !important;
   height: 30px !important;
+  width: 90%;
+}
+
+.login-button{
+  background-color: #0068b0 !important; 
+  border-color: #0068b0 !important;
+  color: white !important;
+  height: 30px !important;
+  width: 90%;
+}
+
+.register-col{
+  text-align: right !important;
+}
+
+.login-col{
+  text-align: left !important;
 }
 
 .ant-popover{
@@ -269,4 +291,9 @@
   font-size: 12px;
   white-space: wrap !important;
   width: 250px !important;
+}
+
+
+.input-number{
+  width: 100% !important;
 }

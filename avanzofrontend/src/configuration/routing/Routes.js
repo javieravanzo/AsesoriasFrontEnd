@@ -4,13 +4,18 @@ export default {
   home: "/home",
   forgot_password: "/forgot_password",
   reset_password: "/confirm_password",
-  confirm_password: "/account_confirmed",
+  confirm_password: "/password_confirmed",
+  confirm_account: "/account_confirmed",
+  
   admin_company_management: "/admin-company-management",
   admin_customer_management: "/admin-customer-management",
   admin_request_management: "/admin-request-management",
   admin_generate_reports: "/admin-generate-reports",
+  
+  company_register: "/company-register",
   company_request_management: "/company-request-management",
   company_generate_reports: "/company-generate-reports",
+  
   customer: "/customer-home",
   customer_register: "/customer-register",
   customer_transactions: "/customer-transactions",

@@ -16,12 +16,6 @@ const { TabPane } = Tabs;
 
 class Customer_Management extends Component {
 
-  constructor(props){
-    
-    super(props);
-
-  };
-
   render() {
 
     return (

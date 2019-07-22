@@ -5,12 +5,14 @@ import {Route, Switch} from "react-router-dom";
 import {Redirect} from "react-router";
 
 //Subcomponents
-import ConfirmResetPassword from './ConfirmedPassword';
-import ResetPassword from './ResetPassword';
-import ForgotPassword from "./ForgotPassword";
+import ConfirmResetPassword from './password/ConfirmedPassword';
+import ResetPassword from './password/ResetPassword';
+import ForgotPassword from "./password/ForgotPassword";
 import LoginForm from "./LoginForm";
-import Register from "./Register";
-import CustomerRegister from "../authentication/RegisterCustomer";
+import Register from "./register/Register";
+import CustomerRegister from "./register/RegisterCustomer";
+import CompanyRegister from "./register/RegisterCompany";
+import ConfirmAccount from "./ConfirmedAccount";
 import routes from "../../../configuration/routing/Routes";
 
 //Styles
@@ -27,6 +29,7 @@ const WrappedRegister = Form.create()(Register);
 const WrappedForgotPassword = Form.create()(ForgotPassword);
 const WrappedResetPassword = Form.create()(ResetPassword);
 const WrappedConfirmPassword = Form.create()(ConfirmResetPassword);
+const WrappedConfirmAccount = Form.create()(ConfirmAccount);
 
 
 class Login extends Component {
@@ -44,30 +47,31 @@ class Login extends Component {
   
   render() {
 
-    let {customer_register} = this.state;
-  
-    return (
+     return (
       <div className='login'>
         {
-          customer_register &&
+          (this.props.pathname === routes.customer_register) && 
           <Layout>
-            <Switch>
-              <Route path={routes.customer_register} component={CustomerRegister}/>
-              <Route render = {()=><Redirect to={routes.login}/>}/>
-            </Switch>
+            <Route path={routes.customer_register} component={CustomerRegister}/>
           </Layout>          
         }
         {
-          (customer_register === null) && 
+          (this.props.pathname === routes.company_register) && 
+          <Layout>
+            <Route path={routes.company_register} component={CompanyRegister}/>
+          </Layout>          
+        }
+        {
+          (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>
-                <Switch>
+                <Switch>            
                   <Route path={routes.login} component={WrappedNormalLoginStandard} />
                   <Route path={routes.register} component={WrappedRegister} />
                   <Route path={routes.forgot_password} component={WrappedForgotPassword} />
                   <Route path={routes.reset_password} component={WrappedResetPassword} />
                   <Route path={routes.confirm_password} component={WrappedConfirmPassword} />
-                  <Route path={routes.customer_register} component={CustomerRegister}/>
+                  <Route path={routes.confirm_account} component={WrappedConfirmAccount} />
                   <Route render = {()=><Redirect to={routes.login}/>}/>
                 </Switch>
             </Sider>
@@ -77,9 +81,7 @@ class Login extends Component {
               </Content>
             </Layout>
           </Layout>
-        }
-        
-        
+        }        
       </div>
     );
   }

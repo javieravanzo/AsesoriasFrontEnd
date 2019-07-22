@@ -173,6 +173,18 @@ class RequestStateModal extends Component {
                   </Row>
                 </div>
               }
+              {
+                item.requestStateId === 4 &&
+                <div className={"request-item-requested-reject"}>
+                  <Row>
+                    <h3> 
+                      <Icon type="close-circle" className={"request-item-alert-icon"}/> 
+                      {" "}¡Tu solicitud fue rechazada por este motivo: ... !
+                    </h3>
+                  </Row>
+                </div>
+              }
+
             </div>
           }
         </div>

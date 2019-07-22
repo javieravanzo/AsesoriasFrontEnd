@@ -4,10 +4,10 @@ import {Redirect} from 'react-router-dom';
 import {Form, Input, Button, Icon} from 'antd';
 
 //Assets
-import secondIcon from "../../assets/authentication/avanzo.jpg";
+import secondIcon from "../../../assets/authentication/avanzo.jpg";
 
 //Subcomponents
-import routes from "../../../configuration/routing/Routes";
+import routes from "../../../../configuration/routing/Routes";
 
 class ResetPassword extends Component{
   

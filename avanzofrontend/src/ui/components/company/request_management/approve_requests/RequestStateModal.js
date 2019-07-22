@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Input} from 'antd';
 import CurrencyFormat from "react-currency-format";
 
 //Styles
@@ -9,6 +9,7 @@ import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 //Constants
 const Step = Steps.Step;
+const TextArea = Input.TextArea;
 
 class RequestStateModal extends Component {
 
@@ -66,35 +67,50 @@ class RequestStateModal extends Component {
     this.setState({approve_modal: false});
   };
 
+  onCancelRequest = () => {
+    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido rechazada correctamente.");
+    this.setState({reject_modal: false});
+  };
+
+  handleQuickApprove = () => {
+    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
+  };
+
   render(){
 
     let item = this.props.item;
-    let {approve_modal} = this.state;
+    //let {approve_modal} = this.state;
 
     return (
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
-              <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
-                <b>Número de Solicitud</b> <br/><br/>
-                {"Solicitud No. " + item.key} 
-              </Col>
-              <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {item.requestState}
-              </Col>
-              <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
-                  <b>Fecha de Solicitud</b> <br/><br/> {item.date}
-              </Col>
-              <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Valor Total</b> <br/><br/>
-                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                      value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
-              </Col>
-              <Col xs={24} sm={12} md={2} lg={2}>
+              <Col xs={24} sm={12} md={2} lg={1}>
                 <Tooltip title="Detallar solicitud">
                   <Icon type={"plus-circle"} className={"request-item-icon"} onClick={() => this.setState({visible: !this.state.visible})}/> 
                 </Tooltip>
+              </Col>              
+              <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col" >
+                  <b>Cliente</b> <br/><br/>  {item.idNumber}
               </Col>
+              <Col xs={12} sm={12} md={7} lg={7}  className="request-item-initial-col">
+                  <b>Fecha de Solicitud</b> <br/><br/> {item.date}
+              </Col>
+              <Col xs={12} sm={12} md={7} lg={7}  className="request-item-initial-col">
+                  <b>Liquidación Total</b> <br/><br/>
+                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                      value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
+              </Col>
+              <Col xs={24} sm={12} md={2} lg={1}>
+                <Tooltip title="Aprobar solicitud">
+                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.handleQuickApprove()}/> 
+                </Tooltip>
+              </Col>
+              <Col xs={24} sm={12} md={2} lg={1}>
+                <Tooltip title="Rechazar solicitud">
+                  <Icon type={"close-circle"} className={"request-item-icon-reject"} onClick={() => this.setState({reject_modal: true})}/> 
+                </Tooltip>
+              </Col> 
             </Row>
           
           {
@@ -125,21 +141,17 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row>
-                <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Monto</b><br/><br/>
-                  {item.quantity} 
+                <Col xs={12} sm={12} md={8} lg={6} >
+                  <b>Nombres</b><br/><br/>
+                  {item.name} 
                 </Col>
-                <Col xs={12} sm={12} md={8} lg={4} >
-                    <b>Cuotas</b><br/><br/>
-                    {item.fee}
+                <Col xs={12} sm={12} md={8} lg={6} >
+                    <b>Apellidos</b><br/><br/>
+                    {item.lastName}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Cuenta</b><br/><br/>
-                    {item.accountName}
-                </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Tipo de Cuenta</b><br/><br/>
-                    {item.accountType}
+                    <b>Cargo</b><br/><br/>
+                    {"Constructor"}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Número de cuenta</b><br/><br/>
@@ -150,15 +162,15 @@ class RequestStateModal extends Component {
               <Row gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={14}/>
                 <Col xs={24} sm={12} md={6} lg={5}>
-                  <Button className={"request-reject-button"} icon="close-circle" 
-                          onClick={() => this.setState({approve_modal: true})}>
-                        Rechazar crédito
-                  </Button> 
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
                   <Button className={"request-confirm-button"} icon="check-circle" 
                           onClick={() => this.setState({approve_modal: true})}>
                         Aprobar crédito
+                  </Button> 
+                </Col>
+                <Col xs={24} sm={12} md={6} lg={5}>
+                  <Button className={"request-reject-button"} icon="close-circle" 
+                          onClick={() => this.setState({approve_modal: true})}>
+                        Rechazar crédito
                   </Button> 
                 </Col>
                 <Modal 
@@ -174,9 +186,25 @@ class RequestStateModal extends Component {
                     </div>
     
                 </Modal>
+                
               </Row>
             </div>
           }
+          <Modal 
+            title="Rechazar crédito"
+            visible={this.state.reject_modal}
+            okText={"Rechazar"}
+            cancelText={"Regresar"}
+            width={450}
+            onOk={() => this.onCancelRequest()}
+            onCancel={() => this.setState({reject_modal: false})}>
+              <div>
+                Ingrese una observación correspondiente al rechazo de la solicitud.
+                <br/><br/>
+                <Input rows={4}/>               
+              </div>
+
+          </Modal>
         </div>
       </Badge>
     );

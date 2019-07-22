@@ -1,5 +1,5 @@
 .request-state-div{
-  margin-top: 70px !important;
+  margin-top: 15px !important;
   margin-bottom: 0px !important;
   width: 80%;
   margin: auto;
@@ -80,6 +80,22 @@
   position: 'relative';
   box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
   padding: 25px 20px 20px 20px !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.request-item-requested-reject{
+  background-color: #cc0000 !important;
+  margin-bottom: 15px;
+  text-align: center !important;
+  width: 763px !important;
+  background-color: '#fff';
+  min-height: 70px !important;
+  border-radius: 5px !important;
+  border-color: #000 !important;
+  position: 'relative';
+  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
+  padding: 20px 20px 20px 20px !important;
   margin-right: auto;
   margin-left: auto;
 }
@@ -167,6 +183,22 @@
   
   .request-item-requested-alert{
     background-color: #62b3ff !important;
+    margin-bottom: 20px;
+    text-align: center !important;
+    width: 90% !important;
+    background-color: '#fff';
+    min-height: 90px !important;
+    border-radius: 5px !important;
+    border-color: #000 !important;
+    position: 'relative';
+    box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
+    padding: 25px 20px 20px 20px !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .request-item-requested-reject{
+    background-color: rgb(212, 0, 0) !important;
     margin-bottom: 20px;
     text-align: center !important;
     width: 90% !important;

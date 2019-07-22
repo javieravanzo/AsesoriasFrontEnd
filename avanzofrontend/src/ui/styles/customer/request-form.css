@@ -1,7 +1,7 @@
 .request-div{
-  margin-top: 50px !important;
+  margin-top: 10px !important;
   margin-bottom: 0px !important;
-  width: 80%;
+  width: 85%;
   margin: auto;
 }
 
@@ -11,13 +11,18 @@
 }
 
 .request-form-title{
-  margin-top: 50px !important;
+  margin-top: 30px !important;
   margin-left: 40px !important;
   color: black !important;
 }
 
 .form-input-number{
   width: 100% !important;
+  margin-bottom: 1px !important;
+}
+
+.fees-item{
+  margin-bottom: 0px !important;
 }
 
 .form-request-divider{
@@ -34,6 +39,16 @@
   margin-bottom: 20px !important;
 }
 
+.documents-buttons{
+  background-color: #01609b !important;
+  color: white !important;
+}
+
+.download-card{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
 .request-confirm-button{
   margin-top: 20px !important;
   background-color: #01609b !important;
@@ -48,9 +63,82 @@
   width: 100% !important;
 }
 
+.icon-wrapper{
+  position: relative;
+  padding: 0px 0px;
+}
+
+.icon-wrapper .anticon {
+  position: absolute;
+  top: -2px;
+  width: 16px;
+  height: 16px;
+  line-height: 1;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.icon-wrapper .anticon:first-child {
+  left: 0;
+}
+
+.icon-wrapper .anticon:last-child {
+  right: 0;
+}
+
+.question-button{
+  font-size: 12px !important;
+  margin-left: 10px;
+}
+
+.information-col{
+  margin-top: 0px !important;
+}
+
+.information-divider{
+  width: 30% !important;
+  margin-top: 16px !important;
+  margin-bottom: 18px !important;
+}
+
+.type-account{
+  top: -2% !important;
+  margin-bottom: 20px !important;
+  padding-bottom: 10px !important;
+}
+
+.text-fees{
+  margin-top: -15px !important;
+  font-size: 12px !important;
+}
+
+.bank-requires{
+  background-color: #1d92ff !important;
+  color: black !important;
+  padding: 5px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  text-align: "right" !important;
+  font-weight: 500;
+  border-radius: 5px !important;
+}
+
+.form-bank-col{
+  text-align: right !important;
+}
+
+.step-one{
+  border-radius: 100px !important;
+  background-color: #1d92ff !important;
+  color: black !important;
+  font-weight: 500 !important;
+  border: 5px !important;
+  border-color: black !important;
+}
+
 @media only screen and (max-width:500px) {
   .request-div{
-    margin-top: 70px !important;
+    margin-top: 0px !important;
     margin-bottom: 0px !important;
     width: 90%;
     margin: auto;
@@ -59,7 +147,9 @@
   .form-request-rows{
     width: 90% !important;
     margin: auto !important;
+    margin-bottom: 5px !important;
   }
+
 
   .form-input-number{
     width: 100% !important;
@@ -77,3 +167,4 @@
   }
 
 }
+  

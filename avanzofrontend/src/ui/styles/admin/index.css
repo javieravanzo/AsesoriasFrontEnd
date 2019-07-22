@@ -1,6 +1,11 @@
 .admin-div{
-  margin-top: 60px !important;
+  margin-top: 5px !important;
   margin-bottom: 0px !important;
   width: 80%;
   margin: auto;
+}
+
+.approve-request-filter{
+  width: 81%;
+  margin: auto !important;
 }

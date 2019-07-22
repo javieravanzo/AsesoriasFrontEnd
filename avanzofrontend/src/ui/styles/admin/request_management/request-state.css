@@ -104,6 +104,21 @@
   font-size: 28px !important;
 }
 
+.request-item-icon-approve{
+  font-size: 28px !important;
+  color: #01609b !important;
+  margin-top: 5px !important;
+  margin-right: 15px !important;
+  margin-left: 0px !important;
+}
+
+.request-item-icon-reject{
+  font-size: 28px !important;
+  color: rgba(255, 0, 0, 0.808) !important;
+  margin-top: 5px !important;
+  margin-left: 10px !important;
+}
+
 
 @media only screen and (max-width:500px) {
   

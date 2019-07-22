@@ -15,7 +15,7 @@ import '../../../styles/admin/index.css';
 const { TabPane } = Tabs;
 
 
-class Administrator extends Component {
+class CreditManagement extends Component {
 
   constructor(props){
     

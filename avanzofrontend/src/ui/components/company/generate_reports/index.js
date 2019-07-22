@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Tabs, Divider, Icon} from 'antd';
+import {Row, Col, Tabs, Icon} from 'antd';
 
 //Components
 import ReceiptManagement from "./ReceiptManagement";
@@ -16,11 +16,6 @@ const { TabPane } = Tabs;
 
 class GenerateReports extends Component {
 
-  constructor(props){
-    
-    super(props);
-
-  };
 
   render() {
 

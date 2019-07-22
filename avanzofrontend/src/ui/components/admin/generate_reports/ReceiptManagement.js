@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Tabs, Button, Divider, Table, Modal, Select} from 'antd';
+import {Row, Col, Button, Divider, Table, Modal, Select} from 'antd';
 
 //Components
 
@@ -21,7 +21,6 @@ function itemRender(current, type, originalElement) {
 };
 
 //Constants
-const { TabPane } = Tabs;
 const table = [
   {
     title: <div>Empresa</div>,
@@ -159,7 +158,7 @@ class ReceiptManagement extends Component {
         date2: "28-06-19"
       }    
     ];
-    let {approve_modal} = this.state;
+    //let {approve_modal} = this.state;
 
     return (
       <div className={"company-div"}>

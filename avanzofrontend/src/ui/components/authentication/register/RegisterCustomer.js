@@ -1,24 +1,24 @@
 //Libraries
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
-import { Button, Form, Icon, Input, Col, Row, Tooltip, Select, Modal, Checkbox, Popover} from 'antd';
+import { Button, Form, Icon, Input, Col, Row, Modal, Select, InputNumber, DatePicker} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
-import routes from '../../../configuration/routing/Routes';
-import {ERROR_MODAL} from "../subcomponents/modalMessages";
+import routes from '../../../../configuration/routing/Routes';
+import {ERROR_MODAL} from "../../subcomponents/modalMessages";
 
 //Actions
 //import {login} from "../../../store/redux/actions/accountManagement/loginActions";
 
 //Styles
-import '../../styles/authentication/loginCustomer.css';
+import '../../../styles/authentication/loginCustomer.css';
 
 //Assets
-import logo from '../../assets/authentication/avanzoMenu.jpg';
-import signInBackground from '../../assets/authentication/bogota.jpg';
-import signInBackground2 from  '../../assets/authentication/background.png';
+import logo from '../../../assets/authentication/avanzo.jpg';
+import signInBackground from '../../../assets/authentication/background.png';
+import signInBackground2 from  '../../../assets/authentication/background.png';
 
 //Constants
 
@@ -38,6 +38,7 @@ class RegisterCustomer extends Component {
       email: null,
       meeting: null,
       login: null,
+      registerOk: null,
     };
 
     this.onSignInClicked = this.onSignInClicked.bind(this);
@@ -71,11 +72,11 @@ class RegisterCustomer extends Component {
 
   render(){
     
-    let { isLoading, meeting, login} = this.state;
-    let { isLogin } = this.props;
-    let { role } = localStorage;
+    let { login, registerOk} = this.state;
+    //let { isLogin } = this.props;
+    //let { role } = localStorage;
     const { getFieldDecorator } = this.props.form;
-    let loading = (isLogin) ? false : (isLogin === false ) ? false : isLoading;
+    //let loading = (isLogin) ? false : (isLogin === false ) ? false : isLoading;
 
     return (
       <div className="div-meeting">
@@ -89,56 +90,77 @@ class RegisterCustomer extends Component {
               <img className='home-logo' alt='home-logo' src={logo} />
             </div>
           </div>
-          <Row gutter={4}>
-            <Col lg={12} md={12} sm={12} xs={24}>
+          <Row gutter={8}>
+            <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
                 {getFieldDecorator('text', { initialValue: '',
                   rules: [
                     { required: true, message: 'Por favor, ingrese su(s) nombre(s).' }],
                 })(
                     <Input prefix={<Icon type="user" className={'icon-prefix'} />}
-                          placeholder="Nombres" onChange={(e) => this.onChangeField(e, 'names')}/>
+                          placeholder="Nombres"/>
                 )}
               </FormItem>
             </Col>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
                 {getFieldDecorator('lastNames', { initialValue: '',
                   rules: [
                     { required: true, message: 'Por favor, ingrese su(s) apellido(s).' }],
                 })(
                     <Input prefix={<Icon type="user" className={'icon-prefix'} />}
-                          placeholder="Apellidos" onChange={(e) => this.onChangeField(e, 'lastNames')}/>
+                          placeholder="Apellidos"/>
                 )}
               </FormItem>
             </Col>
           </Row> 
-          <Row gutter={4}>
-            <Col lg={12} md={12} sm={12} xs={24}>
-              <FormItem className='home-form-item'>
-                {getFieldDecorator('email', { initialValue: '',
-                  rules: [ 
-                    {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
-                    {required: true, message: 'Por favor, ingrese su correo electrónico.' }],
+          <Row gutter={8}>
+            <Col lg={12} md={12} sm={12} xs={12}>
+            <FormItem className='home-form-item'>
+                {getFieldDecorator('documentType', {
+                  rules: [{ required: true, message: 'Por ingrese su tipo de documento' }],
                 })(
-                    <Input prefix={<Icon type="mail" className={'icon-prefix'} />}
-                          placeholder="Correo electrónico" onChange={(e) => this.onChangeField(e, 'email')}/>
-                )}
-              </FormItem>
+                    <Select placeholder="Tipo de documento">
+                      <Select.Option value={0}>Cédula</Select.Option>
+                      <Select.Option value={1}>Pasaporte</Select.Option>
+                      <Select.Option value={2}>Otro</Select.Option>
+                    </Select>)
+                }
+                </FormItem>
             </Col>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
-                {getFieldDecorator('phone', {
+                {getFieldDecorator('documentNumber', {
                   initialValue: '',
-                  rules: [{ required: true, message: 'Por favor ingrese el telefono' }],
+                  rules: [{ required: true, message: 'Por favor ingrese su número de cédula' }],
                 })(
-                    <Input/>
+                    <InputNumber prefix={<Icon type="idcard" className={'icon-prefix'} />}
+                                 placeholder="Número de documento" className={"input-number"}/>
                 )}
               </FormItem>
             </Col>
           </Row>
-          <Row gutter={4}>
-            <Col lg={12} md={12} sm={12} xs={24}>
+          <Row gutter={8}>
+            <Col lg={12} md={12} sm={12} xs={12}>
+              <FormItem className='home-form-item'>
+                {getFieldDecorator('expeditionDate', {
+                  rules: [{ required: true, message: 'Por favor ingrese la fecha de expedición de su documento' }],
+                })(
+                  <DatePicker placeholder="Fecha de expedición" className={"input-number"}/>
+                )}
+              </FormItem>
+            </Col>
+            <Col lg={12} md={12} sm={12} xs={12}>
+              <FormItem className='home-form-item'>
+                {getFieldDecorator('birthDate', {
+                  rules: [{ required: true, message: 'Por ingrese su fecha de cumpleaños' }],
+                })(
+                    <DatePicker placeholder="Fecha de cumpleaños" className={"input-number"}/>)}
+              </FormItem>
+            </Col>
+          </Row>          
+          <Row gutter={8}>
+            <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
                 {getFieldDecorator('email', { initialValue: '',
                   rules: [ 
@@ -146,44 +168,38 @@ class RegisterCustomer extends Component {
                     {required: true, message: 'Por favor, ingrese su correo electrónico.' }],
                 })(
                     <Input prefix={<Icon type="mail" className={'icon-prefix'} />}
-                          placeholder="Correo electrónico" onChange={(e) => this.onChangeField(e, 'email')}/>
+                          placeholder="Correo electrónico"/>
                 )}
               </FormItem>
             </Col>
-            <Col lg={12} md={12} sm={12} xs={24}>
+            <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
                 {getFieldDecorator('phone', {
                   initialValue: '',
-                  rules: [{ required: true, message: 'Por favor ingrese el telefono' }],
+                  rules: [{ required: true, message: 'Por favor ingrese el celular' }],
                 })(
-                    <Input/>
+                <InputNumber prefix={<Icon type="phone" className={'icon-prefix'} />} 
+                             placeholder="Celular" className={"input-number"}/>
                 )}
               </FormItem>
             </Col>
-          </Row>          
-         
+          </Row>
+          
           <div className={'home-buttons-div'}>
-            <Row gutter={5}>
-              <Col lg={12} md={12} sm={12} xs={24} xxs={24}>
-                <Button type="primary" className={"schedule-button"}  onClick={this.askForMeeting}
-                        icon="login" 
+            <Row gutter={24}>
+              <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"register-col"}>
+                <Button className={"register-button"}  onClick={() => this.setState({registerOk: true})}
+                        icon="user-add" 
                         >
-                  Registrar
+                  Registrarse
                 </Button>
-                <Popover content={"hola"} placement="rightTop" >
-                  <Icon className='question-button' type='question-circle'/>
-                </Popover>
-                
               </Col>
-              <Col lg={12} md={12} sm={12} xs={24} xxs={24}>
-                <Button type="primary" className={"schedule-button"} onClick={this.scheduleMeeting}
-                      icon="carry-out" loading={false}
+              <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"login-col"}>
+                <Button type="primary" className={"login-button"} onClick={() => this.setState({login: true})}
+                      icon="login" loading={false}
                       >
-                    Olvidar
+                    Iniciar sesión
                 </Button>
-                <Popover content={"hola"} placement="rightTop">
-                  <Icon className='question-button' type='question-circle'/>
-                </Popover>
               </Col>
             </Row>
             
@@ -206,6 +222,10 @@ class RegisterCustomer extends Component {
           {
             (login) && 
             <Redirect to={routes.login}/>
+          }
+          {
+            (registerOk) && 
+            <Redirect to={routes.confirm_account}/>
           }
         </div> 
     );

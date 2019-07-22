@@ -31,6 +31,7 @@ class CreateCompany extends Component {
       report: null,
       loan: null,
       upload: null,
+      salary_rate: null,
     };
 
   };
@@ -39,9 +40,16 @@ class CreateCompany extends Component {
     SUCCESS_MODAL("Acción realizada exitosamente", "La empresa ha sido creada correctamente.");
   };
 
+  handleSalaryRate = () => {
+    this.setState({
+      salary_rate: true,
+    });
+  };
+
   render(){
     
     let {getFieldDecorator} = this.props.form;
+    let {salary_rate} = this.state;
 
     return (
       <div className={"company-div"}>
@@ -101,7 +109,77 @@ class CreateCompany extends Component {
                       </Col>
                     </Row>
                   </Panel>
-                  <Panel header="Información del representante legal" key="2">
+                  <Panel header="Información de créditos" key="2">
+                    <Row gutter={8} className={"form-request-rows"}>
+                      <Col xs={12} sm={12} md={5} lg={8}>
+                          <FieldTitle title={"Cupo disponible"}/>
+                          <FormItem >
+                            {getFieldDecorator('mount',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa una monto particular'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Cupo disponible"}/>
+                              )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={5} lg={8}>
+                        <FieldTitle title={"Cantidad de cuotas máxima"}/>
+                        <FormItem >
+                          {getFieldDecorator('address',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un máximo de cuotas'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"No. máximo de cuotas"} />
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={5} lg={8}>
+                        <FieldTitle title={"Pago de salario"}/>
+                        <FormItem >
+                          {getFieldDecorator('salaries',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un tipo de pago'}
+                            ]})(
+                              <Select placeholder={"Tipo de salario"} showSearch={true} onChange={this.handleSalaryRate} allowClear={true} autoClearSearchValue={true}>
+                                <Select.Option value={"Quincenal"}>Quincenal</Select.Option>
+                                <Select.Option value={"Mensual"}>Mensual</Select.Option>
+                              </Select>
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={5} lg={8}>
+                        <FieldTitle title={"Fecha de salario 1"}/>
+                        <FormItem >
+                          {getFieldDecorator('salaryDate1',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un tipo de pago'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Fecha de salario 1"} />
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                      {
+                        salary_rate && 
+                        <Col xs={12} sm={12} md={5} lg={8}>
+                        <FieldTitle title={"Fecha de salario 2"}/>
+                        <FormItem >
+                          {getFieldDecorator('salaryDate2',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un tipo de pago'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Fecha de salario 2"} />
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                      }
+                    </Row>
+                  </Panel>
+                  <Panel header="Información del representante legal" key="3">
                     <Row gutter={20} className={"form-request-rows"} >
 
                       <Col xs={12} sm={12} md={8} lg={6} >
@@ -195,7 +273,7 @@ class CreateCompany extends Component {
                       </Col>
                     </Row>
                   </Panel>  
-                  <Panel header="Información de la persona encargada" key="3">
+                  <Panel header="Información de la persona encargada" key="4">
                     <Row gutter={20} className={"form-request-rows"}>
                       <Col xs={12} sm={12} md={6} lg={6}>
                         <FieldTitle title={"Nombres"}/>

@@ -69,7 +69,7 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-    let {approve_modal} = this.state;
+    //let {approve_modal} = this.state;
 
     return (
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>

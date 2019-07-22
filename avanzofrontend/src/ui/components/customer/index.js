@@ -62,6 +62,7 @@ class Customer extends Component {
 
     this.state = {
       loan: false,
+      request: false,
     };
     
     this.next = this.next.bind(this);
@@ -80,7 +81,7 @@ class Customer extends Component {
 
   render() {
 
-    let {loan} = this.state;
+    let {loan, request} = this.state;
     let tableData = [
       {
         key: 1,
@@ -145,10 +146,17 @@ class Customer extends Component {
               </Col>
             </Row>
             <Row className={"row-request"}>
-              <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
+              <Col xxl={14} lg={14} md={14} sm={12} xs={24}>
                 <Button className={"request-button-none"} onClick={() => this.setState({loan: true})}>
                   <h3><Icon type={"plus-circle"} className={"request-button"}/> 
                     <span className={"request-title"}> Solicitar préstamo</span>
+                  </h3>
+                </Button>
+              </Col>
+              <Col xxl={9} lg={9} md={9} sm={10} xs={24} className={"request-pending-col"}>
+                <Button className={"request-pending-button"} onClick={() => this.setState({request: true})}>
+                  <h3>
+                    <span className={"request-pendings"}>Tienes 3 solicitudes pendientes...</span>
                   </h3>
                 </Button>
               </Col>
@@ -159,6 +167,10 @@ class Customer extends Component {
       {
         loan &&
         <Redirect to={routes.customer_form_request}/>
+      }
+      {
+        request &&
+        <Redirect to={routes.customer_review_requests}/> 
       }
     </div>
     );

@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Tabs, Button, Divider, Table, Modal, Select} from 'antd';
+import {Row, Col, Button, Divider, Table, Modal, Select} from 'antd';
 
 //Components
 
@@ -21,7 +21,6 @@ function itemRender(current, type, originalElement) {
 };
 
 //Constants
-const { TabPane } = Tabs;
 const table = [
   {
     title: <div>Cliente</div>,
@@ -46,6 +45,14 @@ const table = [
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.date.toString().localeCompare(b.date.toString())},
+  },
+  {
+    title: <div className={"table-p"}>Estado</div>,
+    dataIndex: 'state',
+    width: "150px",
+    align: "center",
+    render: text => <div className={"table-p"}>{text}</div>,
+    sorter: (a, b) =>{ return a.state.localeCompare(b.state)},
   }
 ];
 
@@ -99,59 +106,67 @@ class ReceiptManagement extends Component {
         company: "Emtelco",
         customer: "Juan Rodríguez",
         quantity: 150000,
-        date2: "21-06-19"
+        date2: "21-06-19",
+        state: "Desembolsado",
       },
       {
         key: 2,
         company: "Movistar",
         customer: "David Estrada",
         quantity: 250000,
-        date2: "22-06-19"
+        date2: "22-06-19",
+        state: "Desembolsado",
       },
       {
         key: 3,
         company: "Seguros L.",
         customer: "Camilo Pinto",
         quantity: 8500,
-        date2: "24-06-19"
+        date2: "24-06-19",
+        state: "Desembolsado",
       },
       {
         key: 4,
         company: "Emtelco",
         customer: "Duvan Vergara",
         quantity: 120000,
-        date2: "26-06-19"
+        date2: "26-06-19",
+        state: "Desembolsado",
       },
       {
         key: 5,
         company: "Claro",
         customer: "Alvaro Martinez",
         quantity: 275000,
-        date2: "27-06-19"
+        date2: "27-06-19",
+        state: "Desembolsado",
       },
       {
         key: 6,
         company: "Alianza Normativa",
         customer: "Carlos Vargas",
         quantity: 4870,
-        date2: "28-06-19"
+        date2: "28-06-19",
+        state: "Desembolsado",
       },
       {
         key: 7,
         company: "Claro",
         customer: "Felipe Urrego",
         quantity: 125870,
-        date2: "28-06-19"
+        date2: "28-06-19",
+        state: "Desembolsado",
       },
       {
         key: 8,
         company: "Seguros L.",
         customer: "Julian Osorio",
         quantity: 92870,
-        date2: "28-06-19"
+        date2: "28-06-19",
+        state: "Desembolsado",
       }    
     ];
-    let {approve_modal} = this.state;
+    //let {approve_modal} = this.state;
 
     return (
       <div className={"company-div"}>
