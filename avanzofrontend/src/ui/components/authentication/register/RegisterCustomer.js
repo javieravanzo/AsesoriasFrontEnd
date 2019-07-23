@@ -153,9 +153,9 @@ class RegisterCustomer extends Component {
             <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
                 {getFieldDecorator('birthDate', {
-                  rules: [{ required: true, message: 'Por ingrese su fecha de cumpleaños' }],
+                  rules: [{ required: true, message: 'Por ingrese su fecha de nacimiento' }],
                 })(
-                    <DatePicker placeholder="Fecha de cumpleaños" className={"input-number"}/>)}
+                    <DatePicker placeholder="Fecha de nacimiento" className={"input-number"}/>)}
               </FormItem>
             </Col>
           </Row>          
@@ -180,6 +180,29 @@ class RegisterCustomer extends Component {
                 })(
                 <InputNumber prefix={<Icon type="phone" className={'icon-prefix'} />} 
                              placeholder="Celular" className={"input-number"}/>
+                )}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={8}>
+            <Col lg={12} md={12} sm={12} xs={12}>
+              <FormItem className='home-form-item'>
+                {getFieldDecorator('password', { 
+                  initialValue: '',
+                  rules: [ 
+                    {required: true, message: 'Por favor, ingrese su contraseña.' }],
+                })(<Input type="password" prefix={<Icon type="lock" className={'icon-prefix'} />}
+                          placeholder="Contraseña"/>
+                )}
+              </FormItem>
+            </Col>
+            <Col lg={12} md={12} sm={12} xs={12}>
+              <FormItem className='home-form-item'>
+                {getFieldDecorator('confirmPassword', {
+                  initialValue: '',
+                  rules: [{ required: true, message: 'Por favor ingrese el celular' }],
+                })(<Input type="password" prefix={<Icon type="lock" className={'icon-prefix'} />} 
+                             placeholder="Confirme contraseña" className={"input-number"}/>
                 )}
               </FormItem>
             </Col>

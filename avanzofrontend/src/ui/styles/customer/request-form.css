@@ -10,6 +10,12 @@
   margin: auto !important;
 }
 
+.form-request-rows-text{
+  width: 90% !important;
+  margin: auto !important;
+  margin-top: 15px !important;
+}
+
 .request-form-title{
   margin-top: 30px !important;
   margin-left: 40px !important;
@@ -42,6 +48,10 @@
 .documents-buttons{
   background-color: #01609b !important;
   color: white !important;
+}
+
+.documents-disabled-buttons{
+  background-color: #c7c7c7 !important;
 }
 
 .download-card{
@@ -97,8 +107,8 @@
 
 .information-divider{
   width: 30% !important;
-  margin-top: 16px !important;
-  margin-bottom: 18px !important;
+  margin-top: 10px !important;
+  margin-bottom: 14px !important;
 }
 
 .type-account{

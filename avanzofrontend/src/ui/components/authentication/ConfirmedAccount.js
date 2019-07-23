@@ -63,15 +63,14 @@ class ConfirmedAccount extends Component {
               <Form onSubmit={this.handleSubmit} className="login-form">
                 <div className={"confirm_account"}>
                   <div className={"confirm_account_text"}>
-                   
-                      <p>  <Icon className='question-button' type='check-circle'/>La cuenta ha sido creada satisfactoriamente.</p>
-                      <p>Ahora puede asignar una contraseña a su cuenta.</p>
+                      <p><Icon className='question-button' type='check-circle'/>Se ha enviado un correo que permitirá realizar la confirmación de la cuenta.</p>
+                      <p>Luego de que se realice la validación, podrá iniciar sesión con su correo y contraseña.</p>
                   </div>
                 </div>
                 <FormItem className={"submit"}>
-                  <NavLink to={routes.reset_password} >
+                  <NavLink to={routes.login} >
                     <Button type="primary" htmlType="submit" className="login-form-button" >
-                      <p className={"login-button-text"}>Asignar</p>
+                      <p className={"login-button-text"}>Log in</p>
                     </Button>
                   </NavLink>
                 </FormItem>

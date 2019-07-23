@@ -12,7 +12,6 @@ export default {
   admin_request_management: "/admin-request-management",
   admin_generate_reports: "/admin-generate-reports",
   
-  company_register: "/company-register",
   company_request_management: "/company-request-management",
   company_generate_reports: "/company-generate-reports",
   

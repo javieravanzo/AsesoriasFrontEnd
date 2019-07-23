@@ -48,13 +48,11 @@ class App extends Component {
   render(){
 
     let signedIn = this.isSignedIn();
-    console.log(this.props);
     if(!signedIn){
       return( <Login pathname={this.props.location.pathname}/> );
     }else{
       return(
           <div>
-            
             <MainMenu viewPortWidth={this.state.viewportWidth}/>
             <Information/>
             <Layout className={'back-home'}>

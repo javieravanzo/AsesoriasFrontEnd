@@ -80,19 +80,21 @@ class LoanRequest extends Component {
       captchaSolved: true,
       email: null,
       meeting: null,
-      fee: false,
+      fee: null,
       report: null,
       loan: null,
       upload: null,
       sliderValue: 300000,
-      wallet: false,
+      money_wallet: false,
+      bank_account: false,
     };
 
   };
 
   onChangeFee = (e) => {
+    console.log(e);
     this.setState({
-      fee: true
+      fee: e
     }); 
   };
 
@@ -124,14 +126,26 @@ class LoanRequest extends Component {
   };
 
   handleWallet = (e) => {
-    this.setState({wallet: e})
+    this.setState({
+      money_wallet: e,
+      bank_account: false
+    });
+  };
+
+  handleBankProp = (e) => {
+    this.setState({
+      bank_account: e,
+      money_wallet: false,
+    });
   };
 
   render(){
 
-    let {fee, loan, sliderValue, wallet} = this.state;
+    console.log(this.state.fee);
+    let {fee, loan, sliderValue, wallet, bank_account, money_wallet} = this.state;
     let switchName = !wallet ? "Billetera virtual" : "Entidad bancaria";
     const { getFieldDecorator } = this.props.form;
+    let feeCondition = fee === null || fee === "";
     const props = {
       name: 'file',
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -191,16 +205,6 @@ class LoanRequest extends Component {
                 </div>
               </Col>
           </Row>
-
-          <Row>
-            <Col>
-            
-            </Col>
-            
-          </Row>
-
-
-
           <Row className={"request-row-content"}>
             <div>  
               <Form>
@@ -217,22 +221,14 @@ class LoanRequest extends Component {
                     </div>
                   </Col>
                 </Row>
-                
-               
                 <Row className={"form-request-rows"} gutter={8}>
                   <Col xs={24} sm={24} md={12} lg={12} >
                     <Card>
                     <FieldTitle title={"Monto requerido"}/>
                     <FormItem>
-                      {getFieldDecorator('quantity', {initialValue: 300000,
-                        rules: [
-                          {required: false, message: 'Por favor ingresa un monto requerido'}
-                        ]})(
-                          <InputNumber className={"form-input-number"} max={300000} value={sliderValue}
-                                      formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
-                                      placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
-                        )
-                      }
+                      <InputNumber className={"form-input-number"} max={300000} value={this.state.sliderValue}
+                                  formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                  placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
                     </FormItem>
                     <Row className="icon-wrapper">
                       <Col xxl={5} lg={5} md={8} sm={8} xs={10}>
@@ -241,7 +237,7 @@ class LoanRequest extends Component {
                         </h3>
                       </Col>
                       <Col xxl={14} lg={14} md={8} sm={8} xs={10}>
-                        <Slider max={300000} min={80000} 
+                        <Slider max={300000} min={80000} step={10000}
                                 tipFormatter={
                                   function (d) { 
                                     return format(d);
@@ -256,6 +252,7 @@ class LoanRequest extends Component {
                       
                     </Row>
                     <FieldTitle title={"Número de cuotas"}/>
+                    <span className={"text-fees"}>*La cantidad máxima de cuotas depende de los ciclos de pago en tu empresa.</span>
                     <FormItem className={"fees-item"}>
                       {getFieldDecorator('fees',
                         {rules: [
@@ -263,17 +260,16 @@ class LoanRequest extends Component {
                         ]})(
                           <Row>
                             <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} 
-                            max={12} onChange={(e) => this.onChangeFee()}/>
-                            <span className={"text-fees"}>*La cantidad máxima de cuotas depende de los ciclos de pago en tu empresa.</span>
+                            max={12} onChange={(e) => this.onChangeFee(e)}/>
                           </Row>
-                          
-                          
                         )
                       }
                     </FormItem>  
                     
 
                     </Card>
+
+
                   </Col>
                   <Col xs={24} sm={24} md={12} lg={12}>
                     <Card>
@@ -349,6 +345,9 @@ class LoanRequest extends Component {
                     </Card>
                   </Col>
                 </Row>
+                <Row className={"form-request-rows-text"}>
+                <span className={"text-fees"}>De acuerdo con las fechas que tenemos registradas para ti, los desembolsos se realizarán los días 20 - 13 de cada mes.</span>
+                </Row>
                 <br/>
                 {
                   fee && 
@@ -382,23 +381,31 @@ class LoanRequest extends Component {
                     </div>
                   </Col>
                 </Row>
-                
                 <Row gutter={20} className={"form-request-rows"}>
-                  <Col xs={12} sm={12} md={8} lg={8}>
-                    <Switch onChange={this.handleWallet} disabled={false}/><span className={"type-account"}>{" " + switchName}</span>  
+                  <Col xs={12} sm={12} md={8} lg={7}>
+                    <Switch onChange={this.handleWallet} disabled={bank_account}/><span className={"type-account"}>{" Billera virtual"}</span>  
                   </Col>
-                  <Col xs={12} sm={12} md={16} lg={16} className={"form-bank-col"}>
+                  <Col xs={12} sm={12} md={8} lg={7}>
+                    <Switch onChange={this.handleBankProp} disabled={money_wallet}/><span className={"type-account"}>{" Cuenta bancaria"}</span>  
+                  </Col>
+                  <Col xs={12} sm={12} md={12} lg={10} className={"form-bank-col"}>
                     {
-                      wallet &&
+                      bank_account &&
                       <div >
                         <span className={"bank-requires"}>* El tiempo de desembolso depende de los ciclos ACH</span>
+                      </div> 
+                    }
+                    {
+                      (!bank_account && !money_wallet) && 
+                      <div >
+                        <span>* Escoge un medio para realizar el desembolso</span>
                       </div> 
                     }
                   </Col>
                 </Row>
                 <br/>
                   {
-                    wallet && 
+                    bank_account && 
                     <Row gutter={12} className={"form-request-rows"}>
                       <Col xs={12} sm={12} md={7} lg={7} >
                         <FieldTitle title={"Cuenta"}/>
@@ -448,7 +455,7 @@ class LoanRequest extends Component {
                     </Row>
                   }
                   {
-                    !wallet &&
+                    money_wallet &&
                     <Row  gutter={12} className={"form-request-rows"}>
                       <Col xs={12} sm={12} md={7} lg={7} >
                         <FieldTitle title={"Billetera virtual"}/>
@@ -504,15 +511,15 @@ class LoanRequest extends Component {
                       <br/>
                       <Row gutter={12}>
                         <Col sm={12} md={12} lg={12}>
-                          <Button style={{width: "90% !important"}} className={"documents-buttons"}>
+                          <Button style={{width: "90% !important"}} className={feeCondition ? "documents-disabled-buttons" : "documents-buttons" } disabled={true}>
                             <Icon type="file-exclamation"/>Contrato de libranza
                           </Button>
-                          <Popover content={"Contrato de libranza"} placement="rightTop">
+                          <Popover content={"Contrato de libranza"} placement="rightTop" disabled={fee === null ? true : false}>
                             <Icon className='question-button' type='question-circle'/>
                           </Popover>
                         </Col>
                         <Col sm={12} md={12} lg={12}>
-                          <Button style={{width: "90% !important"}} className={"documents-buttons"}>
+                          <Button style={{width: "90% !important"}} className={feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={fee === null ? true : false}>
                             <Icon type="file-protect"/>Autorización descuento
                           </Button>
                           <Popover content={"Documentos adicionales que son requeridos para la solicitud"} placement="rightTop">
@@ -525,12 +532,12 @@ class LoanRequest extends Component {
                   <Col xs={24} sm={12} md={12} lg={11} >
                     <Card>
                       <Row style={{textAlign: "center", fontWeight: "bold", fontSize: "18px"}}>
-                        <Checkbox onChange={this.onChange} disabled={false} className={"form-checkbox"}> 
+                        <Checkbox onChange={this.onChange}  className={"form-checkbox"}> 
                           Cargar documentos 
                         </Checkbox>
                       </Row>
                       <Upload {...props}>
-                        <Button className={"documents-buttons"}>
+                        <Button className={feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={fee === null ? true : false}>
                           <Icon type="upload" /> Cargar archivos
                         </Button>
                       </Upload>
@@ -543,7 +550,7 @@ class LoanRequest extends Component {
                 <Row className={"form-request-rows"}>
                   <Col xs={24} sm={12} md={18} lg={19}/>
                   <Col xs={24} sm={12} md={6} lg={5}>
-                    <Button className={"request-confirm-button"} icon="file"  disabled={!fee}
+                    <Button className={"request-confirm-button"} icon="file"  disabled={feeCondition}
                             onClick={() => this.onConfirmRequest()}>
                          Solicitar préstamo
                     </Button> 

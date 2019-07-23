@@ -91,7 +91,7 @@ class RequestStateModal extends Component {
                 </Tooltip>
               </Col>              
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col" >
-                  <b>Cliente</b> <br/><br/>  {item.idNumber}
+                  <b>No. de documento</b> <br/><br/>  {item.idNumber}
               </Col>
               <Col xs={12} sm={12} md={7} lg={7}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {item.date}

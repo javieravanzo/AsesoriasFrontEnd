@@ -23,6 +23,7 @@ class RequestStateModal extends Component {
       card_style_analysis: "analysis",
       card_style_approved: "approved",
       card_style_rejected: "rejected",
+      reject_modal: null,
     };
     
   };
@@ -66,6 +67,15 @@ class RequestStateModal extends Component {
     this.setState({approve_modal: false});
   };
 
+  onCancelRequest = () => {
+    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido rechazada correctamente.");
+    this.setState({reject_modal: false});
+  };
+
+  handleQuickApprove = () => {
+    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
+  };
+
   render(){
 
     let item = this.props.item;
@@ -75,14 +85,19 @@ class RequestStateModal extends Component {
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
-              <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
+              <Col xs={24} sm={12} md={2} lg={2}>
+                  <Tooltip title="Detallar solicitud">
+                    <Icon type={"plus-circle"} className={"request-item-icon"} onClick={() => this.setState({visible: !this.state.visible})}/> 
+                  </Tooltip>
+                </Col>
+              <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col">
                 <b>Número de Solicitud</b> <br/><br/>
                 {"Solicitud No. " + item.key} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
                   <b>Estado</b> <br/><br/>  {item.requestState}
               </Col>
-              <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
+              <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {item.date}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
@@ -90,11 +105,16 @@ class RequestStateModal extends Component {
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
               </Col>
-              <Col xs={24} sm={12} md={2} lg={2}>
-                <Tooltip title="Detallar solicitud">
-                  <Icon type={"plus-circle"} className={"request-item-icon"} onClick={() => this.setState({visible: !this.state.visible})}/> 
+              <Col xs={24} sm={12} md={2} lg={1}>
+                <Tooltip title="Aprobar solicitud">
+                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.handleQuickApprove()}/> 
                 </Tooltip>
               </Col>
+              <Col xs={24} sm={12} md={2} lg={1}>
+                <Tooltip title="Rechazar solicitud">
+                  <Icon type={"close-circle"} className={"request-item-icon-reject"} onClick={() => this.setState({reject_modal: true})}/> 
+                </Tooltip>
+              </Col> 
             </Row>
           
           {
@@ -124,6 +144,30 @@ class RequestStateModal extends Component {
                 </Col>  
               </Row>
               <br/><br/>
+              <Row>
+                <Col xs={12} sm={12} md={8} lg={4} >
+                  <b>Nombres</b><br/><br/>
+                  {item.name} 
+                </Col>
+                <Col xs={12} sm={12} md={8} lg={4} >
+                  <b>Apellidos</b><br/><br/>
+                  {item.lastName}
+                </Col>
+                <Col xs={12} sm={12} md={7} lg={4}>
+                    <b>Empresa</b><br/><br/>
+                    {"Emtelco"}
+                </Col>
+                <Col xs={12} sm={12} md={7} lg={6}>
+                    <b>Cargo</b><br/><br/>
+                    {"Desarrollador"}
+                </Col>
+                <Col xs={12} sm={12} md={7} lg={6}>
+                    <b>Dirección</b><br/><br/>
+                    {"Calle 54 No. 18 - 12"}
+                </Col>
+              </Row>
+              <br/>
+              <br/>
               <Row>
                 <Col xs={12} sm={12} md={8} lg={4} >
                   <b>Monto</b><br/><br/>

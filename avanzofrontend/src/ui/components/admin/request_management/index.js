@@ -41,7 +41,7 @@ class Customer_Management extends Component {
       <div className={"admin-div"}>
         <Row>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
-            <h2 className={'header-terms-title'}>Gestionar empresas</h2>
+            <h2 className={'header-terms-title'}>Gestionar solicitudes</h2>
           </Col>
         </Row>
         <Row style={{width: "80% !important", margin: "auto"}}>
@@ -49,17 +49,21 @@ class Customer_Management extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="1">
               <Row gutter={8} className={"approve-request-filter"}>
-                <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
-                  <p className="field-title-visible">Número solicitud: </p>
-                  <Input placeholder={"Número solicitud:"}/>
+                <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
+                  <p className="field-title-visible">Número solicitud </p>
+                  <Input placeholder={"Número solicitud"}/>
+                </Col>
+                <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
+                  <p className="field-title-visible">Cliente</p>
+                  <Input placeholder={"No. de cédula"}/>
                 </Col>
 
-                <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
+                <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
                   <p className="field-title-visible">Estado</p>
                   <Input placeholder={"Estado"}/>
                 </Col>
 
-                <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
+                <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
                   <p className="field-title-visible">Fecha Solicitud</p>
                   <Input placeholder={"Fecha Solicitud"}/>
                 </Col>

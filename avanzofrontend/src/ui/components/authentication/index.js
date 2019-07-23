@@ -56,12 +56,6 @@ class Login extends Component {
           </Layout>          
         }
         {
-          (this.props.pathname === routes.company_register) && 
-          <Layout>
-            <Route path={routes.company_register} component={CompanyRegister}/>
-          </Layout>          
-        }
-        {
           (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>

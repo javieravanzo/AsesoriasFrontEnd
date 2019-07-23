@@ -35,8 +35,8 @@ class Company extends Component {
                 </Col>
 
                 <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
-                  <p className="field-title-visible">Cliente</p>
-                  <Input placeholder={"Cliente"}/>
+                  <p className="field-title-visible">No. de documento</p>
+                  <Input placeholder={"No. de documento"}/>
                 </Col>
 
                 <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
