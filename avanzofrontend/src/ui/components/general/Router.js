@@ -41,7 +41,18 @@ class Router extends Component {
             <Route path={routes.customer_transactions} component={Customer_Transactions}/>
             <Route path={routes.customer_form_request} component={Customer_RequestForm}/>
             <Route path={routes.customer_review_requests} component={Customer_ListRequest}/>
-            <Route render = {()=><Redirect to={routes.home}/>}/>
+            { 
+              parseInt(localStorage.role, 10) === 0 &&
+              <Route render = {()=><Redirect to={routes.customer}/>}/>
+            }
+            { 
+              parseInt(localStorage.role, 10) === 1 &&
+              <Route render = {()=><Redirect to={routes.company_generate_reports}/>}/>
+            }
+            { 
+              parseInt(localStorage.role, 10) === 2 &&
+              <Route render = {()=><Redirect to={routes.admin_company_management}/>}/>
+            }
         </Switch>
       </Layout.Content>  
     );

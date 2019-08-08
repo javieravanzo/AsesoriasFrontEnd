@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import { Divider, Form, Select, Button, Col, Row, Collapse, Checkbox, Upload, Icon,
-         InputNumber, Table, Slider, Statistic, Typography, message, Card, Switch, Popover} from 'antd';
+         InputNumber, Table, Slider, Statistic, Typography, message, Card, Switch, Popover, Steps} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import Math from "math";
 
@@ -12,13 +12,13 @@ import routes from '../../../configuration/routing/Routes';
 
 //Styles
 import '../../styles/customer/request-form.css';
-import { SUCCESS_MODAL } from '../subcomponents/modalMessages';
-
+import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
 
 //Constants
 //import {Roles} from "../../../lib/generalUtils/constants";
 const FormItem = Form.Item;
 const { Panel } = Collapse;
+const { Step } = Steps;
 
 function format(d) {
   var formatter = new Intl.NumberFormat('en-US', {
@@ -27,18 +27,6 @@ function format(d) {
   });
 
   return formatter.format(d);
-};
-
-
-
-function xFormat(d){
-  var upper = "";
-  console.log(d/1000);
-  if(d.length>4){
-    upper += upper + "."
-  }
-
-  return "$ " + d;
 };
 
 const table = [
@@ -75,24 +63,22 @@ class LoanRequest extends Component {
     super(props);
     
     this.state = {
-      isLoading: false,
-      isLogged: false,
-      captchaSolved: true,
-      email: null,
-      meeting: null,
-      fee: null,
-      report: null,
-      loan: null,
-      upload: null,
       sliderValue: 300000,
+      fee: null,
+      loan: null,
       money_wallet: false,
+      wallet_type: null,
+      wallet_number: null,
       bank_account: false,
+      bank_name: null,
+      bank_number: null,
+      bank_type: null,
+      documents_uploaded: false,
     };
 
   };
 
   onChangeFee = (e) => {
-    console.log(e);
     this.setState({
       fee: e
     }); 
@@ -108,6 +94,7 @@ class LoanRequest extends Component {
   onChange = () => {
     this.setState({
       upload: !this.state.upload,
+      documents_uploaded: true
     });
   };
 
@@ -139,13 +126,85 @@ class LoanRequest extends Component {
     });
   };
 
+  changeWalletType = (e) => {
+    this.setState({
+      wallet_type: e
+    });
+  };
+
+  changeWalletNumber = (e) => {
+    this.setState({
+      wallet_number: e
+    });
+  };
+
+  changeBankName = (e) => {
+    this.setState({
+      bank_name: e
+    });
+  };
+
+  changeBankNumber = (e) => {
+    this.setState({
+      bank_number: e
+    });
+  };
+
+  changeBankType = (e) => {
+    this.setState({
+      bank_type: e
+    });
+  };
+
+  defineDocumentsCondition = () => {
+    
+    let {bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type} = this.state;
+    console.log(bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type);
+
+    if (bank_account){
+      if(bank_name !== null && bank_number !== null && bank_type !== null && 
+         bank_name !== "" && bank_number !== "" && bank_type !== ""){
+          return true;
+         }
+      return false;
+    }else if(money_wallet){
+      if(wallet_number !== null && wallet_type !== null && 
+        wallet_number !== "" && wallet_type !== ""){
+         return true;
+        }
+      return false;
+    }
+
+    return false;
+
+  
+  };
+
+  openDocument = () => {
+
+    console.log("entro");
+
+    let route = "https://drive.google.com/open?id=1vlyOU8r-f31ucKc2fvwlcoT570VCtSRi";
+      
+    if (route !== null) {
+      let newWindow = window.open(route, "blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        allowEmergingWindows();
+
+      }
+      SUCCESS_MODAL("Acción realizada exitosamente", "El contrato se ha descargado satisfactoriamente");
+    } else {
+      WARNING_MODAL('Advertencia', 'El archivo no se encuentra disponible en estos momentos');
+    }
+  
+  };
+
+
   render(){
 
-    console.log(this.state.fee);
-    let {fee, loan, sliderValue, wallet, bank_account, money_wallet} = this.state;
-    let switchName = !wallet ? "Billetera virtual" : "Entidad bancaria";
+    let {fee, loan, sliderValue, bank_account, money_wallet, documents_uploaded} = this.state;
     const { getFieldDecorator } = this.props.form;
-    let feeCondition = fee === null || fee === "";
+    let feeCondition = fee !== null && this.defineDocumentsCondition();
     const props = {
       name: 'file',
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -376,7 +435,7 @@ class LoanRequest extends Component {
                   </Col>
                   <Col lg={23}>
                     <div>
-                      <h3>Información adicional</h3>
+                      <h3>Información de desembolso</h3>
                       <Divider className={"form-request-divider"}/>
                     </div>
                   </Col>
@@ -414,7 +473,7 @@ class LoanRequest extends Component {
                             {rules: [
                               {required: false, message: 'Por favor selecciona una cuenta'}
                             ]})(
-                              <Select placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                              <Select onChange={this.changeBankName} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                                 <Select.Option value={"Caja Social"}>Banco Caja Social</Select.Option>
                                 <Select.Option value={"Bogotá"}>Banco Bogotá</Select.Option>
                                 <Select.Option value={"Colpatria"}>Banco Colpatria</Select.Option>
@@ -432,7 +491,7 @@ class LoanRequest extends Component {
                             {rules: [
                               {required: false, message: 'Por favor ingresa un tipo de cuenta'}
                             ]})(
-                              <Select placeholder={"Tipo de cuenta"} showSearch={true} >
+                              <Select placeholder={"Tipo de cuenta"} showSearch={true} onChange={this.changeBankType}>
                                 <Select.Option value={"Ahorros"}>Ahorros</Select.Option>
                                 <Select.Option value={"Corriente"}>Corriente</Select.Option>
                               </Select>
@@ -447,7 +506,7 @@ class LoanRequest extends Component {
                             {rules: [
                               {required: false, message: 'Por favor ingresa un número de cuenta' }
                             ]})(
-                              <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"}/>
+                              <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} onChange={this.changeBankNumber}/>
                             )
                           }
                         </FormItem>  
@@ -462,11 +521,11 @@ class LoanRequest extends Component {
                         <FormItem>
                           {getFieldDecorator('account_type',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un tipo de cuenta'}
+                              {required: false, message: 'Por favor ingresa un tipo de billetera'}
                             ]})(
-                              <Select placeholder={"Tipo de cuenta"} showSearch={true} >
-                                <Select.Option value={"Ahorros"}>Nequi</Select.Option>
-                                <Select.Option value={"Corriente"}>DaviPlata</Select.Option>
+                              <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
+                                <Select.Option value={"Nequi"}>Nequi</Select.Option>
+                                <Select.Option value={"DaviPlata"}>DaviPlata</Select.Option>
                               </Select>
                             )
                           }
@@ -477,9 +536,9 @@ class LoanRequest extends Component {
                         <FormItem >
                           {getFieldDecorator('account',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un número de cuenta' }
+                              {required: false, message: 'Por favor ingresa un número de celular' }
                             ]})(
-                              <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"}/>
+                              <InputNumber className={"form-input-number"} placeholder={"Número de celular"} onChange={this.changeWalletNumber}/>
                             )
                           }
                         </FormItem>  
@@ -503,6 +562,10 @@ class LoanRequest extends Component {
                 </Row>
 
                 <Row className={"form-request-rows"} gutter={8}>
+                <Steps className={"document-steps"}>
+                  <Step status="process" title="Descargar documentos" icon={<Icon type="download" />} />
+                  <Step status="wait" title="Cargar documentos" icon={<Icon type="upload" />} />
+                </Steps>
                   <Col xs={24} sm={12} md={12} lg={13}> 
                     <Card className={"download-card"}>
                       <Row sm={12} md={12} lg={12} style={{textAlign: "center", fontWeight: "bold", fontSize: "15px"}}>
@@ -511,7 +574,7 @@ class LoanRequest extends Component {
                       <br/>
                       <Row gutter={12}>
                         <Col sm={12} md={12} lg={12}>
-                          <Button style={{width: "90% !important"}} className={feeCondition ? "documents-disabled-buttons" : "documents-buttons" } disabled={true}>
+                          <Button onClick={() => this.openDocument()} style={{width: "90% !important"}} className={!feeCondition ? "documents-disabled-buttons" : "documents-buttons" } disabled={!feeCondition}>
                             <Icon type="file-exclamation"/>Contrato de libranza
                           </Button>
                           <Popover content={"Contrato de libranza"} placement="rightTop" disabled={fee === null ? true : false}>
@@ -519,7 +582,7 @@ class LoanRequest extends Component {
                           </Popover>
                         </Col>
                         <Col sm={12} md={12} lg={12}>
-                          <Button style={{width: "90% !important"}} className={feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={fee === null ? true : false}>
+                          <Button onClick={() => this.onDownloadDocument} style={{width: "90% !important"}} className={!feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={!feeCondition}>
                             <Icon type="file-protect"/>Autorización descuento
                           </Button>
                           <Popover content={"Documentos adicionales que son requeridos para la solicitud"} placement="rightTop">
@@ -537,7 +600,7 @@ class LoanRequest extends Component {
                         </Checkbox>
                       </Row>
                       <Upload {...props}>
-                        <Button className={feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={fee === null ? true : false}>
+                        <Button className={!feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={!feeCondition}>
                           <Icon type="upload" /> Cargar archivos
                         </Button>
                       </Upload>
@@ -550,7 +613,7 @@ class LoanRequest extends Component {
                 <Row className={"form-request-rows"}>
                   <Col xs={24} sm={12} md={18} lg={19}/>
                   <Col xs={24} sm={12} md={6} lg={5}>
-                    <Button className={"request-confirm-button"} icon="file"  disabled={feeCondition}
+                    <Button className={"request-confirm-button"} icon="file"  disabled={!documents_uploaded}
                             onClick={() => this.onConfirmRequest()}>
                          Solicitar préstamo
                     </Button> 

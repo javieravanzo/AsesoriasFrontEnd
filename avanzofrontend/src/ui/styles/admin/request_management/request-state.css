@@ -14,6 +14,18 @@
   margin-left: auto;
 }
 
+.document-col{
+  text-align: left !important;
+}
+
+.request-document-button{
+  margin-top: 20px !important;
+  background-color: #ffffff !important;
+  color: black !important;
+  width: 40% !important;
+  margin-left: 20px !important;
+}
+
 /* Requested */
 .request-state-item-requested{
   background-color: #fff !important;

@@ -35,6 +35,13 @@ export function ERROR_NEW_MODAL(title, err_message) {
   });
 };
 
+export function WARNING_MODAL(title, err_message) {
+  Modal.warning({
+    title: title,
+    content: err_message,
+  });
+};
+
 export function allowEmergingWindows() {
   Modal.warning({
     title: 'Ventanas emergentes',

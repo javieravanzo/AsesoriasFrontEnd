@@ -9,7 +9,6 @@ import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 //Constants
 const Step = Steps.Step;
-const TextArea = Input.TextArea;
 
 class RequestStateModal extends Component {
 
@@ -160,7 +159,11 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row gutter={4}>
-                <Col xs={24} sm={12} md={18} lg={14}/>
+                <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
+                  <Button className={"request-document-button"} icon="file" >
+                        Ver documento
+                  </Button> 
+                </Col>
                 <Col xs={24} sm={12} md={6} lg={5}>
                   <Button className={"request-confirm-button"} icon="check-circle" 
                           onClick={() => this.setState({approve_modal: true})}>

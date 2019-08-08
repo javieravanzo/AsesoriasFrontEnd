@@ -11,7 +11,6 @@ import ForgotPassword from "./password/ForgotPassword";
 import LoginForm from "./LoginForm";
 import Register from "./register/Register";
 import CustomerRegister from "./register/RegisterCustomer";
-import CompanyRegister from "./register/RegisterCompany";
 import ConfirmAccount from "./ConfirmedAccount";
 import routes from "../../../configuration/routing/Routes";
 

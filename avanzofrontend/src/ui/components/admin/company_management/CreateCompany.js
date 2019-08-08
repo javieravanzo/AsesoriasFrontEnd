@@ -112,13 +112,13 @@ class CreateCompany extends Component {
                   <Panel header="Información de créditos" key="2">
                     <Row gutter={8} className={"form-request-rows"}>
                       <Col xs={12} sm={12} md={5} lg={8}>
-                          <FieldTitle title={"Cupo disponible"}/>
+                          <FieldTitle title={"Máxima cantidad a prestar"}/>
                           <FormItem >
                             {getFieldDecorator('mount',
                               {rules: [
                                 {required: true, message: 'Por favor ingresa una monto particular'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Cupo disponible"}/>
+                                <Input className={"form-input-number"} placeholder={"Máxima cantidad a prestar"}/>
                               )
                           }
                         </FormItem>  

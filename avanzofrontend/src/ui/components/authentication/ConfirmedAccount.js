@@ -70,7 +70,7 @@ class ConfirmedAccount extends Component {
                 <FormItem className={"submit"}>
                   <NavLink to={routes.login} >
                     <Button type="primary" htmlType="submit" className="login-form-button" >
-                      <p className={"login-button-text"}>Log in</p>
+                      <p className={"login-button-text"}>Iniciar sesión</p>
                     </Button>
                   </NavLink>
                 </FormItem>

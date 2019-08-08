@@ -84,7 +84,7 @@ class ForgotPassword extends Component {
                           <Link to={routes.login}>
                               <p className={"url-form"}>Iniciar Sesión</p>
                           </Link>
-                          <Link to={routes.register}>
+                          <Link to={routes.customer_register}>
                               <p className={"url-form"}>¿Desea Registrarse?</p>
                           </Link>
                       </div>

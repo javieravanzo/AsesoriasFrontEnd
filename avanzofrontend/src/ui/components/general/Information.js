@@ -1,7 +1,7 @@
 //Libraries
 
 import React, {Component} from 'react';
-import {Row, Col, Divider} from 'antd';
+import {Row, Col} from 'antd';
 import Clock from 'react-live-clock';
 
 //Subcomponents
@@ -30,10 +30,10 @@ class Information extends Component {
           <span className="information-name">Hola, Juan Camilo</span>
           </Col>
           <Col xxl={16} lg={16} md={8} sm={8} xs={4} className={"page-col"}>
-          <span className="information-page"><a className={"page-link"} href="http://www.avanzo.co" target="_blank">www.avanzo.co</a></span>
+          <span className="information-page"><a className={"page-link"} href="http://www.avanzo.co" target="_blank" rel="noopener noreferrer">www.avanzo.co</a></span>
           </Col>
           <Col xxl={4} lg={4} md={8} sm={8} xs={10} className={"clock-col"}>
-           <span><Clock format={'DD/MM/YYYY-HH:mm:ss'} ticking={true} timezone={'US/Pacific'} className={"information-clock"}/></span>
+           <span><Clock format={'DD/MM/YYYY-HH:mm:ss'} ticking={true} timezone={'America/Bogota'} className={"information-clock"}/></span>
           </Col>
         </Row>
       </Row>
