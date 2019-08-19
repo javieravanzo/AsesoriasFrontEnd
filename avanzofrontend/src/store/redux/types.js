@@ -1,51 +1,23 @@
-import {Modal} from 'antd';
-
-/*--------------- Login ---------------*/
-export const LOGIN_ERROR = "LOGIN_ERROR";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGGING = "LOGGING";
-export const RESET_ALL = "RESET_ALL";
-export const LOGOUT = 'LOGOUT';
-export const SET_ROLE = 'SET_ROLE';
-
-
-export function ERROR_MODAL(title, err_message) {
-  Modal.error({
-    title: title,
-    content: err_message
-  });
+/* ----------------- Account ---------------- */
+export const loginTypes = {
+  LOGGING: 'LOGGING',
+  LOGOUT: 'LOGOUT',
+  RESET_PASSWORD: 'RESET_PASSWORD',
+  CONFIRM_PASSWORD: 'CONFIRM_PASSWORD'
 };
 
-export function SUCCESS_MODAL(title, err_message) {
-  Modal.success({
-    title: title,
-    content: err_message
-  });
+/* --------------- Customer -------------- */
+export const customerTypes = {
+  GET_DOCUMENTS_TYPE: "GET_DOCUMENTS_TYPE",
+  REGISTER: "REGISTER",
+  GET_HOME_DATA: "GET_HOME_DATA",
+  GET_REQUEST_DATA: "GET_REQUEST_DATA",
+  GET_OUTLAY_DATA: "GET_OUTLAY_DATA",
+  GET_OUTLAY_DATESLIST: "GET_OUTLAY_DATESLIST",
+  GENERATE_DOCUMENTS: "GENERATE_DOCUMENTS",
+  CREATE_REQUEST: "CREATE_REQUEST",
+  GET_TRANSACTIONS_LIST: "GET_TRANSACTIONS_LIST",
+  GET_REQUEST_LIST: "GET_REQUEST_LIST",
 };
 
-export function CONFIRM_MODAL(title, err_message) {
-  Modal.success({
-    title: title,
-    content: err_message,
-    onOk() {
-      window.location.reload();
-    },
-  });
-};
 
-export function ERROR_NEW_MODAL(title, err_message) {
-  Modal.error({
-    title: title,
-    content: err_message,
-    onOk() {
-      window.location.reload();
-    },
-  });
-};
-
-export function allowEmergingWindows() {
-  Modal.warning({
-    title: 'Ventanas emergentes',
-    content: 'Por favor habilite las ventanas emergentes de acuerdo con su navegador',
-  });
-};

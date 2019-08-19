@@ -11,7 +11,6 @@ import App from './ui/components/App';
 import * as serviceWorker from './configuration/serviceWorker';
 import store from './store/store';
 
-
 //Styles
 import './ui/styles/index.css';
 

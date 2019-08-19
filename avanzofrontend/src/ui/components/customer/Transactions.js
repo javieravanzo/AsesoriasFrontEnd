@@ -5,14 +5,10 @@ import {Row, Col, Divider, Card, Input, Table} from 'antd';
 //import PropTypes from 'prop-types';
 
 //Actions
-//import {getSocialData, addSocialData} from "../../../../store/redux/actions/admin/parameterization/parameterizationActions";
+import {getAllTransactions} from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/transactions.css'
-
-//Subcomponents
-//import TableButtons from './subcomponents/SocialTableButtons';
-//import LoadingComponent from "../../general/LoadingComponent";
 
 //Constants
 const table = [
@@ -77,6 +73,8 @@ class Transactions extends Component {
     this.setData = this.setData.bind(this);
     this.inputLinkName = this.inputLinkName.bind(this);
 
+    this.props.getAllTransactions(parseInt(localStorage.user_id, 10));
+
   };
 
   setData(linkList){
@@ -104,11 +102,8 @@ class Transactions extends Component {
     });    
   };
 
-
   render() {
 
-    //let {getLinksResponse} = this.props;
-    //let tableData = this.setData(getLinksResponse);
     let tableData = [
       {
         key: 1,
@@ -153,6 +148,7 @@ class Transactions extends Component {
         date2: "28-06-19"
       }     
     ];
+    console.log(this.props.transactionList);
 
       return (
         <div className={"transactions-div"}>
@@ -199,4 +195,20 @@ class Transactions extends Component {
 
 }
 
-export default Transactions;
+Transactions.propTypes = {
+  transactionList: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    transactionList: state.customer.transactionList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllTransactions: (customerId) => dispatch(getAllTransactions(customerId)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions);

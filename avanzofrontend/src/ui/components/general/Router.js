@@ -59,14 +59,4 @@ class Router extends Component {
   };
 }
 
-Router.propTypes = {
-  role: PropTypes.number.isRequired
-};
-
-const mapStateToProps = (state) => {
-  return {
-    role: state.login.role
-  }
-};
-
-export default withRouter(connect(mapStateToProps, {})(Router));
+export default withRouter(Router);

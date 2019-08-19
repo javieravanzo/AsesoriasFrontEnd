@@ -5,17 +5,21 @@ import { Divider, Form, Select, Button, Col, Row, Collapse, Checkbox, Upload, Ic
          InputNumber, Table, Slider, Statistic, Typography, message, Card, Switch, Popover, Steps} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import Math from "math";
+import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../subcomponents/FieldTitle';
 import routes from '../../../configuration/routing/Routes';
+
+//Actions
+import {getRequestData, getOutlayData, getOultayDatesList, generateDocuments} from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-form.css';
 import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
 
 //Constants
-//import {Roles} from "../../../lib/generalUtils/constants";
 const FormItem = Form.Item;
 const { Panel } = Collapse;
 const { Step } = Steps;
@@ -31,12 +35,12 @@ function format(d) {
 
 const table = [
   {
-    title: <div>Cantidad de descuentos</div>,
-    dataIndex: 'transaction',
+    title: <div>Descuento</div>,
+    dataIndex: 'name',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
-    sorter: (a, b) =>{ return a.transaction.localeCompare(b.transaction)},
+    sorter: (a, b) =>{ return a.name.localeCompare(b.name)},
   },
   {
     title: <div className={"table-p"}>Cantidad</div>,
@@ -51,7 +55,7 @@ const table = [
     dataIndex: 'date',
     width: "150px",
     align: "center",
-    render: text => <div className={"table-p"}>{text}</div>,
+    render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.date.localeCompare(b.date)},
   }
 ];
@@ -76,12 +80,19 @@ class LoanRequest extends Component {
       documents_uploaded: false,
     };
 
+    this.props.getRequestData(parseInt(localStorage.user_id, 10));
+    this.props.getOutlayData(parseInt(localStorage.user_id, 10));
+
   };
 
   onChangeFee = (e) => {
     this.setState({
       fee: e
-    }); 
+    });
+  };
+
+  sendReportInfo = () => {
+    this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
   };
 
   onConfirmRequest = () => {
@@ -159,7 +170,7 @@ class LoanRequest extends Component {
   defineDocumentsCondition = () => {
     
     let {bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type} = this.state;
-    console.log(bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type);
+    //console.log(bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type);
 
     if (bank_account){
       if(bank_name !== null && bank_number !== null && bank_type !== null && 
@@ -176,9 +187,13 @@ class LoanRequest extends Component {
     }
 
     return false;
-
   
   };
+
+  generateDocuments = ()=> {
+    this.props.generateDocuments(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
+  };
+
 
   openDocument = () => {
 
@@ -203,7 +218,6 @@ class LoanRequest extends Component {
   render(){
 
     let {fee, loan, sliderValue, bank_account, money_wallet, documents_uploaded} = this.state;
-    const { getFieldDecorator } = this.props.form;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const props = {
       name: 'file',
@@ -243,6 +257,12 @@ class LoanRequest extends Component {
         date: "23-06-19",
       }      
     ];
+    const { getFieldDecorator } = this.props.form;
+    let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
+    let { interestValue, adminValue, maximumAmount, maximumSplit, otherCollectionValue, haveDocumentsLoaded } = requestDataResponse;
+    let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
+    //console.log(requestDataResponse, outlayDataResponse, outlayDatesList);  
+    
 
     return (
       <div className={"request-div"}>
@@ -285,7 +305,7 @@ class LoanRequest extends Component {
                     <Card>
                     <FieldTitle title={"Monto requerido"}/>
                     <FormItem>
-                      <InputNumber className={"form-input-number"} max={300000} value={this.state.sliderValue}
+                      <InputNumber className={"form-input-number"} max={maximumAmount} value={this.state.sliderValue}
                                   formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
                                   placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
                     </FormItem>
@@ -318,8 +338,8 @@ class LoanRequest extends Component {
                           {required: false, message: 'Por favor ingresa un número de cuotas'}
                         ]})(
                           <Row>
-                            <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} 
-                            max={12} onChange={(e) => this.onChangeFee(e)}/>
+                            <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit} 
+                            onChange={(e) => this.onChangeFee(e)}/>
                           </Row>
                         )
                       }
@@ -327,8 +347,6 @@ class LoanRequest extends Component {
                     
 
                     </Card>
-
-
                   </Col>
                   <Col xs={24} sm={24} md={12} lg={12}>
                     <Card>
@@ -350,7 +368,7 @@ class LoanRequest extends Component {
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                         <b>
                           <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={Math.round(this.state.sliderValue*0.028)} thousandSeparator={'.'}
+                                            value={interestValue} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -360,7 +378,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={Math.round(this.state.sliderValue*0.04)} thousandSeparator={'.'}
+                                            value={adminValue} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -373,7 +391,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b style={{color: "#cecece"}}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={Math.round(sliderValue+(sliderValue*0.04)+(sliderValue*0.028))} thousandSeparator={'.'}
+                                            value={Math.round(sliderValue+adminValue+interestValue)} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -383,7 +401,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={620} thousandSeparator={'.'}
+                                            value={otherCollectionValue} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -396,7 +414,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b style={{color: "#42a4ff"}}><CurrencyFormat  displayType={'text'} style={{width: "100%", fontSize: "15px"}}
-                                            value={Math.round((sliderValue+(sliderValue*0.04)+(sliderValue*0.028)+620))} thousandSeparator={'.'}
+                                            value={Math.round(sliderValue+adminValue+interestValue+otherCollectionValue)} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -405,20 +423,27 @@ class LoanRequest extends Component {
                   </Col>
                 </Row>
                 <Row className={"form-request-rows-text"}>
-                <span className={"text-fees"}>De acuerdo con las fechas que tenemos registradas para ti, los desembolsos se realizarán los días 20 - 13 de cada mes.</span>
+                <span className={"text-fees"}>
+                  De acuerdo con las fechas que tenemos registradas para ti, los desembolsos se realizarán los días 20 - 13 de cada mes. 
+                  <Button className={"request-pending-button"} disabled={fee === null} onClick={() => this.sendReportInfo()}>
+                    <h3>
+                      <span className={"request-pendings"}>Ver informe de desembolsos</span>
+                    </h3>
+                  </Button>
+                </span>
                 </Row>
                 <br/>
                 {
-                  fee && 
+                  JSON.stringify(outlayDatesList) !== '[]'  && 
                   <Row className={"form-request-rows"}>
                     <Collapse>
                       <Panel key="1" header="Informe de descuentos">
                         <div>
                           <div className="upload-text">
-                            De acuerdo a las cuotas que suministró, tendrá el siguiente informe de descuento.
+                            De acuerdo a las cuotas que suministró, tendrá el siguiente informe de descuento. 
                             <br/>
                             <br/>
-                            <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'} 
+                            <Table className={"new-table"} dataSource={outlayDatesList} columns={table} rowKey={'key'} 
                                 size={'small'} scroll={{x:'500px'|true}}/>
                           </div>
                         </div>
@@ -474,11 +499,12 @@ class LoanRequest extends Component {
                               {required: false, message: 'Por favor selecciona una cuenta'}
                             ]})(
                               <Select onChange={this.changeBankName} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                <Select.Option value={"Caja Social"}>Banco Caja Social</Select.Option>
-                                <Select.Option value={"Bogotá"}>Banco Bogotá</Select.Option>
-                                <Select.Option value={"Colpatria"}>Banco Colpatria</Select.Option>
-                                <Select.Option value={"Davivienda"}>Banco Davivienda</Select.Option>
-                                <Select.Option value={"BBVA"}>Banco BBVA</Select.Option>
+                                {bankInfo.map((bank, i) =>(
+                                  <Select.Option value={bank.id} key={i}>
+                                    {bank.bankName}
+                                  </Select.Option>
+                                ))
+                                }
                               </Select>
                             )
                           }
@@ -492,8 +518,12 @@ class LoanRequest extends Component {
                               {required: false, message: 'Por favor ingresa un tipo de cuenta'}
                             ]})(
                               <Select placeholder={"Tipo de cuenta"} showSearch={true} onChange={this.changeBankType}>
-                                <Select.Option value={"Ahorros"}>Ahorros</Select.Option>
-                                <Select.Option value={"Corriente"}>Corriente</Select.Option>
+                                {bankTypeAccountInfo.map((accountType, i) =>(
+                                  <Select.Option value={accountType.id} key={i}>
+                                    {accountType.bankTypeName}
+                                  </Select.Option>
+                                ))
+                                }
                               </Select>
                             )
                           }
@@ -524,8 +554,12 @@ class LoanRequest extends Component {
                               {required: false, message: 'Por favor ingresa un tipo de billetera'}
                             ]})(
                               <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
-                                <Select.Option value={"Nequi"}>Nequi</Select.Option>
-                                <Select.Option value={"DaviPlata"}>DaviPlata</Select.Option>
+                                {walletInfo.map((wallet, i) =>(
+                                  <Select.Option value={wallet.id} key={i}>
+                                    {wallet.walletName}
+                                  </Select.Option>
+                                ))
+                                }
                               </Select>
                             )
                           }
@@ -636,4 +670,26 @@ class LoanRequest extends Component {
 
 let RequestForm = Form.create()(LoanRequest);
 
-export default RequestForm;
+RequestForm.propTypes = {
+  requestDataResponse: PropTypes.object,
+  outlayDataResponse: PropTypes.object,
+  outlayDatesList: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    requestDataResponse: state.customer.requestDataResponse,
+    outlayDataResponse: state.customer.outlayDataResponse,
+    outlayDatesList: state.customer.outlayDatesList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getRequestData: (customerId) => dispatch(getRequestData(customerId)),
+    getOutlayData: (customerId) => dispatch(getOutlayData(customerId)),
+    getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestForm);

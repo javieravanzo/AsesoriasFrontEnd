@@ -4,13 +4,18 @@ import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
 import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
+import {SUCCESS_MODAL} from "../subcomponents/modalMessages";
 
 //Actions
-import {SUCCESS_MODAL} from "../subcomponents/modalMessages";
-import secondIcon from "../../assets/authentication/avanzo.jpg"
+import {login} from "../../../store/redux/actions/general/loginActions";
+
+//Assets
+import secondIcon from "../../assets/authentication/avanzo.jpg";
 
 //Constants
 const FormItem = Form.Item;
@@ -51,10 +56,8 @@ class LoginForm extends Component {
   };
 
   sendMessage = (e) => {
-    localStorage.setItem('isLogged', true);
-    this.setState({
-      isLogin: true,
-    });
+    this.props.login(this.state.email, this.state.password);
+
     SUCCESS_MODAL("Acción realizada satisfactoriamente", 
       "Ha ingresado a nuestra plataforma exitosamente.")
   };
@@ -63,6 +66,7 @@ class LoginForm extends Component {
 
     const { getFieldDecorator } = this.props.form;
     const { isLogin, role } = this.state;
+    let isLogged = localStorage.isLogged !== undefined ? localStorage.isLogged === 'true' : false;
 
     return (
       <div>
@@ -124,13 +128,13 @@ class LoginForm extends Component {
         <div className={"bottom-title"}>
           Avanzo © 2019
         </div>
-        {(isLogin && (role===0)) &&
+        {(isLogged && (role===0)) &&
           <Redirect to={routes.customer}/>
         }
-        {(isLogin && (role===1)) &&
+        {(isLogged && (role===1)) &&
           <Redirect to={routes.company_request_management}/>
         }
-        {(isLogin && (role===2)) &&
+        {(isLogged && (role===2)) &&
           <Redirect to={routes.admin_company_management}/>
         }
       </div>
@@ -138,7 +142,7 @@ class LoginForm extends Component {
   }
 }
 
-/*LoginForm.propTypes = {
+LoginForm.propTypes = {
   isLogin: PropTypes.bool,
   login: PropTypes.func
 };
@@ -155,6 +159,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);*/
-
-export default withRouter(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginForm));

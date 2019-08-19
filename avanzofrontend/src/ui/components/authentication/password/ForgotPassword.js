@@ -2,16 +2,17 @@
 import {Form, Icon, Input, Button} from 'antd';
 import {Link, Redirect} from "react-router-dom";
 import React, {Component} from 'react';
-//import {connect} from 'react-redux';
-//import PropTypes from "prop-types";
+import {connect} from 'react-redux';
+import PropTypes from "prop-types";
 
 //Subcomponents
 import routes from "../../../../configuration/routing/Routes";
 
 //Actions
-//import {recoverPassword} from '../../../../../../../../GeekCore/InspektorFrontEnd/Inspektor.Frontend/inspektor.frontend/src/app/store/redux/actions/account/accountActions';
+import {forgetPassword} from "../../../../store/redux/actions/general/loginActions";
+
+//Assets
 import secondIcon from "../../../assets/authentication/avanzo.jpg"
-import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
 
 //Constants
 const FormItem = Form.Item;
@@ -35,24 +36,21 @@ class ForgotPassword extends Component {
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const accountInfo = {
-          email: values.email
-        };
-        this.props.recoverPassword(accountInfo);
-        this.setState({requestSent: true});
+        console.log(values);
+        let email = values.email;
+        this.props.forgetPassword(email);
       }
     });
 
   };
 
   sendMessage = (e) => {
-    SUCCESS_MODAL("Acción realizada satisfactoriamente", "Se ha enviado un correo electrónico con las instrucciones necesarias para restablecer la contraseña.")
   };
 
   render() {
 
     const { getFieldDecorator } = this.props.form;
-    const {requestSent} = this.state;
+    const { forgetPasswordResponse } = this.props;
 
     return (
         <div>
@@ -72,12 +70,12 @@ class ForgotPassword extends Component {
                           },
                               { required: true, message: 'Por favor, inserte su email para enviar un correo' }]
                       })(
-                          <Input className={"form-content"} prefix={<Icon type="mail" className={"field-icon"}/>} placeholder="Email" />
+                          <Input className={"form-content"} prefix={<Icon type="mail" className={"field-icon"}/>} placeholder="Email"/>
                       )}
                   </FormItem>
                   
                   <FormItem className={"submit"}>
-                      <Button type="primary" htmlType="submit" className="login-form-button" onClick={() => this.sendMessage()}>
+                      <Button type="primary" htmlType="submit" className="login-form-button">
                           Restablecer
                       </Button>
                       <div>
@@ -92,7 +90,7 @@ class ForgotPassword extends Component {
               </Form>
             </div>
             
-          {requestSent === true &&
+          {(forgetPasswordResponse !== null ? forgetPasswordResponse.message === "Sample text" : false) &&
             <Redirect to={routes.login}/>
           }
         </div>
@@ -104,19 +102,22 @@ class ForgotPassword extends Component {
   }
 }
 
-/*ForgotPassword.propTypes = {
-  postForgotPassword: PropTypes.func,
-  onSwap: PropTypes.func,
-  forgot_password: PropTypes.object,
-  recoverPassword: PropTypes.func.isRequired
+ForgotPassword.propTypes = {
+  forgetPasswordResponse: PropTypes.object,
 };
+
+
+const mapStateToProps = (state) => {
+  return {
+    forgetPasswordResponse: state.login.forgetPasswordResponse,
+  }
+};
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    recoverPassword: (accountInfo) => dispatch(recoverPassword(accountInfo))
+    forgetPassword: (email) => dispatch(forgetPassword(email))
   };
-};*/
+};
 
-//export default connect(null, mapDispatchToProps)(ForgotPassword);
-
-export default (ForgotPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

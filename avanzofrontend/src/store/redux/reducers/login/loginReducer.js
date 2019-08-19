@@ -1,42 +1,38 @@
-import {LOGIN_SUCCESS, LOGIN_ERROR, LOGGING, RESET_ALL, LOGOUT} from '../../types'
+///Types
+import {loginTypes as C} from '../../types';
 
 const initialState={
   isLogin: false,
-  role: setRole(localStorage.getItem("role"))
+  forgetPasswordResponse: null,
+  resetPasswordResponse: null,
 };
 
-function setRole(current){
-  let role = current=== undefined ? "" : current;
-  return role === "Admin" || role === "Geek" ? 2 : role === "Operator" ? 1 : 0;
-}
-
-export default function increaseReducer(state = initialState, action){
+export default function loginReducer(state = initialState, action){
   switch (action.type) {
-    case RESET_ALL:
+    case C.RESET_ALL:
       return{
         ...state,
         isLogin: action.isLogin,
-        role: ""
       };
-    case LOGIN_SUCCESS:
-      return{
-        ...state,
-        isLogin: true,
-      };
-    case LOGIN_ERROR:
-      return{
-        ...state,
-        isLogin: false,
-      };
-    case LOGOUT:
+    case C.LOGOUT:
       return {
         ...state,
         isLogin: action.isLogin
       };
-    case LOGGING:
+    case C.LOGGING:
       return{
         ...state,
         isLogin: action.isLogin
+      };
+    case C.RESET_PASSWORD:
+      return{
+        ...state,
+        forgetPasswordResponse: action.payload
+      };
+    case C.CONFIRM_PASSWORD:
+      return{
+        ...state,
+        resetPasswordResponse: action.payload
       };
     default:
       return state;
