@@ -1,15 +1,21 @@
 //Libraries
 import React, { Component } from 'react';
 import { Col, Row, List, Divider} from 'antd';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Subcomponents
 import RequestModal from "./RequestStateModal";
+import MiniLoading from '../subcomponents/MiniLoading';
+
+//Actions
+import {getAllRequest} from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-state.css';
 import { SUCCESS_MODAL } from '../subcomponents/modalMessages';
 
-class RequesState extends Component {
+class RequestState extends Component {
 
   constructor (props) {
 
@@ -18,6 +24,8 @@ class RequesState extends Component {
     this.state = {
       visible: null,
     };
+
+    this.props.getAllRequest(parseInt(localStorage.user_id, 10));
 
   };
 
@@ -34,11 +42,10 @@ class RequesState extends Component {
     });
   };
 
-
-
   render(){
 
-    let tableData = [
+    let tableData = this.props.requestList;
+    /*let tableData = [
       {
         key: 1,
         requestState: "En aprobación",
@@ -111,8 +118,13 @@ class RequesState extends Component {
         accountType: "Corriente",
         accountNumber: 72383812
       }     
-    ];
-
+    ];*/
+  console.log(tableData);
+  if(JSON.stringify(tableData) === '{}'){
+    return (
+      <MiniLoading visible={true}/> 
+    );
+  }else{
     return (
       <div className={"request-state-div"}>
         <Row>
@@ -133,9 +145,25 @@ class RequesState extends Component {
         </Row>
       </div>
     );
-  
+  }
   };
   
 }
 
-export default RequesState;
+RequestState.propTypes = {
+  requestList: PropTypes.object,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    requestList: state.customer.requestList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllRequest: (customerId) => dispatch(getAllRequest(customerId)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestState);

@@ -82,9 +82,9 @@ function getAllRequest(customerId){
   });
 }
 
-const registerService = {
+const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList,
   generateDocuments, createRequest, getAllTransactions, getAllRequest
 };
 
-export default registerService;
+export default customerService;

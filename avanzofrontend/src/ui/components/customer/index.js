@@ -96,7 +96,6 @@ class Customer extends Component {
     let partialQuantity = homeDataResponse.maximumAccountQuantity;
     let tableData = homeDataResponse.transactions;
     let pendingRequests = homeDataResponse.pendingRequests;
-    console.log(this.props.homeDataResponse);
 
     if(JSON.stringify(homeDataResponse) === '{}'){
       return (

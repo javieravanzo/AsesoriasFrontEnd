@@ -17,7 +17,7 @@ import {getRequestData, getOutlayData, getOultayDatesList, generateDocuments} fr
 
 //Styles
 import '../../styles/customer/request-form.css';
-import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
+import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows, ERROR_MODAL } from '../subcomponents/modalMessages';
 
 //Constants
 const FormItem = Form.Item;
@@ -96,10 +96,24 @@ class LoanRequest extends Component {
   };
 
   onConfirmRequest = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "El préstamo ha sido solicitado correctamente.");
-    this.setState({
-      loan: true
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        this.setState({
+          isLoading: false,
+        });
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
+      }else{
+        console.log(values);
+        //this.props.register(values);
+        /*this.setState({
+          isLogged: true,
+        });*/
+      }     
     });
+    //SUCCESS_MODAL("Acción realizada exitosamente", "El préstamo ha sido solicitado correctamente.");
+    /*this.setState({
+      loan: true
+    });*/
   };
 
   onChange = () => {
@@ -673,7 +687,7 @@ let RequestForm = Form.create()(LoanRequest);
 RequestForm.propTypes = {
   requestDataResponse: PropTypes.object,
   outlayDataResponse: PropTypes.object,
-  outlayDatesList: PropTypes.object,
+  outlayDatesList: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {

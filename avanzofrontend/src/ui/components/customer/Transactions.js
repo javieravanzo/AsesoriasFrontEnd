@@ -1,8 +1,11 @@
 //Libraries
 import React, {Component} from 'react';
 import {Row, Col, Divider, Card, Input, Table} from 'antd';
-//import connect from 'react-redux/es/connect/connect';
-//import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
+
+//Subcomponents
+import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
 import {getAllTransactions} from "../../../store/redux/actions/customer/customerActions";
@@ -14,7 +17,7 @@ import '../../styles/customer/transactions.css'
 const table = [
   {
     title: <div>Tipo Transacción</div>,
-    dataIndex: 'transaction',
+    dataIndex: 'name',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
@@ -30,18 +33,18 @@ const table = [
   },
   {
     title: <div className={"table-p"}>Fecha Solicitud</div>,
-    dataIndex: 'date',
+    dataIndex: 'requestDate',
     width: "150px",
     align: "center",
-    render: text => <div className={"table-p"}>{text}</div>,
+    render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.date.localeCompare(b.date)},
   },
   {
     title: <div className={"table-p"}>Fecha Transacción</div>,
-    dataIndex: 'date2',
+    dataIndex: 'transactionDate',
     width: "150px",
     align: "center",
-    render: text => <div className={"table-p"}>{text}</div>,
+    render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.date.localeCompare(b.date)},
   }
 ];
@@ -104,7 +107,7 @@ class Transactions extends Component {
 
   render() {
 
-    let tableData = [
+    /*let tableData = [
       {
         key: 1,
         transaction: "Retiro",
@@ -147,9 +150,14 @@ class Transactions extends Component {
         date: "27-06-19",
         date2: "28-06-19"
       }     
-    ];
-    console.log(this.props.transactionList);
-
+    ];*/
+    let tableData = this.props.transactionList;
+  
+    if(JSON.stringify(tableData) === '{}'){
+      return (
+        <MiniLoading visible={true}/> 
+      );
+    }else{
       return (
         <div className={"transactions-div"}>
           <Row>
@@ -183,7 +191,7 @@ class Transactions extends Component {
                   </Col>
                 </Row>
                 <Divider className={"second-divider"}/>
-                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}
+                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'}
                     pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>
@@ -191,12 +199,13 @@ class Transactions extends Component {
           </Row>
         </div>
       );
+    }
   };
 
 }
 
 Transactions.propTypes = {
-  transactionList: PropTypes.object,
+  transactionList: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {

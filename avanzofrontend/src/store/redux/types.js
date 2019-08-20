@@ -20,4 +20,25 @@ export const customerTypes = {
   GET_REQUEST_LIST: "GET_REQUEST_LIST",
 };
 
+/* ----------------- Company ------------------- */
+export const companyTypes = {
+  GET_REQUEST_LIST: "GET_REQUEST_LIST",
+};
+
+/* ----------------- Company ------------------- */
+export const adminTypes = {
+  CREATE_COMPANY: "CREATE_COMPANY",
+  CREATE_CUSTOMER: "CREATE_CUSTOMER",
+  CREATE_MULTIPLE_CUSTOMER: "CREATE_MULTIPLE_CUSTOMER",
+  GET_REQUEST_LIST: "GET_REQUEST_LIST",
+  GET_REQUEST_TO_OUTLAY: "GET_REQUEST_TO_OUTLAY",
+};
+
+/* ---------------- General --------------------- */
+export const generalTypes = {
+  APPROVE_REJECT_REQUEST: "APPROVE_REJECT_REQUEST",
+  GET_CUSTOMER_LIST: "GET_CUSTOMER_LIST",
+  GET_CUSTOMER_REPORT: "GET_CUSTOMER_REPORT",
+  GET_COMPANY_REPORT: "GET_COMPANY_REPORT",
+};
 
