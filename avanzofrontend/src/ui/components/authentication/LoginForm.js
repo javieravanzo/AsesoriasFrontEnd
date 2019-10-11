@@ -1,5 +1,5 @@
 //Libraries
-import { Form, Icon, Input, Button, Select } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
@@ -9,7 +9,7 @@ import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
-import {SUCCESS_MODAL} from "../subcomponents/modalMessages";
+import {ERROR_MODAL} from "../subcomponents/modalMessages";
 
 //Actions
 import {login} from "../../../store/redux/actions/general/loginActions";
@@ -56,17 +56,23 @@ class LoginForm extends Component {
   };
 
   sendMessage = (e) => {
-    this.props.login(this.state.email, this.state.password);
-
-    SUCCESS_MODAL("Acción realizada satisfactoriamente", 
-      "Ha ingresado a nuestra plataforma exitosamente.")
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        this.setState({
+          isLoading: false,
+        });
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
+      }else{
+        this.props.login(values.email, values.password);
+      }     
+    });
   };
 
-  render() {
+  render() {  
 
     const { getFieldDecorator } = this.props.form;
-    const { isLogin, role } = this.state;
-    let isLogged = localStorage.isLogged !== undefined ? localStorage.isLogged === 'true' : false;
+    let role = parseInt(localStorage.getItem("role_id"), 10);
+    let isLogged = this.props.isLogin !== undefined ? this.props.isLogin : false;
 
     return (
       <div>
@@ -77,19 +83,10 @@ class LoginForm extends Component {
           <div className="login-form">
             <Form onSubmit={this.handleSubmit} className="login-form">
               <div>
+                <br/>
+                <br/>
                 <FormItem>
-                {getFieldDecorator('role', {
-                  rules: [{ required: true, message: 'Por ingrese su rol' }],
-                })(
-                    <Select className={"form-select-content"} placeholder="Rol" onChange={(e) => this.changeRol(e)}>
-                      <Select.Option value={0}>Usuario</Select.Option>
-                      <Select.Option value={1}>Empresa</Select.Option>
-                      <Select.Option value={2}>Administrador</Select.Option>
-                    </Select>)
-                }
-                </FormItem>
-                <FormItem>
-                  {getFieldDecorator('text', { initialValue: '',
+                  {getFieldDecorator('email', { initialValue: '',
                     rules: [
                       {type: "email", message: "Ingrese un correo válido, por favor."},
                       {required: true, message: 'Por favor, ingrese su correo electrónico.'}],
@@ -128,10 +125,10 @@ class LoginForm extends Component {
         <div className={"bottom-title"}>
           Avanzo © 2019
         </div>
-        {(isLogged && (role===0)) &&
+        {(isLogged && (role===4)) &&
           <Redirect to={routes.customer}/>
         }
-        {(isLogged && (role===1)) &&
+        {(isLogged && (role===3)) &&
           <Redirect to={routes.company_request_management}/>
         }
         {(isLogged && (role===2)) &&
@@ -144,7 +141,6 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   isLogin: PropTypes.bool,
-  login: PropTypes.func
 };
 
 const mapStateToProps = (state) => {

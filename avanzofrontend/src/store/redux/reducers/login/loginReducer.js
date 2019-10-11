@@ -20,9 +20,10 @@ export default function loginReducer(state = initialState, action){
         isLogin: action.isLogin
       };
     case C.LOGGING:
+      //console.log("ACTIONPAYLOAD", action.payload);
       return{
         ...state,
-        isLogin: action.isLogin
+        isLogin: action.payload
       };
     case C.RESET_PASSWORD:
       return{

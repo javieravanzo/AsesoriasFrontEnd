@@ -2,8 +2,6 @@
 import React, {Component} from 'react';
 import {Route, Switch, withRouter, Redirect} from 'react-router-dom'
 import {Layout} from "antd";
-import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
 
 //Components - Admin
 import AdminCompanyManagement from "../admin/company_management/index";
@@ -42,11 +40,11 @@ class Router extends Component {
             <Route path={routes.customer_form_request} component={Customer_RequestForm}/>
             <Route path={routes.customer_review_requests} component={Customer_ListRequest}/>
             { 
-              parseInt(localStorage.role, 10) === 0 &&
+              parseInt(localStorage.role, 10) === 4 &&
               <Route render = {()=><Redirect to={routes.customer}/>}/>
             }
             { 
-              parseInt(localStorage.role, 10) === 1 &&
+              parseInt(localStorage.role, 10) === 3 &&
               <Route render = {()=><Redirect to={routes.company_generate_reports}/>}/>
             }
             { 

@@ -3,13 +3,18 @@ import {Form, Icon, Input, Button} from 'antd';
 import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {Link} from "react-router-dom";
+import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
 
 //Assets
 import secondIcon from "../../../assets/authentication/avanzo.jpg"
 
 //Subcomponents
-import {ERROR_MODAL, SUCCESS_MODAL} from "../../subcomponents/modalMessages";
+import {ERROR_MODAL} from "../../subcomponents/modalMessages";
 import routes from "../../../../configuration/routing/Routes";
+
+//Actions
+import {registerAdmin} from "../../../../store/redux/actions/admin/adminActions";
 
 //Constants
 const FormItem = Form.Item;
@@ -27,10 +32,11 @@ class Register extends Component {
       email: null,
       password: null,
       loginError: null,
-      isLogged: null,
     };
 
     this.onChangeValue = this.onChangeValue.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
     //this.handleSubmit = this.handleSubmit.bind(this);
   };
 
@@ -46,114 +52,123 @@ class Register extends Component {
     }
   };
 
-  /*handleSubmit(){
-    let {names, username, description, email, password} = this.state;
-    userSessionService.token()
-      .then( response => {
-        localStorage.setItem('access_token', response.data.access_token);
-        this.setState({
-          loginError: false
-        });
-        if(names !== "" && names !== null && username !== "" && username !== null && description !== "" &&
-          description !== null && email !== "" && email !== null && password !== "" && password !== null ){
-            let name = names.split(" ");
-            let data = {     
-              first_name: name[0],
-              last_name: name[1],
-              profile_description: description,
-              user_name: username,
-              password: password,
-              email: email          
-            }
-            registerService.register(data, response.data.access_token)
-            .then( response => {
-              this.setState({
-                isLogged: true,
-              }, SUCCESS_MODAL("Operación realizada exitosamente", "Se ha registrado satisfactoriamente. Por favor, ingrese con su correo electrónico y contraseña."));
-            })
-            .catch( () => {
-              ERROR_MODAL("Error al registrarse", "Intente nuevamente más tarde");
-            }); 
-        }
-      })
-      .catch( () => {
-        ERROR_MODAL("Error al ingresar", "Intente nuevamente más tarde");
-          this.setState({
-            loginError: true
-          });
-      }); 
-  }*/
+  onChangeEmail(e){
+    this.setState({
+      email: e,
+    });
+  };
 
-  registerInformation(){
- 
-  }
+  onChangePassword(e){
+    this.setState({
+      email: e,
+    });
+  };
 
-  sendMessage = (e) => {
-    SUCCESS_MODAL("Acción realizada satisfactoriamente", 
-      "Ha ingresado a nuestra plataforma exitosamente.")
+  onSignInClicked(){
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
+      }else{
+        
+        let data = values;
+        let nameSplit = values.name.split(" ");
+        data.name = nameSplit[0];
+        data.lastName = nameSplit[1];
+        this.props.registerAdmin(data);
+      }     
+    });
   };
 
   render() {
-    
+
+    //let { login } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     return (
       <div>
         <div className="div-logo">
-          <img src={secondIcon} alt="icon" className={"logo2"} />
+          <img src={secondIcon} alt="icon" className="logo" />
         </div>
         <div className={"login-card"}>
           <div className="login-form">
             <Form className="login-form">
-              <FormItem className={"form-content"} >
-                <Input className="my-form" prefix={<Icon type="user" className={"field-icon"} />} 
-                      placeholder="Nombres - Apellidos" onChange={(value) => this.onChangeValue(value, 'names')}/>
-              </FormItem>
-
-              <FormItem>
-                  {getFieldDecorator('text', { initialValue: '',
+              <div>
+                <br/>
+                <FormItem>
+                  {getFieldDecorator('name', {
+                    rules: [{ required: true, message: 'Ingrese sus nombres y apellidos, por favor.' }],
+                  })(
+                    <Input prefix={<Icon type="user" className={"field-icon"} />} placeholder="Nombre - Apellido"/>)
+                  }
+                </FormItem>
+                <FormItem>
+                  {getFieldDecorator('identificationId', {
+                    rules: [{ required: true, message: 'Ingrese su número de identificación, por favor.' }],
+                  })(
+                    <Input prefix={<Icon type="number" className={"field-icon"} />} placeholder="Número de identificación"/>)
+                  }
+                </FormItem>
+                <FormItem>
+                  {getFieldDecorator('email', { initialValue: '',
                     rules: [
                       {type: "email", message: "Ingrese un correo válido, por favor."},
                       {required: true, message: 'Por favor, ingrese su correo electrónico.'}],
                   })(
-                    <Input className="my-form" prefix={<Icon type="mail" className={"field-icon"} />} placeholder="Email" 
-                    onChange={(value) => this.onChangeValue(value, 'email')}/>
+                    <Input prefix={<Icon type="mail" className={"field-icon"} />} placeholder="Email"/>
                   )}
-              </FormItem>
-
-              <FormItem >
-              <Input prefix={<Icon type="lock" className={"field-icon"} />} type="password" 
-                       placeholder="Contraseña" onChange={(value) => this.onChangeValue(value, 'password')} />
-              </FormItem>
-
-              <FormItem>
-                <Input prefix={<Icon type="lock" className={"field-icon"} />} type="password" 
-                       placeholder="Confirmar contraseña" onChange={(value) => this.onChangeValue(value, 'password')} />
-              </FormItem>
-
-              <FormItem className={"submit"}>
-                <Button type="primary" htmlType="submit" className=" my-button login-form-button" 
-                        onClick={() => this.sendMessage()}>
-                  Registrar
-                </Button>
-                <div>
-                  <Link to={routes.login}>
-                    <p className={"url-form"}>¿Ya está registrado? Inicie Sesión.</p>
-                  </Link>
-                </div>
-                {this.state.isLogged &&
-                  <Redirect to={routes.login}/>
-                }
-              </FormItem>
+                </FormItem>
+                <FormItem>
+                  {getFieldDecorator('password', {
+                    rules: [{ required: true, message: 'Por ingrese su contraseña' }],
+                  })(
+                  <Input prefix={<Icon type="lock" className={"field-icon"} />} type="password" placeholder="Contraseña"/>)
+                  }
+                </FormItem>
+                
+                <FormItem className={"submit"}>
+                  <Button type="primary" htmlType="submit" className="login-form-button" 
+                          onClick={() => this.onSignInClicked()}>
+                    <p className={"login-button-text"}>Registrarse</p>
+                  </Button>
+                  <div className={"for-links"}>
+                    <Link to={routes.login}>
+                      <p className={"url-form"}>Iniciar sesión</p>
+                    </Link>
+                  </div>
+                </FormItem>
+              </div>
             </Form>
+            
+          </div>
         </div>
+        <div className={"bottom-title"}>
+          Avanzo © 2019
+        </div>
+        {
+          (this.props.registerAdminResponse) && 
+          <Redirect to={routes.login}/>
+        }
       </div>
-      <div className={"bottom-title2"}>
-      Avanzo © 2019
-      </div>
-    </div>
     );
   }
 }
 
-export default Register;
+Register.propTypes = {
+  registerAdminResponse: PropTypes.bool
+};
+
+const mapStateToProps = (state) => {
+  return {
+    registerAdminResponse: state.admin.registerAdminResponse,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    registerAdmin: (data) => dispatch(registerAdmin(data)),
+  }
+};
+
+let WrappedRegisterAdmin = Form.create()(Register);
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedRegisterAdmin);

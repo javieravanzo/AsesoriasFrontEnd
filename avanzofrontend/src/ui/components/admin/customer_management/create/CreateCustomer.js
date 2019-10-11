@@ -4,11 +4,11 @@ import { Form, Select, Button, Col, Row, Collapse, InputNumber,
          Input, DatePicker, Modal, Upload, message, Icon} from 'antd';
 
 //Subcomponents
-import FieldTitle from '../../subcomponents/FieldTitle';
+import FieldTitle from '../../../subcomponents/FieldTitle';
+import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 //Styles
-import '../../../styles/admin/create-company.css';
-import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
+import '../../../../styles/admin/create-company.css';
 
 //Constants
 const FormItem = Form.Item;
@@ -22,7 +22,6 @@ class CustomerManagement extends Component {
     
     this.state = {
       isLoading: false,
-      isLogged: false,
       captchaSolved: true,
       email: null,
       meeting: null,

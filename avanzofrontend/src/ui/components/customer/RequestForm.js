@@ -1,19 +1,20 @@
 //Libraries
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
-import { Divider, Form, Select, Button, Col, Row, Collapse, Checkbox, Upload, Icon,
-         InputNumber, Table, Slider, Statistic, Typography, message, Card, Switch, Popover, Steps} from 'antd';
-import CurrencyFormat from "react-currency-format";
 import Math from "math";
 import PropTypes from 'prop-types';
+import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
+import SignaturePad from 'react-signature-canvas';
+import { Divider, Form, Select, Button, Col, Row, Collapse, InputNumber, Table, Slider,
+  Statistic, Typography, Card, Switch} from 'antd';
 
 //Subcomponents
 import FieldTitle from '../subcomponents/FieldTitle';
 import routes from '../../../configuration/routing/Routes';
 
 //Actions
-import {getRequestData, getOutlayData, getOultayDatesList, generateDocuments} from "../../../store/redux/actions/customer/customerActions";
+import { getRequestData, getOutlayData, getOultayDatesList } from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-form.css';
@@ -22,7 +23,6 @@ import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows, ERROR_MODAL } from 
 //Constants
 const FormItem = Form.Item;
 const { Panel } = Collapse;
-const { Step } = Steps;
 
 function format(d) {
   var formatter = new Intl.NumberFormat('en-US', {
@@ -77,12 +77,29 @@ class LoanRequest extends Component {
       bank_name: null,
       bank_number: null,
       bank_type: null,
-      documents_uploaded: false,
-    };
+      signatureDone: false,
+      trimmedDataURL: null
+    };    
 
     this.props.getRequestData(parseInt(localStorage.user_id, 10));
     this.props.getOutlayData(parseInt(localStorage.user_id, 10));
 
+  };
+
+  sigPad = {};
+
+  clear = () => {
+    this.sigPad.clear();
+    this.setState({
+      trimmedDataURL: false
+    });
+  };
+
+  trim = () => {
+    this.setState({
+      trimmedDataURL: this.sigPad.getTrimmedCanvas().toDataURL('image/png'),
+      signatureDone: true
+    });
   };
 
   onChangeFee = (e) => {
@@ -104,23 +121,12 @@ class LoanRequest extends Component {
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
       }else{
         console.log(values);
-        //this.props.register(values);
-        /*this.setState({
-          isLogged: true,
-        });*/
       }     
     });
     //SUCCESS_MODAL("Acción realizada exitosamente", "El préstamo ha sido solicitado correctamente.");
     /*this.setState({
       loan: true
     });*/
-  };
-
-  onChange = () => {
-    this.setState({
-      upload: !this.state.upload,
-      documents_uploaded: true
-    });
   };
 
   handleSliderChange = (e) => {
@@ -183,17 +189,17 @@ class LoanRequest extends Component {
 
   defineDocumentsCondition = () => {
     
-    let {bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type} = this.state;
-    //console.log(bank_account, bank_name, bank_number, bank_type, money_wallet, wallet_number, wallet_type);
+    let {bank_account, bank_name, bank_number, bank_type, money_wallet, 
+         wallet_number, wallet_type, signatureDone} = this.state;
 
     if (bank_account){
       if(bank_name !== null && bank_number !== null && bank_type !== null && 
-         bank_name !== "" && bank_number !== "" && bank_type !== ""){
+         bank_name !== "" && bank_number !== "" && bank_type !== "" && signatureDone !== null){
           return true;
          }
       return false;
     }else if(money_wallet){
-      if(wallet_number !== null && wallet_type !== null && 
+      if(wallet_number !== null && wallet_type !== null && signatureDone !== null &&
         wallet_number !== "" && wallet_type !== ""){
          return true;
         }
@@ -207,7 +213,6 @@ class LoanRequest extends Component {
   generateDocuments = ()=> {
     this.props.generateDocuments(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
   };
-
 
   openDocument = () => {
 
@@ -228,86 +233,64 @@ class LoanRequest extends Component {
   
   };
 
+  checkRequest = (e) => {
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        this.setState({
+          isLoading: false,
+        });
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
+      }else{
+        console.log(values);
+        let data = {
+          quantity: values.quantity,
+          split: values
+        }
+      }     
+    });
+  };
 
   render(){
 
-    let {fee, loan, sliderValue, bank_account, money_wallet, documents_uploaded} = this.state;
+    console.log("Image", this.state.trimmedDataURL);
+    let {fee, loan, sliderValue, bank_account, money_wallet} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
-    const props = {
-      name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    
-    };
-    let tableData = [
-      {
-        key: 1,
-        transaction: "Desembolso No. 1",
-        quantity: 105000,
-        date: "20-06-19",
-      },
-      {
-        key: 2,
-        transaction: "Desembolso No. 2",
-        quantity: 105000,
-        date: "21-06-19",
-      },
-      {
-        key: 3,
-        transaction: "Desembolso No. 3",
-        quantity: 105000,
-        date: "23-06-19",
-      }      
-    ];
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
-    let { interestValue, adminValue, maximumAmount, maximumSplit, otherCollectionValue, haveDocumentsLoaded } = requestDataResponse;
+    let { interestValue, adminValue, maximumAmount, maximumSplit, otherCollectionValue } = requestDataResponse;
     let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
-    //console.log(requestDataResponse, outlayDataResponse, outlayDatesList);  
-    
+    let { trimmedDataURL } = this.state;    
 
     return (
       <div className={"request-div"}>
           <Row className={"request-row-content"}>
-            <Col xxl={19} lg={19} md={19} sm={12} xs={12}>
+            <Col xxl={19} lg={19} md={19} sm={12} xs={11}>
               <Typography >
                 <Typography.Title level={3} className={"request-form-title"}>
                   Solicitar préstamo
                 </Typography.Title>       
               </Typography>
             </Col>
-            <Col xxl={5} lg={5} md={5} sm={12} xs={12}>
-                <div className={"customer-credit-card"}>
-                  <Row gutter={2}>
-                    <Col span={24}>
-                      <Statistic title={<h3>Cupo disponible</h3>} value={187107} prefix={"$"}/>
-                    </Col>
-                  </Row>    
-                </div>
-              </Col>
+            <Col xxl={5} lg={5} md={5} sm={12} xs={13}>
+              <div>
+                <Row gutter={2}>
+                  <Col span={24}>
+                    <Statistic className={"customer-credit-card"} title={<h3>Cupo disponible</h3>} value={187107} prefix={"$"}/>
+                  </Col>
+                </Row>    
+              </div>
+            </Col>
           </Row>
           <Row className={"request-row-content"}>
-            <div>  
+            <div className={"request-initial-step"}>  
               <Form>
                 <Row>
-                  <Col lg={1}>
+                  <Col lg={1} md={3} sm={5} xs={4}>
                     <Button className={"step-one"}>
                       1.
                     </Button>
                   </Col>
-                  <Col lg={23}>
+                  <Col lg={23} md={21} sm={19} xs={20}>
                     <div>
                       <h3>Información de la solicitud</h3>
                       <Divider className={"form-request-divider"}/>
@@ -319,25 +302,39 @@ class LoanRequest extends Component {
                     <Card>
                     <FieldTitle title={"Monto requerido"}/>
                     <FormItem>
-                      <InputNumber className={"form-input-number"} max={maximumAmount} value={this.state.sliderValue}
+                      {getFieldDecorator('quantity',
+                        {rules: [
+                          {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
+                        ]})(
+                            <InputNumber className={"form-input-number"} max={maximumAmount} value={this.state.sliderValue}
                                   formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
                                   placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
+                        )
+                      }
                     </FormItem>
                     <Row className="icon-wrapper">
-                      <Col xxl={5} lg={5} md={8} sm={8} xs={10}>
+                      <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                         <h3>
                          <span className={"request-title"}>$80.000</span>
                         </h3>
                       </Col>
-                      <Col xxl={14} lg={14} md={8} sm={8} xs={10}>
-                        <Slider max={300000} min={80000} step={10000}
-                                tipFormatter={
-                                  function (d) { 
-                                    return format(d);
-                                  }} 
-                                onChange={this.handleSliderChange} style={{width: "90%"}} value={sliderValue} />  
+                      <Col xxl={14} lg={14} md={8} sm={8} xs={14}>
+                        <FormItem>
+                          {getFieldDecorator('quantity',
+                            {rules: [
+                              {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
+                            ]})(
+                              <Slider max={300000} min={80000} step={10000}
+                                      tipFormatter={
+                                        function (d) { 
+                                          return format(d);
+                                        }} 
+                                      onChange={this.handleSliderChange} style={{width: "90%"}} value={sliderValue} />
+                              )
+                            }  
+                          </FormItem>
                       </Col>
-                      <Col xxl={5} lg={5} md={8} sm={8} xs={10}>
+                      <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                         <h3>
                          <span className={"request-title"}>$300.000</span>
                         </h3>
@@ -358,8 +355,6 @@ class LoanRequest extends Component {
                         )
                       }
                     </FormItem>  
-                    
-
                     </Card>
                   </Col>
                   <Col xs={24} sm={24} md={12} lg={12}>
@@ -514,7 +509,7 @@ class LoanRequest extends Component {
                             ]})(
                               <Select onChange={this.changeBankName} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                                 {bankInfo.map((bank, i) =>(
-                                  <Select.Option value={bank.id} key={i}>
+                                  <Select.Option value={bank.idOutLays} key={i}>
                                     {bank.bankName}
                                   </Select.Option>
                                 ))
@@ -533,8 +528,8 @@ class LoanRequest extends Component {
                             ]})(
                               <Select placeholder={"Tipo de cuenta"} showSearch={true} onChange={this.changeBankType}>
                                 {bankTypeAccountInfo.map((accountType, i) =>(
-                                  <Select.Option value={accountType.id} key={i}>
-                                    {accountType.bankTypeName}
+                                  <Select.Option value={accountType.idAccountTypes} key={i}>
+                                    {accountType.accountTypeName}
                                   </Select.Option>
                                 ))
                                 }
@@ -569,7 +564,7 @@ class LoanRequest extends Component {
                             ]})(
                               <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
                                 {walletInfo.map((wallet, i) =>(
-                                  <Select.Option value={wallet.id} key={i}>
+                                  <Select.Option value={wallet.idWallet} key={i}>
                                     {wallet.walletName}
                                   </Select.Option>
                                 ))
@@ -596,62 +591,49 @@ class LoanRequest extends Component {
                    
                
                   <Row>
-                  <Col lg={1}>
-                    <Button className={"step-one"}>
-                      3.
-                    </Button>
-                  </Col>
-                  <Col lg={23}>
-                    <div>
-                      <h3>Documentos de la solicitud</h3>
-                      <Divider className={"form-request-divider"}/>
-                    </div>
-                  </Col>
-                </Row>
+                    <Col lg={1}>
+                      <Button className={"step-one"}>
+                        3.
+                      </Button>
+                    </Col>
+                    <Col lg={23}>
+                      <div>
+                        <h3>Documentos de la solicitud</h3>
+                        <Divider className={"form-request-divider"}/>
+                      </div>
+                    </Col>
+                  </Row>
 
                 <Row className={"form-request-rows"} gutter={8}>
-                <Steps className={"document-steps"}>
-                  <Step status="process" title="Descargar documentos" icon={<Icon type="download" />} />
-                  <Step status="wait" title="Cargar documentos" icon={<Icon type="upload" />} />
-                </Steps>
-                  <Col xs={24} sm={12} md={12} lg={13}> 
+                  <Col xs={24} sm={12} md={12} lg={24}> 
                     <Card className={"download-card"}>
-                      <Row sm={12} md={12} lg={12} style={{textAlign: "center", fontWeight: "bold", fontSize: "15px"}}>
-                          Descargar
+                      <Row style={{textAlign: "center", fontWeight: "bold", fontSize: "15px"}}>
+                          Autorización de descuento
                       </Row>
                       <br/>
-                      <Row gutter={12}>
-                        <Col sm={12} md={12} lg={12}>
-                          <Button onClick={() => this.openDocument()} style={{width: "90% !important"}} className={!feeCondition ? "documents-disabled-buttons" : "documents-buttons" } disabled={!feeCondition}>
-                            <Icon type="file-exclamation"/>Contrato de libranza
+                      <Row style={{marginBottom: "20px", width: '80%', height: '80%',  margin: '0 auto', backgroundColor: '#dadada'}}>
+                        <SignaturePad canvasProps={{style:{width: '100%', height: '100%'}}}
+                          ref={(ref) => { this.sigPad = ref }} />
+                      </Row>
+                      <Row gutter={6}>
+                        <Col xs={4} sm={10} md={12} lg={16}/>
+                        <Col xs={10} sm={7} md={6} lg={4}>
+                          <Button className={"request-signature-clean-button"} style={{width: '100%', height: '30px'}} onClick={this.clear}>
+                            Limpiar firma
                           </Button>
-                          <Popover content={"Contrato de libranza"} placement="rightTop" disabled={fee === null ? true : false}>
-                            <Icon className='question-button' type='question-circle'/>
-                          </Popover>
                         </Col>
-                        <Col sm={12} md={12} lg={12}>
-                          <Button onClick={() => this.onDownloadDocument} style={{width: "90% !important"}} className={!feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={!feeCondition}>
-                            <Icon type="file-protect"/>Autorización descuento
+                        <Col xs={10} sm={7} md={6} lg={4}>
+                          <Button className={"request-signature-make-button"} style={{width: '100%', height: '30px'}} onClick={this.trim}>
+                            Realizar firma
                           </Button>
-                          <Popover content={"Documentos adicionales que son requeridos para la solicitud"} placement="rightTop">
-                            <Icon className='question-button' type='question-circle'/>
-                          </Popover>
                         </Col>
                       </Row>
-                    </Card>
-                  </Col>
-                  <Col xs={24} sm={12} md={12} lg={11} >
-                    <Card>
-                      <Row style={{textAlign: "center", fontWeight: "bold", fontSize: "18px"}}>
-                        <Checkbox onChange={this.onChange}  className={"form-checkbox"}> 
-                          Cargar documentos 
-                        </Checkbox>
-                      </Row>
-                      <Upload {...props}>
-                        <Button className={!feeCondition ? "documents-disabled-buttons" : "documents-buttons"} disabled={!feeCondition}>
-                          <Icon type="upload" /> Cargar archivos
-                        </Button>
-                      </Upload>
+                      <br/>
+                      <br/>
+                      {trimmedDataURL
+                        ? <img alt="signature" style={{backgroundSize: '200px 50px', width: '200px', backgroundColor: 'white'}}
+                          src={trimmedDataURL} />
+                        : null}
                     </Card>
                   </Col>
                 </Row>
@@ -661,8 +643,8 @@ class LoanRequest extends Component {
                 <Row className={"form-request-rows"}>
                   <Col xs={24} sm={12} md={18} lg={19}/>
                   <Col xs={24} sm={12} md={6} lg={5}>
-                    <Button className={"request-confirm-button"} icon="file"  disabled={!documents_uploaded}
-                            onClick={() => this.onConfirmRequest()}>
+                    <Button className={"request-confirm-button"} icon="file"  disabled={!feeCondition}
+                            onClick={() => this.checkRequest()}>
                          Solicitar préstamo
                     </Button> 
                   </Col>

@@ -1,6 +1,15 @@
 //Subcomponents
 import request from '../requestWrapper';
 
+function registerAdmin(data) {
+  
+  return request({
+    url: '/Account/RegisterAdministrator',
+    method: 'POST',
+    data: data
+  });
+};
+
 function createCompany(data){
   return request({
     url: '/Company/Create',
@@ -46,7 +55,7 @@ function getAllRequestToOutLay(userId){
 };
 
 const adminService = {
-  createCompany, createCustomer, createMultipleCustomer, getAllRequest, getAllRequestToOutLay
+  registerAdmin, createCompany, createCustomer, createMultipleCustomer, getAllRequest, getAllRequestToOutLay
 };
 
 export default adminService;

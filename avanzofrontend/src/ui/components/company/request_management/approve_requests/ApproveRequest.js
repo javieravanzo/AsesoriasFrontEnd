@@ -1,9 +1,15 @@
 //Libraries
 import React, { Component } from 'react';
 import { Row, List} from 'antd';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Subcomponents
 import RequestModal from "./RequestStateModal";
+//import MiniLoading from '../../../subcomponents/MiniLoading';
+
+//Actions
+import {getAllRequest} from "../../../../../store/redux/actions/company/companyActions";
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
@@ -18,6 +24,8 @@ class ApproveRequest extends Component {
     this.state = {
       visible: null,
     };
+
+    this.props.getAllRequest(parseInt(localStorage.user_id, 10));
 
   };
 
@@ -100,7 +108,7 @@ class ApproveRequest extends Component {
         accountNumber: 72383812
       }     
     ];
-
+    
     return (
       <div className={"approve-request-state-div"}>
         <Row>
@@ -120,4 +128,21 @@ class ApproveRequest extends Component {
   
 }
 
-export default ApproveRequest;
+ApproveRequest.propTypes = {
+  requestList: PropTypes.array,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    requestList: state.customer.requestList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllRequest: (customerId) => dispatch(getAllRequest(customerId)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApproveRequest);
+

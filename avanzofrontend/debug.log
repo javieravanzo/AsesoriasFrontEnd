@@ -1,0 +1,6 @@
+[0821/152111.766:ERROR:crash_report_database_win.cc(558)] GetFileAttributes C:\Users\Cristian\AppData\Local\Google\Chrome\User Data\Crashpad\reports: Acceso denegado. (0x5)
+[0821/152111.828:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0821/152111.828:ERROR:crash_report_database_win.cc(558)] GetFileAttributes C:\Users\Cristian\AppData\Local\Google\Chrome\User Data\Crashpad\reports: Acceso denegado. (0x5)
+[0826/151511.815:ERROR:crash_report_database_win.cc(558)] GetFileAttributes C:\Users\Cristian\AppData\Local\Google\Chrome\User Data\Crashpad\reports: Acceso denegado. (0x5)
+[0826/151511.883:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: Ha terminado la canalización. (0x6D)
+[0826/151511.886:ERROR:crash_report_database_win.cc(558)] GetFileAttributes C:\Users\Cristian\AppData\Local\Google\Chrome\User Data\Crashpad\reports: Acceso denegado. (0x5)

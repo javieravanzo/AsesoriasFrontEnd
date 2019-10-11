@@ -5,6 +5,7 @@ export default {
   confirm_password: "/password_confirmed",
   confirm_account: "/account_confirmed",
   
+  admin_register: "/administrator-register",
   admin_company_management: "/admin-company-management",
   admin_customer_management: "/admin-customer-management",
   admin_request_management: "/admin-request-management",

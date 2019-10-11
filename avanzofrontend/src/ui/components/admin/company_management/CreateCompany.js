@@ -23,7 +23,6 @@ class CreateCompany extends Component {
     
     this.state = {
       isLoading: false,
-      isLogged: false,
       captchaSolved: true,
       email: null,
       meeting: null,

@@ -15,7 +15,9 @@ import Router from "../components/general/Router";
 import '../styles/App.css';
 import 'antd/dist/antd.css';
 
+//Constants
 const { Footer } = Layout;
+
 
 class App extends Component {
 
@@ -36,8 +38,8 @@ class App extends Component {
   }
 
   isSignedIn(){
-    if (localStorage.isLogged !== undefined && localStorage.isLogged !== null &&
-        localStorage.isLogged !== 'null' && localStorage.isLogged){
+    if (localStorage.access_token !== undefined && localStorage.access_token !== null &&
+        localStorage.access_token !== 'null' && localStorage.access_token){
       return true;
     } else {
       localStorage.clear();
@@ -48,6 +50,7 @@ class App extends Component {
   render(){
 
     let signedIn = this.isSignedIn();
+
     if(!signedIn){
       return( <Login pathname={this.props.location.pathname}/> );
     }else{

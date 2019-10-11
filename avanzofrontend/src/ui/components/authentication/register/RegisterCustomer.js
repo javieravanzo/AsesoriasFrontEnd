@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom';
 import { Button, Form, Icon, Input, Col, Row, Modal, Select, InputNumber, DatePicker} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+import moment from 'moment';
 
 //Subcomponents
 import routes from '../../../../configuration/routing/Routes';
@@ -33,12 +34,9 @@ class RegisterCustomer extends Component {
     
     this.state = {
       isLoading: false,
-      isLogged: false,
       captchaSolved: true,
       email: null,
-      meeting: null,
       login: null,
-      registerOk: null,
     };
 
     this.onSignInClicked = this.onSignInClicked.bind(this);
@@ -59,10 +57,9 @@ class RegisterCustomer extends Component {
         });
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
       }else{
+        values.birthDate = moment(values.birthDate._d).format();
+        values.expeditionDate = moment(values.expeditionDate._d).format();
         this.props.register(values);
-        this.setState({
-          isLogged: true,
-        });
       }     
     });
   };
@@ -132,9 +129,9 @@ class RegisterCustomer extends Component {
                 })(
                   <Select placeholder={'Tipo de documento'} allowClear={true} showSearch={true}
                     notFoundContent={"No hay tipos de documento disponibles"}>
-                      {idDocumentsTypes.map((type) => (
-                        <Select.Option key={type.id} value={type.name}>
-                          {type.name}
+                      {idDocumentsTypes.map((type, i) => (
+                        <Select.Option key={i} value={type.typeName}>
+                          {type.typeName}
                         </Select.Option>))
                       }
                   </Select>)
@@ -143,7 +140,7 @@ class RegisterCustomer extends Component {
             </Col>
             <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
-                {getFieldDecorator('documentNumber', {
+                {getFieldDecorator('identificationId', {
                   initialValue: '',
                   rules: [{ required: true, message: 'Por favor ingrese su número de cédula' }],
                 })(
@@ -187,7 +184,7 @@ class RegisterCustomer extends Component {
             </Col>
             <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
-                {getFieldDecorator('phone', {
+                {getFieldDecorator('phoneNumber', {
                   initialValue: '',
                   rules: [{ required: true, message: 'Por favor ingrese el celular' }],
                 })(
@@ -229,15 +226,13 @@ class RegisterCustomer extends Component {
             <Row gutter={24}>
               <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"register-col"}>
                 <Button className={"register-button"}  onClick={() => this.onSignInClicked()}
-                        icon="user-add" 
-                        >
+                        icon="user-add">
                   Registrarse
                 </Button>
               </Col>
               <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"login-col"}>
                 <Button type="primary" className={"login-button"} onClick={() => this.setState({login: true})}
-                      icon="login" loading={false}
-                      >
+                      icon="login" loading={false}>
                     Iniciar sesión
                 </Button>
               </Col>
@@ -264,7 +259,7 @@ class RegisterCustomer extends Component {
             <Redirect to={routes.login}/>
           }
           {
-            (JSON.stringify(registerResponse) !== '{}' ? registerResponse.status : false) && 
+            (registerResponse) && 
             <Redirect to={routes.confirm_account}/>
           }
         </div> 
@@ -276,13 +271,16 @@ class RegisterCustomer extends Component {
 
 RegisterCustomer.propTypes = {
   idDocumentsTypes: PropTypes.array,
-  registerResponse: PropTypes.object
+  registerResponse: PropTypes.bool,
+  registerDataResponse: PropTypes.object,
+
 };
 
 const mapStateToProps = (state) => {
   return {
     idDocumentsTypes: state.customer.idDocumentsTypes,
     registerResponse: state.customer.registerResponse,
+    registerDataResponse: state.customer.registerDataResponse,
   }
 };
 

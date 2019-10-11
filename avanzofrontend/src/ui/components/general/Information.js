@@ -4,8 +4,6 @@ import React, {Component} from 'react';
 import {Row, Col} from 'antd';
 import Clock from 'react-live-clock';
 
-//Subcomponents
-
 //Styles
 import '../../styles/general/information.css';
 

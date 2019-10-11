@@ -192,7 +192,7 @@ class Transactions extends Component {
                 </Row>
                 <Divider className={"second-divider"}/>
                   <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'}
-                    pagination={{ itemRender: itemRender, showSizeChanger: true,
+                    locale={{ emptyText: 'No hay transacciones todavía' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>
             </Col>

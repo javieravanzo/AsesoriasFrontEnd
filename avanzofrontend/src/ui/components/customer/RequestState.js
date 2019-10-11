@@ -44,7 +44,7 @@ class RequestState extends Component {
 
   render(){
 
-    let tableData = this.props.requestList;
+    let tableData = this.props.requestList.request;
     /*let tableData = [
       {
         key: 1,
@@ -119,7 +119,7 @@ class RequestState extends Component {
         accountNumber: 72383812
       }     
     ];*/
-  console.log(tableData);
+
   if(JSON.stringify(tableData) === '{}'){
     return (
       <MiniLoading visible={true}/> 
@@ -135,6 +135,7 @@ class RequestState extends Component {
         <Divider className={"form-request-divider"}/>
         <Row>
           <List
+              locale={{ emptyText: 'No hay solicitudes pendientes' }}
               dataSource={tableData}
               renderItem={(item, k) => (
                 <List.Item className={"request-state-list-item"}>

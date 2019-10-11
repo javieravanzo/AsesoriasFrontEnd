@@ -3,14 +3,15 @@ import {customerTypes as C} from '../../types';
 
 const initialState={
   idDocumentsTypes: [],
-  registerResponse: {},
+  registerDataResponse: {},
+  registerResponse: null,
   homeDataResponse: {},
   requestDataResponse: {},
   outlayDataResponse: {},
   outlayDatesList: [],
   documentsReponse: {},
   transactionList: [],
-  requestList: [],
+  requestList: {},
 };
 
 export default function customerReducer(state = initialState, action){
@@ -23,7 +24,8 @@ export default function customerReducer(state = initialState, action){
     case C.REGISTER:
       return{
         ...state,
-        registerResponse: action.payload,
+        registerDataResponse: action.payload,
+        registerResponse: action.correct,
       };
     case C.GET_HOME_DATA:
       return{

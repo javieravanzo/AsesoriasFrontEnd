@@ -6,7 +6,7 @@ import registerService from '../../../../services/customer/registerServices';
 import customerService from '../../../../services/customer/customerServices';
 
 //Subcomponents
-import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 export const getDocumentsTypes = () => {
   return dispatch => {
@@ -32,21 +32,24 @@ export const register = (data) => {
       .then(response => {
         dispatch({
           type: C.REGISTER,
-          payload: response.data
+          payload: response.data,
+          correct: true,
         });
+        SUCCESS_MODAL("Acción realizada exitosamente", response.data.message);
       }).catch(err => {
         dispatch({
           type: C.REGISTER,
           payload: err,
+          correct: false,
         });
-        ERROR_MODAL('Error al registrar el usuario', err);
+        ERROR_MODAL('Error al registrar el usuario',  err.request.response.message);
       });
   }
 };
 
-export const getHomeData = (customerId) => {
+export const getHomeData = () => {
   return dispatch => {
-    return customerService.getHomeData(customerId)
+    return customerService.getHomeData()
       .then(response => {
         dispatch({
           type: C.GET_HOME_DATA,
@@ -57,7 +60,7 @@ export const getHomeData = (customerId) => {
           type: C.GET_HOME_DATA,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la información de inicio', err.message);
+        ERROR_MODAL('Error al traer la información de inicio', err.data.message);
       });
   };
 };
@@ -75,7 +78,7 @@ export const getRequestData = (customerId) => {
           type: C.GET_REQUEST_DATA,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la información particular de la solicitud', err);
+        ERROR_MODAL('Error al traer la información particular de la solicitud', err.data.message);
       });
   };
 };  
@@ -93,7 +96,7 @@ export const getOutlayData = () => {
           type: C.GET_OUTLAY_DATA,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la información del desembolso', err);
+        ERROR_MODAL('Error al traer la información del desembolso', err.data.message);
       });
   };
 };  
@@ -111,7 +114,7 @@ export const getOultayDatesList = (customerId, split, quantity) => {
           type: C.GET_OUTLAY_DATESLIST,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la información de las fechas desembolso.', err);
+        ERROR_MODAL('Error al traer la información de las fechas desembolso.',  err.data.message);
       });
   };
 };  
@@ -129,7 +132,7 @@ export const generateDocuments = (customerId, split, quantity) => {
           type: C.GENERATE_DOCUMENTS,
           payload: err,
         });
-        ERROR_MODAL('Error al generar los documentos necesarios.', err);
+        ERROR_MODAL('Error al generar los documentos necesarios.',  err.data.message);
       });
   };
 };  
@@ -183,7 +186,7 @@ export const getAllRequest = (customerId) => {
           type: C.GET_REQUEST_LIST,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes .', err);
+        ERROR_MODAL('Error al traer la lista de solicitudes .', err.data.message);
       });
   };
 };  

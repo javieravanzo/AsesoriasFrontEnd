@@ -91,9 +91,10 @@ class Customer extends Component {
   render() {
 
     let {homeDataResponse} = this.props;
+    console.log("HDR", homeDataResponse);
     let {loan, request} = this.state;
-    let maximumAmount = homeDataResponse.maximumAccountQuantity;
-    let partialQuantity = homeDataResponse.maximumAccountQuantity;
+    let maximumAmount = homeDataResponse.maximumAmount;
+    let partialQuantity = homeDataResponse.partialCapacity;
     let tableData = homeDataResponse.transactions;
     let pendingRequests = homeDataResponse.pendingRequests;
 
@@ -119,10 +120,10 @@ class Customer extends Component {
                   <Card className={"customer-credit-card"}>
                     <Row gutter={4}>
                       <Col span={8}>
-                        <Statistic title={<h3>Cupo disponible</h3>} value={(maximumAmount-partialQuantity)} prefix={"$"}/>
+                        <Statistic title={<h3>Cupo disponible</h3>} value={(partialQuantity)} prefix={"$"}/>
                       </Col>
                       <Col span={8}>
-                        <Statistic title={<h3>Cupo usado</h3>} value={partialQuantity} prefix={"$"}/>
+                        <Statistic title={<h3>Cupo usado</h3>} value={(maximumAmount-partialQuantity)} prefix={"$"}/>
                       </Col>
                       <Col span={8}>
                         <Statistic title={<h3>Cupo total</h3>} value={maximumAmount} prefix={"$"}/>

@@ -11,6 +11,7 @@ import ForgotPassword from "./password/ForgotPassword";
 import LoginForm from "./LoginForm";
 import CustomerRegister from "./register/RegisterCustomer";
 import ConfirmAccount from "./ConfirmedAccount";
+import AdminRegister from "./register/Register";
 import routes from "../../../configuration/routing/Routes";
 
 //Styles
@@ -30,22 +31,24 @@ const WrappedConfirmAccount = Form.create()(ConfirmAccount);
 
 
 class Login extends Component {
-
-  constructor(props){
-
-    super(props);
-
-    this.state = {
-      customer_register: true
-    };
-
-  };
- 
   
   render() {
-
+    
      return (
       <div className='login'>
+        {
+          (this.props.pathname === routes.admin_register) && 
+          <Layout>
+            <Sider width={400} style={{backgroundColor: "#fff"}}>
+              <Route path={routes.admin_register} component={AdminRegister}/>
+            </Sider>
+            <Layout className={"background-sider"}>
+              <Content className={"background-picture-login"}>
+                <img src={second_background} alt="shopping_cart" className="shop"/>
+              </Content>
+            </Layout>
+          </Layout>     
+        }
         {
           (this.props.pathname === routes.customer_register) && 
           <Layout>
@@ -53,7 +56,7 @@ class Login extends Component {
           </Layout>          
         }
         {
-          (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register) && 
+          (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register && this.props.pathname !== routes.admin_register) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>
                 <Switch>            

@@ -5,7 +5,30 @@ import {adminTypes as C} from '../../types';
 import adminServices from '../../../../services/admin/adminServices';
 
 //Subcomponents
-import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+
+export const registerAdmin = (data) => {
+  return dispatch => {
+    return adminServices.registerAdmin(data)
+      .then(response => {
+        dispatch({
+          type: C.REGISTER_ADMIN,
+          payload: true
+        });
+        console.log("Success", response);
+        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message)
+      }).catch(err => {
+        
+        dispatch({
+          type: C.REGISTER_ADMIN,
+          payload: false,
+        });
+        if(err.data){
+          ERROR_MODAL('Error al registrar el administrador', err.data.message);
+        }
+      });
+  }
+};
 
 export const createCompany = (data) => {
   return dispatch => {

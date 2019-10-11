@@ -27,6 +27,7 @@ export const companyTypes = {
 
 /* ----------------- Company ------------------- */
 export const adminTypes = {
+  REGISTER_ADMIN: "REGISTER_ADMIN",
   CREATE_COMPANY: "CREATE_COMPANY",
   CREATE_CUSTOMER: "CREATE_CUSTOMER",
   CREATE_MULTIPLE_CUSTOMER: "CREATE_MULTIPLE_CUSTOMER",

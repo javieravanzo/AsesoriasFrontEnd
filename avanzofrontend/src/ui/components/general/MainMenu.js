@@ -11,7 +11,6 @@ import icon from "../../assets/authentication/avanzoMenu.jpg";
 //Styles
 import '../../styles/general/mainmenu.css';
 
-
 //Constants
 const { Header } = Layout;
 
@@ -47,8 +46,8 @@ class MainMenu extends Component {
   };
   
   isSignedIn(){
-    if (localStorage.isLogged !== undefined && localStorage.isLogged !== null &&
-        localStorage.isLogged !== 'null' && localStorage.isLogged){
+    if (localStorage.access_token !== undefined && localStorage.access_token !== null &&
+        localStorage.access_token !== 'null' && localStorage.access_token){
       return true;
     } else {
       localStorage.clear();
@@ -60,7 +59,7 @@ class MainMenu extends Component {
     
     let {loggedIn} = this.state;
     //let {role} = this.props;
-    let role = localStorage.role;
+    let role = localStorage.role_id;
 
     return(
       <Layout className="layout" >
@@ -105,7 +104,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 1) && 
+                (parseInt(role,10) === 3) && 
                 <Menu.Item className={"menu-company-home"}>
                   <NavLink to={routes.company_request_management}>
                     <Icon type="file-done"/>Aprobación créditos
@@ -113,7 +112,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 1) && 
+                (parseInt(role,10) === 3) && 
                 <Menu.Item>
                   <NavLink to={routes.company_generate_reports}>
                     <Icon type="file-text"/>Generar informes
@@ -121,13 +120,13 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 1) && 
+                (parseInt(role,10) === 3) && 
                 <Menu.Item>
                   <Icon type="percentage"/>Gestionar créditos
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 0) && 
+                (parseInt(role,10) === 4) && 
                 <Menu.Item className={"menu-key-home"}>
                   <NavLink to={routes.customer}>
                     <Icon type="home"/>Inicio
@@ -135,7 +134,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 0) && 
+                (parseInt(role,10) === 4) && 
                 <Menu.Item>
                   <NavLink to={routes.customer_form_request}>
                     <Icon type="dollar"/>Solicitar préstamo
@@ -143,7 +142,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 0) && 
+                (parseInt(role,10) === 4) && 
                 <Menu.Item>
                   <NavLink to={routes.customer_transactions}>
                     <Icon type="profile"/>Transacciones
@@ -151,7 +150,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 0) && 
+                (parseInt(role,10) === 4) && 
                 <Menu.Item>
                   <NavLink to={routes.customer_review_requests}>
                     <Icon type="schedule"/>Revisar solicitudes

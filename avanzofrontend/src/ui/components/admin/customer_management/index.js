@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 import {Row, Col, Tabs, Icon} from 'antd';
 
 //Components
-import CustomerManagement from './CreateCustomer';
+import CustomerManagement from './create/CreateCustomer';
+import ApproveCustomer from './approve/ApproveCustomer';
 
 //Styles
 import '../../../styles/admin/index.css';
@@ -30,6 +31,9 @@ class Customer_Management extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane tab={<span> <Icon type="usergroup-add" /> Crear cliente </span>} key="1">
               <CustomerManagement/>
+            </TabPane>
+            <TabPane tab={<span> <Icon type="check-circle" /> Aprobar cliente </span>} key="2">
+              <ApproveCustomer/>
             </TabPane>
           </Tabs>
           </Col>

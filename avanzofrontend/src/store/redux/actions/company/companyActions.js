@@ -7,7 +7,7 @@ import companyService from '../../../../services/company/companyServices';
 //Subcomponents
 import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
-export const getAllRequest = () => {
+export const getAllRequest = (companyId) => {
   return dispatch => {
     return companyService.getAllRequest(companyId)
       .then(response => {

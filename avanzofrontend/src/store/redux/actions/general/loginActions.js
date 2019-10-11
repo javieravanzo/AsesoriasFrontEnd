@@ -2,7 +2,7 @@
 import {loginTypes} from '../../types';
 
 //Subcomponents
-import { SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+import { SUCCESS_MODAL, ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 //import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 //Services
@@ -10,40 +10,39 @@ import { initializeClient } from '../../../../services/requestWrapper';
 import loginServices from '../../../../services/general/loginServices'; 
 
 
-function saveLocalStorage(access_token, expires_on, user_name, last_name,
-                          role, roleName, email, userId){
-  console.log(userId);
-  localStorage.setItem('isLogged', true);
+function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName, email, userId){
+  console.log("Entro localStorage");
   localStorage.setItem('access_token', access_token);
   localStorage.setItem('expires_on', expires_on);
   localStorage.setItem('user_name', user_name);
-  localStorage.setItem('last_name', last_name);
-  localStorage.setItem('email', email);
-  //localStorage.setItem('role', role);
+  localStorage.setItem('role_id', roleId);
   localStorage.setItem('role_name', roleName);
+  localStorage.setItem('email', email);  
   localStorage.setItem('user_id', userId);
 
   initializeClient();
 };
 
 export const login = (email, password) => {
-  console.log("entrologin");
   return dispatch => {
     return loginServices.login(email, password)
         .then(response => {
           let data = response.data;
-          let user = response.data.user_info;
-          saveLocalStorage(data.access_token, data.expires_on, user.name, user.lastName,
-                           user.roleId, user.roleName, user.email, user.userId);
+          let user_info = response.data.user_info;
+          saveLocalStorage(data.access_token, data.expires_on, user_info.name, user_info.roleId,
+             user_info.roleName, user_info.email, user_info.userId);
           dispatch({
             type: loginTypes.LOGGING,
-            payload: true
+            payload: true,
           });
+          SUCCESS_MODAL("Acción realizada satisfactoriamente", 
+          "Ha ingresado a nuestra plataforma exitosamente.");
         }).catch(err => {
           dispatch({
             type: loginTypes.LOGGING,
             payload: false,
           });
+          ERROR_MODAL("Error al realizar la acción", err.data.message);
         });
   }
 };

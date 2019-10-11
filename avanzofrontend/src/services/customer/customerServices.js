@@ -1,38 +1,34 @@
 //Subcomponents
 import request from '../requestWrapper';
 
-function getHomeData(customerId){
+function getHomeData(){
+
   return request({
     url: '/Customer/GetInitialData',
     method: 'GET',
-    headers:{
-      customerId: customerId
-    }
   });
 };
 
-function getRequestData(customerId) {
+function getRequestData() {
   
   return request({
     url: '/Customer/GetRequestData',
     method: 'GET',
-    headers:{
-      customerId: customerId
-    }
+
   });
 };
 
 function getOutLayData() {
   
   return request({
-    url: '/Customer/GetOutlayData',
+    url: '/Request/GetOutlayData',
     method: 'GET',
   });
 };
 
 function getOultayDatesList(customerId, split, quantity) {
   return request({
-    url: '/Customer/GetOultayDatesList',
+    url: '/Request/GetOultayDatesList',
     method: 'GET',
     headers:{
       customerId: customerId,
