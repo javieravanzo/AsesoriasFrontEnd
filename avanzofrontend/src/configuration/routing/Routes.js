@@ -11,6 +11,7 @@ export default {
   admin_customer_management: "/admin-customer-management",
   admin_request_management: "/admin-request-management",
   admin_generate_reports: "/admin-generate-reports",
+  admin_prueba: "/admin-prueba",
   
   company_request_management: "/company-request-management",
   company_generate_reports: "/company-generate-reports",
@@ -19,5 +20,7 @@ export default {
   customer_register: "/customer-register",
   customer_transactions: "/customer-transactions",
   customer_form_request: "/customer-form-request",
-  customer_review_requests: "/customer-review-requests"
+  customer_review_requests: "/customer-review-requests",
+  customer_form_edit: "/customer-form-edit",
+  customer_register_image: "/customer-register-image",
 };  

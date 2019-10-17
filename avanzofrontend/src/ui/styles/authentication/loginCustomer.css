@@ -44,12 +44,20 @@
   left: 46%;
   margin: 40px 0px 20px -200px !important;
   position: absolute;
-
   border-radius: 4px;
   background-color:#0000004d;
   box-shadow: 0 6px 10px 7px rgba(0, 0, 0, 0.2) !important;
 }
 
+.card-form{
+  background-color: transparent !important;
+  border: transparent !important;
+  height: 130px !important;
+}
+
+.avatar-uploader > .ant-upload {
+  margin-left: 35px !important;
+}
 
 @media only screen and (max-width:950px) {
 
@@ -72,6 +80,8 @@
     margin-right: 30px !important;
     margin-left: 30px !important;
   }
+
+  
 
 } 
 

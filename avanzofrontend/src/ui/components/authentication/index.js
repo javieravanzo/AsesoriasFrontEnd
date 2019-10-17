@@ -11,6 +11,7 @@ import ForgotPassword from "./password/ForgotPassword";
 import LoginForm from "./LoginForm";
 import Register from "./register/Register";
 import CustomerRegister from "./register/RegisterCustomer";
+import CustomerRegisterImage from "./register/RegisterCustomerImage";
 import ConfirmAccount from "./ConfirmedAccount";
 import routes from "../../../configuration/routing/Routes";
 
@@ -49,13 +50,13 @@ class Login extends Component {
      return (
       <div className='login'>
         {
-          (this.props.pathname === routes.customer_register) && 
+          (this.props.pathname === routes.customer_register_image) && 
           <Layout>
-            <Route path={routes.customer_register} component={CustomerRegister}/>
+            <Route path={routes.customer_register_image} component={CustomerRegisterImage}/>
           </Layout>          
         }
         {
-          (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register) && 
+          (this.props.pathname !== routes.customer_register_image && this.props.pathname !== routes.company_register) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>
                 <Switch>            

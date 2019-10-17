@@ -8,6 +8,7 @@ import CreateCompanyForm from './CreateCompany';
 
 //Styles
 import '../../../styles/admin/index.css';
+import EditCompanyForm from './EditCompany';
 
 //Assets
 
@@ -49,6 +50,9 @@ class Administrator extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane tab={<span> <Icon type="plus-circle" /> Crear empresa </span>} key="1">
               <CreateCompanyForm/>
+            </TabPane>
+            <TabPane tab={<span> <Icon type="edit" /> Editar empresa</span>} key="2">
+              <EditCompanyForm/>
             </TabPane>
           </Tabs>
           </Col>

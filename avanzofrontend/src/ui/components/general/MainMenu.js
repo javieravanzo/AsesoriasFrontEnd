@@ -105,6 +105,14 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
+                (parseInt(role,10) === 2) && 
+                <Menu.Item>
+                  <NavLink to={routes.admin_prueba}>
+                    <Icon type="file"/>Prueba de pestaña
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
                 (parseInt(role,10) === 1) && 
                 <Menu.Item className={"menu-company-home"}>
                   <NavLink to={routes.company_request_management}>
@@ -155,6 +163,14 @@ class MainMenu extends Component {
                 <Menu.Item>
                   <NavLink to={routes.customer_review_requests}>
                     <Icon type="schedule"/>Revisar solicitudes
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (parseInt(role,10) === 0) && 
+                <Menu.Item>
+                  <NavLink to={routes.customer_form_edit}>
+                    <Icon type="edit"/>Modificar perfil
                   </NavLink>
                 </Menu.Item>
               }
