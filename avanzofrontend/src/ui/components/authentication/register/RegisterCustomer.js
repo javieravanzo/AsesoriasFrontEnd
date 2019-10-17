@@ -10,7 +10,7 @@ import routes from '../../../../configuration/routing/Routes';
 import {ERROR_MODAL} from "../../subcomponents/modalMessages";
 
 //Actions
-//import {login} from "../../../store/redux/actions/accountManagement/loginActions";
+import {getDocumentsTypes, register} from "../../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../../styles/authentication/loginCustomer.css';
@@ -43,6 +43,9 @@ class RegisterCustomer extends Component {
 
     this.onSignInClicked = this.onSignInClicked.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
+
+    this.props.getDocumentsTypes();
+
   };
 
   onSignInClicked(){
@@ -56,7 +59,7 @@ class RegisterCustomer extends Component {
         });
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
       }else{
-        this.props.login(values.email, values.password);
+        this.props.register(values);
         this.setState({
           isLogged: true,
         });
@@ -70,13 +73,20 @@ class RegisterCustomer extends Component {
     });
   };
 
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Las dos contraseñas no coinciden');
+    } else {
+      callback();
+    }
+  };
+
   render(){
     
-    let { login, registerOk} = this.state;
-    //let { isLogin } = this.props;
-    //let { role } = localStorage;
+    let { login } = this.state;
+    let { idDocumentsTypes, registerResponse } = this.props;
     const { getFieldDecorator } = this.props.form;
-    //let loading = (isLogin) ? false : (isLogin === false ) ? false : isLoading;
 
     return (
       <div className="div-meeting">
@@ -93,7 +103,7 @@ class RegisterCustomer extends Component {
           <Row gutter={8}>
             <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
-                {getFieldDecorator('text', { initialValue: '',
+                {getFieldDecorator('name', { initialValue: '',
                   rules: [
                     { required: true, message: 'Por favor, ingrese su(s) nombre(s).' }],
                 })(
@@ -104,7 +114,7 @@ class RegisterCustomer extends Component {
             </Col>
             <Col lg={12} md={12} sm={12} xs={12}>
               <FormItem className='home-form-item'>
-                {getFieldDecorator('lastNames', { initialValue: '',
+                {getFieldDecorator('lastName', { initialValue: '',
                   rules: [
                     { required: true, message: 'Por favor, ingrese su(s) apellido(s).' }],
                 })(
@@ -120,11 +130,14 @@ class RegisterCustomer extends Component {
                 {getFieldDecorator('documentType', {
                   rules: [{ required: true, message: 'Por ingrese su tipo de documento' }],
                 })(
-                    <Select placeholder="Tipo de documento">
-                      <Select.Option value={0}>Cédula</Select.Option>
-                      <Select.Option value={1}>Pasaporte</Select.Option>
-                      <Select.Option value={2}>Otro</Select.Option>
-                    </Select>)
+                  <Select placeholder={'Tipo de documento'} allowClear={true} showSearch={true}
+                    notFoundContent={"No hay tipos de documento disponibles"}>
+                      {idDocumentsTypes.map((type) => (
+                        <Select.Option key={type.id} value={type.name}>
+                          {type.name}
+                        </Select.Option>))
+                      }
+                  </Select>)
                 }
                 </FormItem>
             </Col>
@@ -190,7 +203,8 @@ class RegisterCustomer extends Component {
                 {getFieldDecorator('password', { 
                   initialValue: '',
                   rules: [ 
-                    {required: true, message: 'Por favor, ingrese su contraseña.' }],
+                    {required: true, message: 'Por favor, ingrese su contraseña.' }, {min: 6, message: "Mínimo 6 caracteres."},
+                    {pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)^(?=.*[!@#\\$%\\^&.,\\*])', message: "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un caracter especial"}],
                 })(<Input type="password" prefix={<Icon type="lock" className={'icon-prefix'} />}
                           placeholder="Contraseña"/>
                 )}
@@ -200,7 +214,10 @@ class RegisterCustomer extends Component {
               <FormItem className='home-form-item'>
                 {getFieldDecorator('confirmPassword', {
                   initialValue: '',
-                  rules: [{ required: true, message: 'Por favor ingrese el celular' }],
+                  rules: [
+                    {required: true, message: 'Confirme la contraseña'},
+                    {validator: this.compareToFirstPassword}
+                  ],
                 })(<Input type="password" prefix={<Icon type="lock" className={'icon-prefix'} />} 
                              placeholder="Confirme contraseña" className={"input-number"}/>
                 )}
@@ -211,7 +228,7 @@ class RegisterCustomer extends Component {
           <div className={'home-buttons-div'}>
             <Row gutter={24}>
               <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"register-col"}>
-                <Button className={"register-button"}  onClick={() => this.setState({registerOk: true})}
+                <Button className={"register-button"}  onClick={() => this.onSignInClicked()}
                         icon="user-add" 
                         >
                   Registrarse
@@ -247,7 +264,7 @@ class RegisterCustomer extends Component {
             <Redirect to={routes.login}/>
           }
           {
-            (registerOk) && 
+            (JSON.stringify(registerResponse) !== '{}' ? registerResponse.status : false) && 
             <Redirect to={routes.confirm_account}/>
           }
         </div> 
@@ -258,24 +275,24 @@ class RegisterCustomer extends Component {
 }
 
 RegisterCustomer.propTypes = {
-  isLogin: PropTypes.bool,
-  login: PropTypes.func,
+  idDocumentsTypes: PropTypes.array,
+  registerResponse: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
-    isLogin: state.login.isLogin
+    idDocumentsTypes: state.customer.idDocumentsTypes,
+    registerResponse: state.customer.registerResponse,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    /*login: (email, password) => dispatch(login(email, password))*/
+    getDocumentsTypes: () => dispatch(getDocumentsTypes()),
+    register: (data) => dispatch(register(data)),
   }
 };
 
 let WrappedRegisterCustomer = Form.create()(RegisterCustomer);
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedRegisterCustomer);

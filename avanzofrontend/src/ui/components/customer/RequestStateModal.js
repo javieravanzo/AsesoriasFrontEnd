@@ -60,20 +60,20 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-
+    console.log(item);
     return (
-        <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
+        <Badge count={this.defineBadgeName(item.state)} style={{backgroundColor: this.defineButtonClass(item.state), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
                 <b>Número de Solicitud</b> <br/><br/>
-                {"Solicitud No. " + item.key} 
+                {"Solicitud No. " + item.id} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {item.requestState}
+                  <b>Estado</b> <br/><br/>  {item.stateName}
               </Col>
               <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
-                  <b>Fecha de Solicitud</b> <br/><br/> {item.date}
+                  <b>Fecha de Solicitud</b> <br/><br/> {item.requestDate.split("T")[0]}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Valor Total</b> <br/><br/>
@@ -98,24 +98,24 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row>
-                <Steps current={item.requestStateId-1} size="small" className={"request-state-steps"}>
+                <Steps current={item.state-1} size="small" className={"request-state-steps"}>
                   <Step title="Solicitada"/>
                   <Step title="En evaluación"/>
                   {
-                    (item.requestStateId-1 !== 3) && 
+                    (item.state-1 !== 3) && 
                     <Step title="Aprobar RR.HH."/>
                   }
                   {
-                    (item.requestStateId-1 !== 3) && 
+                    (item.state-1 !== 3) && 
                     <Step title="Aprobar Admon."/>
                   }
                   
                   {
-                    (item.requestStateId-1 === 3) && 
+                    (item.state-1 === 3) && 
                     <Step title="Rechazada"/>
                   }
                   {
-                    (item.requestStateId-1 !== 3) && 
+                    (item.state-1 !== 3) && 
                     <Step title="Desembolsada"/>
                   }
                   
@@ -135,15 +135,15 @@ class RequestStateModal extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
                     <b>Cuotas</b><br/><br/>
-                    {item.fee}
+                    {item.split}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Cuenta</b><br/><br/>
-                    {item.accountName}
+                    {item.account}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Tipo de Cuenta</b><br/><br/>
-                    {item.accountType}
+                    {item.accountKind}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Número de cuenta</b><br/><br/>
@@ -152,7 +152,7 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               {
-                item.requestStateId === 3 &&
+                item.state === 3 &&
                 <div className={"request-item-requested-alert"}>
                   <Row>
                     <h3> 
@@ -163,7 +163,7 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.requestStateId === 5 &&
+                item.state === 5 &&
                 <div className={"request-item-requested-confirm"}>
                   <Row>
                     <h3> 
@@ -174,7 +174,7 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.requestStateId === 4 &&
+                item.state === 4 &&
                 <div className={"request-item-requested-reject"}>
                   <Row>
                     <h3> 

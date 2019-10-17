@@ -46,3 +46,11 @@
   margin-top: 5px !important;
   margin-bottom: 5px !important;  
 }
+
+.ant-form-explain{
+  color: #fff !important;
+}
+
+.has-error .ant-input-number, .has-error .ant-time-picker-input, .has-error .ant-input, .has-error .ant-input:hover{
+  border-color: #40a9ff !important;
+}

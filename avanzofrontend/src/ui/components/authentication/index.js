@@ -9,7 +9,6 @@ import ConfirmResetPassword from './password/ConfirmedPassword';
 import ResetPassword from './password/ResetPassword';
 import ForgotPassword from "./password/ForgotPassword";
 import LoginForm from "./LoginForm";
-import Register from "./register/Register";
 import CustomerRegister from "./register/RegisterCustomer";
 import CustomerRegisterImage from "./register/RegisterCustomerImage";
 import ConfirmAccount from "./ConfirmedAccount";
@@ -25,7 +24,6 @@ import second_background from "../../assets/authentication/background2.png";
 //Constants
 const { Content, Sider } = Layout;
 const WrappedNormalLoginStandard = Form.create()(LoginForm);
-const WrappedRegister = Form.create()(Register);
 const WrappedForgotPassword = Form.create()(ForgotPassword);
 const WrappedResetPassword = Form.create()(ResetPassword);
 const WrappedConfirmPassword = Form.create()(ConfirmResetPassword);
@@ -61,7 +59,6 @@ class Login extends Component {
             <Sider width={400} style={{backgroundColor: "#fff"}}>
                 <Switch>            
                   <Route path={routes.login} component={WrappedNormalLoginStandard} />
-                  <Route path={routes.register} component={WrappedRegister} />
                   <Route path={routes.forgot_password} component={WrappedForgotPassword} />
                   <Route path={routes.reset_password} component={WrappedResetPassword} />
                   <Route path={routes.confirm_password} component={WrappedConfirmPassword} />
