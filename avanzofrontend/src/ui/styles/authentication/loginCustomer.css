@@ -39,6 +39,7 @@
 
 .home-form{
   width: 480px;
+  height: 1000px !important;
   padding: 35px 35px 25px 35px !important;
   opacity: 1;
   left: 46%;
@@ -57,6 +58,8 @@
 
 .avatar-uploader > .ant-upload {
   margin-left: 35px !important;
+  width: 50% !important; 
+
 }
 
 @media only screen and (max-width:950px) {
@@ -81,6 +84,17 @@
     margin-left: 30px !important;
   }
 
+  .button-edit{
+    width: 90%;
+    padding: 50px 40px 30px 40px !important;
+    left: 1% !important;
+    right: 1% !important;
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    margin-right: 30px !important;
+    margin-left: 3000px !important;
+  }
+
   
 
 } 
@@ -89,6 +103,10 @@
 
   .background2{
     display: flex !important;
+  }
+
+  .title-edit{
+    margin-top:-100 !important;
   }
 
   .sign-in-background{
@@ -142,6 +160,10 @@
 
 .home-form-item{
   margin-bottom: 8px !important;
+}
+
+.bottom-upload{
+  width: 50% ! important;
 }
 
 .react-tel-input{

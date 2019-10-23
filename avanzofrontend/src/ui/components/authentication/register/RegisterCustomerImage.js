@@ -11,8 +11,10 @@ import {ERROR_MODAL} from "../../subcomponents/modalMessages";
 import {Link} from "react-router-dom";
 
 //Actions
-//import {login} from "../../../store/redux/actions/accountManagement/loginActions";
+
 import {SUCCESS_MODAL} from "../../subcomponents/modalMessages";
+
+import {registerImage} from "../../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../../styles/authentication/loginCustomer.css';
@@ -43,11 +45,11 @@ function beforeUpload(file) {
   }
   return isJpgOrPng && isLt2M;
 }
+const { TextArea } = Input;
 
 class RegisterCustomerImage extends Component {
 
   constructor (props) {
-
 
     super(props);
     
@@ -55,16 +57,16 @@ class RegisterCustomerImage extends Component {
       isLoading: false,
       isLogged: false,
       captchaSolved: true,
-      email: null,
+      email: '',
+      password: '',
       meeting: null,
       login: null,
       registerOk: null,
       rol: null,
       isLogin: false,
-
     };
 
-    this.onSignInClicked = this.onSignInClicked.bind(this);
+    this.onSignInClickedImage = this.onSignInClickedImage.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.changeRol = this.changeRol.bind(this);
   };
@@ -74,13 +76,21 @@ class RegisterCustomerImage extends Component {
     this.setState({ role: role});
   };
 
+  onChangeEmail(email) {
+    this.setState({ email: email.target.value })
+  };
+
+  onChangePassword(password) {
+    this.setState({ password: password.target.value })
+  };
+
   sendMessage = (e) => {
-    localStorage.setItem('isLogged', true);
-    this.setState({
-      isLogin: true,
-    });
-    SUCCESS_MODAL("Acción realizada satisfactoriamente", 
-      "Ha ingresado a nuestra plataforma exitosamente.")
+  localStorage.setItem('isLogged', true);
+  this.setState({
+    isLogin: true,
+  });
+  SUCCESS_MODAL("Acción realizada satisfactoriamente", 
+    "Ha ingresado a nuestra plataforma exitosamente.")
   };
 
   onChange = () => {
@@ -90,7 +100,7 @@ class RegisterCustomerImage extends Component {
     });
   };
 
-  onSignInClicked(){
+  onSignInClickedImage(){
     this.setState({
       isLoading: true,
     });
@@ -99,9 +109,9 @@ class RegisterCustomerImage extends Component {
         this.setState({
           isLoading: false,
         });
-        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
+        ERROR_MODAL("Error al realizar el registro", "Por favor ingrese todos los campos requeridos.");
       }else{
-        this.props.login(values.email, values.password);
+        this.props.registerImage(values);
         this.setState({
           isLogged: true,
         });
@@ -137,8 +147,11 @@ class RegisterCustomerImage extends Component {
 
 
   render(){
-    const { TextArea } = Input;
+
     const { isLogin, role } = this.state;
+    const { imageUrl } = this.state;
+    let { idDocumentsTypes, registerResponseImage } = this.props;
+
     const props = {
       name: 'file',
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -163,13 +176,11 @@ class RegisterCustomerImage extends Component {
         <div className="ant-upload-text">Cargar foto</div>
       </div>
     );
-    const { imageUrl } = this.state;
+
+
     
     let { login, registerOk} = this.state;
-    //let { isLogin } = this.props;
-    //let { role } = localStorage;
     const { getFieldDecorator } = this.props.form;
-    //let loading = (isLogin) ? false : (isLogin === false ) ? false : isLoading;
 
     return (
       <div className="div-meeting">
@@ -183,10 +194,10 @@ class RegisterCustomerImage extends Component {
               <img className='home-logo' alt='home-logo' src={logo} />
             </div>
           </div>
-          <Card className="card-form" >
-          <Row gutter={8}>
-            <Col lg={12} md={12} sm={12} xs={12}>
-              <FormItem className='home-form-item'>
+
+            <Row gutter={8}>
+              <Col lg={12} md={12} sm={12} xs={12}>
+                <FormItem className='home-form-item'>
                 {getFieldDecorator('text', { initialValue: '',
                   rules: [
                     { required: true, message: 'Por favor, ingrese su(s) nombre(s).' }],
@@ -194,10 +205,10 @@ class RegisterCustomerImage extends Component {
                     <Input prefix={<Icon type="user" className={'icon-prefix'} />}
                           placeholder="Nombres"/>
                 )}
-              </FormItem>
-            </Col>
-            <Col lg={12} md={12} sm={12} xs={12}>
-              <FormItem className='home-form-item'>
+                </FormItem>
+              </Col>
+              <Col lg={12} md={12} sm={12} xs={12}>
+               <FormItem className='home-form-item'>
                 {getFieldDecorator('lastNames', { initialValue: '',
                   rules: [
                     { required: true, message: 'Por favor, ingrese su(s) apellido(s).' }],
@@ -205,12 +216,12 @@ class RegisterCustomerImage extends Component {
                     <Input prefix={<Icon type="user" className={'icon-prefix'} />}
                           placeholder="Apellidos"/>
                 )}
-              </FormItem>
-            </Col>
-          </Row> 
-          <Row gutter={8}>
-            <Col lg={12} md={12} sm={12} xs={12}>
-            <FormItem className='home-form-item'>
+                </FormItem>
+               </Col>
+            </Row> 
+            <Row gutter={8}>
+             <Col lg={12} md={12} sm={12} xs={12}>
+               <FormItem className='home-form-item'>
                 {getFieldDecorator('documentType', {
                   rules: [{ required: true, message: 'Por ingrese su tipo de documento' }],
                 })(
@@ -221,66 +232,88 @@ class RegisterCustomerImage extends Component {
                     </Select>)
                 }
                 </FormItem>
-            </Col>
-            <Col lg={12} md={12} sm={12} xs={12}>
-              <FormItem className='home-form-item'>
+             </Col>
+              <Col lg={12} md={12} sm={12} xs={12}>
+                <FormItem className='home-form-item'>
                 {getFieldDecorator('documentNumber', {
                   initialValue: '',
                   rules: [{ required: true, message: 'Por favor ingrese su número de cédula' }],
                 })(
                     <InputNumber prefix={<Icon type="idcard" className={'icon-prefix'} />}
                                  placeholder="Número de documento" className={"input-number"}/>
+                
                 )}
-              </FormItem>
-            </Col>
-          </Row>
-          </Card>
+                </FormItem>
+             </Col>
+            </Row>
+            
+            <Row gutter={8}>
+              <Col lg={12} md={12} sm={12} xs={12}>
+              <FormItem className='bottom-upload'>
+
+                 {getFieldDecorator('picture', { initialValue: '',
+                  rules: [ 
+                    {required: true, message: 'Por favor, cargue una foto.' }],
+                 })(
+                  <Upload 
+                  name="avatar"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  beforeUpload={beforeUpload}
+                  onChange={this.handleChange}
+                  >
+                 {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%'}} /> : uploadButton}
+                  </Upload>
+                  
+                )}
+                </FormItem>
+                 
+               </Col>
+               <Col lg={12} md={12} sm={12} xs={12}>
+               <FormItem >
+                 {getFieldDecorator('document', { initialValue: '',
+                  rules: [ 
+                    {required: true, message: 'Por favor, cargue el comprobante' }],
+                   })(
+                  <Upload {...props} 
+                  className="avatar-uploader"
+                  >
+                  <Button>
+                  <Icon type="upload" /> Cargar comprobante
+                  </Button>
+                  </Upload>
+                 )}
+                </FormItem>
+              </Col>
+               </Row>
+              
+
+
+
 
           <Card className="card-form" >
-          <Row gutter={8}>
-            <Col lg={12} md={12} sm={12} xs={12}>
-            <Upload 
-            name="avatar"
-            listType="picture-card"
-            className="avatar-uploader"
-            showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            beforeUpload={beforeUpload}
-            onChange={this.handleChange}
-            >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%'}} /> : uploadButton}
-      </Upload>
-            </Col>
-            <Col lg={12} md={12} sm={12} xs={12}>
-            <Upload {...props} >
-            <Button>
-            <Icon type="upload" /> Cargar comprobante
-            </Button>
-            </Upload>
-            </Col>
-          </Row> 
-
-          </Card>
-
-          <Card className="card-form" >
-          <Row gutter={8}>
-            <Col lg={24} md={24} sm={24} xs={24}>
-            <h2  >Firma</h2>
-            <TextArea rows={4} />
-            
-
-            </Col>
-            
-          </Row> 
-
+            <Row gutter={8}>
+              <Col lg={24} md={24} sm={24} xs={24}>
+                <h2  >Firma</h2>
+                <FormItem className='home-form-item'>
+                  {getFieldDecorator('firm', { initialValue: '',
+                  rules: [ 
+                    {required: true, message: 'Por favor, digite una firma' }],
+                  })(
+                  <TextArea rows={4}/>
+                  )}
+                </FormItem>
+              </Col>
+            </Row> 
           </Card>
           
-          <Card className="card-form" >
-          <Col lg={24} md={24} sm={24} xs={24}>
+          <Card className="card-form" >        
           <h2>Seleccionar rol</h2>
-          <FormItem style={{marginTop:-25}}>
+            <FormItem style={{marginTop:-25}}>
                 {getFieldDecorator('role', {
-                  rules: [{ required: true, message: 'Por ingrese su rol' }],
+                  rules: [{ required: true, message: 'Por favor seleccione un rol' }],
                 })(
                     <Select className={"form-select-content"} placeholder="Rol" onChange={(e) => this.changeRol(e)}
                     style={{marginLeft:40}}
@@ -290,39 +323,77 @@ class RegisterCustomerImage extends Component {
                       <Select.Option value={2}>Administrador</Select.Option>
                     </Select>)
                 }
-                </FormItem>
-                  </Col>
-                  </Card>
+            </FormItem>
+            <FormItem>
+                {getFieldDecorator('emailusu', { initialValue: '',
+                  rules: [
+                  {type: "email", message: "Ingrese un correo válido, por favor."},
+                  {required: true, message: 'Por favor, ingrese su correo electrónico.'}],
+                  })(
+                  <Input prefix={<Icon type="user" className={"field-icon"} />} placeholder="Email" 
+                  onChange={(value) => this.onChangeEmail(value)}/>
+                  )}
+            </FormItem>
+            <FormItem>
+                  {getFieldDecorator('passwordusu', {
+                  rules: [{ required: true, message: 'Por ingrese su contraseña' }],
+                  })(
+                  <Input prefix={<Icon type="lock" className={"field-icon"} />} type="password" placeholder="Contraseña"
+                  onChange={(value) => this.onChangePassword(value)}/>)
+                  }
+            </FormItem>
 
-                  <FormItem className={"submit"}>
-                  <Button type="primary" htmlType="submit" className="login-form-button" 
-                          onClick={() => this.sendMessage()}>
-                    <p className={"login-button-text"}>Iniciar Sesión</p>
-                  </Button>
-                  <div className={"for-links"}>
-                    <Link to={routes.forgot_password}>
-                      <p className={"url-form"}>¿Olvidó su contraseña?</p>
-                    </Link>
-                    <Link to={routes.customer_register_image}>
-                      <p className={"url-form"}>¿Desea Registrarse?</p>
-                    </Link>
-                  </div>
-                </FormItem>
+            <div className={'home-buttons-div'}>
+            <Row gutter={24}>
+              <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"register-col"}>
+                <Button className={"register-button"}  onClick={() => this.onSignInClickedImage()}
+                        icon="user-add">
+                  Registrarse
+                </Button>
+              </Col>
+              <Col lg={12} md={12} sm={12} xs={24} xxs={24} className={"login-col"}>
+
+
+             <Button type="primary" className={"login-button"} onClick={() => this.sendMessage()}
+                      icon="login" loading={false}
+                      >
+                    Iniciar sesión
+                </Button>
+
+             
+                <Button type="primary" className={"login-button"} onClick={() => this.setState({login: true})}
+                      icon="login" loading={false}
+                      >
+                    Iniciar sesión
+                </Button>
+              </Col>
+            </Row>            
+            </div>
+          </Card>
 
           <Modal
             title={"Términos y Condiciones"}
             visible={this.state.visibleTermModal}
             onCancel={() => this.setState({visibleTermModal: false})}
             footer={
-              <Button key='submit' type='primary' onClick={() => this.setState({visibleTermModal: false})}>
-                Aceptar
-              </Button>}
+            <Button key='submit' type='primary' onClick={() => this.setState({visibleTermModal: false})}>
+            Aceptar
+            </Button>}
           >
-            <div>
-              <p dangerouslySetInnerHTML={{ __html: this.props.terms }}/>
-            </div>
+          <div>
+          <p dangerouslySetInnerHTML={{ __html: this.props.terms }}/>
+          </div>
           </Modal>
-        </Form>    
+          </Form>    
+        {
+            (JSON.stringify(registerResponseImage) !== '{}' ? registerResponseImage.status : false) && 
+            <Redirect to={routes.confirm_account}/>
+          }
+
+          {
+          (login) && 
+            <Redirect to={routes.login}/>
+          }
 
         {(isLogin && (role===0)) &&
           <Redirect to={routes.customer}/>
@@ -343,22 +414,22 @@ class RegisterCustomerImage extends Component {
 RegisterCustomerImage.propTypes = {
   isLogin: PropTypes.bool,
   login: PropTypes.func,
+  registerResponseImage: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
-    isLogin: state.login.isLogin
+    isLogin: state.login.isLogin,
+    registerResponseImage: state.customer.registerResponseImage
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    /*login: (email, password) => dispatch(login(email, password))*/
+    registerImage: (data) => dispatch(registerImage(data)),
   }
 };
 
 let WrappedRegisterCustomerImage = Form.create()(RegisterCustomerImage);
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedRegisterCustomerImage);

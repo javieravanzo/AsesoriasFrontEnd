@@ -48,13 +48,21 @@ class Login extends Component {
      return (
       <div className='login'>
         {
-          (this.props.pathname === routes.customer_register_image) && 
+          (this.props.pathname === routes.customer_register) && 
           <Layout>
-            <Route path={routes.customer_register_image} component={CustomerRegisterImage}/>
+            <Route path={routes.customer_register} component={CustomerRegister}/>
+
           </Layout>          
         }
         {
-          (this.props.pathname !== routes.customer_register_image && this.props.pathname !== routes.company_register) && 
+          (this.props.pathname === routes.customer_register_image) && 
+          <Layout>
+            <Route path={routes.customer_register_image} component={CustomerRegisterImage}/>
+
+          </Layout>          
+        }
+        {
+          (this.props.pathname !==  routes.customer_register && this.props.pathname !== routes.customer_register_image && this.props.pathname !== routes.company_register) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>
                 <Switch>            
@@ -72,8 +80,12 @@ class Login extends Component {
               </Content>
             </Layout>
           </Layout>
-        }        
+        }              
       </div>
+
+      
+
+      
     );
   }
 }

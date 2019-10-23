@@ -17,8 +17,17 @@ function register(data) {
   });
 };
 
+function registerImage(data) {
+  
+  return request({
+    url: '/Account/Register_Image',
+    method: 'POST',
+    data: data
+  });
+};
+
 const registerService = {
-  register, getDocumentTypes
+  register, getDocumentTypes,registerImage
 };
 
 export default registerService;

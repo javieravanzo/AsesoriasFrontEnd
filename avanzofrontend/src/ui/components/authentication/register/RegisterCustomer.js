@@ -24,6 +24,13 @@ import signInBackground2 from  '../../../assets/authentication/background.png';
 
 const FormItem = Form.Item;
 
+/*
+                      {idDocumentsTypes.map((type) => (
+                        <Select.Option key={type.id} value={type.name}>
+                          {type.name}
+                        </Select.Option>))
+                      }*/
+
 class RegisterCustomer extends Component {
 
   constructor (props) {
@@ -132,11 +139,10 @@ class RegisterCustomer extends Component {
                 })(
                   <Select placeholder={'Tipo de documento'} allowClear={true} showSearch={true}
                     notFoundContent={"No hay tipos de documento disponibles"}>
-                      {idDocumentsTypes.map((type) => (
-                        <Select.Option key={type.id} value={type.name}>
-                          {type.name}
-                        </Select.Option>))
-                      }
+                    
+                      <Select.Option value={0}>Cédula</Select.Option>
+                      <Select.Option value={1}>Pasaporte</Select.Option>
+                      <Select.Option value={2}>Otro</Select.Option>
                   </Select>)
                 }
                 </FormItem>

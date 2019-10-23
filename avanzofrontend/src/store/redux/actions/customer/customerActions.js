@@ -26,7 +26,7 @@ export const getDocumentsTypes = () => {
   }
 };
 
-export const register = (data) => {
+export const register = (data) => { 
   return dispatch => {
     return registerService.register(data)
       .then(response => {
@@ -40,6 +40,42 @@ export const register = (data) => {
           payload: err,
         });
         ERROR_MODAL('Error al registrar el usuario', err);
+      });
+  }
+};
+
+export const registerImage = (data) => { 
+  return dispatch => {
+    return registerService.registerImage(data)
+      .then(response => {
+        dispatch({
+          type: C.REGISTER_IMAGE,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.REGISTER,
+          payload: err,
+        });
+        ERROR_MODAL('Error al registrar el usuario con imagen', err);
+      });
+  }
+};
+
+export const editCustomer= (data) => { 
+  return dispatch => {
+    return customerService.editCustomer(data)
+      .then(response => {
+        dispatch({
+          type: C.EDIT_CUSTOMER,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.EDIT_CUSTOMER,
+          payload: err,
+        });
+        ERROR_MODAL('Error al modificar el perfil', err);
       });
   }
 };

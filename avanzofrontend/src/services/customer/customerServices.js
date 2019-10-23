@@ -11,6 +11,16 @@ function getHomeData(customerId){
   });
 };
 
+function editCustomer(data) {
+  
+  return request({
+    url: '/Account/Edit_Customer',
+    method: 'POST',
+    data: data
+  });
+};
+
+
 function getRequestData(customerId) {
   
   return request({
@@ -84,7 +94,8 @@ function getAllRequest(customerId){
 
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList,
-  generateDocuments, createRequest, getAllTransactions, getAllRequest
+  generateDocuments, createRequest, getAllTransactions, getAllRequest,
+  editCustomer
 };
 
 export default customerService;

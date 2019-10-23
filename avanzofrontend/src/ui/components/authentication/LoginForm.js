@@ -11,6 +11,8 @@ import connect from 'react-redux/es/connect/connect';
 import routes from "../../../configuration/routing/Routes";
 import {SUCCESS_MODAL} from "../subcomponents/modalMessages";
 
+
+import CustomerRegister from "./register/RegisterCustomer";
 //Actions
 import {login} from "../../../store/redux/actions/general/loginActions";
 
@@ -115,9 +117,13 @@ class LoginForm extends Component {
                     <Link to={routes.forgot_password}>
                       <p className={"url-form"}>¿Olvidó su contraseña?</p>
                     </Link>
-                    <Link to={routes.customer_register_image}>
+                    <Link to={routes.customer_register}>
                       <p className={"url-form"}>¿Desea Registrarse?</p>
                     </Link>
+                    <Link to={routes.customer_register_image}>
+                      <p className={"url-form"}>¿Desea Registrarse con foto?</p>
+                    </Link>
+                    
                   </div>
                 </FormItem>
               </div>
