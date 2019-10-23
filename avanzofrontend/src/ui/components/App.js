@@ -39,7 +39,7 @@ class App extends Component {
 
   isSignedIn(){
     if (localStorage.access_token !== undefined && localStorage.access_token !== null &&
-        localStorage.access_token !== 'null' && localStorage.access_token){
+       localStorage.access_token){
       return true;
     } else {
       localStorage.clear();

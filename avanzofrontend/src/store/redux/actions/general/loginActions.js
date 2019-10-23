@@ -23,9 +23,11 @@ function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName,
   initializeClient();
 };
 
+//Exports login function.
 export const login = (email, password) => {
   return dispatch => {
     return loginServices.login(email, password)
+        //Response
         .then(response => {
           let data = response.data;
           let user_info = response.data.user_info;
@@ -37,6 +39,7 @@ export const login = (email, password) => {
           });
           SUCCESS_MODAL("Acción realizada satisfactoriamente", 
           "Ha ingresado a nuestra plataforma exitosamente.");
+        //Manejo error
         }).catch(err => {
           dispatch({
             type: loginTypes.LOGGING,

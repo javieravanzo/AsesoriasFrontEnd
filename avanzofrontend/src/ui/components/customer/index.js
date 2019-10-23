@@ -105,73 +105,73 @@ class Customer extends Component {
     }else{
       return (
         <div className={"customer-div"}>
-        <Row>
-          <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
-            <Card className={"customer-card"}>
-              <Row className={"customer-row-card"}>
-                <Col xxl={13} lg={13} md={13} sm={24} xs={24}>
-                  <Typography >
-                    <Typography.Title level={3} className={"customer-title"}>
-                      ¡Bienvenido, Juan Camilo!
-                    </Typography.Title>       
-                  </Typography>
-                </Col>      
-                <Col xxl={11} lg={11} md={11} sm={24} xs={24}>
-                  <Card className={"customer-credit-card"}>
-                    <Row gutter={4}>
-                      <Col span={8}>
-                        <Statistic title={<h3>Cupo disponible</h3>} value={(partialQuantity)} prefix={"$"}/>
-                      </Col>
-                      <Col span={8}>
-                        <Statistic title={<h3>Cupo usado</h3>} value={(maximumAmount-partialQuantity)} prefix={"$"}/>
-                      </Col>
-                      <Col span={8}>
-                        <Statistic title={<h3>Cupo total</h3>} value={maximumAmount} prefix={"$"}/>
-                      </Col>
-                    </Row>    
-                  </Card>
-                </Col>
-              </Row>
-              <Row className={"row-table"}>
-                <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
-                  <h3>Recientes transacciones...</h3>
-                </Col>
-                <Col>
-                  <Divider className={"second-divider"}/>
+          <Row>
+            <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
+              <Card className={"customer-card"}>
+                <Row className={"customer-row-card"}>
+                  <Col xxl={13} lg={13} md={13} sm={24} xs={24}>
+                    <Typography>
+                      <Typography.Title level={3} className={"customer-title"}>
+                        ¡Bienvenido, {localStorage.getItem('user_name') +"!"}
+                      </Typography.Title>       
+                    </Typography>
+                  </Col>      
+                  <Col xxl={11} lg={11} md={11} sm={24} xs={24}>
+                    <Card className={"customer-credit-card"}>
+                      <Row gutter={4}>
+                        <Col span={8}>
+                          <Statistic title={<h3>Cupo disponible</h3>} value={(partialQuantity)} prefix={"$"}/>
+                        </Col>
+                        <Col span={8}>
+                          <Statistic title={<h3>Cupo usado</h3>} value={(maximumAmount-partialQuantity)} prefix={"$"}/>
+                        </Col>
+                        <Col span={8}>
+                          <Statistic title={<h3>Cupo total</h3>} value={maximumAmount} prefix={"$"}/>
+                        </Col>
+                      </Row>    
+                    </Card>
+                  </Col>
+                </Row>
+                <Row className={"row-table"}>
+                  <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
+                    <h3>Recientes transacciones...</h3>
+                  </Col>
+                  <Col>
+                    <Divider className={"second-divider"}/>
                     <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'} 
                           size={'small'} scroll={{x:'500px'|true}} 
                           pagination={{ itemRender: itemRender, showSizeChanger: true,
                           pageSizeOptions: ["5", "10", "15", "20"] }}/>
-                </Col>
-              </Row>
-              <Row className={"row-request"}>
-                <Col xxl={14} lg={14} md={14} sm={12} xs={24}>
-                  <Button className={"request-button-none"} onClick={() => this.setState({loan: true})}>
-                    <h3><Icon type={"plus-circle"} className={"request-button"}/> 
-                      <span className={"request-title"}> Solicitar préstamo</span>
-                    </h3>
-                  </Button>
-                </Col>
-                <Col xxl={9} lg={9} md={9} sm={10} xs={24} className={"request-pending-col"}>
-                  <Button className={"request-pending-button"} onClick={() => this.setState({request: true})}>
-                    <h3>
-                      <span className={"request-pendings"}>Tienes {pendingRequests} solicitud(es) pendientes...</span>
-                    </h3>
-                  </Button>
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-        {
-          loan &&
-          <Redirect to={routes.customer_form_request}/>
-        }
-        {
-          request &&
-          <Redirect to={routes.customer_review_requests}/> 
-        }
-      </div>
+                  </Col>
+                </Row>
+                <Row className={"row-request"}>
+                  <Col xxl={14} lg={14} md={14} sm={12} xs={24}>
+                    <Button className={"request-button-none"} onClick={() => this.setState({loan: true})}>
+                      <h3><Icon type={"plus-circle"} className={"request-button"}/> 
+                        <span className={"request-title"}> Solicitar préstamo</span>
+                      </h3>
+                    </Button>
+                  </Col>
+                  <Col xxl={9} lg={9} md={9} sm={10} xs={24} className={"request-pending-col"}>
+                    <Button className={"request-pending-button"} onClick={() => this.setState({request: true})}>
+                      <h3>
+                        <span className={"request-pendings"}>Tienes {pendingRequests} solicitud(es) pendientes...</span>
+                      </h3>
+                    </Button>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
+          {
+            loan &&
+            <Redirect to={routes.customer_form_request}/>
+          }
+          {
+            request &&
+            <Redirect to={routes.customer_review_requests}/> 
+          }
+        </div>
       );
     }
   }

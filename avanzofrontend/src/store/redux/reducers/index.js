@@ -8,7 +8,7 @@ import companyReducer from "./company/companyReducer";
 import adminReducer from "./admin/adminReducer";
 
 export default combineReducers({
-  login: loginReducer,
+  loginReducer: loginReducer,
   customer: customerReducer,
   company: companyReducer,
   admin: adminReducer,

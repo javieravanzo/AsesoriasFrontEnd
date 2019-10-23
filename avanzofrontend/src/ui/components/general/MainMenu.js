@@ -163,15 +163,15 @@ class MainMenu extends Component {
             </Menu>
         </Header>
         <Modal
-              title="Cerrar sesión"
-              visible={this.state.visible}
-              onOk={this.logOut}
-              okText={"Confirmar"}
-              onCancel={this.handleCancelModal}
-              cancelText={"Cancelar"}
-              width={400}
-              className={"log-out-modal"}>
-            <p>¿Confirma que desea cerrar sesión?</p>
+            title="Cerrar sesión"
+            visible={this.state.visible}
+            onOk={this.logOut}
+            okText={"Confirmar"}
+            onCancel={this.handleCancelModal}
+            cancelText={"Cancelar"}
+            width={400}
+            className={"log-out-modal"}>
+          <p>¿Confirma que desea cerrar sesión?</p>
         </Modal>
         {
           !loggedIn &&
