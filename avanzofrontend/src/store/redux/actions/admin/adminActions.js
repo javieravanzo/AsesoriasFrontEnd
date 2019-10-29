@@ -97,7 +97,25 @@ export const getAllRequest = (userId) => {
           type: C.GET_REQUEST_LIST,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes para aprobar', err.data);
+        ERROR_MODAL('Error al traer la lista de solicitudes', err.data);
+      });
+  }
+};
+
+export const getAllRequestToApprove = () => {
+  return dispatch => {
+    return adminServices.getAllRequestToApprove()
+      .then(response => {
+        dispatch({
+          type: C.GET_REQUEST_TO_APPROVE,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REQUEST_TO_APPROVE,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes para aprobar', err.data.message);
       });
   }
 };

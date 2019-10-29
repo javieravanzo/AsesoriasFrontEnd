@@ -38,8 +38,6 @@ class LoginForm extends Component {
       loginError: null,
     };
 
-    this.changeRol = this.changeRol.bind(this);
-
   };
 
   onChangeEmail(email) {
@@ -48,11 +46,6 @@ class LoginForm extends Component {
 
   onChangePassword(password) {
     this.setState({ password: password.target.value })
-  };
-
-  changeRol(role){
-    localStorage.setItem('role', role);
-    this.setState({ role: role});
   };
 
   sendMessage = (e) => {
@@ -73,6 +66,7 @@ class LoginForm extends Component {
     const { getFieldDecorator } = this.props.form;
     let role = parseInt(localStorage.getItem("role_id"), 10);
     let isLogged = this.props.isLogin !== undefined ? this.props.isLogin : false;
+
 
     return (
       <div>

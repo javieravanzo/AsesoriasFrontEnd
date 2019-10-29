@@ -54,8 +54,16 @@ function getAllRequestToOutLay(userId){
   });
 };
 
+function getAllRequestToApprove(){
+  return request({
+    url: '/Request/GetToApproveByAdmin',
+    method: 'GET'
+  });
+};
+
 const adminService = {
-  registerAdmin, createCompany, createCustomer, createMultipleCustomer, getAllRequest, getAllRequestToOutLay
+  registerAdmin, createCompany, createCustomer, createMultipleCustomer,
+  getAllRequest, getAllRequestToOutLay, getAllRequestToApprove
 };
 
 export default adminService;

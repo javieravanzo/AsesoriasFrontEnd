@@ -40,15 +40,15 @@ class Router extends Component {
             <Route path={routes.customer_form_request} component={Customer_RequestForm}/>
             <Route path={routes.customer_review_requests} component={Customer_ListRequest}/>
             { 
-              parseInt(localStorage.role, 10) === 4 &&
+              parseInt(localStorage.role_id, 10) === 4 &&
               <Route render = {()=><Redirect to={routes.customer}/>}/>
             }
             { 
-              parseInt(localStorage.role, 10) === 3 &&
+              parseInt(localStorage.role_id, 10) === 3 &&
               <Route render = {()=><Redirect to={routes.company_generate_reports}/>}/>
             }
             { 
-              parseInt(localStorage.role, 10) === 2 &&
+              parseInt(localStorage.role_id, 10) === 2 &&
               <Route render = {()=><Redirect to={routes.admin_company_management}/>}/>
             }
         </Switch>

@@ -1,7 +1,7 @@
 //Libraries
 import React, {Component} from 'react';
 import {Form, Layout} from 'antd';
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, withRouter} from "react-router-dom";
 import {Redirect} from "react-router";
 
 //Subcomponents
@@ -76,8 +76,8 @@ class Login extends Component {
           </Layout>
         }        
       </div>
-    );
+     );
   }
 }
 
-export default Login;
+export default withRouter(Login);

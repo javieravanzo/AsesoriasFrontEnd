@@ -25,7 +25,7 @@ class Information extends Component {
       <Row className={"general-row"}>
         <Row className={"row-information"}>
           <Col  xxl={4} lg={4} md={8} sm={8} xs={10} className={"name-col"}>
-          <span className="information-name">Hola, Juan Camilo</span>
+          <span className="information-name">Hola, {localStorage.user_name}</span>
           </Col>
           <Col xxl={16} lg={16} md={8} sm={8} xs={4} className={"page-col"}>
           <span className="information-page"><a className={"page-link"} href="http://www.avanzo.co" target="_blank" rel="noopener noreferrer">www.avanzo.co</a></span>

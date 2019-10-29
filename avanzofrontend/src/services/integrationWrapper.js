@@ -10,7 +10,7 @@ let client = null;
 export const initializeClient = function () {
   client = axios.create({
     baseURL: BaseURL,
-    headers: localStorage.access_token ? { 'Authorization': 'Bearer ' + localStorage.access_token } : {}
+    headers: { 'Authorization': 'Bearer ' + localStorage.integration_token }
   });
 };
 

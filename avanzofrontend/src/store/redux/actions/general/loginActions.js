@@ -11,7 +11,7 @@ import loginServices from '../../../../services/general/loginServices';
 
 
 function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName, email, userId){
-  console.log("Entro localStorage");
+
   localStorage.setItem('access_token', access_token);
   localStorage.setItem('expires_on', expires_on);
   localStorage.setItem('user_name', user_name);
@@ -32,7 +32,7 @@ export const login = (email, password) => {
           let data = response.data;
           let user_info = response.data.user_info;
           saveLocalStorage(data.access_token, data.expires_on, user_info.name, user_info.roleId,
-             user_info.roleName, user_info.email, user_info.userId);
+             user_info.roleName, user_info.email, user_info.idUser);
           dispatch({
             type: loginTypes.LOGGING,
             payload: true,

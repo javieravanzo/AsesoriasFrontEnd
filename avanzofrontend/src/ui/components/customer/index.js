@@ -91,7 +91,7 @@ class Customer extends Component {
   render() {
 
     let {homeDataResponse} = this.props;
-    console.log("HDR", homeDataResponse);
+    //console.log("HDR", homeDataResponse);
     let {loan, request} = this.state;
     let maximumAmount = homeDataResponse.maximumAmount;
     let partialQuantity = homeDataResponse.partialCapacity;
@@ -139,7 +139,7 @@ class Customer extends Component {
                   <Col>
                     <Divider className={"second-divider"}/>
                     <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'} 
-                          size={'small'} scroll={{x:'500px'|true}} 
+                          size={'small'} scroll={{x:'500px'|true}} locale={{emptyText: 'No se han realizado transacciones hasta ahora.'}}
                           pagination={{ itemRender: itemRender, showSizeChanger: true,
                           pageSizeOptions: ["5", "10", "15", "20"] }}/>
                   </Col>

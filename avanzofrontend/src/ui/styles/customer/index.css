@@ -37,6 +37,11 @@
   border-color: black !important;
 }
 
+.new-table{
+  margin-bottom: 10px !important;
+  height: 180px !important; 
+}
+
 .row-table{
   width: 95% !important;
   margin: auto !important;

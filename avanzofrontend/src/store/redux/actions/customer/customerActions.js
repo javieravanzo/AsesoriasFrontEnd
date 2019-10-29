@@ -65,9 +65,9 @@ export const getHomeData = () => {
   };
 };
 
-export const getRequestData = (customerId) => {
+export const getRequestData = (customerId, token) => {
   return dispatch => {
-    return customerService.getRequestData(customerId)
+    return customerService.getRequestData(customerId, token)
       .then(response => {
         dispatch({
           type: C.GET_REQUEST_DATA,
@@ -83,9 +83,9 @@ export const getRequestData = (customerId) => {
   };
 };  
 
-export const getOutlayData = () => {
+export const getOutlayData = (customerId, token) => {
   return dispatch => {
-    return customerService.getOutLayData()
+    return customerService.getOutLayData(customerId, token)
       .then(response => {
         dispatch({
           type: C.GET_OUTLAY_DATA,
@@ -145,12 +145,13 @@ export const createRequest = (data) => {
           type: C.CREATE_REQUEST,
           payload: response.data
         });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
         dispatch({
           type: C.CREATE_REQUEST,
           payload: err,
         });
-        ERROR_MODAL('Error al crear la solicitud de préstamo.', err);
+        ERROR_MODAL('Error al crear la solicitud de préstamo.', err.data.message);
       });
   }
 };
@@ -186,7 +187,7 @@ export const getAllRequest = (customerId) => {
           type: C.GET_REQUEST_LIST,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes .', err.data.message);
+        ERROR_MODAL('Error al traer la lista de solicitudes .', err.data);
       });
   };
 };  

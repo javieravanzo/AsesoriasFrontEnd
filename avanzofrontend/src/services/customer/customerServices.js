@@ -1,5 +1,6 @@
 //Subcomponents
 import request from '../requestWrapper';
+import integrationRequest from '../integrationWrapper';
 
 function getHomeData(){
 
@@ -9,21 +10,41 @@ function getHomeData(){
   });
 };
 
-function getRequestData() {
-  
-  return request({
-    url: '/Customer/GetRequestData',
-    method: 'GET',
+function getRequestData(customerId, token) {
 
-  });
+  if (localStorage.access_token){
+    return request({
+      url: '/Customer/GetRequestData',
+      method: 'GET',
+    });
+  }else{   
+    return integrationRequest({
+      url: '/Customer/GetRequestData',
+      method: 'GET',
+      headers: { 
+        'Authorization': 'Bearer ' + token 
+      }
+    });
+  }
+  
 };
 
-function getOutLayData() {
+function getOutLayData(customerId, token) {
   
-  return request({
-    url: '/Request/GetOutlayData',
-    method: 'GET',
-  });
+  if (localStorage.access_token){
+    return request({
+      url: '/Request/GetOutlayData',
+      method: 'GET',
+    });
+  }else{
+    return integrationRequest({
+      url: '/Request/GetOutlayData',
+      method: 'GET',
+      headers: { 
+        'Authorization': 'Bearer ' + token 
+      }
+    });
+  }  
 };
 
 function getOultayDatesList(customerId, split, quantity) {
@@ -51,10 +72,21 @@ function generateDocuments(customerId, split, quantity) {
 };
 
 function createRequest(data){
+
+  var bodyFormData = new FormData();
+
+  bodyFormData.append('file', data.file);
+  bodyFormData.append('quantity', data.quantity);
+  bodyFormData.append('split', data.split);
+  bodyFormData.append('moyen', data.moyen);
+  bodyFormData.append('accountType', data.accountType);
+  bodyFormData.append('accountNumber', data.accountNumber);
+  bodyFormData.append('isBank', data.isBank);  
+
   return request({
     url: '/Request/Create',
     method: 'POST',
-    data: data
+    data: bodyFormData
   });
 };
 

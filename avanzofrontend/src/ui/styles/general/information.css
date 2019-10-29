@@ -50,3 +50,11 @@
 .page-col{
   text-align: center !important;
 }
+
+@media only screen and (max-width:500px) {
+  
+  .general-row{
+    display: none !important;
+  }
+  
+}

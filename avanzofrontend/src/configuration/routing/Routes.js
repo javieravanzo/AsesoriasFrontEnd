@@ -1,4 +1,8 @@
 export default {
+  integration_form: "/integration-form/:name/:lastName/:identificationId/:birthDate/:expeditionDate/:email/:phoneNumber",
+  integration_transactions: "/integration-transactions",
+  integrations_requests: "/integrations-requests",
+
   login: "/login",
   forgot_password: "/forgot_password",
   reset_password: "/confirm_password",
@@ -18,5 +22,5 @@ export default {
   customer_register: "/customer-register",
   customer_transactions: "/customer-transactions",
   customer_form_request: "/customer-form-request",
-  customer_review_requests: "/customer-review-requests"
+  customer_review_requests: "/customer-review-requests", 
 };  

@@ -60,20 +60,20 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-    console.log(item);
+    //console.log(item);
     return (
         <Badge count={this.defineBadgeName(item.state)} style={{backgroundColor: this.defineButtonClass(item.state), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
                 <b>Número de Solicitud</b> <br/><br/>
-                {"Solicitud No. " + item.id} 
+                {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {item.stateName}
+                  <b>Estado</b> <br/><br/>  {item.idRequestState}
               </Col>
               <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
-                  <b>Fecha de Solicitud</b> <br/><br/> {item.requestDate.split("T")[0]}
+                  <b>Fecha de Solicitud</b> <br/><br/> {item.createdDate.split("T")[0]}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Valor Total</b> <br/><br/>

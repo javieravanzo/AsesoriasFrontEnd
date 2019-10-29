@@ -1,15 +1,21 @@
 //Libraries
 import React, { Component } from 'react';
 import {Divider, Layout} from "antd";
-import {withRouter} from 'react-router-dom';
+import {withRouter, Route, Switch,} from 'react-router-dom';
 
 //Components
 import MainMenu from "../components/general/MainMenu";
 import Login from "../components/authentication/index";
 import Information from "../components/general/Information";
+import CustomerRegister from "./authentication/register/RegisterCustomer";
+
+//IntegrationSubcomponents
+import IFormRequest from "./integration/IFormRequest";
+import ITransactions from "./integration/ITransactions";
 
 //Subcomponents
 import Router from "../components/general/Router";
+import routes from "../../configuration/routing/Routes";
 
 //Styles
 import '../styles/App.css';
@@ -52,7 +58,23 @@ class App extends Component {
     let signedIn = this.isSignedIn();
 
     if(!signedIn){
-      return( <Login pathname={this.props.location.pathname}/> );
+      if (this.props.location.pathname === routes.login || this.props.location.pathname === routes.forgot_password ||
+        this.props.location.pathname === routes.reset_password || this.props.location.pathname === routes.confirm_password ||
+        this.props.location.pathname === routes.confirm_account){
+          return( <Login pathname={this.props.location.pathname}/> );
+        }else{
+          return(
+            <div>           
+              <Layout className={'back-home'}>
+                <Switch>            
+                  <Route exact path={routes.integration_form} component={IFormRequest}/>
+                  <Route exact path={routes.integration_transactions} component={ITransactions} />
+                  <Route render = {()=><CustomerRegister/>}/>
+                </Switch>
+              </Layout>
+            </div>
+          );
+        }          
     }else{
       return(
           <div>

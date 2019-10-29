@@ -36,7 +36,7 @@ class ForgotPassword extends Component {
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
+        //console.log(values);
         let email = values.email;
         this.props.forgetPassword(email);
       }

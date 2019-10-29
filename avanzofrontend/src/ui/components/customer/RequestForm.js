@@ -14,7 +14,7 @@ import FieldTitle from '../subcomponents/FieldTitle';
 import routes from '../../../configuration/routing/Routes';
 
 //Actions
-import { getRequestData, getOutlayData, getOultayDatesList } from "../../../store/redux/actions/customer/customerActions";
+import { getRequestData, getOutlayData, getOultayDatesList, createRequest } from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-form.css';
@@ -81,8 +81,8 @@ class LoanRequest extends Component {
       trimmedDataURL: null
     };    
 
-    this.props.getRequestData(parseInt(localStorage.user_id, 10));
-    this.props.getOutlayData(parseInt(localStorage.user_id, 10));
+    this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : " " );
+    this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : " ");
 
   };
 
@@ -110,23 +110,6 @@ class LoanRequest extends Component {
 
   sendReportInfo = () => {
     this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
-  };
-
-  onConfirmRequest = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err){
-        this.setState({
-          isLoading: false,
-        });
-        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
-      }else{
-        console.log(values);
-      }     
-    });
-    //SUCCESS_MODAL("Acción realizada exitosamente", "El préstamo ha sido solicitado correctamente.");
-    /*this.setState({
-      loan: true
-    });*/
   };
 
   handleSliderChange = (e) => {
@@ -216,8 +199,6 @@ class LoanRequest extends Component {
 
   openDocument = () => {
 
-    console.log("entro");
-
     let route = "https://drive.google.com/open?id=1vlyOU8r-f31ucKc2fvwlcoT570VCtSRi";
       
     if (route !== null) {
@@ -241,18 +222,23 @@ class LoanRequest extends Component {
         });
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
       }else{
-        console.log(values);
         let data = {
+          file: this.state.trimmedDataURL,
           quantity: values.quantity,
-          split: values
+          split: this.state.fee,
+          moyen: values.moyen,
+          accountType: this.state.money_wallet ? null : values.account_type,
+          accountNumber: values.account_number,
+          isBank: this.state.money_wallet ? false :  true,        
         }
+        //console.log(data);
+        this.props.createRequest(data);
       }     
     });
   };
 
   render(){
 
-    console.log("Image", this.state.trimmedDataURL);
     let {fee, loan, sliderValue, bank_account, money_wallet} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
@@ -303,10 +289,11 @@ class LoanRequest extends Component {
                     <FieldTitle title={"Monto requerido"}/>
                     <FormItem>
                       {getFieldDecorator('quantity',
-                        {rules: [
+                        {initialValue: this.state.sliderValue, 
+                         rules: [
                           {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                         ]})(
-                            <InputNumber className={"form-input-number"} max={maximumAmount} value={this.state.sliderValue}
+                            <InputNumber className={"form-input-number"} max={maximumAmount}
                                   formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
                                   placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
                         )
@@ -321,7 +308,7 @@ class LoanRequest extends Component {
                       <Col xxl={14} lg={14} md={8} sm={8} xs={14}>
                         <FormItem>
                           {getFieldDecorator('quantity',
-                            {rules: [
+                            {initialValue: this.state.sliderValue, rules: [
                               {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                             ]})(
                               <Slider max={300000} min={80000} step={10000}
@@ -329,7 +316,7 @@ class LoanRequest extends Component {
                                         function (d) { 
                                           return format(d);
                                         }} 
-                                      onChange={this.handleSliderChange} style={{width: "90%"}} value={sliderValue} />
+                                      onChange={this.handleSliderChange} style={{width: "90%"}} />
                               )
                             }  
                           </FormItem>
@@ -345,7 +332,7 @@ class LoanRequest extends Component {
                     <span className={"text-fees"}>*La cantidad máxima de cuotas depende de los ciclos de pago en tu empresa.</span>
                     <FormItem className={"fees-item"}>
                       {getFieldDecorator('fees',
-                        {rules: [
+                        {initialValue: maximumSplit,  rules: [
                           {required: false, message: 'Por favor ingresa un número de cuotas'}
                         ]})(
                           <Row>
@@ -377,7 +364,7 @@ class LoanRequest extends Component {
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                         <b>
                           <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={interestValue} thousandSeparator={'.'}
+                                            value={interestValue*sliderValue} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -387,7 +374,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={adminValue} thousandSeparator={'.'}
+                                            value={adminValue*sliderValue} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -400,7 +387,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b style={{color: "#cecece"}}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={Math.round(sliderValue+adminValue+interestValue)} thousandSeparator={'.'}
+                                            value={Math.round((sliderValue*adminValue)+(sliderValue*interestValue)+sliderValue)} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -423,7 +410,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b style={{color: "#42a4ff"}}><CurrencyFormat  displayType={'text'} style={{width: "100%", fontSize: "15px"}}
-                                            value={Math.round(sliderValue+adminValue+interestValue+otherCollectionValue)} thousandSeparator={'.'}
+                                            value={Math.round((sliderValue*adminValue)+(sliderValue*interestValue)+sliderValue)} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                         </Col>
                       </Row>
@@ -462,12 +449,12 @@ class LoanRequest extends Component {
                 }
                 <br/>
                 <Row>
-                  <Col lg={1}>
+                  <Col lg={1} md={3} sm={5} xs={4}>
                     <Button className={"step-one"}>
                       2.
                     </Button>
                   </Col>
-                  <Col lg={23}>
+                  <Col lg={23} md={21} sm={19} xs={20}>
                     <div>
                       <h3>Información de desembolso</h3>
                       <Divider className={"form-request-divider"}/>
@@ -541,7 +528,7 @@ class LoanRequest extends Component {
                       <Col xs={24} sm={24} md={10} lg={10}>
                       <FieldTitle title={"Número de cuenta"}/>
                         <FormItem >
-                          {getFieldDecorator('account',
+                          {getFieldDecorator('account_number',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un número de cuenta' }
                             ]})(
@@ -558,7 +545,7 @@ class LoanRequest extends Component {
                       <Col xs={12} sm={12} md={7} lg={7} >
                         <FieldTitle title={"Billetera virtual"}/>
                         <FormItem>
-                          {getFieldDecorator('account_type',
+                          {getFieldDecorator('moyen',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un tipo de billetera'}
                             ]})(
@@ -591,12 +578,12 @@ class LoanRequest extends Component {
                    
                
                   <Row>
-                    <Col lg={1}>
+                    <Col lg={1} md={3} sm={5} xs={4}>
                       <Button className={"step-one"}>
                         3.
                       </Button>
                     </Col>
-                    <Col lg={23}>
+                    <Col lg={23} md={21} sm={19} xs={20}>
                       <div>
                         <h3>Documentos de la solicitud</h3>
                         <Divider className={"form-request-divider"}/>
@@ -682,9 +669,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getRequestData: (customerId) => dispatch(getRequestData(customerId)),
-    getOutlayData: (customerId) => dispatch(getOutlayData(customerId)),
+    getRequestData: (customerId, token) => dispatch(getRequestData(customerId, token)),
+    getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
     getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),
+    createRequest: (data) => dispatch(createRequest(data)),
   }
 };
 
