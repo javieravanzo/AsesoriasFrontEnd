@@ -12,6 +12,7 @@ const initialState={
   documentsReponse: {},
   transactionList: [],
   requestList: {},
+  requestResponse: null,
 };
 
 export default function customerReducer(state = initialState, action){
@@ -62,6 +63,16 @@ export default function customerReducer(state = initialState, action){
         ...state,
         requestList: action.payload,
       };
+    case C.CREATE_REQUEST:
+      return{
+        ...state,
+        requestResponse: action.correct
+      }
+    case C.RESET_VALUES:
+      return{
+        ...state,
+        requestResponse: null
+      }
     default:
       return state;
   }

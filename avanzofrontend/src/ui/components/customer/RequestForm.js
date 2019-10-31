@@ -239,7 +239,7 @@ class LoanRequest extends Component {
 
   render(){
 
-    let {fee, loan, sliderValue, bank_account, money_wallet} = this.state;
+    let {fee, sliderValue, bank_account, money_wallet} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
@@ -496,7 +496,7 @@ class LoanRequest extends Component {
                             ]})(
                               <Select onChange={this.changeBankName} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                                 {bankInfo.map((bank, i) =>(
-                                  <Select.Option value={bank.idOutLays} key={i}>
+                                  <Select.Option value={bank.bankName} key={i}>
                                     {bank.bankName}
                                   </Select.Option>
                                 ))
@@ -515,7 +515,7 @@ class LoanRequest extends Component {
                             ]})(
                               <Select placeholder={"Tipo de cuenta"} showSearch={true} onChange={this.changeBankType}>
                                 {bankTypeAccountInfo.map((accountType, i) =>(
-                                  <Select.Option value={accountType.idAccountTypes} key={i}>
+                                  <Select.Option value={accountType.accountTypeName} key={i}>
                                     {accountType.accountTypeName}
                                   </Select.Option>
                                 ))
@@ -551,7 +551,7 @@ class LoanRequest extends Component {
                             ]})(
                               <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
                                 {walletInfo.map((wallet, i) =>(
-                                  <Select.Option value={wallet.idWallet} key={i}>
+                                  <Select.Option value={wallet.walletName} key={i}>
                                     {wallet.walletName}
                                   </Select.Option>
                                 ))
@@ -564,7 +564,7 @@ class LoanRequest extends Component {
                       <Col xs={24} sm={24} md={10} lg={10}>
                       <FieldTitle title={"Número de celular"}/>
                         <FormItem >
-                          {getFieldDecorator('account',
+                          {getFieldDecorator('account_number',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un número de celular' }
                             ]})(
@@ -640,7 +640,7 @@ class LoanRequest extends Component {
               </Form>
             </div>
             {
-              loan && 
+              this.props.requestResponse && 
               <Redirect to={routes.customer}/>
             }
         </Row>
@@ -657,6 +657,7 @@ RequestForm.propTypes = {
   requestDataResponse: PropTypes.object,
   outlayDataResponse: PropTypes.object,
   outlayDatesList: PropTypes.array,
+  requestResponse: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
@@ -664,6 +665,7 @@ const mapStateToProps = (state) => {
     requestDataResponse: state.customer.requestDataResponse,
     outlayDataResponse: state.customer.outlayDataResponse,
     outlayDatesList: state.customer.outlayDatesList,
+    requestResponse: state.customer.requestResponse,
   }
 };
 

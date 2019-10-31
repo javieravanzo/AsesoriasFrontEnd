@@ -137,19 +137,30 @@ export const generateDocuments = (customerId, split, quantity) => {
   };
 };  
 
+export const resetValue = () => {
+  return dispatch => {
+    dispatch({
+      type: C.RESET_VALUES
+    });
+  }
+}
+
 export const createRequest = (data) => {
   return dispatch => {
     return customerService.createRequest(data)
       .then(response => {
         dispatch({
           type: C.CREATE_REQUEST,
-          payload: response.data
+          payload: response.data,
+          correct: true,
         });
         SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+        dispatch(resetValue());
       }).catch(err => {
         dispatch({
           type: C.CREATE_REQUEST,
           payload: err,
+          correct: false
         });
         ERROR_MODAL('Error al crear la solicitud de préstamo.', err.data.message);
       });

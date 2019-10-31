@@ -1,6 +1,12 @@
+.main-skeleton{
+  margin: auto;
+  width: 90% !important;
+}
+
 .mini-loading{
   text-align: center;
   margin: 20px;
+  height: 400px !important;
 }
 
 .main-loading{

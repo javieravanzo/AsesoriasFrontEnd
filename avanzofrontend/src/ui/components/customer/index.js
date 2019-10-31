@@ -1,13 +1,13 @@
 //Libraries
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {Card, Row, Col, Table, Divider, Statistic, Typography, Icon, Button} from 'antd';
+import {Card, Row, Col, Table, Divider, Statistic, Typography, Icon, Button, Skeleton} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import routes from '../../../configuration/routing/Routes';
-import MiniLoading from '../subcomponents/MiniLoading';
+//import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
 import {getHomeData} from "../../../store/redux/actions/customer/customerActions";
@@ -100,7 +100,7 @@ class Customer extends Component {
 
     if(JSON.stringify(homeDataResponse) === '{}'){
       return (
-        <MiniLoading visible={true}/> 
+        <Skeleton active paragraph={{ rows: 15 }} className={"main-skeleton"}/>        
       );
     }else{
       return (

@@ -18,6 +18,7 @@ export const customerTypes = {
   CREATE_REQUEST: "CREATE_REQUEST",
   GET_TRANSACTIONS_LIST: "GET_TRANSACTIONS_LIST",
   GET_REQUEST_LIST: "GET_REQUEST_LIST",
+  RESET_VALUES: "RESET_VALUES",
 };
 
 /* ----------------- Company ------------------- */

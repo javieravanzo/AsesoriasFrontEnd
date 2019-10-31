@@ -70,7 +70,7 @@ class RequestStateModal extends Component {
                 {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {item.idRequestState}
+                  <b>Estado</b> <br/><br/>  {item.stateName}
               </Col>
               <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {item.createdDate.split("T")[0]}
@@ -98,7 +98,7 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row>
-                <Steps current={item.state-1} size="small" className={"request-state-steps"}>
+                <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
                   <Step title="Solicitada"/>
                   <Step title="En evaluación"/>
                   {
@@ -131,7 +131,8 @@ class RequestStateModal extends Component {
               <Row>
                 <Col xs={12} sm={12} md={8} lg={4} >
                   <b>Monto</b><br/><br/>
-                  {item.quantity} 
+                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                      value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
                     <b>Cuotas</b><br/><br/>
@@ -143,7 +144,7 @@ class RequestStateModal extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Tipo de Cuenta</b><br/><br/>
-                    {item.accountKind}
+                    {item.accountType !== "null" ? item.accountType : "-" }
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Número de cuenta</b><br/><br/>

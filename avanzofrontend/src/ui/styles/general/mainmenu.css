@@ -30,9 +30,14 @@
   margin-left: 20px !important;
 }
 
-.menu-key-home{
-  margin-left: 30% !important;
-  margin-right: 10px;
+.menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request{
+  float: right !important;
+  margin-top: 5px !important;
+}
+
+.menu-logout{
+  margin-top: 5px !important;
+  float: right !important;
 }
 
 .menu-admin-home{
@@ -61,13 +66,26 @@
 
 @media only screen and (max-width: 1027px) {
 
-  .menu-key-home{
-    margin-left: 20% !important;
-    margin-right: 10px;
-  }
+
 
   .menu-key-logout{
     margin-left: 10px !important;
+  }
+
+}
+
+@media only screen and (max-width: 500px) {
+
+  .menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request, .menu-logout{
+    float: none !important;
+  }
+
+  .menu-key-logout{
+    margin-left: 0px !important;
+  }
+
+  .menu-logo{
+    margin-right: 140px !important;
   }
 
 }

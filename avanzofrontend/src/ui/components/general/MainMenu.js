@@ -125,25 +125,13 @@ class MainMenu extends Component {
                   <Icon type="percentage"/>Gestionar créditos
                 </Menu.Item>
               }
+              <Menu.Item className={"menu-logout"} onClick={() => this.setState({visible: true})}>
+                <Icon type="poweroff" />Cerrar sesión
+              </Menu.Item>
+              
               {
                 (parseInt(role,10) === 4) && 
-                <Menu.Item className={"menu-key-home"}>
-                  <NavLink to={routes.customer}>
-                    <Icon type="home"/>Inicio
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item>
-                  <NavLink to={routes.customer_form_request}>
-                    <Icon type="dollar"/>Solicitar préstamo
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item>
+                <Menu.Item className={"menu-user-transactions"}>
                   <NavLink to={routes.customer_transactions}>
                     <Icon type="profile"/>Transacciones
                   </NavLink>
@@ -151,15 +139,28 @@ class MainMenu extends Component {
               }
               {
                 (parseInt(role,10) === 4) && 
-                <Menu.Item>
+                <Menu.Item className={"menu-user-request"}>
                   <NavLink to={routes.customer_review_requests}>
                     <Icon type="schedule"/>Revisar solicitudes
                   </NavLink>
                 </Menu.Item>
               }
-              <Menu.Item onClick={() => this.setState({visible: true})}>
-                <Icon type="poweroff" />Cerrar sesión
-              </Menu.Item>
+              {
+                (parseInt(role,10) === 4) && 
+                <Menu.Item className={"menu-user-loan"}>
+                  <NavLink to={routes.customer_form_request}>
+                    <Icon type="dollar"/>Solicitar préstamo
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (parseInt(role,10) === 4) && 
+                <Menu.Item className={"menu-user-home"}>
+                  <NavLink to={routes.customer}>
+                    <Icon type="home"/>Inicio
+                  </NavLink>
+                </Menu.Item>
+              }
             </Menu>
         </Header>
         <Modal
