@@ -20,6 +20,7 @@ import routes from "../../configuration/routing/Routes";
 //Styles
 import '../styles/App.css';
 import 'antd/dist/antd.css';
+import { WARNING_MODAL } from './subcomponents/modalMessages';
 
 //Constants
 const { Footer } = Layout;
@@ -46,9 +47,17 @@ class App extends Component {
   isSignedIn(){
     if (localStorage.access_token !== undefined && localStorage.access_token !== null &&
        localStorage.access_token){
-      return true;
-    } else {
-      localStorage.clear();
+      let expireTime = new Date(localStorage.expires_on);
+      let today = new Date();
+      //console.log("Dates", expireTime, today);
+      if(today<=expireTime){
+        return true;
+      }else{
+        localStorage.clear();
+        WARNING_MODAL("Advertencia", "La sesión ha caducado. Por favor, vuelve a iniciar sesión.")
+        return false;
+      }
+    }else{
       return false;
     }
   };

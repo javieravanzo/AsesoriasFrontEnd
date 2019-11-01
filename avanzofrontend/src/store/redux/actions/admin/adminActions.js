@@ -15,7 +15,7 @@ export const registerAdmin = (data) => {
           type: C.REGISTER_ADMIN,
           payload: true
         });
-        console.log("Success", response);
+        //console.log("Success", response);
         SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message)
       }).catch(err => {
         
