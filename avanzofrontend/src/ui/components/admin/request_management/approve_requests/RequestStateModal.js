@@ -2,10 +2,16 @@
 import React, {Component} from 'react';
 import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
 import CurrencyFormat from "react-currency-format";
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
 import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+
+//Actions
+import {getAllRequestToApprove} from "../../../../../store/redux/actions/admin/adminActions";
+import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
 const Step = Steps.Step;
@@ -62,9 +68,16 @@ class RequestStateModal extends Component {
     }
   };
 
-  onConfirmRequest = () => {
+  onConfirmRequest = (idRequest) => {
+    let data = {
+      requestId: idRequest,
+      approve: true,
+    };
+    console.log("D", data);
+    this.props.approveorRejectRequest(data);
     SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
     this.setState({approve_modal: false});
+  
   };
 
   onCancelRequest = () => {
@@ -92,13 +105,13 @@ class RequestStateModal extends Component {
                 </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col">
                 <b>Número de Solicitud</b> <br/><br/>
-                {"Solicitud No. " + item.key} 
+                {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {item.requestState}
+                  <b>Estado</b> <br/><br/>  {item.idRequestState}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Fecha de Solicitud</b> <br/><br/> {item.date}
+                  <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Valor Total</b> <br/><br/>
@@ -128,7 +141,7 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row>
-                <Steps current={item.requestStateId-1} size="small" className={"request-state-steps"}>
+                <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
                   <Step title="Solicitada"/>
                   <Step title="En análisis"/>
                   <Step title="Aprobar RR.H H."/>
@@ -147,7 +160,7 @@ class RequestStateModal extends Component {
               <Row>
                 <Col xs={12} sm={12} md={8} lg={4} >
                   <b>Nombres</b><br/><br/>
-                  {item.name} 
+                  {item.lastName} 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
                   <b>Apellidos</b><br/><br/>
@@ -159,7 +172,7 @@ class RequestStateModal extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Cargo</b><br/><br/>
-                    {"Desarrollador"}
+                    {item.profession}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Dirección</b><br/><br/>
@@ -175,11 +188,11 @@ class RequestStateModal extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
                     <b>Cuotas</b><br/><br/>
-                    {item.fee}
+                    {item.split}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Cuenta</b><br/><br/>
-                    {item.accountName}
+                    {item.account}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Tipo de Cuenta</b><br/><br/>
@@ -215,7 +228,7 @@ class RequestStateModal extends Component {
                   okText={"Aprobar"}
                   cancelText={"Cancelar"}
                   width={450}
-                  onOk={() => this.onConfirmRequest()}
+                  onOk={() => this.onConfirmRequest(item.idRequest)}
                   onCancel={() => this.setState({approve_modal: false})}>
                     <div>
                       ¿Está seguro de realizar la aprobación del crédito? Esta acción será irreversible.                  
@@ -232,4 +245,21 @@ class RequestStateModal extends Component {
 
 }
 
-export default RequestStateModal;
+RequestStateModal.propTypes = {
+  customerList: PropTypes.array,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    customerList: state.admin.customerList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllRequestToApprove: () => dispatch(getAllRequestToApprove( )),
+    approveorRejectRequest: (data) => dispatch(approveorRejectRequest(data)),    
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestStateModal);

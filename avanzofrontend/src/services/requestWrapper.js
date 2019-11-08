@@ -8,9 +8,10 @@ import BaseURL from "./BaseURL";
 let client = null;
 
 export const initializeClient = function () {
+  console.log("LS", localStorage.access_token);
   client = axios.create({
     baseURL: BaseURL,
-    headers: localStorage.access_token ? { 'Authorization': 'Bearer ' + localStorage.access_token } : {}
+    headers: { 'Authorization': 'Bearer ' + localStorage.access_token }
   });
 };
 

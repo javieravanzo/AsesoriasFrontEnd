@@ -12,7 +12,7 @@ export default function integrationReducer(state = initialState, action){
       return{
         ...state,
         integrationRegisterResponse: action.payload,
-        integrationToken: action.token
+        integrationToken: action.token,
       };
     default:
       return state;

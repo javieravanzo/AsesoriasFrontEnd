@@ -15,10 +15,8 @@ export const registerAdmin = (data) => {
           type: C.REGISTER_ADMIN,
           payload: true
         });
-        //console.log("Success", response);
         SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message)
       }).catch(err => {
-        
         dispatch({
           type: C.REGISTER_ADMIN,
           payload: false,
@@ -36,12 +34,15 @@ export const createCompany = (data) => {
       .then(response => {
         dispatch({
           type: C.CREATE_COMPANY,
-          payload: response.data
+          payload: response.data,
+          correct: true,
         });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
         dispatch({
           type: C.CREATE_COMPANY,
           payload: err,
+          correct: false,
         });
         ERROR_MODAL('Error al crear la empresa', err.data);
       });
@@ -134,6 +135,43 @@ export const getAllRequestToOutLay = (userId) => {
           payload: err,
         });
         ERROR_MODAL('Error al traer la lista de solicitudes para desembolsar', err.data);
+      });
+  }
+};
+
+
+export const getAllCompanies = ( ) => {
+  return dispatch => {
+    return adminServices.getAllCompanies( )
+      .then(response => {
+        dispatch({
+          type: C.GET_ALL_COMPANIES,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_ALL_COMPANIES,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de empresas', err.data);
+      });
+  }
+};
+
+export const getAllCustomers = ( ) => {
+  return dispatch => {
+    return adminServices.getAllCustomers( )
+      .then(response => {
+        dispatch({
+          type: C.GET_ALL_CUSTOMERS,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_ALL_CUSTOMERS,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de clientes', err.data);
       });
   }
 };

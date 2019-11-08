@@ -26,8 +26,10 @@ export const companyTypes = {
   GET_REQUEST_LIST: "GET_REQUEST_LIST",
 };
 
-/* ----------------- Company ------------------- */
+/* ----------------- Admin ------------------- */
 export const adminTypes = {
+  GET_ALL_CUSTOMERS: "GET_ALL_CUSTOMERS",
+  GET_ALL_COMPANIES: "GET_ALL_COMPANIES",
   REGISTER_ADMIN: "REGISTER_ADMIN",
   CREATE_COMPANY: "CREATE_COMPANY",
   CREATE_CUSTOMER: "CREATE_CUSTOMER",

@@ -81,8 +81,8 @@ class LoanRequest extends Component {
       trimmedDataURL: null
     };    
 
-    this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : " " );
-    this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : " ");
+    this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
+    this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
 
   };
 
@@ -232,12 +232,15 @@ class LoanRequest extends Component {
           isBank: this.state.money_wallet ? false :  true,        
         }
         //console.log(data);
-        this.props.createRequest(data);
+        this.props.createRequest(data, this.props.location.state ? this.props.location.state.token : undefined);
       }     
     });
   };
 
   render(){
+
+    console.log( this.props.requestDataResponse);
+    //console.log( "TK", this.props.location.state.token);
 
     let {fee, sliderValue, bank_account, money_wallet} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
@@ -674,7 +677,7 @@ const mapDispatchToProps = (dispatch) => {
     getRequestData: (customerId, token) => dispatch(getRequestData(customerId, token)),
     getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
     getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),
-    createRequest: (data) => dispatch(createRequest(data)),
+    createRequest: (data, token) => dispatch(createRequest(data, token)),
   }
 };
 

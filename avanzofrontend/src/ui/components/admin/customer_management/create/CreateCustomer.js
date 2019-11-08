@@ -229,7 +229,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={8} >
                         <FieldTitle title={"Fecha de expedición"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_genus',
+                          {getFieldDecorator('expedition_data',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un correo electrónico'}
                             ]})(

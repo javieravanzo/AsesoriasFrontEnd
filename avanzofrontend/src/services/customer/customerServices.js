@@ -12,7 +12,9 @@ function getHomeData(){
 
 function getRequestData(customerId, token) {
 
-  if (localStorage.access_token){
+  //console.log(localStorage.access_token);
+
+  if (token === undefined){
     return request({
       url: '/Customer/GetRequestData',
       method: 'GET',
@@ -31,7 +33,7 @@ function getRequestData(customerId, token) {
 
 function getOutLayData(customerId, token) {
   
-  if (localStorage.access_token){
+  if (token === undefined){
     return request({
       url: '/Request/GetOutlayData',
       method: 'GET',
@@ -71,7 +73,7 @@ function generateDocuments(customerId, split, quantity) {
   });
 };
 
-function createRequest(data){
+function createRequest(data, token){
 
   var bodyFormData = new FormData();
 
@@ -83,11 +85,22 @@ function createRequest(data){
   bodyFormData.append('accountNumber', data.accountNumber);
   bodyFormData.append('isBank', data.isBank);  
 
-  return request({
-    url: '/Request/Create',
-    method: 'POST',
-    data: bodyFormData
-  });
+  if (token === undefined){
+    return request({
+      url: '/Request/Create',
+      method: 'POST',
+      data: bodyFormData
+    });
+  }else{  
+    return integrationRequest({
+      url: '/Request/Create',
+      method: 'POST',
+      data: bodyFormData,
+      headers: { 
+        'Authorization': 'Bearer ' + token 
+      }
+    });
+  }
 };
 
 function getAllTransactions(customerId){

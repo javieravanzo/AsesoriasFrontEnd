@@ -1,14 +1,19 @@
 //Libraries
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 import { Form, Select, Button, Col, Row, Collapse, InputNumber, Input} from 'antd';
+import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../../subcomponents/FieldTitle';
+import routes from '../../../../configuration/routing/Routes';
 
 //Styles
 import '../../../styles/admin/create-company.css';
-import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
+import { SUCCESS_MODAL, ERROR_MODAL } from '../../subcomponents/modalMessages';
 
+//Actions
+import {createCompany}  from "../../../../store/redux/actions/admin/adminActions";
 
 //Constants
 //import {Roles} from "../../../lib/generalUtils/constants";
@@ -40,15 +45,64 @@ class CreateCompany extends Component {
   };
 
   handleSalaryRate = () => {
-    this.setState({
-      salary_rate: true,
+    this.props.form.validateFields((err, values) => {
+      console.log(values.companyRate);
+      if(values.companyRate === "Mensual"){
+        this.setState({
+          salary_rate: false,
+        });
+      }else{
+        this.setState({
+          salary_rate: true,
+        });
+      }
+    });
+  };
+
+  createCompany = () => {
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
+      }else{
+        let data = {
+          address: values.address,
+          approveHumanResources: values.approveHumanResources,
+          companyFirstDate: values.companyFirstDate,
+          companyRate: values.companyRate,
+          companySecondDate: values.companySecondDate,
+          defaultAmount: values.defaultAmount,
+          economyActivity: values.economyActivity,
+          email: values.email,
+          maximumSplit: values.maximumSplit,
+          nit: values.nit,
+          socialReason: values.socialReason,
+          password: values.password,
+          companyMembers: [
+            {
+              memberName: values.memberName + "-" + values.memberLastName,
+              memberId: values.memberId,
+              profession: values.profession,
+              phoneNumber: values.phoneNumber,
+              memberEmail: values.memberEmail,
+            },
+            {
+              memberName: values.representantName + "-" + values.representantLastName,
+              memberId: values.representantId,
+              profession: values.representantProfession,
+              phoneNumber: values.representantPhone,
+              memberEmail: values.representantEmail,
+            }
+          ],               
+        };
+        this.props.createCompany(data);
+      }
     });
   };
 
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {salary_rate} = this.state;
+    //let {salary_rate} = this.state;
 
     return (
       <div className={"company-div"}>
@@ -61,7 +115,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Razón social"}/>
                         <FormItem>
-                          {getFieldDecorator('socialstatus',
+                          {getFieldDecorator('socialReason',
                             {rules: [
                               {required: true, message: 'Por favor ingresa una razón social'}
                             ]})(
@@ -70,6 +124,7 @@ class CreateCompany extends Component {
                           }
                         </FormItem>
                       </Col>
+                      
                       <Col xs={12} sm={12} md={8} lg={6}>
                         <FieldTitle title={"NIT"}/>
                         <FormItem >
@@ -82,10 +137,34 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Correo Electrónico"}/>
+                        <FormItem>
+                          {getFieldDecorator('email',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un correo electrónico'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Contraseña por defecto"}/>
+                        <FormItem>
+                          {getFieldDecorator('password',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa una contraseña por defecto'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Contraseña por defecto"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
                       <Col xs={12} sm={12} md={5} lg={6}>
                         <FieldTitle title={"Actividad económica"}/>
                         <FormItem >
-                          {getFieldDecorator('activity',
+                          {getFieldDecorator('economyActivity',
                             {rules: [
                               {required: true, message: 'Por favor ingresa una actividad económica'}
                             ]})(
@@ -111,9 +190,24 @@ class CreateCompany extends Component {
                   <Panel header="Información de créditos" key="2">
                     <Row gutter={8} className={"form-request-rows"}>
                       <Col xs={12} sm={12} md={5} lg={8}>
+                          <FieldTitle title={"¿Aprueba Recursos Humanos?"}/>
+                          <FormItem >
+                            {getFieldDecorator('approveHumanResources',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa si se aprueba desde recursos humanos'}
+                              ]})(
+                                <Select placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                <Select.Option value={"Sí"}>Sí</Select.Option>
+                                <Select.Option value={"No"}>No</Select.Option>
+                              </Select>
+                              )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={5} lg={8}>
                           <FieldTitle title={"Máxima cantidad a prestar"}/>
                           <FormItem >
-                            {getFieldDecorator('mount',
+                            {getFieldDecorator('defaultAmount',
                               {rules: [
                                 {required: true, message: 'Por favor ingresa una monto particular'}
                               ]})(
@@ -125,7 +219,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={5} lg={8}>
                         <FieldTitle title={"Cantidad de cuotas máxima"}/>
                         <FormItem >
-                          {getFieldDecorator('address',
+                          {getFieldDecorator('maximumSplit',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un máximo de cuotas'}
                             ]})(
@@ -137,7 +231,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={5} lg={8}>
                         <FieldTitle title={"Pago de salario"}/>
                         <FormItem >
-                          {getFieldDecorator('salaries',
+                          {getFieldDecorator('companyRate',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un tipo de pago'}
                             ]})(
@@ -152,7 +246,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={5} lg={8}>
                         <FieldTitle title={"Fecha de salario 1"}/>
                         <FormItem >
-                          {getFieldDecorator('salaryDate1',
+                          {getFieldDecorator('companyFirstDate',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un tipo de pago'}
                             ]})(
@@ -161,12 +255,10 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      {
-                        salary_rate && 
-                        <Col xs={12} sm={12} md={5} lg={8}>
+                      <Col xs={12} sm={12} md={5} lg={8}>
                         <FieldTitle title={"Fecha de salario 2"}/>
                         <FormItem >
-                          {getFieldDecorator('salaryDate2',
+                          {getFieldDecorator('companySecondDate',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un tipo de pago'}
                             ]})(
@@ -175,8 +267,85 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      }
+                      
                     </Row>
+                  </Panel>
+                  <Panel header="Información de la persona encargada" key="4">
+                    <Row gutter={20} className={"form-request-rows"}>
+                      <Col xs={12} sm={12} md={6} lg={6}>
+                        <FieldTitle title={"Nombres"}/>
+                        <FormItem >
+                          {getFieldDecorator('memberName',
+                            {rules: [
+                              {required: true, message: 'Por favor ingrese el nombre del encargado'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Nombres"}/>
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={6} lg={6}>
+                        <FieldTitle title={"Apellidos"}/>
+                        <FormItem >
+                          {getFieldDecorator('memberLastName',
+                            {rules: [
+                              {required: true, message: 'Por favor ingrese el apellido del encargado'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Apellidos"}/>
+                            )
+                          }
+                        </FormItem>  
+                      </Col>     
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"No. de identificación"}/>
+                        <FormItem>
+                          {getFieldDecorator('memberId',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un número de identificación'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"No. de Identificación"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Teléfono celular"}/>
+                        <FormItem>
+                          {getFieldDecorator('phoneNumber',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un teléfono celular'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Correo electrónico"}/>
+                        <FormItem>
+                          {getFieldDecorator('memberEmail',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un correo electrónico'}
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6}>
+                        <FieldTitle title={"Cargo"}/>
+                        <FormItem >
+                          {getFieldDecorator('profession',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un cargo' }
+                            ]})(
+                              <Input className={"form-input-number"} placeholder={"Cargo"}/>
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                    </Row>
+                  
                   </Panel>
                   <Panel header="Información del representante legal" key="3">
                     <Row gutter={20} className={"form-request-rows"} >
@@ -184,7 +353,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Nombres"}/>
                         <FormItem>
-                          {getFieldDecorator('representant_name',
+                          {getFieldDecorator('representantName',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un nombre'}
                             ]})(
@@ -196,7 +365,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Apellidos"}/>
                         <FormItem>
-                          {getFieldDecorator('representant_lastname',
+                          {getFieldDecorator('representantLastName',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un apellido'}
                             ]})(
@@ -206,25 +375,9 @@ class CreateCompany extends Component {
                         </FormItem>
                       </Col>
                       <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Tipo de identificación"}/>
-                        <FormItem>
-                          {getFieldDecorator('representant_identificationtype',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un tipo de identificación'}
-                            ]})(
-                              <Select placeholder={"Tipo de documento"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                <Select.Option value={"Cédula"}>Cédula</Select.Option>
-                                <Select.Option value={"Pasaporte"}>Pasaporte</Select.Option>
-                                <Select.Option value={"Otro"}>Otro</Select.Option>
-                              </Select>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"No. de identificación"}/>
                         <FormItem>
-                          {getFieldDecorator('representant_identification',
+                          {getFieldDecorator('representantId',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un número de identificación'}
                             ]})(
@@ -233,15 +386,14 @@ class CreateCompany extends Component {
                           }
                         </FormItem>
                       </Col>
-                      
-                      <Col xs={12} sm={12} md={8} lg={8} >
-                        <FieldTitle title={"Teléfono fijo"}/>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Cargo"}/>
                         <FormItem>
-                          {getFieldDecorator('representant_phone',
+                          {getFieldDecorator('representantProfession',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono fijo'}
+                              {required: false, message: 'Por favor ingresa un cargo para el representante'}
                             ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono fijo"} />
+                              <Input className={"form-input-number"} placeholder={"Cargo"} />
                             )
                           }
                         </FormItem>
@@ -249,7 +401,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={8} lg={8} >
                         <FieldTitle title={"Teléfono celular"}/>
                         <FormItem>
-                          {getFieldDecorator('representant_cellphone',
+                          {getFieldDecorator('representantPhone',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un teléfono celular'}
                             ]})(
@@ -261,7 +413,7 @@ class CreateCompany extends Component {
                       <Col xs={12} sm={12} md={8} lg={8} >
                         <FieldTitle title={"Correo electrónico"}/>
                         <FormItem>
-                          {getFieldDecorator('representant_email',
+                          {getFieldDecorator('representantEmail',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
@@ -272,134 +424,22 @@ class CreateCompany extends Component {
                       </Col>
                     </Row>
                   </Panel>  
-                  <Panel header="Información de la persona encargada" key="4">
-                    <Row gutter={20} className={"form-request-rows"}>
-                      <Col xs={12} sm={12} md={6} lg={6}>
-                        <FieldTitle title={"Nombres"}/>
-                        <FormItem >
-                          {getFieldDecorator('manager_name',
-                            {rules: [
-                              {required: false, message: 'Por favor ingrese el nombre del encargado'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Nombres"}/>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                      <Col xs={12} sm={12} md={6} lg={6}>
-                        <FieldTitle title={"Apellidos"}/>
-                        <FormItem >
-                          {getFieldDecorator('manager_lastname',
-                            {rules: [
-                              {required: false, message: 'Por favor ingrese el apellido del encargado'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Apellidos"}/>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>     
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Tipo de identificación"}/>
-                        <FormItem>
-                          {getFieldDecorator('representant_identificationtype',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un tipo de identificación'}
-                            ]})(
-                              <Select placeholder={"Tipo de documento"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                <Select.Option value={"Cédula"}>Cédula</Select.Option>
-                                <Select.Option value={"Pasaporte"}>Pasaporte</Select.Option>
-                                <Select.Option value={"Otro"}>Otro</Select.Option>
-                              </Select>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"No. de identificación"}/>
-                        <FormItem>
-                          {getFieldDecorator('manager_identification',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un número de identificación'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"No. de Identificación"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Teléfono fijo"}/>
-                        <FormItem>
-                          {getFieldDecorator('manager_phone',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono fijo'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono fijo"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Teléfono celular"}/>
-                        <FormItem>
-                          {getFieldDecorator('manager_cellphone',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono celular'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Correo electrónico"}/>
-                        <FormItem>
-                          {getFieldDecorator('manager_email',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un correo electrónico'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Área"}/>
-                        <FormItem>
-                          {getFieldDecorator('area',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un área'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Área"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6}>
-                        <FieldTitle title={"Cargo"}/>
-                        <FormItem >
-                          {getFieldDecorator('profession',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un cargo' }
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Cargo"}/>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                    </Row>
                   
-                  </Panel>
                 </Collapse>
                 <Col xs={24} sm={12} md={18} lg={19}/>
                 <Col xs={24} sm={12} md={6} lg={5}>
                   <Button className={"request-confirm-button"} icon="plus-circle" 
-                          onClick={() => this.onConfirmRequest()}>
+                          onClick={() => this.createCompany()}>
                         Crear empresa
                   </Button> 
                 </Col>
               </Form>
             </div>
         </Row>
+        {
+          this.props.companyResponse && 
+            <Redirect to={routes.admin_request_management}/>
+        }
       </div>
     );
   
@@ -409,4 +449,17 @@ class CreateCompany extends Component {
 
 let CreateCompanyForm = Form.create()(CreateCompany);
 
-export default CreateCompanyForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createCompany: (data) => dispatch(createCompany(data)),
+  }
+};
+
+
+const mapStateToProps = (state) => {
+  return {
+    companyResponse: state.admin.companyResponse,
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateCompanyForm);

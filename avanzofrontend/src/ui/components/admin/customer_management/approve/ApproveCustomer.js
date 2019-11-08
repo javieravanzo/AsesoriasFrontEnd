@@ -1,46 +1,28 @@
 //Libraries
 import React, {Component} from 'react';
 import {Row, List} from 'antd';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Components
 import RequestModalCard from "./RequestModalCard";
 
+//Actions
+import {getAllCustomers} from "../../../../../store/redux/actions/admin/adminActions";
+
 class ApproveCustomer extends Component{
 
-    render(){
+  constructor(props){
+    
+    super(props);
 
-        let tableData = [
-            {
-              key: 1,
-              
-              name: "Diego Alejandro",
-              lastName: "Esparta",
-              documentNumber: "108213771",
-              documentType: "Cédula"
-            },
-            {
-              key: 3,
-              documentNumber: "1967643771",
-              name: "Duvan ",
-              lastName: "Zapata",
-              documentType: "Cédula"
-            },
-            {
-              key: 5,
-              name: "Anibal Andrés",
-              lastName: "Torrado",
-              documentNumber: "12177211",
-              documentType: "Cédula"
-              
-            },
-            {
-              key: 6,
-              name: "Diego Alejandro",
-              lastName: "Esparta",
-              documentNumber: "108213771",
-              documentType: "Cédula"              
-            }     
-          ];
+    this.props.getAllCustomers();
+  
+  }
+
+    render(){
+        
+        let tableData = this.props.customerList;
 
         return(
             <div>
@@ -60,4 +42,20 @@ class ApproveCustomer extends Component{
 
 }
 
-export default ApproveCustomer;
+ApproveCustomer.propTypes = {
+  customerList: PropTypes.array,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    customerList: state.admin.customerList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllCustomers: ( ) => dispatch(getAllCustomers( )),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApproveCustomer);

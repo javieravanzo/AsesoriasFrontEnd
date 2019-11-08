@@ -9,8 +9,6 @@ import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
 
-
-
 //Constants
 const Step = Steps.Step;
 
@@ -101,10 +99,10 @@ class RequestModalCard extends Component {
                   <b>Apellidos</b> <br/><br/>  {item.lastName}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Tipo Documento</b> <br/><br/> {item.documentType}
+                  <b>Tipo Documento</b> <br/><br/> {"Cédula"}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Número Documento</b> <br/><br/> {item.documentNumber}
+                  <b>Número Documento</b> <br/><br/> {item.identificationId}
               </Col>
               <Col xs={24} sm={12} md={2} lg={1}>
                 <Tooltip title="Aprobar usuario">
@@ -156,11 +154,11 @@ class RequestModalCard extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Empresa</b><br/><br/>
-                    {"Emtelco"}
+                    {item.socialReason}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Cargo</b><br/><br/>
-                    {"Desarrollador"}
+                    {item.profession === null ? "-" : item.profession}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Dirección</b><br/><br/>

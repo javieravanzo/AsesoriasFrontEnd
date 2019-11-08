@@ -46,9 +46,12 @@ class ApproveRequest extends Component {
   render(){
 
     let tableData = this.props.requestResponse;
+    console.log(tableData);
     
-    if(tableData){
-      return null;
+    if(JSON.stringify(tableData) === '[]'){
+      return (<div style={{marginTop: '50px'}}>
+                Cargando...
+              </div>);
     }else{
       return (
         <div className={"approve-request-state-div"}>
@@ -69,7 +72,7 @@ class ApproveRequest extends Component {
 }
 
 ApproveRequest.propTypes = {
-  requestResponse: PropTypes.object,
+  requestResponse: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {

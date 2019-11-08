@@ -61,9 +61,23 @@ function getAllRequestToApprove(){
   });
 };
 
+function getAllCompanies(){
+  return request({
+    url: '/Company/GetAll',
+    method: 'GET'
+  });
+};
+
+function getAllCustomers(){
+  return request({
+    url: '/Customer/GetAllWithCompany',
+    method: 'GET'
+  });
+}
+
 const adminService = {
-  registerAdmin, createCompany, createCustomer, createMultipleCustomer,
-  getAllRequest, getAllRequestToOutLay, getAllRequestToApprove
+  registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
+  getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers
 };
 
 export default adminService;

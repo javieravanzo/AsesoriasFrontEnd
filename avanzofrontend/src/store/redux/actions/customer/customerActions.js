@@ -145,9 +145,9 @@ export const resetValue = () => {
   }
 }
 
-export const createRequest = (data) => {
+export const createRequest = (data, token) => {
   return dispatch => {
-    return customerService.createRequest(data)
+    return customerService.createRequest(data, token)
       .then(response => {
         dispatch({
           type: C.CREATE_REQUEST,

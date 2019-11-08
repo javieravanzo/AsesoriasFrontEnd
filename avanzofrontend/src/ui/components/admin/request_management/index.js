@@ -76,9 +76,12 @@ class Customer_Management extends Component {
               <br/>
               <ApproveRequest/>
             </TabPane>
-            <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2s">
-              <MakeOutlay/>
-            </TabPane>
+            {
+              parseInt(localStorage.role, 10) === 1 &&
+              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2s">
+                <MakeOutlay/>
+              </TabPane>
+            }
           </Tabs>
           </Col>
         </Row>

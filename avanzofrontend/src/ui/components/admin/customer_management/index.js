@@ -5,6 +5,7 @@ import {Row, Col, Tabs, Icon} from 'antd';
 //Components
 import CustomerManagement from './create/CreateCustomer';
 import ApproveCustomer from './approve/ApproveCustomer';
+import CustomerTable from './list/CustomerTable';
 
 //Styles
 import '../../../styles/admin/index.css';
@@ -29,10 +30,13 @@ class Customer_Management extends Component {
         <Row className={"admin-row-content"}>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
           <Tabs defaultActiveKey="1">
-            <TabPane tab={<span> <Icon type="usergroup-add" /> Crear cliente </span>} key="1">
+            <TabPane tab={<span> <Icon type="unordered-list" />Ver clientes</span>} key="1">
+              <CustomerTable/>
+            </TabPane>            
+            <TabPane tab={<span> <Icon type="usergroup-add" /> Crear cliente </span>} key="2">
               <CustomerManagement/>
             </TabPane>
-            <TabPane tab={<span> <Icon type="check-circle" /> Aprobar cliente </span>} key="2">
+            <TabPane tab={<span> <Icon type="check-circle" /> Aprobar cliente </span>} key="3">
               <ApproveCustomer/>
             </TabPane>
           </Tabs>

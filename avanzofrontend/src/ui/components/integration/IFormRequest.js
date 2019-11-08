@@ -9,7 +9,6 @@ import { Form} from 'antd';
 import routes from '../../../configuration/routing/Routes';
 
 //Actions
-import { getRequestData, getOutlayData, getOultayDatesList, createRequest } from "../../../store/redux/actions/customer/customerActions";
 import { integrationRegister } from "../../../store/redux/actions/integration/integrationActions";
 
 //Styles
@@ -43,18 +42,29 @@ class IFormRequest extends Component {
 
   render(){
 
+    console.log("IR", this.props.integrationRegisterResponse);    
+
     if(this.props.integrationRegisterResponse){   
       return (
         <div>
-          <Redirect to={{pathname: routes.customer_form_request, state: {token: this.props.integrationToken}}}/>
+          <Redirect to={{pathname: routes.customer_form_request}}/>
         </div>
       );
     }else{
-      return (
-        <div style={{marginTop: '50px'}}>
-          Cargando...
-        </div>
-      );
+      if(this.props.integrationRegisterResponse === false){
+        return (
+          <div>
+            <Redirect to={{pathname: routes.customer_register}}/>
+          </div>
+        );
+      }else{
+        return (
+          <div style={{marginTop: '50px'}}>
+            Cargando...
+          </div>
+        );
+      }
+      
     }
 
   };
@@ -64,18 +74,13 @@ class IFormRequest extends Component {
 let IRequestForm = Form.create()(IFormRequest);
 
 IRequestForm.propTypes = {
-  requestDataResponse: PropTypes.object,
-  outlayDataResponse: PropTypes.object,
-  outlayDatesList: PropTypes.array,
   integrationRegisterResponse: PropTypes.bool,
-  integrationToken: PropTypes.String,
+  integrationToken: PropTypes.string,
+  correct: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
   return {
-    requestDataResponse: state.customer.requestDataResponse,
-    outlayDataResponse: state.customer.outlayDataResponse,
-    outlayDatesList: state.customer.outlayDatesList,
     integrationRegisterResponse: state.integration.integrationRegisterResponse,
     integrationToken: state.integration.integrationToken,
   }
@@ -83,10 +88,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getRequestData: (customerId, integration) => dispatch(getRequestData(customerId, integration)),
-    getOutlayData: (customerId, integration) => dispatch(getOutlayData(customerId, integration)),
-    getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),
-    createRequest: (data) => dispatch(createRequest(data)),
     integrationRegister: (data) => dispatch(integrationRegister(data)),
   }
 };
