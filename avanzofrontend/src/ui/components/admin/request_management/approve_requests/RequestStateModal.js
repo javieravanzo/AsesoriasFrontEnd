@@ -73,7 +73,7 @@ class RequestStateModal extends Component {
       requestId: idRequest,
       approve: true,
     };
-    console.log("D", data);
+    //console.log("D", data);
     this.props.approveorRejectRequest(data);
     SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
     this.setState({approve_modal: false});

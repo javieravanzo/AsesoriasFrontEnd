@@ -45,6 +45,7 @@ class Home extends Component {
       photo: null,
       paymentReport: null,
       sliderValue: 300000,
+      login: null,
     };
     
     this.next = this.next.bind(this);
@@ -66,18 +67,19 @@ class Home extends Component {
   };
 
   onSignInClicked(){
+    //console.log("entro");
     let { documentId, photo, paymentReport } = this.state;
     this.props.form.validateFields((err, values) => {
       if (err && documentId !== null && photo !== null && paymentReport !== null ){
         ERROR_MODAL("Error al realizar la acción", "Por favor ingresa datos válidos y carga los archivos correspondientes.");
       }else{
-        console.log(values);
+        //console.log(values);
         let data = values;
         data.documentId = documentId;
         data.photo = photo;
         data.documentId = documentId;
         data.paymentReport = paymentReport;
-        console.log(data);
+        //console.log(data);
         this.props.newRegister(data);
       }     
     });
@@ -93,7 +95,7 @@ class Home extends Component {
     //let { documentId, photo, paymentReport } = this.state;
     let fileType = e.target.files;
     for (let file in fileType){
-      console.log(file===0);
+      //console.log(file===0);
       if(parseInt(file,10) === 0){
         this.setState({
           documentId: fileType[0]
@@ -110,9 +112,9 @@ class Home extends Component {
         });
       }
     }
-    console.log(fileType);
+    //console.log(fileType);
     /*if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
+      //console.log(info.file, info.fileList);
     }
     if (status === 'done') {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -125,8 +127,6 @@ class Home extends Component {
 
     const marks = { 0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>}, 100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};
     const { getFieldDecorator } = this.props.form;
-    console.log("NEW", this.props.newRegisterResponse);
-    console.log("COMP", this.props.companyList);
     let { companyList } = this.props;
 
     return (
@@ -137,8 +137,11 @@ class Home extends Component {
               mode="horizontal"
               className={"menu-home-style"}>
                 <Menu.Item>
-                  
                   <img src={icon} alt="menulogo" className="menu-logo" />
+                </Menu.Item>
+                <Menu.Item className={"login-menu-item"}>
+                  <Button type="primary" htmlType="submit" className="home-login-button" 
+                            onClick={() => this.setState({login: true})}>Iniciar sesión</Button>
                 </Menu.Item>
             </Menu>
           </Header>
@@ -225,7 +228,6 @@ class Home extends Component {
                           <FormItem className='home-form-item'>
                             {getFieldDecorator('password', { initialValue: '',
                               rules: [ 
-                                {type: 'password', message: 'Por favor, ingrese un correo electrónico válido.'},
                                 {required: true, message: 'Por favor, ingrese una contraseña válida.' }],
                             })(
                                 <Input type="password"  prefix={<Icon type="lock" className={'icon-prefix'} />}
@@ -295,6 +297,12 @@ class Home extends Component {
         {
           (this.props.newRegisterResponse === true) &&
           <Redirect to={routes.confirm_account}/> 
+        }
+
+        
+        {
+          (this.state.login === true) &&
+          <Redirect to={routes.login}/> 
         }
       </div>
     );

@@ -106,7 +106,7 @@ class LoginForm extends Component {
                     <Link to={routes.forgot_password}>
                       <p className={"url-form"}>¿Olvidó su contraseña?</p>
                     </Link>
-                    <Link to={routes.customer_register }>
+                    <Link to={routes.home }>
                       <p className={"url-form"}>¿Desea Registrarse?</p>
                     </Link>
                   </div>

@@ -186,7 +186,7 @@ class CompanyTable extends Component {
 
                 </Row>
                 <Divider/>
-                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'idCompany'}
+                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}
                     locale={{ emptyText: 'No hay coincidencias' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>

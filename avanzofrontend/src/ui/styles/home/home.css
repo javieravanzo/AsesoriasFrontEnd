@@ -1,5 +1,5 @@
 .menu-logo{
-  margin-top: 5px;
+  margin-top: 2px;
   height: 40px;
   margin-bottom: 5px;
   margin-left: 10px;
@@ -108,6 +108,21 @@
   color: #000 !important;
   font-weight: bold !important;
   text-align: center !important;
+}
+
+.home-login-button {
+  height: 32px !important;
+  width: 98% !important;
+  margin: auto;
+  margin-top: 2px !important; 
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.login-menu-item{
+  float: right !important;
 }
 
 @media only screen and (max-width:500px) {

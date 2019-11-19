@@ -46,7 +46,7 @@ class CreateCompany extends Component {
 
   handleSalaryRate = () => {
     this.props.form.validateFields((err, values) => {
-      console.log(values.companyRate);
+      //console.log(values.companyRate);
       if(values.companyRate === "Mensual"){
         this.setState({
           salary_rate: false,

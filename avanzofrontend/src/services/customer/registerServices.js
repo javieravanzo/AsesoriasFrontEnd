@@ -27,6 +27,7 @@ function newRegister(data) {
   bodyFormData.append('identificationId', data.identificationId);
   bodyFormData.append('phoneNumber', data.phoneNumber);
   bodyFormData.append('company', data.company);
+  bodyFormData.append('password', data.password);
   bodyFormData.append('documentId', data.documentId); 
   bodyFormData.append('photo', data.photo); 
   bodyFormData.append('paymentReport', data.paymentReport); 

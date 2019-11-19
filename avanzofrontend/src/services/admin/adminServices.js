@@ -10,7 +10,7 @@ function registerAdmin(data) {
 };
 
 function createCompany(data){
-  console.log(data);
+  //console.log(data);
   return request({
     url: '/Company/Create',
     method: 'POST',

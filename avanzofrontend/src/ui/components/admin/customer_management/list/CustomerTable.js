@@ -195,7 +195,7 @@ class CustomerTable extends Component {
 
                 </Row>
                 <Divider className={"second-divider"}/>
-                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'}
+                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}
                     locale={{ emptyText: 'No hay clientes todavía' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>

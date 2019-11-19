@@ -42,7 +42,7 @@ class IFormRequest extends Component {
 
   render(){
 
-    console.log("IR", this.props.integrationRegisterResponse);    
+    //console.log("IR", this.props.integrationRegisterResponse);    
 
     if(this.props.integrationRegisterResponse){   
       return (

@@ -62,9 +62,9 @@ class CustomerManagement extends Component {
         
       },
       onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
+        /*if (info.file.status !== 'uploading') {
+          //console.log(info.file, info.fileList);
+        }]*/
         if (info.file.status === 'done') {
           /*this.setState({
             particular_modal: false
