@@ -12,6 +12,7 @@ import LoginForm from "./LoginForm";
 import CustomerRegister from "./register/RegisterCustomer";
 import ConfirmAccount from "./ConfirmedAccount";
 import AdminRegister from "./register/Register";
+import Home from "../home/index";
 import routes from "../../../configuration/routing/Routes";
 
 //Styles
@@ -37,6 +38,12 @@ class Login extends Component {
      return (
       <div className='login'>
         {
+          (this.props.pathname === routes.home) && 
+          <Layout>
+            <Route path={routes.home} component={Home}/>
+          </Layout>     
+        }
+        {
           (this.props.pathname === routes.admin_register) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>
@@ -56,7 +63,7 @@ class Login extends Component {
           </Layout>          
         }
         {
-          (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register && this.props.pathname !== routes.admin_register) && 
+          (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register && this.props.pathname !== routes.admin_register && this.props.pathname !== routes.home) && 
           <Layout>
             <Sider width={400} style={{backgroundColor: "#fff"}}>
                 <Switch>            
@@ -65,7 +72,7 @@ class Login extends Component {
                   <Route path={routes.reset_password} component={WrappedResetPassword} />
                   <Route path={routes.confirm_password} component={WrappedConfirmPassword} />
                   <Route path={routes.confirm_account} component={WrappedConfirmAccount} />
-                  <Route render = {()=><Redirect to={routes.login}/>}/>
+                  <Route render = {()=><Redirect to={routes.home}/>}/>
                 </Switch>
             </Sider>
             <Layout className={"background-sider"}>

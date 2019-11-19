@@ -1,0 +1,136 @@
+.menu-logo{
+  margin-top: 5px;
+  height: 40px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.menu-home-style{
+  line-height: 34px;
+  font-size: 14px;
+  width: 100% !important;
+  box-shadow: 2px 3px 4px 0px rgba(0, 0, 0, 0.2) !important;
+}
+
+.home-main-row{
+  padding-top: 70px;
+}
+
+
+.customer-home-card{
+  width: 70% !important;
+  margin: auto !important;
+  box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif !important;
+}
+
+.home-first-text{
+  font-size: 18px !important;
+  color: #0055d4 !important;
+  margin-top: 1px !important;
+  margin-bottom: 1px !important; 
+  text-align: center !important;
+}
+
+.home-second-text{
+  font-size: 18px !important;
+  color: #1c77ff !important;
+}
+
+
+
+.home-second-row{
+  margin-top: 10px;
+}
+
+.home-img{
+  width: 90%;
+  margin-left: 15px !important;
+}
+
+.form-home{
+  margin-left: 0px !important;
+}
+
+.input-box{
+  font-size: 13px !important;
+}
+
+.ant-slider-mark-text{
+  left: none !important;
+  position: initial !important;
+}
+
+
+
+.left-marker{
+  margin-left: 25% !important;
+}
+
+.right-marker{
+  margin-left: 600% !important;
+}
+
+
+.form-names{
+  margin-bottom: 1px !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+}
+
+.form-names-loan{
+  margin-bottom: 8px !important;
+  font-size: 15px !important;
+  font-weight: bold;
+  color: #1c77ff !important;
+}
+
+.row-loan{
+  text-align: center !important;
+}
+
+.drag-icon{
+  font-size: 25px !important;
+  color: rgb(28, 119, 255) !important;
+}
+
+.button-home-row{
+  text-align: center !important;
+}
+
+.home-form-button{
+  margin-top: 20px !important;
+  height: 28px !important;
+  width: 40% !important;
+  margin: auto;
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #000 !important;
+  font-weight: bold !important;
+  text-align: center !important;
+}
+
+@media only screen and (max-width:500px) {
+  .home-img{
+    display: none !important;
+  }
+  .home-main-row{
+    padding-top: 50px;
+  }
+  
+  .home-first-text{
+    font-size: 13px !important;
+  }
+  .right-marker{
+    margin-left: 330% !important;
+  }
+  .customer-home-card{
+    width: 99% !important;
+    margin: auto !important;
+    box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
+    font-family: sans-serif !important;
+  }
+  .form-names-loan{
+    margin-bottom: 10px !important;
+  }
+}

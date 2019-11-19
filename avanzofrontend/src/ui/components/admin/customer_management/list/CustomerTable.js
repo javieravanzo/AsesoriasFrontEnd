@@ -1,11 +1,11 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Divider, Card, Input, Table} from 'antd';
+import {Row, Col, Divider, Card, Input, Table, Spin} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-import MiniLoading from '../../../subcomponents/MiniLoading';
+//import MiniLoading from '../../../subcomponents/MiniLoading';
 
 //Actions
 import {getAllCustomers} from "../../../../../store/redux/actions/admin/adminActions";
@@ -26,7 +26,7 @@ const table = [
   {
     title: <div className={"table-p"}>No. Identificación</div>,
     dataIndex: 'identificationId',
-    width: "90px",
+    width: "80px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.identificationId.toString().localeCompare(b.identificationId.toString())},
@@ -34,7 +34,7 @@ const table = [
   {
     title: <div className={"table-p"}>Correo Electrónico</div>,
     dataIndex: 'email',
-    width: "80px",
+    width: "70px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.email.localeCompare(b.email)},
@@ -42,7 +42,7 @@ const table = [
   {
     title: <div className={"table-p"}>Fecha Creación</div>,
     dataIndex: 'createdDate',
-    width: "110px",
+    width: "80px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
@@ -50,7 +50,7 @@ const table = [
     {
     title: <div className={"table-p"}>Empresa</div>,
     dataIndex: 'socialReason',
-    width: "80px",
+    width: "100px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.socialReason.localeCompare(b.socialReason)},
@@ -76,11 +76,12 @@ class CustomerTable extends Component {
     super(props);
 
     this.state = {
-      text: null,
-      firstText: null,
-      firstTextLength: 0,
-      linkName: null,
-      linkUrl: null,
+      name: null, 
+      identificationId: null,
+      email: null, 
+      createdDate: null,
+      totalRemainder: null,
+      socialReason: null
     };
 
     this.setData = this.setData.bind(this);
@@ -106,11 +107,45 @@ class CustomerTable extends Component {
           totalRemainder: item.totalRemainder,
           socialReason: item.socialReason,
         };
-        rows.push(row);
+
+        if(this.filterData(row)) {
+          rows.push(row);
+        };
+
       }
     }
     
     return rows;
+  };
+
+  filterData(toCompare){
+    let {name, identificationId, email, totalRemainder, socialReason} = this.state;
+
+    if(name === null && identificationId === null && email === null && totalRemainder === null && socialReason === null){
+      return true;
+    }
+
+    if(socialReason !== null && !toCompare.socialReason.toString().toUpperCase().includes(socialReason.toUpperCase())) {
+      return false;
+    }
+
+    if(name !== null && !toCompare.name.toString().toUpperCase().includes(name.toUpperCase())) {
+      return false;
+    }
+    
+    if(identificationId !== null && !toCompare.identificationId.toString().toUpperCase().includes(identificationId.toUpperCase())) {
+      return false;
+    }
+    
+    if(email !== null && !toCompare.email.toString().toUpperCase().includes(email.toUpperCase())) {
+      return false;
+    }
+
+    if(totalRemainder !== null && !toCompare.totalRemainder.toString().toUpperCase().includes(totalRemainder.toUpperCase())) {
+      return false;
+    }
+
+    return true;
   };
 
   inputLinkName(e){
@@ -121,14 +156,16 @@ class CustomerTable extends Component {
 
   render() {
 
-    
+    let {name, identificationId, email, socialReason} = this.state;
     let tableData = this.setData(this.props.customerList);
-    console.log("CL", this.props.customerList);
   
-    if(JSON.stringify(tableData) === '{}'){
-      return (
-        <MiniLoading visible={true}/> 
-      );
+    if(this.props.customerList === null){
+      return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+                  Cargando ...
+                  <br/>
+                  <br/>
+                  <Spin size="large" />
+                </div>);
     }else{
       return (
         <div >
@@ -136,35 +173,30 @@ class CustomerTable extends Component {
             <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
               <Card className={"transactions-card"}>
                 <Row gutter={6}>
-                  <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
+                  <Col className="filter"  xs={12} sm={12} md={8} lg={7}>
                     <p className="field-title-visible">Nombres: </p>
-                    <Input placeholder={"Nombres"}/>
+                    <Input placeholder={"Nombres"} value={name} onChange={(e) => this.setState({name: e.target.value})}/>
                   </Col>
 
-                  <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
+                  <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
                     <p className="field-title-visible">No. Identificación</p>
-                    <Input placeholder={"No. Identificación"}/>
+                    <Input placeholder={"No. Identificación"} value={identificationId} onChange={(e) => this.setState({identificationId: e.target.value})}/>
                   </Col>
 
                   <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
                     <p className="field-title-visible">Correo electrónico</p>
-                    <Input placeholder={"Correo electrónico"}/>
+                    <Input placeholder={"Correo electrónico"} value={email} onChange={(e) => this.setState({email: e.target.value})}/>
                   </Col>
 
-                  <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
-                    <p className="field-title-visible">Fecha Creación</p>
-                    <Input placeholder={"Fecha Creación"}/>
-                  </Col>
-
-                  <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
+                  <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
                     <p className="field-title-visible">Empresa</p>
-                    <Input placeholder={"Empresa"}/>
+                    <Input placeholder={"Empresa"} value={socialReason} onChange={(e) => this.setState({socialReason: e.target.value})}/>
                   </Col>
 
                 </Row>
                 <Divider className={"second-divider"}/>
                   <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'}
-                    locale={{ emptyText: 'No hay transacciones todavía' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
+                    locale={{ emptyText: 'No hay clientes todavía' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>
             </Col>

@@ -3,11 +3,14 @@ export default {
   integration_transactions: "/integration-transactions",
   integrations_requests: "/integrations-requests",
 
+
+  home: "/home",
   login: "/login",
   forgot_password: "/forgot_password",
   reset_password: "/confirm_password",
   confirm_password: "/password_confirmed",
   confirm_account: "/account_confirmed",
+  receive_confirmation: "/account_confirmation/:token",
   
   admin_register: "/administrator-register",
   admin_company_management: "/admin-company-management",

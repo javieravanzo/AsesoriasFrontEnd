@@ -260,7 +260,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('companySecondDate',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa un tipo de pago'}
+                              {required: false, message: 'Por favor ingresa un tipo de pago'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Fecha de salario 2"} />
                             )
@@ -438,7 +438,7 @@ class CreateCompany extends Component {
         </Row>
         {
           this.props.companyResponse && 
-            <Redirect to={routes.admin_request_management}/>
+            <Redirect to={routes.admin_company_management}/>
         }
       </div>
     );

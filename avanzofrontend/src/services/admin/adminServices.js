@@ -2,7 +2,6 @@
 import request from '../requestWrapper';
 
 function registerAdmin(data) {
-  
   return request({
     url: '/Account/RegisterAdministrator',
     method: 'POST',
@@ -11,6 +10,7 @@ function registerAdmin(data) {
 };
 
 function createCompany(data){
+  console.log(data);
   return request({
     url: '/Company/Create',
     method: 'POST',
@@ -73,11 +73,30 @@ function getAllCustomers(){
     url: '/Customer/GetAllWithCompany',
     method: 'GET'
   });
-}
+};
+
+function getAllCustomersToApprove(){
+  return request({
+    url: '/Customer/GetAllToApprove',
+    method: 'GET'
+  });
+};
+
+function approveCustomer(client, approve){
+  return request({
+    url: '/Customer/ApproveorReject',
+    method: 'PUT',
+    headers:{
+      clientId: parseInt(client, 10),
+      approve: approve
+    }
+  });
+};
 
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
-  getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers
+  getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
+  getAllCustomersToApprove, approveCustomer
 };
 
 export default adminService;

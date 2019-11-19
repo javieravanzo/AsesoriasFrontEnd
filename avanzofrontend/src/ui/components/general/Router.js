@@ -28,31 +28,35 @@ class Router extends Component {
 
     return (
       <Layout.Content className={"content"}>
+        { 
+          (parseInt(localStorage.role_id, 10) === 2 || parseInt(localStorage.role_id, 10) === 1) &&
           <Switch>
             <Route path={routes.admin_company_management} component={AdminCompanyManagement}/>
             <Route path={routes.admin_customer_management} component={AdminCustomerManagement}/>
             <Route path={routes.admin_request_management} component={AdminRequestManagement}/>
             <Route path={routes.admin_generate_reports} component={AdminGenerateReports}/>
+            <Route render = {()=><Redirect to={routes.admin_company_management}/>}/>
+          </Switch>
+        }
+        { 
+          parseInt(localStorage.role_id, 10) === 3 &&
+          <Switch>
             <Route path={routes.company_request_management} component={Company}/>
             <Route path={routes.company_generate_reports} component={CompanyGenerateReports}/>
+            <Route render = {()=><Redirect to={routes.company_request_management}/>}/>
+          </Switch>
+        }
+        { 
+          parseInt(localStorage.role_id, 10) === 4 &&
+          <Switch>
             <Route path={routes.customer} component={Customer}/>
             <Route path={routes.customer_transactions} component={Customer_Transactions}/>
             <Route path={routes.customer_form_request} component={Customer_RequestForm}/>
             <Route path={routes.customer_review_requests} component={Customer_ListRequest}/>
-            { 
-              parseInt(localStorage.role_id, 10) === 4 &&
-              <Route render = {()=><Redirect to={routes.customer}/>}/>
-            }
-            { 
-              parseInt(localStorage.role_id, 10) === 3 &&
-              <Route render = {()=><Redirect to={routes.company_generate_reports}/>}/>
-            }
-            { 
-              parseInt(localStorage.role_id, 10) === 2 &&
-              <Route render = {()=><Redirect to={routes.admin_company_management}/>}/>
-            }
-        </Switch>
-      </Layout.Content>  
+            <Route render = {()=><Redirect to={routes.customer}/>}/>
+          </Switch>
+        }
+        </Layout.Content>  
     );
   };
 }

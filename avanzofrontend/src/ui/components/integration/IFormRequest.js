@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
-import { Form} from 'antd';
+import { Form, Spin} from 'antd';
 
 //Subcomponents
 import routes from '../../../configuration/routing/Routes';
@@ -58,11 +58,12 @@ class IFormRequest extends Component {
           </div>
         );
       }else{
-        return (
-          <div style={{marginTop: '50px'}}>
-            Cargando...
-          </div>
-        );
+        return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+                Cargando ...
+                <br/>
+                <br/>
+                <Spin size="large" />
+              </div>);
       }
       
     }

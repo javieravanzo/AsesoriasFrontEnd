@@ -107,50 +107,6 @@ class Transactions extends Component {
 
   render() {
 
-    /*let tableData = [
-      {
-        key: 1,
-        transaction: "Retiro",
-        quantity: 150000,
-        date: "20-06-19",
-        date2: "21-06-19"
-      },
-      {
-        key: 2,
-        transaction: "Pago",
-        quantity: 250000,
-        date: "21-06-19",
-        date2: "22-06-19"
-      },
-      {
-        key: 3,
-        transaction: "Cuota de manejo",
-        quantity: 8500,
-        date: "23-06-19",
-        date2: "24-06-19"
-      },
-      {
-        key: 4,
-        transaction: "Pago",
-        quantity: 120000,
-        date: "25-06-19",
-        date2: "26-06-19"
-      },
-      {
-        key: 5,
-        transaction: "Retiro",
-        quantity: 275000,
-        date: "26-06-19",
-        date2: "27-06-19"
-      },
-      {
-        key: 6,
-        transaction: "Intereses",
-        quantity: 4870,
-        date: "27-06-19",
-        date2: "28-06-19"
-      }     
-    ];*/
     let tableData = this.props.transactionList;
   
     if(JSON.stringify(tableData) === '{}'){

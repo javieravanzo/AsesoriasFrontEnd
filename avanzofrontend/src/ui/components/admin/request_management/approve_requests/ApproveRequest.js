@@ -1,6 +1,6 @@
 //Libraries
 import React, { Component } from 'react';
-import {Row, List} from 'antd';
+import {Row, List, Spin} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
@@ -48,9 +48,12 @@ class ApproveRequest extends Component {
     let tableData = this.props.requestResponse;
     console.log(tableData);
     
-    if(JSON.stringify(tableData) === '[]'){
-      return (<div style={{marginTop: '50px'}}>
-                Cargando...
+    if(tableData === null){
+      return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+                Cargando ...
+                <br/>
+                <br/>
+                <Spin size="large" />
               </div>);
     }else{
       return (
@@ -63,6 +66,7 @@ class ApproveRequest extends Component {
                       <RequestModal item={item} key={k}/>
                   </List.Item>
                 )}
+                locale={{emptyText: "No hay solicitudes para aprobar"}}
               />
           </Row>
         </div>

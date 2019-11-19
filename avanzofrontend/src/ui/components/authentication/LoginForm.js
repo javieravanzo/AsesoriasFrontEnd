@@ -125,7 +125,7 @@ class LoginForm extends Component {
         {(isLogged && (role===3)) &&
           <Redirect to={routes.company_request_management}/>
         }
-        {(isLogged && (role===2)) &&
+        {(isLogged && (role===2 || role===1)) &&
           <Redirect to={routes.admin_company_management}/>
         }
       </div>

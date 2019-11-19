@@ -1,10 +1,13 @@
 ///Types
 import {loginTypes as C} from '../../types';
+import {customerTypes as Cu} from '../../types';
 
 const initialState={
   isLogin: false,
   forgetPasswordResponse: null,
   resetPasswordResponse: null,
+  newRegisterResponse: null,
+  companyList: [],
 };
 
 export default function loginReducer(state = initialState, action){
@@ -34,6 +37,16 @@ export default function loginReducer(state = initialState, action){
       return{
         ...state,
         resetPasswordResponse: action.payload
+      };
+    case Cu.NEW_REGISTER:
+      return{
+        ...state,
+        newRegisterResponse: action.payload
+      };
+    case Cu.GET_COMPANIES:
+      return{
+        ...state,
+        companyList: action.payload
       };
     default:
       return state;

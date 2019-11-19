@@ -46,9 +46,11 @@ class Customer_Management extends Component {
         </Row>
         <Row style={{width: "80% !important", margin: "auto"}}>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
-          <Tabs defaultActiveKey="1">
-            <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="1">
-              <Row gutter={8} className={"approve-request-filter"}>
+          <Tabs defaultActiveKey={parseInt(localStorage.role_id, 10) === 2 ? "1" : "2"}>
+            {
+              parseInt(localStorage.role_id, 10) === 2 &&
+              <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="1">
+                <Row gutter={8} className={"approve-request-filter"}>
                 <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
                   <p className="field-title-visible">Número solicitud </p>
                   <Input placeholder={"Número solicitud"}/>
@@ -73,12 +75,13 @@ class Customer_Management extends Component {
                   <Input placeholder={"Fecha Transacción"}/>
                 </Col>
               </Row>
-              <br/>
-              <ApproveRequest/>
-            </TabPane>
+                <br/>
+                <ApproveRequest/>
+              </TabPane>
+            }
             {
-              parseInt(localStorage.role, 10) === 1 &&
-              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2s">
+              parseInt(localStorage.role_id, 10) === 1 &&
+              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2">
                 <MakeOutlay/>
               </TabPane>
             }

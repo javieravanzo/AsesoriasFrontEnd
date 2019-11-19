@@ -1,14 +1,14 @@
 ///Types
 import {loginTypes} from '../../types';
+import {customerTypes as C} from '../../types';
 
 //Subcomponents
 import { SUCCESS_MODAL, ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
-//import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 //Services
 import { initializeClient } from '../../../../services/requestWrapper';
 import loginServices from '../../../../services/general/loginServices'; 
-
+import registerService from '../../../../services/customer/registerServices'; 
 
 function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName, email, userId){
 
@@ -37,8 +37,8 @@ export const login = (email, password) => {
             type: loginTypes.LOGGING,
             payload: true,
           });
-          SUCCESS_MODAL("Acción realizada satisfactoriamente", 
-          "Ha ingresado a nuestra plataforma exitosamente.");
+          //SUCCESS_MODAL("Acción realizada satisfactoriamente", 
+          //"Ha ingresado a nuestra plataforma exitosamente.");
         //Manejo error
         }).catch(err => {
           dispatch({
@@ -97,5 +97,45 @@ export const changePassword = (data) => {
             payload: err,
           });
         });
+  }
+};
+
+export const newRegister = (data) => {
+  return dispatch => {
+    return registerService.newRegister(data)
+      .then(response => {
+        dispatch({
+          type: C.NEW_REGISTER,
+          payload: true,
+          correct: true,
+        });
+        SUCCESS_MODAL("Acción realizada exitosamente", response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.NEW_REGISTER,
+          payload: false,
+          correct: false,
+        });
+        ERROR_MODAL('Error al registrar el usuario',  err.data.message);
+      });
+  }
+};
+
+export const getCompanies = () => {
+  return dispatch => {
+    return registerService.getCompanies()
+      .then(response => {
+        dispatch({
+          type: C.GET_COMPANIES,
+          payload: response.data,
+        });
+        //SUCCESS_MODAL("Acción realizada exitosamente", response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.GET_COMPANIES,
+          payload: err,
+        });
+        ERROR_MODAL('Error al registrar el usuario',  err.response.message);
+      });
   }
 };

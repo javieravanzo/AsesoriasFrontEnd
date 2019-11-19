@@ -7,11 +7,12 @@ import {withRouter, Route, Switch,} from 'react-router-dom';
 import MainMenu from "../components/general/MainMenu";
 import Login from "../components/authentication/index";
 import Information from "../components/general/Information";
-import CustomerRegister from "./authentication/register/RegisterCustomer";
+//import ConfirmedAccount from "../components/authentication/AccountRouting";
 
 //IntegrationSubcomponents
 import IFormRequest from "./integration/IFormRequest";
 import ITransactions from "./integration/ITransactions";
+import Home from "./home/index";
 
 //Subcomponents
 import Router from "../components/general/Router";
@@ -75,10 +76,10 @@ class App extends Component {
           return(
             <div>           
               <Layout className={'back-home'}>
-                <Switch>            
+                <Switch>         
                   <Route exact path={routes.integration_form} component={IFormRequest}/>
                   <Route exact path={routes.integration_transactions} component={ITransactions} />
-                  <Route render = {()=><CustomerRegister/>}/>
+                  <Route render = {()=><Home/>}/>
                 </Switch>
               </Layout>
             </div>

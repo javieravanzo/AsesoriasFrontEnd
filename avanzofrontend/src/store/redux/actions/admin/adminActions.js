@@ -15,7 +15,7 @@ export const registerAdmin = (data) => {
           type: C.REGISTER_ADMIN,
           payload: true
         });
-        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message)
+        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message);
       }).catch(err => {
         dispatch({
           type: C.REGISTER_ADMIN,
@@ -32,6 +32,7 @@ export const createCompany = (data) => {
   return dispatch => {
     return adminServices.createCompany(data)
       .then(response => {
+        dispatch(getAllCompanies());
         dispatch({
           type: C.CREATE_COMPANY,
           payload: response.data,
@@ -44,7 +45,7 @@ export const createCompany = (data) => {
           payload: err,
           correct: false,
         });
-        ERROR_MODAL('Error al crear la empresa', err.data);
+        ERROR_MODAL('Error al crear la empresa', err.data.message);
       });
   }
 };
@@ -139,7 +140,6 @@ export const getAllRequestToOutLay = (userId) => {
   }
 };
 
-
 export const getAllCompanies = ( ) => {
   return dispatch => {
     return adminServices.getAllCompanies( )
@@ -172,6 +172,44 @@ export const getAllCustomers = ( ) => {
           payload: err,
         });
         ERROR_MODAL('Error al traer la lista de clientes', err.data);
+      });
+  }
+};
+
+export const getAllCustomersToApprove = ( ) => {
+  return dispatch => {
+    return adminServices.getAllCustomersToApprove( )
+      .then(response => {
+        dispatch({
+          type: C.GET_CUSTOMERS_TO_APPROVE,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_CUSTOMERS_TO_APPROVE,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de clientes', err.data);
+      });
+  }
+};
+
+export const approveCustomers = (client, approve) => {
+  return dispatch => {
+    return adminServices.approveCustomer(client, approve)
+      .then(response => {
+        dispatch(getAllCustomersToApprove());
+        dispatch({
+          type: C.APPROVE_CUSTOMERS,
+          payload: response.data
+        });
+        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data);
+      }).catch(err => {
+        dispatch({
+          type: C.APPROVE_CUSTOMERS,
+          payload: err,
+        });
+        ERROR_MODAL('Error al modificar el estado del cliente', err.data);
       });
   }
 };

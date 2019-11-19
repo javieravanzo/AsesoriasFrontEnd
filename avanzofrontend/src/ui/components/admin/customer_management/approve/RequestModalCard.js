@@ -1,16 +1,20 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Button, Modal} from 'antd';
-//import CurrencyFormat from "react-currency-format";
+import {Col, Row, Tooltip, Icon, Button, Modal} from 'antd';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Subcomponents
 import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+
+//Actions
+import {approveCustomers} from "../../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
 
 //Constants
-const Step = Steps.Step;
+//const Step = Steps.Step;
 
 class RequestModalCard extends Component {
 
@@ -27,7 +31,7 @@ class RequestModalCard extends Component {
       card_style_rejected: "rejected",
       reject_modal: null,
     };
-    
+   
   };
 
   defineBadgeName = (id) => {
@@ -65,7 +69,12 @@ class RequestModalCard extends Component {
   };
 
   onConfirmRequest = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
+    this.props.approveCustomers(this.props.item.idClient, true);
+    this.setState({approve_modal: false});
+  };
+
+  onRejectRequest = () => {
+    this.props.approveCustomers(this.props.item.idClient, false);
     this.setState({approve_modal: false});
   };
 
@@ -92,21 +101,20 @@ class RequestModalCard extends Component {
                   </Tooltip>
                 </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col">
-                <b>Nombres</b> <br/><br/>
-                {item.name} 
+                <b>Nombres</b> <br/> {item.name} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Apellidos</b> <br/><br/>  {item.lastName}
+                <b>Apellidos</b> <br/>  {item.lastName}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Tipo Documento</b> <br/><br/> {"Cédula"}
+                <b>Empresa</b><br/> {item.socialReason}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Número Documento</b> <br/><br/> {item.identificationId}
+                  <b>Número Documento</b> <br/> {item.identificationId}
               </Col>
               <Col xs={24} sm={12} md={2} lg={1}>
                 <Tooltip title="Aprobar usuario">
-                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.handleQuickApprove()}/> 
+                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.setState({approve_modal: true})}/> 
                 </Tooltip>
               </Col>
               <Col xs={24} sm={12} md={2} lg={1}>
@@ -119,115 +127,124 @@ class RequestModalCard extends Component {
           {
             this.state.visible && 
             <div>
-              <Row>
-                <Divider/>
-                <Col xs={24} sm={12} md={8} lg={6} >
-                  <b>Flujo de aprobación</b>
-                </Col>  
-              </Row>
-              <br/><br/>
-              <Row>
-                <Steps current={item.requestStateId-1} size="small" className={"request-state-steps"}>
-                  <Step title="Solicitada"/>
-                  <Step title="En análisis"/>
-                  <Step title="Aprobar RR.H H."/>
-                  <Step title="Aprobar Admon."/>                 
-                  <Step title="Desembolsada"/>
-                  
-                </Steps>
-              </Row>
-              <br/><br/>
-              <Row>
+              
+              <Row style={{marginTop: "15px", marginBottom: "15px"}}>
                 <Col xs={24} sm={12} md={8} lg={6} >
                   <b>Información adicional</b>
                 </Col>  
               </Row>
-              <br/><br/>
               <Row>
                 <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Nombres</b><br/><br/>
+                  <b>Nombres</b><br/>
                   {item.name} 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Apellidos</b><br/><br/>
+                  <b>Apellidos</b><br/>
                   {item.lastName}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Empresa</b><br/><br/>
-                    {item.socialReason}
+                  <b>Empresa</b><br/>
+                  {item.socialReason}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Cargo</b><br/><br/>
-                    {item.profession === null ? "-" : item.profession}
+                  <b>Cargo</b><br/>
+                  {item.profession === null ? "-" : item.profession}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Dirección</b><br/><br/>
-                    {"Calle 54 No. 18 - 12"}
+                  <b>Dirección</b><br/>
+                  {item.address}
                 </Col>
               </Row>
-              <br/>
               <br/>
               <Row>
                 <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Monto</b><br/><br/>
-                  {item.quantity} 
+                  <b>Monto</b><br/>
+                  {item.defaultAmount} 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
-                    <b>Cuotas</b><br/><br/>
-                    {item.fee}
+                    <b>Cuotas</b><br/>
+                    {item.maximumSplit}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Cuenta</b><br/><br/>
-                    {item.accountName}
+                    <b>Cuenta</b><br/>
+                    {item.accountBank === null ? "-" : item.accountBank}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Tipo de Cuenta</b><br/><br/>
-                    {item.accountType}
+                    <b>Tipo de Cuenta</b><br/>
+                    {item.accountType === null ? "-" : item.accountType}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Número de cuenta</b><br/><br/>
-                    {item.accountNumber}
+                    <b>Número de cuenta</b><br/>
+                    {item.accountNumber === null ? "-" : item.accountNumber}
                 </Col>
               </Row>
-              <br/><br/>
-              <Row gutter={4}>
-                <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
+              <Row style={{marginTop: "5px", marginBottom: "15px"}} gutter={4}>
+                <Col xs={24} sm={12} md={18} lg={16} className={"document-col"}>
                   <Button className={"request-document-button"} icon="file" >
                         Ver documento
                   </Button> 
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                  <Button className={"request-reject-button"} icon="close-circle" 
-                          onClick={() => this.setState({approve_modal: true})}>
-                        Rechazar crédito
-                  </Button> 
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
+                <Col xs={24} sm={12} md={6} lg={4}>
                   <Button className={"request-confirm-button"} icon="check-circle" 
                           onClick={() => this.setState({approve_modal: true})}>
-                        Aprobar crédito
+                        Aprobar
                   </Button> 
                 </Col>
-                <Modal 
-                  title="Aprobar crédito"
-                  visible={this.state.approve_modal}
-                  okText={"Aprobar"}
-                  cancelText={"Cancelar"}
-                  width={450}
-                  onOk={() => this.onConfirmRequest()}
-                  onCancel={() => this.setState({approve_modal: false})}>
-                    <div>
-                      ¿Está seguro de realizar la aprobación del crédito? Esta acción será irreversible.                  
-                    </div>
-    
-                </Modal>
+                <Col xs={24} sm={12} md={6} lg={4}>
+                  <Button className={"request-reject-button"} icon="close-circle" 
+                          onClick={() => this.setState({approve_modal: true})}>
+                        Rechazar
+                  </Button> 
+                </Col>
+                
               </Row>
             </div>
           }
+          <Modal 
+            title="Aprobar usuario"
+            visible={this.state.approve_modal}
+            okText={"Aprobar"}
+            cancelText={"Cancelar"}
+            width={450}
+            onOk={() => this.onConfirmRequest()}
+            onCancel={() => this.setState({approve_modal: false})}>
+              <div>
+                ¿Está seguro de realizar la aprobación del cliente? Esta acción será irreversible.                  
+              </div>
+          </Modal>
+          <Modal 
+            title="Rechazar usuario"
+            visible={this.state.reject_modal}
+            okText={"Rechazar"}
+            cancelText={"Cancelar"}
+            width={450}
+            onOk={() => this.onRejectRequest()}
+            onCancel={() => this.setState({approve_modal: false})}>
+              <div>
+                ¿Está seguro de realizar el rechazo del cliente?.                  
+              </div>
+          </Modal>
         </div>
     );
   };
 
 }
 
-export default RequestModalCard;
+RequestModalCard.propTypes = {
+  customerList: PropTypes.array,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    customerList: state.admin.customerList,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    approveCustomers: (client, approve) => dispatch(approveCustomers(client, approve)),
+    //approveorRejectRequest: (data) => dispatch(approveorRejectRequest(data)),    
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RequestModalCard);

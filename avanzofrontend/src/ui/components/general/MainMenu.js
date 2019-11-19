@@ -59,7 +59,7 @@ class MainMenu extends Component {
     
     let {loggedIn} = this.state;
     //let {role} = this.props;
-    let role = localStorage.role_id;
+    let role = parseInt(localStorage.role_id, 10);
 
     return(
       <Layout className="layout" >
@@ -71,7 +71,7 @@ class MainMenu extends Component {
                 <img src={icon} alt="menulogo" className="menu-logo" />
               </Menu.Item>
               {
-                (parseInt(role,10) === 2) && 
+                (role === 2 || role === 1 ) && 
                 <Menu.Item className={"menu-admin-home"}>
                   <NavLink to={routes.admin_company_management}>
                     <Icon type="cluster"/>Gestionar Empresas
@@ -80,7 +80,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 2) && 
+                (role === 2 || role === 1 ) && 
                 <Menu.Item>
                   <NavLink to={routes.admin_customer_management}>
                     <Icon type="idcard"/>Gestionar Clientes
@@ -88,7 +88,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 2) && 
+                (role === 2 || role === 1 ) && 
                 <Menu.Item>
                   <NavLink to={routes.admin_request_management}>
                     <Icon type="percentage"/>Gestionar Créditos
@@ -96,7 +96,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (parseInt(role,10) === 2) && 
+                (role === 2 || role === 1 ) && 
                 <Menu.Item>
                   <NavLink to={routes.admin_generate_reports}>
                     <Icon type="file"/>Generar Reportes

@@ -9,6 +9,7 @@ import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 //Styles
 import '../../../../styles/admin/create-company.css';
+import BaseURL from '../../../../../services/BaseURL';
 
 //Constants
 const FormItem = Form.Item;
@@ -42,8 +43,12 @@ class CustomerManagement extends Component {
     this.setState({
       particular_modal: false,
     });
-    SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado correctamente.");
+    //SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado correctamente.");
   };
+
+  onChangeFile = () => {
+
+  }
 
   render(){
     
@@ -51,16 +56,20 @@ class CustomerManagement extends Component {
     //let {particular_modal, multiple_modal} = this.state;
     const props = {
       name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      action: BaseURL + 'Customer/MultipleCreate',
       headers: {
-        authorization: 'authorization-text',
+        authorization: 'Bearer '+ localStorage.access_token,
+        
       },
       onChange(info) {
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
+          /*this.setState({
+            particular_modal: false
+          });*/
+          SUCCESS_MODAL("Acción realizada exitosamente", "Los clientes han sido creados exitosamente.");
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} file upload failed.`);
         }
@@ -81,7 +90,7 @@ class CustomerManagement extends Component {
             <Modal 
               title="Crear clientes"
               visible={this.state.particular_modal}
-              okText={"Subir archivo"}
+              okText={"Cerrar"}
               cancelText={"Cancelar"}
               width={450}
               onOk={() => this.onLoadFile()}
@@ -90,12 +99,13 @@ class CustomerManagement extends Component {
                   <div>
                     Suba el archivo de Excel con los campos correspondientes para crear clientes.
                     <i> Recuerde que el archivo debe tener unas condiciones y especificaciones obligatorias.</i>
+                    <b> Cuando agregue el archivo, será cargado instatáneamente.</b>
                   </div>
                     
                   <br/>           
                   <Upload {...props}>
                     <Button>
-                      <Icon type="upload" /> Seleccionar Excel
+                      <Icon type="upload" /> Seleccionar y cargar archivo Excel
                     </Button>
                   </Upload>
                   <br/>
