@@ -31,7 +31,7 @@ class RequestStateModal extends Component {
     if(id === 1){
       return "Solicitada";
     }else if(id === 2){
-      return "En análisis";
+      return "Evaluada";
     }else if(id === 4){
       return "Aprobar Admon.";
     }else if(id === 3){
@@ -125,11 +125,11 @@ class RequestStateModal extends Component {
               <Row>
                 <Steps current={item.requestStateId-1} size="small" className={"request-state-steps"}>
                   <Step title="Solicitada"/>
-                  <Step title="En análisis"/>
+                  <Step title="Evaluada"/>
                   <Step title="Aprobar RR.H H."/>
                   <Step title="Aprobar Admon."/>                 
                   <Step title="Desembolsada"/>
-                  
+                  <Step title="Finalizada"/>
                 </Steps>
               </Row>
               <br/><br/>

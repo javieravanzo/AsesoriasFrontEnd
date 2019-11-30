@@ -62,7 +62,7 @@ class RequestStateModal extends Component {
     let item = this.props.item;
     //console.log(item);
     return (
-        <Badge count={this.defineBadgeName(item.state)} style={{backgroundColor: this.defineButtonClass(item.state), color: "black"} }>
+        <Badge count={this.defineBadgeName(item.idRequestState)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
@@ -117,6 +117,10 @@ class RequestStateModal extends Component {
                   {
                     (item.state-1 !== 3) && 
                     <Step title="Desembolsada"/>
+                  }
+                  {
+                    (item.state-1 !== 3) && 
+                    <Step title="Finalizada"/>
                   }
                   
                 </Steps>

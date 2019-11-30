@@ -1,7 +1,7 @@
 //Libraries
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {Card, Row, Col, Layout, Menu, Form, Input, Icon, InputNumber, Slider, Button, Select} from 'antd';
+import {Card, Row, Col, Layout, Menu, Form, Input, Icon, InputNumber, Slider, Button, Select, Checkbox, Modal} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
@@ -46,6 +46,8 @@ class Home extends Component {
       paymentReport: null,
       sliderValue: 300000,
       login: null,
+      checkBox1: false,
+      visibleTermModal: false,
     };
     
     this.next = this.next.bind(this);
@@ -121,6 +123,22 @@ class Home extends Component {
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }*/
+  };
+
+  onChangeField(e, param){
+    let partner = this.state.partner;
+    if(param !== "checkBox1"){
+      this.setState({
+        [param]: e.target.value
+      });
+    }else{
+      this.setState({
+        checkBox1: e.target.checked
+      });
+    }
+    this.setState({
+      partner: partner
+    });
   };
 
   render() {
@@ -279,12 +297,46 @@ class Home extends Component {
                                 accept=".pdf, application/pdf"/>
                         </Col>
                       </Row>
+                      <Row>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('checkBox1', { initialValue: '',
+                            rules: [
+                              { required: true }],
+                            })(
+                              <Row>
+                                <Col lg={24} md={23} >
+                                  <Row gutter={2}>
+                                    <Col lg={2} md={2} sm={2} xs={2} className={"checkbox-terms-firstCol"}>
+                                      <Checkbox className={'checkbox-terms-conditions'} onChange={(e) => this.onChangeField(e, 'checkBox1')}/>
+                                    </Col>
+                                    <Col lg={22} md={22} sm={22} xs={22}>
+                                      <p onClick={() => this.setState({visibleTermModal: true})} className={"form-names-terms"}>{""} Acepto los <u>Términos, Condiciones y Políticas de uso de tratamientos de datos.</u></p>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                          )}
+                        </FormItem>
+                      </Row>
+                      
                       <Row className={"button-home-row"}>
-                        <Button type="primary" htmlType="submit" className="home-form-button" 
+                        <Button type="primary" htmlType="submit" className={this.state.checkBox1 ? "home-form-button" : "home-form-button-disabled"}  disabled={!this.state.checkBox1}
                                 onClick={() => this.onSignInClicked()}>
                           <p className={"login-button-text"}>Enviar datos</p>
                         </Button>
                       </Row>
+                      <Modal
+                        title={"Términos, Condiciones y Políticas de tratamiento de datos"}
+                        visible={this.state.visibleTermModal}
+                        onCancel={() => this.setState({visibleTermModal: false})}
+                        footer={
+                          <Button key='submit' type='primary'  onClick={() => this.setState({visibleTermModal: false})}>
+                            Aceptar
+                          </Button>}>
+                        <div>
+                          <p>Términos y condiciones...</p>
+                        </div>
+                      </Modal>
                     </Form>
                     </Col>
                   </Row>

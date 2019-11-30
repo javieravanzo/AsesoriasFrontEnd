@@ -10,7 +10,6 @@ import '../../../../styles/admin/request_management/request-state.css';
 import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 //Actions
-import {getAllRequestToApprove} from "../../../../../store/redux/actions/admin/adminActions";
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
@@ -38,17 +37,19 @@ class RequestStateModal extends Component {
     if(id === 1){
       return "Solicitada";
     }else if(id === 2){
-      return "En análisis";
+      return "Evaluada";
     }else if(id === 4){
-      return "Aprobar Admon.";
+      return "Aprobada RR.HH.";
     }else if(id === 3){
-      return "Aprobar RR.HH.";
+      return "Aprobada Admon.";
     }else if(id === 5){
-      return "Rechazada";
+      return "Desembolsada";
     }else if(id=== 6){
-      return "Desembolsada"
-    }else{
-      return "Solicitada"
+      return "Rechazada"
+    }else if(id=== 7){
+      return "Finalizada"
+    }else if(id=== 8){
+      return "Devolución bancaria"
     }
   };
 
@@ -74,25 +75,37 @@ class RequestStateModal extends Component {
       approve: true,
     };
     //console.log("D", data);
-    this.props.approveorRejectRequest(data);
+    this.props.approveorRejectRequest(data, localStorage.user_id);
     SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
     this.setState({approve_modal: false});
   
   };
 
-  onCancelRequest = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido rechazada correctamente.");
-    this.setState({reject_modal: false});
+  onConfirmRequest = (idRequest) => {
+    let data = {
+      requestId: idRequest,
+      approve: true,
+    };
+    //console.log("D", data);
+    this.props.approveorRejectRequest(data, localStorage.user_id);
+    this.setState({approve_modal: false});
   };
 
-  handleQuickApprove = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
+  onRejectRequest = (idRequest) => {
+    let data = {
+      requestId: idRequest,
+      approve: false,
+    };
+    //console.log("D", data);
+    this.props.approveorRejectRequest(data, localStorage.user_id);
+    this.setState({approve_modal: false});
   };
 
   render(){
 
     let item = this.props.item;
     //let {approve_modal} = this.state;
+    console.log("AP", this.state.approve_modal);
 
     return (
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
@@ -108,7 +121,7 @@ class RequestStateModal extends Component {
                 {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {item.idRequestState}
+                  <b>Estado</b> <br/><br/>  {this.defineBadgeName(item.idRequestState)}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
@@ -120,7 +133,7 @@ class RequestStateModal extends Component {
               </Col>
               <Col xs={24} sm={12} md={2} lg={1}>
                 <Tooltip title="Aprobar solicitud">
-                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.handleQuickApprove()}/> 
+                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.setState({approve_modal: true})}/> 
                 </Tooltip>
               </Col>
               <Col xs={24} sm={12} md={2} lg={1}>
@@ -143,10 +156,11 @@ class RequestStateModal extends Component {
               <Row>
                 <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
                   <Step title="Solicitada"/>
-                  <Step title="En análisis"/>
+                  <Step title="Evaluada"/>
                   <Step title="Aprobar RR.H H."/>
                   <Step title="Aprobar Admon."/>                 
                   <Step title="Desembolsada"/>
+                  <Step title="Finalizada"/>
                   
                 </Steps>
               </Row>
@@ -222,22 +236,38 @@ class RequestStateModal extends Component {
                         Aprobar crédito
                   </Button> 
                 </Col>
-                <Modal 
-                  title="Aprobar crédito"
-                  visible={this.state.approve_modal}
-                  okText={"Aprobar"}
-                  cancelText={"Cancelar"}
-                  width={450}
-                  onOk={() => this.onConfirmRequest(item.idRequest)}
-                  onCancel={() => this.setState({approve_modal: false})}>
-                    <div>
-                      ¿Está seguro de realizar la aprobación del crédito? Esta acción será irreversible.                  
-                    </div>
-    
-                </Modal>
+                
               </Row>
             </div>
           }
+
+          <Modal 
+            title="Aprobar crédito"
+            visible={this.state.approve_modal}
+            okText={"Aprobar"}
+            cancelText={"Cancelar"}
+            width={450}
+            onOk={() => this.onConfirmRequest(item.idRequest)}
+            onCancel={() => this.setState({approve_modal: false})}>
+              <div>
+                ¿Está seguro de realizar la aprobación del crédito? Esta acción será irreversible.                  
+              </div>
+
+          </Modal>
+          
+          <Modal 
+            title="Rechazar crédito"
+            visible={this.state.reject_modal}
+            okText={"Rechazar"}
+            cancelText={"Atrás"}
+            width={450}
+            onOk={() => this.onRejectRequest(item.idRequest)}
+            onCancel={() => this.setState({reject_modal: false})}>
+              <div>
+                ¿Está seguro de realizar el rechazo del crédito? Esta acción será irreversible.                  
+              </div>
+
+          </Modal>
         </div>
       </Badge>
     );
@@ -257,8 +287,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllRequestToApprove: () => dispatch(getAllRequestToApprove( )),
-    approveorRejectRequest: (data) => dispatch(approveorRejectRequest(data)),    
+    //getAllRequestToApprove: () => dispatch(getAllRequestToApprove( )),
+    approveorRejectRequest: (data, userId) => dispatch(approveorRejectRequest(data, userId)),    
   }
 };
 

@@ -168,12 +168,26 @@
   margin-bottom: 10px !important;
 }
 
+.signature-field{
+  margin-bottom: 20px !important;
+  width: 80% !important;
+  height: 80% !important;
+  margin: 0 'auto' !important;
+  background-color: #dadada !important;
+}
+
 @media only screen and (max-width:500px) {
+
+  .signature-field{
+    width: 100% !important;
+    height: 100px !important;
+  }
+
   .request-div{
-    margin-top: 0px !important;
+    margin-top: 40px !important;
     margin-bottom: 0px !important;
     width: 90%;
-    margin: auto;
+   
   }
 
   .form-request-rows{
@@ -207,15 +221,27 @@
   .customer-credit-card{
     border-radius: 20px;
     margin-right: 15x !important;
+    padding-top: -5px !important;
+
   }
 
   .request-initial-step{
     margin-top: 15px !important;
   }
 
-  .request-title{
-    font-size: 16px !important;
-    margin-top: 50px !important;
+  .request-title-amount{
+    font-size: 15px !important;
+    margin-bottom: -10px !important;
+    color: #42a4ff !important;
+  }
+
+  .slider-amount{
+    margin-bottom: 20px !important;
+    margin-top: 10px !important;
+  }
+
+  .ant-slider{
+    margin:none !important;
   }
 
 }

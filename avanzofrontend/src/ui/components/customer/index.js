@@ -19,7 +19,7 @@ import '../../styles/customer/index.css'
 const table = [
   {
     title: <div>Tipo Transacción</div>,
-    dataIndex: 'name',
+    dataIndex: 'transactionType',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
@@ -35,19 +35,11 @@ const table = [
   },
   {
     title: <div className={"table-p"}>Fecha Solicitud</div>,
-    dataIndex: 'requestDate',
+    dataIndex: 'createdDate',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.requestDate.localeCompare(b.requestDate)},
-  },
-  {
-    title: <div className={"table-p"}>Fecha Transacción</div>,
-    dataIndex: 'transactionDate',
-    width: "150px",
-    align: "center",
-    render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.transactionDate.localeCompare(b.transactionDate)},
+    sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
   }
 ];
 
@@ -98,7 +90,7 @@ class Customer extends Component {
     let tableData = homeDataResponse.transactions;
     let pendingRequests = homeDataResponse.pendingRequests;
 
-    if(JSON.stringify(homeDataResponse) === '{}'){
+    if(JSON.stringify(homeDataResponse) === '{}' || tableData === undefined){
       return (
         <Skeleton active paragraph={{ rows: 15 }} className={"main-skeleton"}/>        
       );
@@ -138,7 +130,7 @@ class Customer extends Component {
                   </Col>
                   <Col>
                     <Divider className={"second-divider"}/>
-                    <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'} 
+                    <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'idTransaction'} 
                           size={'small'} scroll={{x:'500px'|true}} locale={{emptyText: 'No se han realizado transacciones hasta ahora.'}}
                           pagination={{ itemRender: itemRender, showSizeChanger: true,
                           pageSizeOptions: ["5", "10", "15", "20"] }}/>

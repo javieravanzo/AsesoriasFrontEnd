@@ -197,9 +197,9 @@ class CreateCompany extends Component {
                                 {required: true, message: 'Por favor ingresa si se aprueba desde recursos humanos'}
                               ]})(
                                 <Select placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                <Select.Option value={"Sí"}>Sí</Select.Option>
-                                <Select.Option value={"No"}>No</Select.Option>
-                              </Select>
+                                  <Select.Option value={"Sí"}>Sí</Select.Option>
+                                  <Select.Option value={"No"}>No</Select.Option>
+                                </Select>
                               )
                           }
                         </FormItem>  

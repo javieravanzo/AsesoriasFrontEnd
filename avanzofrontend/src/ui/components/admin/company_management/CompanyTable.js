@@ -4,6 +4,9 @@ import {Row, Col, Divider, Card, Input, Table, Spin} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
+//Components
+import TableButtons from './ServiceTableButtons';
+
 //Actions
 import {getAllCompanies} from "../../../../store/redux/actions/admin/adminActions";
 
@@ -52,6 +55,13 @@ const table = [
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.registeredDate.localeCompare(b.registeredDate)},
+  },
+  {
+    title: " ",
+    dataIndex: 'actions',
+    width: "50px",
+    align: "center",
+    render: text => <div className={"table-div"}>{text}</div>,
   }
 ];
 
@@ -102,6 +112,7 @@ class CompanyTable extends Component {
           registeredDate: item.registeredDate,
           split: item.maximumSplit,
           quantity: item.defaultAmount,
+          actions: <TableButtons item={item}/>
         };
 
         if(this.filterData(row)) {

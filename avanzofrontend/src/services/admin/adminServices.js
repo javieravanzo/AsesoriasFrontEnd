@@ -18,6 +18,15 @@ function createCompany(data){
   });
 };
 
+function updateCompany(data){
+  //console.log(data);
+  return request({
+    url: '/Company/Update',
+    method: 'PUT',
+    data: data
+  });
+};
+
 function createCustomer(data){
   return request({
     url: '/Customer/Create',
@@ -96,7 +105,7 @@ function approveCustomer(client, approve){
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
-  getAllCustomersToApprove, approveCustomer
+  getAllCustomersToApprove, approveCustomer, updateCompany
 };
 
 export default adminService;

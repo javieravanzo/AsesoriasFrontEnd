@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import RequestModal from "./RequestStateModal";
 
 //Actions
-import {getAllRequestToApprove} from "../../../../../store/redux/actions/admin/adminActions";
+import {getAllRequestToOutLay} from "../../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
@@ -24,7 +24,7 @@ class MakeOutlayProcess extends Component {
       visible: null,
     };
 
-    this.props.getAllRequestToApprove();
+    this.props.getAllRequestToOutLay(localStorage.user_id);
 
   };
 
@@ -41,12 +41,10 @@ class MakeOutlayProcess extends Component {
     });
   };
 
-
-
   render(){
 
-    let tableData = this.props.requestResponse;
-    console.log(tableData);
+    let tableData = this.props.requestOutLayResponse;
+    console.log("OD", tableData);
 
     if(tableData === null){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
@@ -77,18 +75,18 @@ class MakeOutlayProcess extends Component {
 }
 
 MakeOutlayProcess.propTypes = {
-  requestResponse: PropTypes.array,
+  requestOutLayResponse: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
   return {
-    requestResponse: state.admin.requestResponse,
+    requestOutLayResponse: state.admin.requestOutLayResponse,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllRequestToApprove: () => dispatch(getAllRequestToApprove()),
+    getAllRequestToOutLay: (user_id) => dispatch(getAllRequestToOutLay(user_id)),
   }
 };
 

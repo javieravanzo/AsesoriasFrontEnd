@@ -227,7 +227,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Fecha de nacimiento"}/>
                         <FormItem>
-                          {getFieldDecorator('born_date',
+                          {getFieldDecorator('birthDate',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
@@ -236,14 +236,38 @@ class CustomerManagement extends Component {
                           }
                         </FormItem>
                       </Col>
-                      <Col xs={12} sm={12} md={8} lg={8} >
+                      <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Fecha de expedición"}/>
                         <FormItem>
-                          {getFieldDecorator('expedition_data',
+                          {getFieldDecorator('expeditionDate',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
                               <DatePicker placeholder={"Fecha de expedición"} style={{width: "100% !important"}}/>
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Cantidad máxima de préstamo"}/>
+                        <FormItem>
+                          {getFieldDecorator('maximumAmount',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa una cantidad de préstamo'}
+                            ]})(
+                              <Input placeholder={"Cantidad de prestámo"} style={{width: "100% !important"}}/>
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Máxima número de cuotas"}/>
+                        <FormItem>
+                          {getFieldDecorator('split',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa un número de cuotas'}
+                            ]})(
+                              <Input placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
                             )
                           }
                         </FormItem>

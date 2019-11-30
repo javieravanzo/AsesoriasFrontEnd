@@ -17,11 +17,11 @@ import '../../styles/customer/transactions.css'
 const table = [
   {
     title: <div>Tipo Transacción</div>,
-    dataIndex: 'name',
+    dataIndex: 'transactionType',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
-    sorter: (a, b) =>{ return a.transaction.localeCompare(b.transaction)},
+    sorter: (a, b) =>{ return a.name.localeCompare(b.name)},
   },
   {
     title: <div className={"table-p"}>Cantidad</div>,
@@ -33,19 +33,11 @@ const table = [
   },
   {
     title: <div className={"table-p"}>Fecha Solicitud</div>,
-    dataIndex: 'requestDate',
+    dataIndex: 'createdDate',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.date.localeCompare(b.date)},
-  },
-  {
-    title: <div className={"table-p"}>Fecha Transacción</div>,
-    dataIndex: 'transactionDate',
-    width: "150px",
-    align: "center",
-    render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.date.localeCompare(b.date)},
+    sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
   }
 ];
 
@@ -147,7 +139,7 @@ class Transactions extends Component {
                   </Col>
                 </Row>
                 <Divider className={"second-divider"}/>
-                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'id'}
+                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'idTransaction'} 
                     locale={{ emptyText: 'No hay transacciones todavía' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>

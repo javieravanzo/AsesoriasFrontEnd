@@ -5,6 +5,7 @@ import {adminTypes as C} from '../../types';
 const initialState={
   registerAdminResponse: null,
   requestResponse: null,
+  requestOutLayResponse: null,
   companyResponse: null, 
   companyList: null,
   customerList: null,
@@ -43,6 +44,11 @@ export default function adminReducer(state = initialState, action){
         ...state,
         customerListToApprove: action.payload
       };  
+    case C.GET_REQUEST_TO_OUTLAY:
+      return{
+        ...state,
+        requestOutLayResponse: action.payload
+      };       
     default:
       return state;
   }

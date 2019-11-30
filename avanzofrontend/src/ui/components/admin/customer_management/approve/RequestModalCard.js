@@ -38,17 +38,19 @@ class RequestModalCard extends Component {
     if(id === 1){
       return "Solicitada";
     }else if(id === 2){
-      return "En análisis";
+      return "Evaluada";
     }else if(id === 4){
-      return "Aprobar Admon.";
+      return "Aprobada RR.HH.";
     }else if(id === 3){
-      return "Aprobar RR.HH.";
+      return "Aprobada Admon.";
     }else if(id === 5){
-      return "Rechazada";
+      return "Desembolsada";
     }else if(id=== 6){
-      return "Desembolsada"
-    }else{
-      return "Solicitada"
+      return "Rechazada"
+    }else if(id=== 7){
+      return "Finalizada"
+    }else if(id=== 8){
+      return "Devolución bancaria"
     }
   };
 
@@ -62,7 +64,7 @@ class RequestModalCard extends Component {
     }else if(id === 4){
       return "#62ffb5";
     }else if(id === 5){
-      return "#6cff55 ";
+      return "#6cff55";
     }else{
       return "white";
     }
@@ -75,16 +77,7 @@ class RequestModalCard extends Component {
 
   onRejectRequest = () => {
     this.props.approveCustomers(this.props.item.idClient, false);
-    this.setState({approve_modal: false});
-  };
-
-  onCancelRequest = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido rechazada correctamente.");
     this.setState({reject_modal: false});
-  };
-
-  handleQuickApprove = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
   };
 
   render(){
@@ -192,7 +185,7 @@ class RequestModalCard extends Component {
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={4}>
                   <Button className={"request-reject-button"} icon="close-circle" 
-                          onClick={() => this.setState({approve_modal: true})}>
+                          onClick={() => this.setState({reject_modal: true})}>
                         Rechazar
                   </Button> 
                 </Col>
@@ -221,7 +214,7 @@ class RequestModalCard extends Component {
             onOk={() => this.onRejectRequest()}
             onCancel={() => this.setState({approve_modal: false})}>
               <div>
-                ¿Está seguro de realizar el rechazo del cliente?.                  
+                ¿Está seguro de realizar el rechazo del cliente?. El usuario será envíado a un estado de rechazado o pendiente de evaluación particular.               
               </div>
           </Modal>
         </div>
@@ -242,8 +235,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    approveCustomers: (client, approve) => dispatch(approveCustomers(client, approve)),
-    //approveorRejectRequest: (data) => dispatch(approveorRejectRequest(data)),    
+    approveCustomers: (client, approve) => dispatch(approveCustomers(client, approve)), 
   }
 };
 

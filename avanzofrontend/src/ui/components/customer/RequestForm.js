@@ -314,7 +314,7 @@ class LoanRequest extends Component {
                       <Row className="icon-wrapper">
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
-                          <span className={"request-title"}>$80.000</span>
+                          <span className={"request-title-amount"}>$80.000</span>
                           </h3>
                         </Col>
                         <Col xxl={14} lg={14} md={8} sm={8} xs={14}>
@@ -323,7 +323,7 @@ class LoanRequest extends Component {
                               {initialValue: this.state.sliderValue, rules: [
                                 {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                               ]})(
-                                <Slider max={300000} min={80000} step={10000}
+                                <Slider max={300000} min={80000} step={10000} className={"slider-amount"}
                                         tipFormatter={
                                           function (d) { 
                                             return format(d);
@@ -335,7 +335,7 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
-                          <span className={"request-title"}>$300.000</span>
+                          <span className={"request-title-amount"}>$300.000</span>
                           </h3>
                         </Col>
                         
@@ -359,7 +359,7 @@ class LoanRequest extends Component {
                     <Col xs={24} sm={24} md={12} lg={12}>
                       <Card>
                         <Row gutter={8} className={"information-col"}>
-                          <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "right"}}>
+                          <Col xs={12} sm={24} md={12} lg={12} style={{textAlign: "right"}}>
                             <b>Cantidad solicitada</b>
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
@@ -480,7 +480,7 @@ class LoanRequest extends Component {
                     <Col xs={12} sm={12} md={8} lg={7}>
                       <Switch onChange={this.handleBankProp} disabled={money_wallet}/><span className={"type-account"}>{" Cuenta bancaria"}</span>  
                     </Col>
-                    <Col xs={12} sm={12} md={12} lg={10} className={"form-bank-col"}>
+                    <Col xs={24} sm={12} md={12} lg={10} className={"form-bank-col"}>
                       {
                         bank_account &&
                         <div >
@@ -610,7 +610,7 @@ class LoanRequest extends Component {
                             Autorización de descuento
                         </Row>
                         <br/>
-                        <Row style={{marginBottom: "20px", width: '80%', height: '80%',  margin: '0 auto', backgroundColor: '#dadada'}}>
+                        <Row className={"signature-field"}>
                           <SignaturePad canvasProps={{style:{width: '100%', height: '100%'}}}
                             ref={(ref) => { this.sigPad = ref }} />
                         </Row>

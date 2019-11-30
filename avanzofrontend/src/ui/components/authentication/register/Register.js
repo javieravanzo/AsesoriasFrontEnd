@@ -74,6 +74,7 @@ class Register extends Component {
         let nameSplit = values.name.split(" ");
         data.name = nameSplit[0];
         data.lastName = nameSplit[1];
+        data.confirmationPassword = values.password;
         this.props.registerAdmin(data);
       }     
     });

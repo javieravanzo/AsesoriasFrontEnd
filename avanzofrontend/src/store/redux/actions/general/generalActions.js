@@ -7,10 +7,14 @@ import generalServices from '../../../../services/general/generalServices';
 //Subcomponents
 import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
-export const approveorRejectRequest = (data) => {
+//Actions
+import {getAllRequestToOutLay} from '../admin/adminActions';
+
+export const approveorRejectRequest = (data, userId) => {
   return dispatch => {
     return generalServices.approveorRejectRequest(data)
       .then(response => {
+        dispatch(getAllRequestToOutLay(userId));
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: response.data

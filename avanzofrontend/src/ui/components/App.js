@@ -70,7 +70,7 @@ class App extends Component {
     if(!signedIn){
       if (this.props.location.pathname === routes.login || this.props.location.pathname === routes.forgot_password ||
         this.props.location.pathname === routes.reset_password || this.props.location.pathname === routes.confirm_password ||
-        this.props.location.pathname === routes.confirm_account){
+        this.props.location.pathname === routes.confirm_account || this.props.location.pathname === routes.admin_register){
           return( <Login pathname={this.props.location.pathname}/> );
         }else{
           return(
