@@ -65,6 +65,8 @@ class App extends Component {
 
   render(){
 
+    console.log("IR", this.props.location.pathname); 
+
     let signedIn = this.isSignedIn();
 
     if(!signedIn){
