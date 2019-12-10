@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
 //Actions
-//import {deleteServices, updateServices} from "../../../../../store/redux/actions/admin/parameterization/parameterizationActions";
+import {updateCompany} from "../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 
@@ -16,22 +16,27 @@ class TableButtons extends Component {
     super(props);
     
     this.state = {
-      service: null,
-      time: null,
-      visible: false,
+      nit: null,
+      address: null, 
+      socialReason: null, 
+      economyActivity: null,
+      maximumSplit: null,
+      defaultAmount: null, 
+      approveHumanResources: null,
+      email: null,
       loading: false,
     };
 
     this.inputServiceName = this.inputServiceName.bind(this);
     this.inputServiceTime = this.inputServiceTime.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     
   };
 
-  inputServiceName(e){
+  inputServiceName(e, service){
+    console.log(e);
     this.setState({
-      service: e.target.value,
+      [service]: e.target.value,
     });    
   };
 
@@ -43,26 +48,26 @@ class TableButtons extends Component {
 
   handleEdit(item){
     let data = {
-      serviceId: item.serviceId,
-      name: this.state.service===null ? item.name : this.state.service,
-      meetingRangeInMinutes: this.state.time===null ? item.meetingRangeInMinutes : this.state.time,
+      nit: this.state.nit===null ? item.nit : this.state.nit,
+      address: this.state.address===null ? item.address : this.state.address,
+      socialReason: this.state.socialReason===null ? item.socialReason : this.state.socialReason,
+      economyActivity: this.state.economyActivity===null ? item.economyActivity : this.state.servieconomyActivitye,
+      maximumSplit: this.state.maximumSplit===null ? item.maximumSplit : this.state.maximumSplit,
+      defaultAmount: this.state.defaultAmount===null ? item.defaultAmount : this.state.defaultAmount, 
+      approveHumanResources: this.state.approveHumanResources===null ? item.approveHumanResources : this.state.approveHumanResources,
+      email: this.state.email===null ? item.email : this.state.email,
+      idCompany: item.idCompany,
+      idUser: item.idUser
     };
-    this.props.updateServices(data);
+    this.props.updateCompany(data);
     this.setState({
       visible: false
     });
   };
 
-  handleDelete(item){
-    let data = {
-      serviceId: item.serviceId,
-      name: item.name,
-      meetingRangeInMinutes: item.meetingRangeInMinutes
-    };
-    this.props.deleteServices(data);
-  };
-
   render() {
+
+    console.log("Props", this.props.item);
 
     return (
       <div>
@@ -109,7 +114,7 @@ class TableButtons extends Component {
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Dirección Empresa:
                 <br/>
-                <Input defaultValue={this.props.item.address} placeholder={"Dirección"} onChange={(e) => this.inputServiceName(e, 'economyActivity')}/>
+                <Input defaultValue={this.props.item.address} placeholder={"Dirección"} onChange={(e) => this.inputServiceName(e, 'address')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 ¿Aprueba RR.HH.?
@@ -122,12 +127,12 @@ class TableButtons extends Component {
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Máxima cantidad a prestar:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.defaultAmount} placeholder={"Dirección"} onChange={(e) => this.inputServiceName(e, 'economyActivity')}/>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.defaultAmount} placeholder={"Máximo préstamo"} onChange={(e) => this.inputServiceName(e, 'defaultAmount')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Cantidad de cuotas máxima:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumSplit} placeholder={"Dirección"} onChange={(e) => this.inputServiceName(e, 'economyActivity')}/>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumSplit} placeholder={"Cantidad de cuotas"} onChange={(e) => this.inputServiceName(e, 'maximumSplit')}/>
               </Col>
               
             </Row>
@@ -149,7 +154,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //updateServices: (data) => dispatch(updateServices(data)),
+    updateCompany: (data) => dispatch(updateCompany(data)),
     //deleteServices: (data) => dispatch(deleteServices(data)),
   }
 };

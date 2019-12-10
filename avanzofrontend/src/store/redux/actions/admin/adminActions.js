@@ -50,6 +50,28 @@ export const createCompany = (data) => {
   }
 };
 
+export const updateCompany = (data) => {
+  return dispatch => {
+    return adminServices.updateCompany(data)
+      .then(response => {
+        dispatch(getAllCompanies());
+        dispatch({
+          type: C.UPDATE_COMPANY,
+          payload: response.data,
+          correct: true,
+        });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.UPDATE_COMPANY,
+          payload: err,
+          correct: false,
+        });
+        ERROR_MODAL('Error al editar la empresa', err.data.message);
+      });
+  }
+};
+
 export const createCustomer = (data) => {
   return dispatch => {
     return adminServices.createCustomer(data)
@@ -67,6 +89,26 @@ export const createCustomer = (data) => {
       });
   }
 };
+
+export const activateCustomer = (clientId, status) => {
+  return dispatch => {
+    return adminServices.activateCustomer(clientId, status)
+      .then(response => {
+        dispatch(getAllCustomers());
+        dispatch({
+          type: C.ACTIVATE_CUSTOMER,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.ACTIVATE_CUSTOMER,
+          payload: err,
+        });
+        ERROR_MODAL('Error al activar el cliente', err.data);
+      });
+  }
+};
+
 
 export const createMultipleCustomer = (data) => {
   return dispatch => {

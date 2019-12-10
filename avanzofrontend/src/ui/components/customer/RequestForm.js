@@ -246,7 +246,7 @@ class LoanRequest extends Component {
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
-    let { interestValue, adminValue, maximumAmount, maximumSplit, otherCollectionValue } = requestDataResponse;
+    let { interestValue, adminValue, maximumAmount, partialCapacity, maximumSplit, otherCollectionValue } = requestDataResponse;
     let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
@@ -273,7 +273,7 @@ class LoanRequest extends Component {
                 <div>
                   <Row gutter={2}>
                     <Col span={24}>
-                      <Statistic className={"customer-credit-card"} title={<h3>Cupo disponible</h3>} value={187107} prefix={"$"}/>
+                      <Statistic className={"customer-credit-card"} title={<h3>Cupo disponible</h3>} value={partialCapacity} prefix={"$"}/>
                     </Col>
                   </Row>    
                 </div>
@@ -341,7 +341,7 @@ class LoanRequest extends Component {
                         
                       </Row>
                       <FieldTitle title={"Número de cuotas"}/>
-                      <span className={"text-fees"}>*La cantidad máxima de cuotas depende de los ciclos de pago en tu empresa.</span>
+                      <span className={"text-fees"}>*La cantidad máxima de cuotas de acuerdo con tu empresa es <span className={"fees-number-text"}>{maximumSplit}</span>.</span>
                       <FormItem className={"fees-item"}>
                         {getFieldDecorator('fees',
                           {initialValue: maximumSplit,  rules: [

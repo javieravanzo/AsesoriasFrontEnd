@@ -1,7 +1,7 @@
 //Libraries
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
-import { Form, Select, Button, Col, Row, Collapse, InputNumber, Input} from 'antd';
+import { Form, Select, Button, Col, Row, Collapse, InputNumber, Input, Tooltip, Icon, Table} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
@@ -10,7 +10,7 @@ import routes from '../../../../configuration/routing/Routes';
 
 //Styles
 import '../../../styles/admin/create-company.css';
-import { SUCCESS_MODAL, ERROR_MODAL } from '../../subcomponents/modalMessages';
+import { SUCCESS_MODAL, ERROR_MODAL, WARNING_MODAL } from '../../subcomponents/modalMessages';
 
 //Actions
 import {createCompany}  from "../../../../store/redux/actions/admin/adminActions";
@@ -19,6 +19,25 @@ import {createCompany}  from "../../../../store/redux/actions/admin/adminActions
 //import {Roles} from "../../../lib/generalUtils/constants";
 const FormItem = Form.Item;
 const { Panel } = Collapse;
+
+const columns = [
+  {
+    title: 'Tipo de ciclo',
+    dataIndex: 'companyRate',
+  },
+  {
+    title: 'Fecha de reporte',
+    dataIndex: 'companyReportDate',
+  },
+  {
+    title: 'Fecha de pago 1',
+    dataIndex: 'companyFirstDate',
+  },
+  {
+    title: 'Fecha de pago 2',
+    dataIndex: 'companySecondDate',
+  },
+];
 
 class CreateCompany extends Component {
 
@@ -36,6 +55,15 @@ class CreateCompany extends Component {
       loan: null,
       upload: null,
       salary_rate: null,
+      salariesArray: [0],
+      companyRateName: null,
+      companyPaymentNumber: null,
+      companyRate: null,
+      companyReportDate: null,
+      companyFirstDate: null,
+      companySecondDate: null,
+      companySalaries: [],
+      burstingKey: 1,
     };
 
   };
@@ -64,12 +92,16 @@ class CreateCompany extends Component {
       if (err){
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
       }else{
+        let newSalary = [{
+          companyRate: values.companyRate,
+          companyReportDate: values.companyReportDate,
+          companyFirstDate: values.companyFirstDate,
+          companySecondDate: values.companySecondDate,
+        }];
         let data = {
           address: values.address,
           approveHumanResources: values.approveHumanResources,
-          companyFirstDate: values.companyFirstDate,
-          companyRate: values.companyRate,
-          companySecondDate: values.companySecondDate,
+          companySalaries: this.state.companySalaries.length === 0 ? newSalary : this.state.companySalaries,
           defaultAmount: values.defaultAmount,
           economyActivity: values.economyActivity,
           email: values.email,
@@ -99,10 +131,58 @@ class CreateCompany extends Component {
     });
   };
 
+  addNewSalary = () => {
+    let {companyRate, companyReportDate, companyFirstDate, companySecondDate} = this.state;
+
+    let datesArray = this.state.companySalaries;
+
+    let newSalary = {
+      companyRate: companyRate,
+      companyReportDate: companyReportDate,
+      companyFirstDate: companyFirstDate,
+      companySecondDate: companySecondDate,
+    };
+
+    if(companyRate === null && companyReportDate=== null && companyFirstDate === null){
+      WARNING_MODAL("Advertencia", "Los campos de ciclos de pagos no son válidos.")
+    }else{
+      this.setState({
+        companySalaries: datesArray,
+        burstingKey: this.state.burstingKey+1,
+        companyRate: null,
+        companyReportDate: null,
+        companyFirstDate: null,
+        companySecondDate: null,
+      });
+      datesArray.push(newSalary);
+    }
+    
+
+    
+    
+  };
+
+  changeSalariesValues = (e, param) => {
+    
+    if(param === "companyRate"){
+      console.log("E-P", e, param);
+      this.setState({
+        [param]: e
+      });
+    }else{
+      console.log("E-P", e.target.value, param);
+      this.setState({
+        [param]: e.target.value
+      });
+    }
+    
+  };
+
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    //let {salary_rate} = this.state;
+    let {burstingKey, companySalaries} = this.state;
+    console.log("BK", burstingKey, "CS", companySalaries);
 
     return (
       <div className={"company-div"}>
@@ -228,46 +308,69 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      <Col xs={12} sm={12} md={5} lg={8}>
-                        <FieldTitle title={"Pago de salario"}/>
-                        <FormItem >
-                          {getFieldDecorator('companyRate',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un tipo de pago'}
-                            ]})(
-                              <Select placeholder={"Tipo de salario"} showSearch={true} onChange={this.handleSalaryRate} allowClear={true} autoClearSearchValue={true}>
-                                <Select.Option value={"Quincenal"}>Quincenal</Select.Option>
-                                <Select.Option value={"Mensual"}>Mensual</Select.Option>
-                              </Select>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                      <Col xs={12} sm={12} md={5} lg={8}>
-                        <FieldTitle title={"Fecha de salario 1"}/>
-                        <FormItem >
-                          {getFieldDecorator('companyFirstDate',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un tipo de pago'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Fecha de salario 1"} />
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                      <Col xs={12} sm={12} md={5} lg={8}>
-                        <FieldTitle title={"Fecha de salario 2"}/>
-                        <FormItem >
-                          {getFieldDecorator('companySecondDate',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un tipo de pago'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Fecha de salario 2"} />
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                      
+                    </Row>
+                    <Row className={"form-request-rows"}>
+                      {
+                        this.state.companySalaries.length>0 && 
+                        <Table columns={columns} dataSource={companySalaries} size="small" bordered={false} locale={{emptyText: 'No hay registros'}}/>
+                      }
+                      <Row gutter={8} key={this.state.burstingKey}>
+                        <Col xs={12} sm={12} md={6} lg={6} key={this.state.burstingKey}>
+                          <FieldTitle title={"Ciclo de pagos"}/>
+                          <FormItem >
+                            {getFieldDecorator('companyRate',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un tipo de pago'}
+                              ]})(
+                                <Select key={this.state.burstingKey} placeholder={"Tipo de salario"} showSearch={true} onSelect={(e) => this.changeSalariesValues(e, 'companyRate')} onChange={this.handleSalaryRate} allowClear={true} autoClearSearchValue={true}>
+                                  <Select.Option value={"Quincenal"}>Quincenal</Select.Option>
+                                  <Select.Option value={"Mensual"}>Mensual</Select.Option>
+                                </Select>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6}>
+                          <FieldTitle title={"Fecha de salario 1"}/>
+                          <FormItem >
+                            {getFieldDecorator('companyFirstDate',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa una fecha de pago'}
+                              ]})(
+                                <Input key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de salario 1"} onChange={(e) => this.changeSalariesValues(e, 'companyFirstDate')}/>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6}>
+                          <FieldTitle title={"Fecha de salario 2"}/>
+                          <FormItem >
+                            {getFieldDecorator('companySecondDate',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa una fecha de pago'}
+                              ]})(
+                                <Input key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de salario 2"} onChange={(e) => this.changeSalariesValues(e, 'companySecondDate')}/>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
+                        <Col xs={12} sm={12} md={6} lg={6}>
+                          <FieldTitle title={"Fecha de reportes"}/>
+                          <FormItem >
+                            {getFieldDecorator('companyReportDate',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa una fecha de reporte'}
+                              ]})(
+                                <Input key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de reporte"} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
+                      </Row>
+                      <Tooltip title="Agregar nuevo ciclo de pagos">
+                        
+                          <Icon type={"plus-circle"} className={"request-form-add"} onClick={() => this.addNewSalary()}/> 
+                      </Tooltip>
                     </Row>
                   </Panel>
                   <Panel header="Información de la persona encargada" key="4">

@@ -35,6 +35,17 @@ function createCustomer(data){
   });
 };
 
+function activateCustomer(clientId, status){
+  return request({
+    url: '/Customer/ChangePlatformStatus',
+    method: 'GET',
+    headers:{
+      clientId: clientId,
+      status: status
+    }
+  });
+};
+
 function createMultipleCustomer(data){
   return request({
     url: '/Customer/CreateMultiple',
@@ -105,7 +116,7 @@ function approveCustomer(client, approve){
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
-  getAllCustomersToApprove, approveCustomer, updateCompany
+  getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer
 };
 
 export default adminService;

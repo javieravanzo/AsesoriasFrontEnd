@@ -176,6 +176,10 @@
   background-color: #dadada !important;
 }
 
+.fees-number-text{
+  font-weight: bold;
+}
+
 @media only screen and (max-width:500px) {
 
   .signature-field{

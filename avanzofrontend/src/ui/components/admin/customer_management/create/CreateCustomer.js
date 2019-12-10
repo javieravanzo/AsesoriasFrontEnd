@@ -2,10 +2,15 @@
 import React, { Component } from 'react';
 import { Form, Select, Button, Col, Row, Collapse, InputNumber,
          Input, DatePicker, Modal, Upload, message, Icon} from 'antd';
+import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../../../subcomponents/FieldTitle';
 import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+
+//Actions
+import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";
 
 //Styles
 import '../../../../styles/admin/create-company.css';
@@ -33,6 +38,8 @@ class CustomerManagement extends Component {
       particular_modal: null
     };
 
+    this.props.getCompanies();
+
   };
 
   onConfirmRequest = () => {
@@ -51,7 +58,8 @@ class CustomerManagement extends Component {
   }
 
   render(){
-    
+
+    let { companyList } = this.props;
     let {getFieldDecorator} = this.props.form;
     //let {particular_modal, multiple_modal} = this.state;
     const props = {
@@ -272,6 +280,44 @@ class CustomerManagement extends Component {
                           }
                         </FormItem>
                       </Col>
+                      <Col lg={6} md={8} sm={12} xs={12}>
+                        <FieldTitle title={"Empresa"}/>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('company', {
+                            rules: [ 
+                              {required: true, message: 'Por favor, ingrese su empresa.' }],
+                          })(
+                            <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
+                              notFoundContent={"No hay empresas disponibles"}>
+                              {companyList.map((type, i) => (
+                                <Select.Option key={i} value={type.idCompany}>
+                                  {type.socialReason}
+                                </Select.Option>))
+                              }
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col lg={6} md={8} sm={12} xs={12}>
+                        <FieldTitle title={"Ciclo de pagos"}/>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('companyPayment', {
+                            rules: [ 
+                              {required: true, message: 'Por favor, ingrese su ciclo de pagos.' }],
+                          })(
+                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}>
+                              
+                                <Select.Option key={1} value={1}>
+                                  {"Ciclo de pagos 1"}
+                                </Select.Option>
+                                <Select.Option key={2} value={2}>
+                                  {"Ciclo de pagos 2"}
+                                </Select.Option>
+                              
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
                     </Row>
                   </Panel>  
                   <Panel header="Información bancaria" key="2">
@@ -386,8 +432,24 @@ class CustomerManagement extends Component {
   
   };
   
-}
+};
+
+CustomerManagement.propTypes = {
+  companyList: PropTypes.array
+};
+
+const mapStateToProps = (state) => {
+  return {
+    companyList: state.login.companyList
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCompanies: ( ) => dispatch(getCompanies( ))
+  }
+};
 
 let CustomerManagementForm = Form.create()(CustomerManagement);
 
-export default CustomerManagementForm;
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerManagementForm);

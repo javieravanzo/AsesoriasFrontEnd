@@ -4,14 +4,11 @@ import {Row, Col, Divider, Card, Input, Table, Spin} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
-//Subcomponents
-//import MiniLoading from '../../../subcomponents/MiniLoading';
+//Components
+import TableButtons from './ServiceTableButtons';
 
 //Actions
 import {getAllCustomers} from "../../../../../store/redux/actions/admin/adminActions";
-
-//Styles
-//import '../../styles/customer/transactions.css'
 
 //Constants
 const table = [
@@ -47,7 +44,15 @@ const table = [
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
   },
-    {
+  {
+    title: <div className={"table-p"}>Estado</div>,
+    dataIndex: 'platformState',
+    width: "80px",
+    align: "center",
+    render: text => <div className={"table-p"}>{text}</div>,
+    sorter: (a, b) =>{ return a.platformState.localeCompare(b.platformState)},
+  },
+  {
     title: <div className={"table-p"}>Empresa</div>,
     dataIndex: 'socialReason',
     width: "100px",
@@ -55,8 +60,13 @@ const table = [
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.socialReason.localeCompare(b.socialReason)},
   },
-  
-  
+  {
+    title: " ",
+    dataIndex: 'actions',
+    width: "50px",
+    align: "center",
+    render: text => <div className={"table-div"}>{text}</div>,
+  } 
 ];
 
 //Functions
@@ -106,6 +116,8 @@ class CustomerTable extends Component {
           createdDate: item.createdDate,
           totalRemainder: item.totalRemainder,
           socialReason: item.socialReason,
+          platformState: parseInt(item.platformState, 10) === 1 ? "Activo" : "Inactivo",
+          actions: <TableButtons item={item}/>
         };
 
         if(this.filterData(row)) {

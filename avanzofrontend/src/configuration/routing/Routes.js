@@ -12,7 +12,7 @@ export default {
   confirm_account: "/account_confirmed",
   receive_confirmation: "/account_confirmation/:token",
   
-  admin_register: "/register",
+  admin_register: "/admon-register",
   admin_company_management: "/admin-company-management",
   admin_customer_management: "/admin-customer-management",
   admin_request_management: "/admin-request-management",

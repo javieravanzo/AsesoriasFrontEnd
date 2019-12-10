@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
-import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+import { SUCCESS_MODAL, allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
 
 //Actions
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
@@ -38,9 +38,9 @@ class RequestStateModal extends Component {
       return "Solicitada";
     }else if(id === 2){
       return "Evaluada";
-    }else if(id === 4){
-      return "Aprobada RR.HH.";
     }else if(id === 3){
+      return "Aprobada RR.HH.";
+    }else if(id === 4){
       return "Aprobada Admon.";
     }else if(id === 5){
       return "Desembolsada";
@@ -67,6 +67,26 @@ class RequestStateModal extends Component {
     }else{
       return "white";
     }
+  };
+
+  seeDocument = (filePath) => {
+
+    let url = filePath;
+    console.log(url);
+    let newUrl = url.split('.');
+    console.log("URL", newUrl, newUrl[1]);
+    let baseURL = "http://3.133.128.42:4000";
+
+    if (url !== null) {
+      let newWindow = window.open(baseURL + newUrl[1], "blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        allowEmergingWindows();
+      }
+    } else {
+      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+    }
+
+
   };
 
   onConfirmRequest = (idRequest) => {
@@ -220,7 +240,7 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath)} >
                         Ver documento
                   </Button> 
                 </Col>

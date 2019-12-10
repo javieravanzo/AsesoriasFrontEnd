@@ -36,9 +36,9 @@ class RequestOutLayState extends Component {
       return "Solicitada";
     }else if(id === 2){
       return "Evaluada";
-    }else if(id === 4){
-      return "Aprobada RR.HH.";
     }else if(id === 3){
+      return "Aprobada RR.HH.";
+    }else if(id === 4){
       return "Aprobada Admon.";
     }else if(id === 5){
       return "Desembolsada";

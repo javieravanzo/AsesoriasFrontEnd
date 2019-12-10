@@ -1,11 +1,11 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Button, Modal} from 'antd';
+import {Col, Row, Tooltip, Icon, Button, Modal, Select, Input} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+//import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 //Actions
 import {approveCustomers} from "../../../../../store/redux/actions/admin/adminActions";
@@ -150,10 +150,22 @@ class RequestModalCard extends Component {
               </Row>
               <br/>
               <Row>
-                <Col xs={12} sm={12} md={8} lg={4} >
+                <Col xs={12} sm={12} md={8} lg={5} >
                   <b>Monto</b><br/>
-                  {item.defaultAmount} 
+                  <Input className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
                 </Col>
+                <Col xs={12} sm={12} md={8} lg={6}>
+                  <b>Ciclo de pagos</b><br/>
+                  <Select className={"payments-select"} placeholder="Selecciona el ciclo de pagos" allowClear={true} showSearch={true}>    
+                    <Select.Option key={1} value={1}>
+                      {"Ciclo de pagos 1"}
+                    </Select.Option>
+                    <Select.Option key={2} value={2}>
+                      {"Ciclo de pagos 2"}
+                    </Select.Option>
+                  </Select>
+                </Col>
+                
                 <Col xs={12} sm={12} md={8} lg={4} >
                     <b>Cuotas</b><br/>
                     {item.maximumSplit}
@@ -162,11 +174,7 @@ class RequestModalCard extends Component {
                     <b>Cuenta</b><br/>
                     {item.accountBank === null ? "-" : item.accountBank}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Tipo de Cuenta</b><br/>
-                    {item.accountType === null ? "-" : item.accountType}
-                </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                     <b>Número de cuenta</b><br/>
                     {item.accountNumber === null ? "-" : item.accountNumber}
                 </Col>
