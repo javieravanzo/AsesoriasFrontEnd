@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Tabs, Icon, Input} from 'antd';
+import {Row, Col, Tabs, Icon} from 'antd';
 
 //Components
 import ApproveRequest from './approve_requests/ApproveRequest';
@@ -50,32 +50,6 @@ class Customer_Management extends Component {
             {
               parseInt(localStorage.role_id, 10) === 2 &&
               <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="1">
-                <Row gutter={8} className={"approve-request-filter"}>
-                <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
-                  <p className="field-title-visible">Número solicitud </p>
-                  <Input placeholder={"Número solicitud"}/>
-                </Col>
-                <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
-                  <p className="field-title-visible">Cliente</p>
-                  <Input placeholder={"No. de cédula"}/>
-                </Col>
-
-                <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
-                  <p className="field-title-visible">Estado</p>
-                  <Input placeholder={"Estado"}/>
-                </Col>
-
-                <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
-                  <p className="field-title-visible">Fecha Solicitud</p>
-                  <Input placeholder={"Fecha Solicitud"}/>
-                </Col>
-
-                <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
-                  <p className="field-title-visible">Fecha Transacción</p>
-                  <Input placeholder={"Fecha Transacción"}/>
-                </Col>
-              </Row>
-                <br/>
                 <ApproveRequest/>
               </TabPane>
             }

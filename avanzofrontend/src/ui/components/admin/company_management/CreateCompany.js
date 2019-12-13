@@ -165,12 +165,12 @@ class CreateCompany extends Component {
   changeSalariesValues = (e, param) => {
     
     if(param === "companyRate"){
-      console.log("E-P", e, param);
+      //console.log("E-P", e, param);
       this.setState({
         [param]: e
       });
     }else{
-      console.log("E-P", e.target.value, param);
+      //console.log("E-P", e.target.value, param);
       this.setState({
         [param]: e.target.value
       });
@@ -181,8 +181,7 @@ class CreateCompany extends Component {
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {burstingKey, companySalaries} = this.state;
-    console.log("BK", burstingKey, "CS", companySalaries);
+    let {companySalaries} = this.state;
 
     return (
       <div className={"company-div"}>

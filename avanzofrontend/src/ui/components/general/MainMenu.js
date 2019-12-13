@@ -70,6 +70,33 @@ class MainMenu extends Component {
               <Menu.Item>
                 <img src={icon} alt="menulogo" className="menu-logo" />
               </Menu.Item>
+              <Menu.Item className={"menu-logout"} onClick={() => this.setState({visible: true})}>
+                <Icon type="poweroff" />Cerrar sesión
+              </Menu.Item>
+              {
+                (role === 2 || role === 1 ) && 
+                <Menu.Item className={"menu-admin-report"}>
+                  <NavLink to={routes.admin_generate_reports}>
+                    <Icon type="file"/>Generar Reportes
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (role === 2 || role === 1 ) && 
+                <Menu.Item className={"menu-admin-customer"}>
+                  <NavLink to={routes.admin_customer_management}>
+                    <Icon type="idcard"/>Gestionar Clientes
+                  </NavLink>
+                </Menu.Item>
+              }
+              {
+                (role === 2 || role === 1 ) && 
+                <Menu.Item className={"menu-admin-loan"}>
+                  <NavLink to={routes.admin_request_management}>
+                    <Icon type="percentage"/>Gestionar Créditos
+                  </NavLink>
+                </Menu.Item>
+              }
               {
                 (role === 2 || role === 1 ) && 
                 <Menu.Item className={"menu-admin-home"}>
@@ -80,55 +107,22 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (role === 2 || role === 1 ) && 
-                <Menu.Item>
-                  <NavLink to={routes.admin_customer_management}>
-                    <Icon type="idcard"/>Gestionar Clientes
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (role === 2 || role === 1 ) && 
-                <Menu.Item>
-                  <NavLink to={routes.admin_request_management}>
-                    <Icon type="percentage"/>Gestionar Créditos
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (role === 2 || role === 1 ) && 
-                <Menu.Item>
-                  <NavLink to={routes.admin_generate_reports}>
-                    <Icon type="file"/>Generar Reportes
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
                 (parseInt(role,10) === 3) && 
-                <Menu.Item className={"menu-company-home"}>
-                  <NavLink to={routes.company_request_management}>
-                    <Icon type="file-done"/>Aprobación créditos
-                  </NavLink>  
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 3) && 
-                <Menu.Item>
+                <Menu.Item className={"menu-admin-customer"}>
                   <NavLink to={routes.company_generate_reports}>
                     <Icon type="file-text"/>Generar informes
                   </NavLink>
                 </Menu.Item>
-              }
+              } 
               {
                 (parseInt(role,10) === 3) && 
-                <Menu.Item>
-                  <Icon type="percentage"/>Gestionar créditos
+                <Menu.Item className={"menu-admin-customer"}>
+                  <NavLink to={routes.company_request_management}>
+                    <Icon type="file-done"/>Gestionar solicitudes
+                  </NavLink>  
                 </Menu.Item>
               }
-              <Menu.Item className={"menu-logout"} onClick={() => this.setState({visible: true})}>
-                <Icon type="poweroff" />Cerrar sesión
-              </Menu.Item>
-              
+                          
               {
                 (parseInt(role,10) === 4) && 
                 <Menu.Item className={"menu-user-transactions"}>

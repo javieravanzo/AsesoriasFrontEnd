@@ -64,6 +64,8 @@ class RequestStateModal extends Component {
       return "#62ffb5";
     }else if(id === 5){
       return "#6cff55 ";
+    }else if(id === 6){
+      return "#ff4747";
     }else{
       return "white";
     }
@@ -72,9 +74,9 @@ class RequestStateModal extends Component {
   seeDocument = (filePath) => {
 
     let url = filePath;
-    console.log(url);
+    //console.log(url);
     let newUrl = url.split('.');
-    console.log("URL", newUrl, newUrl[1]);
+    //console.log("URL", newUrl, newUrl[1]);
     let baseURL = "http://3.133.128.42:4000";
 
     if (url !== null) {
@@ -125,10 +127,10 @@ class RequestStateModal extends Component {
 
     let item = this.props.item;
     //let {approve_modal} = this.state;
-    console.log("AP", this.state.approve_modal);
+    //console.log("AP", this.props.item);
 
     return (
-        <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
+        <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={24} sm={12} md={2} lg={2}>
@@ -192,25 +194,25 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row>
-                <Col xs={12} sm={12} md={8} lg={4} >
+                <Col xs={12} sm={12} md={8} lg={6} >
                   <b>Nombres</b><br/><br/>
-                  {item.lastName} 
+                  {item.name + " " + item.lastName} 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Apellidos</b><br/><br/>
-                  {item.lastName}
+                  <b>Cédula</b><br/><br/>
+                  {item.identificationId}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Empresa</b><br/><br/>
-                    {"Emtelco"}
+                    {item.Company_idCompany}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
+                <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Cargo</b><br/><br/>
                     {item.profession}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Dirección</b><br/><br/>
-                    {"Calle 54 No. 18 - 12"}
+                    <b>Teléfono</b><br/><br/>
+                    {item.phoneNumber}
                 </Col>
               </Row>
               <br/>

@@ -44,7 +44,7 @@ class MakeOutlayProcess extends Component {
   render(){
 
     let tableData = this.props.requestOutLayResponse;
-    console.log("OD", tableData);
+    //console.log("OD", tableData);
 
     if(tableData === null){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>

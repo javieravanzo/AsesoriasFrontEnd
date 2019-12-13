@@ -80,12 +80,33 @@ export const createCustomer = (data) => {
           type: C.CREATE_CUSTOMER,
           payload: response.data
         });
+        SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado satisfactoriamente");
       }).catch(err => {
         dispatch({
           type: C.CREATE_CUSTOMER,
           payload: err,
         });
-        ERROR_MODAL('Error al crear múltiples clientes', err.data);
+        ERROR_MODAL('Error al crear el cliente', err.data.message);
+      });
+  }
+};
+
+export const updateCustomer = (data) => {
+  return dispatch => {
+    return adminServices.updateCustomer(data)
+      .then(response => {
+        dispatch(getAllCustomers());
+        dispatch({
+          type: C.UPDATE_CUSTOMER,
+          payload: response.data
+        });
+        SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido actualizado satisfactoriamente");
+      }).catch(err => {
+        dispatch({
+          type: C.UPDATE_CUSTOMER,
+          payload: err,
+        });
+        ERROR_MODAL('Error al actualizar el cliente', err.data.message);
       });
   }
 };
@@ -108,7 +129,6 @@ export const activateCustomer = (clientId, status) => {
       });
   }
 };
-
 
 export const createMultipleCustomer = (data) => {
   return dispatch => {
@@ -177,7 +197,7 @@ export const getAllRequestToOutLay = (userId) => {
           type: C.GET_REQUEST_TO_OUTLAY,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes para desembolsar', err.data);
+        ERROR_MODAL('Error al traer la lista de solicitudes para desembolsar', err.data.message);
       });
   }
 };

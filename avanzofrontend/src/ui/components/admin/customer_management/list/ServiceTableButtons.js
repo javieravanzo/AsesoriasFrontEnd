@@ -1,11 +1,11 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select} from 'antd';
+import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber} from 'antd';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
 //Actions
-import {activateCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+import {activateCustomer, updateCustomer} from "../../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 
@@ -16,28 +16,37 @@ class TableButtons extends Component {
     super(props);
     
     this.state = {
-      nit: null,
-      address: null, 
+      name: null,
+      lastName: null,
+      identificationId: null, 
+      profession: null,
       socialReason: null, 
-      economyActivity: null,
-      maximumSplit: null,
-      defaultAmount: null, 
-      approveHumanResources: null,
+      montlyFee: null,
+      maximumAmount: null, 
       email: null,
+      phoneNumber: null,
       loading: false,
     };
 
     this.inputServiceName = this.inputServiceName.bind(this);
     this.inputServiceTime = this.inputServiceTime.bind(this);
+    this.inputService = this.inputService.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     
   };
 
   inputServiceName(e, service){
-    console.log(e);
+    //console.log(e);
+    this.setState({
+      [service]: e.target.value,
+    });    
+  };
+
+  inputService(e, service){
+    //console.log(e);
     this.setState({
       [service]: e,
-    });    
+    });
   };
 
   inputServiceTime(e){
@@ -47,26 +56,26 @@ class TableButtons extends Component {
 
   handleEdit(item){
     let data = {
-      nit: this.state.nit===null ? item.nit : this.state.nit,
-      address: this.state.address===null ? item.address : this.state.address,
-      socialReason: this.state.socialReason===null ? item.socialReason : this.state.socialReason,
-      economyActivity: this.state.economyActivity===null ? item.economyActivity : this.state.servieconomyActivitye,
-      maximumSplit: this.state.maximumSplit===null ? item.maximumSplit : this.state.maximumSplit,
-      defaultAmount: this.state.defaultAmount===null ? item.defaultAmount : this.state.defaultAmount, 
-      approveHumanResources: this.state.approveHumanResources===null ? item.approveHumanResources : this.state.approveHumanResources,
+      name: this.state.name===null ? item.name : this.state.name,
+      lastName: this.state.lastName===null ? item.lastName : this.state.lastName,
+      identificationId: this.state.identificationId===null ? item.identificationId : this.state.identificationId,
+      profession: this.state.profession===null ? item.profession : this.state.profession,
+      montlyFee: this.state.montlyFee===null ? item.montlyFee : this.state.montlyFee,
+      maximumAmount: this.state.maximumAmount===null ? item.maximumAmount : this.state.maximumAmount, 
       email: this.state.email===null ? item.email : this.state.email,
-      idCompany: item.idCompany,
-      idUser: item.idUser
+      phoneNumber: this.state.phoneNumber===null ? item.phoneNumber : this.state.phoneNumber,
+      idClient: item.idClient,
+      idUser: item.idUser,
+      idAccount: item.idAccount,
     };
-    this.props.updateCompany(data);
+    //console.log("DATA", data);
+    this.props.updateCustomer(data);
     this.setState({
       visible: false
     });
   };
 
   render() {
-
-    console.log("Props", this.props.item);
 
     return (
       <div>
@@ -97,14 +106,19 @@ class TableButtons extends Component {
             closable={!this.state.loading}>
             <Row gutter={12}>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
-                Razón social:
+                Nombres:
                 <br/>
-                <Input defaultValue={this.props.item.socialReason} placeholder={"Razón social"} onChange={(e) => this.inputServiceName(e, 'socialReason')}/>
+                <Input defaultValue={this.props.item.name} placeholder={"Nombres"} onChange={(e) => this.inputServiceName(e, 'name')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
-                NIT:
+                Apellidos:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.nit} onChange={(e) => this.inputServiceName(e, 'nit')} placeholder={"NIT"}/>
+                <Input defaultValue={this.props.item.lastName} placeholder={"Apellidos"} onChange={(e) => this.inputServiceName(e, 'lastName')}/>
+              </Col>
+              <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
+                No. Identificación:
+                <br/>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.identificationId} onChange={(e) => this.inputService(e, 'identificationId')} placeholder={"No. Identificación"}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Correo electrónico:
@@ -112,32 +126,24 @@ class TableButtons extends Component {
                 <Input defaultValue={this.props.item.email} placeholder={"Correo electrónico"} onChange={(e) => this.inputServiceName(e, 'email')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
-                Actividad económica:
+                Profesión:
                 <br/>
-                <Input defaultValue={this.props.item.economyActivity} placeholder={"Actividad económica"} onChange={(e) => this.inputServiceName(e, 'economyActivity')}/>
+                <Input defaultValue={this.props.item.profession} placeholder={"Profesión"} onChange={(e) => this.inputServiceName(e, 'profession')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
-                Dirección Empresa:
+                Teléfono celular:
                 <br/>
-                <Input defaultValue={this.props.item.address} placeholder={"Dirección"} onChange={(e) => this.inputServiceName(e, 'address')}/>
-              </Col>
-              <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
-                ¿Aprueba RR.HH.?
-                <br/>
-                <Select className={"company-edit-nit"} placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                  <Select.Option value={"Sí"}>Sí</Select.Option>
-                  <Select.Option value={"No"}>No</Select.Option>
-                </Select>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.phoneNumber} placeholder={"Número celular"} onChange={(e) => this.inputService(e, 'phoneNumber')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Máxima cantidad a prestar:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.defaultAmount} placeholder={"Máximo préstamo"} onChange={(e) => this.inputServiceName(e, 'defaultAmount')}/>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumAmount} placeholder={"Máximo préstamo"} onChange={(e) => this.inputService(e, 'maximumAmount')}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Cantidad de cuotas máxima:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumSplit} placeholder={"Cantidad de cuotas"} onChange={(e) => this.inputServiceName(e, 'maximumSplit')}/>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.montlyFee} placeholder={"Cantidad de cuotas"} onChange={(e) => this.inputService(e, 'montlyFee')}/>
               </Col>
               
             </Row>
@@ -160,7 +166,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     activateCustomer: (clientId, status) => dispatch(activateCustomer(clientId, status)),
-    //deleteServices: (data) => dispatch(deleteServices(data)),
+    updateCustomer: (data) => dispatch(updateCustomer(data)),
   }
 };
 

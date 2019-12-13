@@ -29,15 +29,19 @@ class RequestStateModal extends Component {
     if(id === 1){
       return "Solicitada";
     }else if(id === 2){
-      return "En evaluación";
+      return "Evaluada";
     }else if(id === 3){
-      return "Aprobar RR.HH.";
+      return "Aprobada RR.HH.";
     }else if(id === 4){
-      return "Rechazada";
-    }else if(id=== 5){
-      return "Desembolsada"
-    }else{
-      return "Solicitada"
+      return "Aprobada Admon.";
+    }else if(id === 5){
+      return "Desembolsada";
+    }else if(id=== 6){
+      return "Rechazada"
+    }else if(id=== 7){
+      return "Finalizada"
+    }else if(id=== 8){
+      return "Devolución bancaria"
     }
   };
 
@@ -49,9 +53,11 @@ class RequestStateModal extends Component {
     }else if(id === 3){
       return "#ffa962";
     }else if(id === 4){
-      return "#ff4747";
+      return "#62ffb5";
     }else if(id === 5){
       return "#6cff55 ";
+    }else if(id === 6){
+      return "#ff4747";
     }else{
       return "white";
     }

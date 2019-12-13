@@ -41,7 +41,7 @@ class App extends Component {
 
   };
 
-  componentWillUpdate(){
+  componentDidUpdate(){
     this.isSignedIn();
   }
 
@@ -64,8 +64,6 @@ class App extends Component {
   };
 
   render(){
-
-    console.log("IR", this.props.location.pathname); 
 
     let signedIn = this.isSignedIn();
 

@@ -35,6 +35,14 @@ function createCustomer(data){
   });
 };
 
+function updateCustomer(data){
+  return request({
+    url: '/Customer/Update',
+    method: 'PUT',
+    data: data
+  });
+};
+
 function activateCustomer(clientId, status){
   return request({
     url: '/Customer/ChangePlatformStatus',
@@ -116,7 +124,7 @@ function approveCustomer(client, approve){
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
-  getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer
+  getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer
 };
 
 export default adminService;

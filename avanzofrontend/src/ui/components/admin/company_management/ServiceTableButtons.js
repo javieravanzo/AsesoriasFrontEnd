@@ -34,7 +34,7 @@ class TableButtons extends Component {
   };
 
   inputServiceName(e, service){
-    console.log(e);
+    //console.log(e);
     this.setState({
       [service]: e.target.value,
     });    
@@ -67,7 +67,7 @@ class TableButtons extends Component {
 
   render() {
 
-    console.log("Props", this.props.item);
+    //console.log("Props", this.props.item);
 
     return (
       <div>

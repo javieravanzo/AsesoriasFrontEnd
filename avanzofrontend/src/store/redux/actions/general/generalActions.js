@@ -5,26 +5,48 @@ import {generalTypes as C} from '../../types';
 import generalServices from '../../../../services/general/generalServices';
 
 //Subcomponents
-import { ERROR_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 //Actions
-import {getAllRequestToOutLay} from '../admin/adminActions';
+import {getAllRequestToOutLay, getAllRequestToApprove} from '../admin/adminActions';
 
 export const approveorRejectRequest = (data, userId) => {
   return dispatch => {
     return generalServices.approveorRejectRequest(data)
       .then(response => {
         dispatch(getAllRequestToOutLay(userId));
+        dispatch(getAllRequestToApprove());
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: response.data
         });
+        SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada exitosamente.")
       }).catch(err => {
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: err,
         });
-        ERROR_MODAL('Error al aprobar o rechazar la solicitud', err.data);
+        ERROR_MODAL('Error al aprobar o rechazar la solicitud', err.data.message);
+      });
+  }
+};
+
+export const approveorRejectRequestByCompany = (data, userId) => {
+  return dispatch => {
+    return generalServices.approveorRejectRequest(data)
+      .then(response => {
+        dispatch(getAllRequestToApprove());
+        dispatch({
+          type: C.APPROVE_REJECT_REQUEST,
+          payload: response.data
+        });
+        SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada exitosamente.")
+      }).catch(err => {
+        dispatch({
+          type: C.APPROVE_REJECT_REQUEST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al aprobar o rechazar la solicitud', err.data.message);
       });
   }
 };

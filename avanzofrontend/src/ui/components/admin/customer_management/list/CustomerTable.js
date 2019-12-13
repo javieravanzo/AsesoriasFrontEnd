@@ -31,7 +31,7 @@ const table = [
   {
     title: <div className={"table-p"}>Correo Electrónico</div>,
     dataIndex: 'email',
-    width: "70px",
+    width: "100px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.email.localeCompare(b.email)},
@@ -47,7 +47,7 @@ const table = [
   {
     title: <div className={"table-p"}>Estado</div>,
     dataIndex: 'platformState',
-    width: "80px",
+    width: "50px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.platformState.localeCompare(b.platformState)},
@@ -55,7 +55,7 @@ const table = [
   {
     title: <div className={"table-p"}>Empresa</div>,
     dataIndex: 'socialReason',
-    width: "100px",
+    width: "80px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.socialReason.localeCompare(b.socialReason)},

@@ -7,10 +7,11 @@ import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../../../subcomponents/FieldTitle';
-import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+import { SUCCESS_MODAL, ERROR_MODAL } from '../../../subcomponents/modalMessages';
 
 //Actions
 import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";
+import {createCustomer} from "../../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 import '../../../../styles/admin/create-company.css';
@@ -43,7 +44,17 @@ class CustomerManagement extends Component {
   };
 
   onConfirmRequest = () => {
-    SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado correctamente.");
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
+      }else{  
+        values.birthDate = values.birthDate !== undefined ? new Date(values.birthDate._d) : null;
+        values.customer_initDate = values.customer_initDate !== undefined ? new Date(values.customer_initDate._d) : null;
+        values.expeditionDate = values.expeditionDate !== undefined ? new Date(values.expeditionDate._d) : null;
+        //console.log("Values", values);
+        this.props.createCustomer(values);
+      }
+    });
   };
 
   onLoadFile = () => {
@@ -131,7 +142,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Nombres completos"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_name',
+                          {getFieldDecorator('name',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un nombre'}
                             ]})(
@@ -143,7 +154,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Apellidos completos"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_lastname',
+                          {getFieldDecorator('lastName',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un apellido'}
                             ]})(
@@ -155,7 +166,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Tipo de Identificación"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_identificationtype',
+                          {getFieldDecorator('documentType',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un tipo de identificación'}
                             ]})(
@@ -171,7 +182,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"No. de Identificación"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_identification',
+                          {getFieldDecorator('identificationId',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un número de identificación'}
                             ]})(
@@ -183,7 +194,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Teléfono fijo"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_phone',
+                          {getFieldDecorator('fixedNumber',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un teléfono fijo'}
                             ]})(
@@ -195,9 +206,9 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Teléfono celular"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_cellphone',
+                          {getFieldDecorator('phoneNumber',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono celular'}
+                              {required: true, message: 'Por favor ingresa un teléfono celular'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
                             )
@@ -207,9 +218,9 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Correo electrónico"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_email',
+                          {getFieldDecorator('email',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un correo electrónico'}
+                              {required: true, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
                             )
@@ -219,7 +230,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Género"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_genus',
+                          {getFieldDecorator('genus',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
@@ -269,7 +280,7 @@ class CustomerManagement extends Component {
                         </FormItem>
                       </Col>
                       <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Máxima número de cuotas"}/>
+                        <FieldTitle title={"Máximo número de cuotas"}/>
                         <FormItem>
                           {getFieldDecorator('split',
                             {rules: [
@@ -283,7 +294,7 @@ class CustomerManagement extends Component {
                       <Col lg={6} md={8} sm={12} xs={12}>
                         <FieldTitle title={"Empresa"}/>
                         <FormItem className='home-form-item'>
-                          {getFieldDecorator('company', {
+                          {getFieldDecorator('idCompany', {
                             rules: [ 
                               {required: true, message: 'Por favor, ingrese su empresa.' }],
                           })(
@@ -325,7 +336,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={6} lg={6}>
                         <FieldTitle title={"Banco"}/>
                         <FormItem >
-                          {getFieldDecorator('customer_bank',
+                          {getFieldDecorator('accountBank',
                             {rules: [
                               {required: false, message: 'Por favor ingrese el banco'}
                             ]})(
@@ -337,7 +348,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Tipo de cuenta"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_accoutType',
+                          {getFieldDecorator('accountType',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un tipo de cuenta'}
                             ]})(
@@ -353,7 +364,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={6} lg={12}>
                         <FieldTitle title={"Número de cuenta"}/>
                         <FormItem >
-                          {getFieldDecorator('customer_accountNumber',
+                          {getFieldDecorator('accountNumber',
                             {rules: [
                               {required: false, message: 'Por favor ingrese el número de cuenta'}
                             ]})(
@@ -365,7 +376,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Tipo Contrato"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_contract',
+                          {getFieldDecorator('contractType',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un tipo de contrato'}
                             ]})(
@@ -381,7 +392,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Salario"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_salary',
+                          {getFieldDecorator('salary',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un salario'}
                             ]})(
@@ -393,7 +404,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Fecha ingreso"}/>
                         <FormItem>
-                          {getFieldDecorator('customer_initDate',
+                          {getFieldDecorator('entryDate',
                             {rules: [
                               {required: false, message: 'Por favor ingresa una fecha'}
                             ]})(
@@ -405,7 +416,7 @@ class CustomerManagement extends Component {
                       <Col xs={12} sm={12} md={8} lg={6}>
                         <FieldTitle title={"Cargo"}/>
                         <FormItem >
-                          {getFieldDecorator('customer_profession',
+                          {getFieldDecorator('profession',
                             {rules: [
                               {required: false, message: 'Por favor ingresa un cargo' }
                             ]})(
@@ -446,7 +457,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCompanies: ( ) => dispatch(getCompanies( ))
+    getCompanies: ( ) => dispatch(getCompanies( )),
+    createCustomer: (data) => dispatch(createCustomer(data))
   }
 };
 

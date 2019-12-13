@@ -30,19 +30,19 @@
   margin-left: 20px !important;
 }
 
-.menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request{
+.menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request, .menu-admin-home{
+  float: right !important;
+  margin-top: 5px !important;
+}
+
+.menu-admin-customer, .menu-admin-loan, .menu-admin-report{
   float: right !important;
   margin-top: 5px !important;
 }
 
 .menu-logout{
-  margin-top: 5px !important;
   float: right !important;
-}
-
-.menu-admin-home{
-  margin-left: 18% !important;
-  margin-right: 10px;
+  margin-top: 5px !important;
 }
 
 .menu-company-home{
