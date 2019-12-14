@@ -82,19 +82,21 @@ export const forgetPassword = (email) => {
   }
 };
 
-export const changePassword = (data) => {
+export const changePassword = (data, token) => {
   return dispatch => {
-    return loginServices.changePassword(data)
+    return loginServices.changePassword(data, token)
         .then(response => {
           dispatch({
             type: loginTypes.CONFIRM_PASSWORD,
-            payload: response.data
+            payload: response.data,
+            correct: true,
           });
-          SUCCESS_MODAL("Acción realizada satisfactoriamente", "La contraseña se ha cambiado existosamente. Puede iniciar con su nueva contraseña.")
+          SUCCESS_MODAL("Acción realizada satisfactoriamente", "La contraseña se ha cambiado existosamente. Puedes iniciar con tu nueva contraseña.")
         }).catch(err => {
           dispatch({
             type: loginTypes.CONFIRM_PASSWORD,
             payload: err,
+            correct: false,
           });
         });
   }

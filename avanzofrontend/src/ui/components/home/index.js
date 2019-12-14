@@ -17,7 +17,7 @@ import home from "../../assets/home2.PNG";
 
 //Styles
 import '../../styles/home/home.css'
-import { ERROR_MODAL } from '../subcomponents/modalMessages';
+import { ERROR_MODAL, WARNING_MODAL } from '../subcomponents/modalMessages';
 
 //Functions
 function format(d) {
@@ -48,6 +48,7 @@ class Home extends Component {
       login: null,
       checkBox1: false,
       visibleTermModal: false,
+      clicked: false,
     };
     
     this.next = this.next.bind(this);
@@ -59,6 +60,13 @@ class Home extends Component {
     this.props.getCompanies();
 
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    if (prevProps.newRegisterResponse !== this.props.newRegisterResponse) {
+      this.setState({ clicked: null });
+    }
+  }
 
   next() {
     this.carousel.next();
@@ -72,17 +80,29 @@ class Home extends Component {
     //console.log("entro");
     let { documentId, photo, paymentReport } = this.state;
     this.props.form.validateFields((err, values) => {
-      if (err && documentId !== null && photo !== null && paymentReport !== null ){
+      if (err ){
         ERROR_MODAL("Error al realizar la acción", "Por favor ingresa datos válidos y carga los archivos correspondientes.");
+      }else if(documentId === null && photo === null && paymentReport === null ){
+        ERROR_MODAL("Error al realizar la acción", "Por favor carga los archivos correspondientes.");
       }else{
-        //console.log(values);
-        let data = values;
-        data.documentId = documentId;
-        data.photo = photo;
-        data.documentId = documentId;
-        data.paymentReport = paymentReport;
-        //console.log(data);
-        this.props.newRegister(data);
+        if(documentId !== null && photo !== null && paymentReport !== null ){
+          console.log(values);
+          if(values.password !== values.confirmPassword){
+            WARNING_MODAL("Las contraseñas no coinciden");
+          }else{
+            let data = values;
+            data.documentId = documentId;
+            data.photo = photo;
+            data.documentId = documentId;
+            data.paymentReport = paymentReport;
+            data.sliderValue = this.state.sliderValue;
+            //console.log(data);
+            this.props.newRegister(data);
+          }
+        }else{
+          ERROR_MODAL("Error al realizar la acción", "Alguno de los archivos no ha sido cargado correctamente.");
+        }
+
       }     
     });
   };
@@ -141,9 +161,19 @@ class Home extends Component {
     });
   };
 
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Las dos contraseñas no coinciden');
+    } else {
+      callback();
+    }
+  };
+
   render() {
 
-    const marks = { 0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>}, 100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};
+    const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
+                   100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};
     const { getFieldDecorator } = this.props.form;
     let { companyList } = this.props;
 
@@ -183,7 +213,7 @@ class Home extends Component {
                               rules: [
                                 { required: true, message: 'Por favor, ingrese su(s) nombre(s).' }],
                             })(
-                                <Input   className={"input-box"} prefix={<Icon type="user" className={'icon-prefix'} />}
+                                <Input maxLength={21} className={"input-box"} prefix={<Icon type="user" className={'icon-prefix'} />}
                                       placeholder="Nombres"/>
                             )}
                           </FormItem>
@@ -195,7 +225,7 @@ class Home extends Component {
                               rules: [
                                 { required: true, message: 'Por favor, ingrese su(s) apellido(s).' }],
                             })(
-                                <Input   prefix={<Icon type="user" className={'icon-prefix'} />}
+                                <Input maxLength={21} prefix={<Icon type="user" className={'icon-prefix'} />}
                                       placeholder="Apellidos"/>
                             )}
                           </FormItem>
@@ -209,7 +239,7 @@ class Home extends Component {
                               initialValue: '',
                               rules: [{ required: true, message: 'Por favor ingrese su número de cédula' }],
                             })(
-                                <InputNumber   prefix={<Icon type="idcard" className={'icon-prefix'} />}
+                                <InputNumber maxLength={12}  prefix={<Icon type="idcard" className={'icon-prefix'} />}
                                             placeholder="Número de documento" className={"input-number"}/>
                             )}
                           </FormItem>
@@ -221,14 +251,14 @@ class Home extends Component {
                               initialValue: '',
                               rules: [{ required: true, message: 'Por favor ingrese el celular' }],
                             })(
-                            <InputNumber placeholder="Número de celular"
-                            prefix={<Icon type="phone" className={'icon-prefix'}/>} className={"input-number"}/>
-                            )}
+                            <InputNumber maxLength={10} placeholder="Número de celular"
+                                className={"input-number"}/>
+                                )}
                           </FormItem>
                         </Col>
                       </Row>
                       <Row gutter={4}>
-                        <Col lg={14} md={14} sm={24} xs={24}>
+                        <Col lg={12} md={12} sm={24} xs={24}>
                           <p className={"form-names"}>Correo Electrónico</p>
                           <FormItem className='home-form-item'>
                             {getFieldDecorator('email', { initialValue: '',
@@ -236,26 +266,12 @@ class Home extends Component {
                                 {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                                 {required: true, message: 'Por favor, ingrese su correo electrónico.' }],
                             })(
-                                <Input   prefix={<Icon type="mail" className={'icon-prefix'} />}
+                                <Input maxLength={25} prefix={<Icon type="mail" className={'icon-prefix'} />}
                                       placeholder="Correo electrónico"/>
                             )}
                           </FormItem>
                         </Col>
-                        <Col lg={10} md={10} sm={24} xs={24}>
-                          <p className={"form-names"}>Contraseña</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('password', { initialValue: '',
-                              rules: [ 
-                                {required: true, message: 'Por favor, ingrese una contraseña válida.' }],
-                            })(
-                                <Input type="password"  prefix={<Icon type="lock" className={'icon-prefix'} />}
-                                      placeholder="Contraseña"/>
-                            )}
-                          </FormItem>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={24} md={24} sm={24} xs={24}>
+                        <Col lg={12} md={12} sm={24} xs={24}>
                           <p className={"form-names"}>Empresa</p>
                           <FormItem className='home-form-item'>
                             {getFieldDecorator('company', {
@@ -274,11 +290,39 @@ class Home extends Component {
                           </FormItem>
                         </Col>
                       </Row>
+                      <Row gutter={6}>
+                        <Col lg={12} md={10} sm={24} xs={24}>
+                          <p className={"form-names"}>Contraseña</p>
+                          <FormItem className='home-form-item'>
+                            {getFieldDecorator('password', { initialValue: '',
+                              rules: [ 
+                                {required: true, message: 'Por favor, ingrese una contraseña válida.' }],
+                            })(
+                                <Input maxLength={20} type="password"  prefix={<Icon type="lock" className={'icon-prefix'} />}
+                                      placeholder="Contraseña"/>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col lg={12} md={12} sm={24} xs={24}>
+                          <p className={"form-names"}>Confirmar contraseña</p>
+                          <FormItem className='home-form-item'>
+                            {getFieldDecorator('confirmPassword', { initialValue: '',
+                              rules: [ 
+                                {required: true, message: 'Por favor, ingrese una contraseña válida.' },
+                                {validator: this.compareToFirstPassword}
+                              ],
+                            })(
+                                <Input maxLength={20} type="password"  prefix={<Icon type="lock" className={'icon-prefix'} />}
+                                      placeholder="Confirmar contraseña"/>
+                            )}
+                          </FormItem>
+                        </Col>
+                      </Row>
                       <Row>
                         <Col lg={23} md={23} sm={23} xs={23}>
                           <p className={"form-names"}>Cantidad de préstamo</p>
-                          <Slider defaultValue={this.state.sliderValue} onChange={this.handleSliderChange}
-                                  marks={marks} max={300000} min={80000} step={10000} 
+                          <Slider marks={marks} defaultValue={this.state.sliderValue} onChange={this.handleSliderChange}
+                                   max={300000} min={80000} step={10000} 
                                         tipFormatter={
                                           function (d) { 
                                             return format(d);
@@ -330,7 +374,7 @@ class Home extends Component {
                         visible={this.state.visibleTermModal}
                         onCancel={() => this.setState({visibleTermModal: false})}
                         footer={
-                          <Button key='submit' type='primary'  onClick={() => this.setState({visibleTermModal: false})}>
+                          <Button key='submit' type='primary' disabled={this.state.clicked && this.props.newRegisterResponse === null} loading={this.state.clicked } onClick={() => this.setState({visibleTermModal: false, clicked: true})}>
                             Aceptar
                           </Button>}>
                         <div>

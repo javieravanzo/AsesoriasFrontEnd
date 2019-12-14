@@ -33,11 +33,17 @@ function forgetPassword(email) {
   });
 }
 
-function changePassword(data){
+function changePassword(data, token){
+
+  console.log("D", data, token);
+
   return request({
     url: '/Account/ConfirmPassword',
     method: 'PUT',
-    data: data
+    data: data,
+    headers: { 
+      'Authorization': 'Bearer ' + token 
+    }
   });
 }; 
 

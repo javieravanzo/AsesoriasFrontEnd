@@ -6,7 +6,7 @@ import {Redirect} from "react-router";
 
 //Subcomponents
 import ConfirmResetPassword from './password/ConfirmedPassword';
-import ResetPassword from './password/ResetPassword';
+//import ResetPassword from './password/ResetPassword';
 import ForgotPassword from "./password/ForgotPassword";
 import LoginForm from "./LoginForm";
 import CustomerRegister from "./register/RegisterCustomer";
@@ -26,7 +26,7 @@ import second_background from "../../assets/authentication/background2.png";
 const { Content, Sider } = Layout;
 const WrappedNormalLoginStandard = Form.create()(LoginForm);
 const WrappedForgotPassword = Form.create()(ForgotPassword);
-const WrappedResetPassword = Form.create()(ResetPassword);
+//const WrappedResetPassword = Form.create()(ResetPassword);
 const WrappedConfirmPassword = Form.create()(ConfirmResetPassword);
 const WrappedConfirmAccount = Form.create()(ConfirmAccount);
 
@@ -69,7 +69,6 @@ class Login extends Component {
                 <Switch>            
                   <Route path={routes.login} component={WrappedNormalLoginStandard} />
                   <Route path={routes.forgot_password} component={WrappedForgotPassword} />
-                  <Route path={routes.reset_password} component={WrappedResetPassword} />
                   <Route path={routes.confirm_password} component={WrappedConfirmPassword} />
                   <Route path={routes.confirm_account} component={WrappedConfirmAccount} />
                   <Route render = {()=><Redirect to={routes.home}/>}/>

@@ -83,6 +83,15 @@
   border: 3px solid #1890ff;
 }
 
+.logo-reset{
+  width: 70%;
+  margin-left: 0px;
+  border-radius: 5px;
+  margin-top: 55px;
+  margin-bottom: 65px;
+  border: 3px solid #1890ff;
+}
+
 /* Login buttons */
 .ant-form-explain{
   color: #39a0ff !important;

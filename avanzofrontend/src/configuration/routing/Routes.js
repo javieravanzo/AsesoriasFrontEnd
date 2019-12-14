@@ -7,7 +7,7 @@ export default {
   home: "/home",
   login: "/login",
   forgot_password: "/forgot_password",
-  reset_password: "/confirm_password",
+  reset_password: "/confirm_password/:token",
   confirm_password: "/password_confirmed",
   confirm_account: "/account_confirmed",
   receive_confirmation: "/account_confirmation/:token",

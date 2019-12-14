@@ -6,6 +6,7 @@ const initialState={
   isLogin: false,
   forgetPasswordResponse: null,
   resetPasswordResponse: null,
+  correct: false,
   newRegisterResponse: null,
   companyList: [],
 };
@@ -36,7 +37,8 @@ export default function loginReducer(state = initialState, action){
     case C.CONFIRM_PASSWORD:
       return{
         ...state,
-        resetPasswordResponse: action.payload
+        resetPasswordResponse: action.payload,
+        correct: action.correct
       };
     case Cu.NEW_REGISTER:
       return{

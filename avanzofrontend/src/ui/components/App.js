@@ -1,6 +1,6 @@
 //Libraries
 import React, { Component } from 'react';
-import {Divider, Layout} from "antd";
+import {Divider, Layout, Form} from "antd";
 import {withRouter, Route, Switch,} from 'react-router-dom';
 
 //Components
@@ -12,6 +12,7 @@ import Information from "../components/general/Information";
 //IntegrationSubcomponents
 import IFormRequest from "./integration/IFormRequest";
 import ITransactions from "./integration/ITransactions";
+import ResetPassword from "./authentication/password/ResetPassword";
 import Home from "./home/index";
 
 //Subcomponents
@@ -25,6 +26,7 @@ import { WARNING_MODAL } from './subcomponents/modalMessages';
 
 //Constants
 const { Footer } = Layout;
+const WrappedResetPassword = Form.create()(ResetPassword);
 
 
 class App extends Component {
@@ -68,8 +70,7 @@ class App extends Component {
     let signedIn = this.isSignedIn();
 
     if(!signedIn){
-      if (this.props.location.pathname === routes.login || this.props.location.pathname === routes.forgot_password ||
-        this.props.location.pathname === routes.reset_password || this.props.location.pathname === routes.confirm_password ||
+      if (this.props.location.pathname === routes.login || this.props.location.pathname === routes.forgot_password || this.props.location.pathname === routes.confirm_password ||
         this.props.location.pathname === routes.confirm_account || this.props.location.pathname === routes.admin_register){
           return( <Login pathname={this.props.location.pathname}/> );
         }else{
@@ -79,6 +80,7 @@ class App extends Component {
                 <Switch>         
                   <Route exact path={routes.integration_form} component={IFormRequest}/>
                   <Route exact path={routes.integration_transactions} component={ITransactions} />
+                  <Route exact path={routes.reset_password} component={WrappedResetPassword}/>
                   <Route render = {()=><Home/>}/>
                 </Switch>
               </Layout>
