@@ -1,7 +1,7 @@
 //Libraries
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {Card, Row, Col, Layout, Menu, Form, Input, Icon, InputNumber, Slider, Button, Select, Checkbox, Modal} from 'antd';
+import {Card, Row, Col, Layout, Menu, Form, Input, Icon, InputNumber, Button, Select, Checkbox, Modal} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
@@ -20,14 +20,14 @@ import '../../styles/home/home.css'
 import { ERROR_MODAL, WARNING_MODAL } from '../subcomponents/modalMessages';
 
 //Functions
-function format(d) {
+/*function format(d) {
   var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
 
   return formatter.format(d);
-};
+};*/
 
 //Constants
 const { Header } = Layout;
@@ -172,8 +172,8 @@ class Home extends Component {
 
   render() {
 
-    const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
-                   100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};
+    /*const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
+                   100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};*/
     const { getFieldDecorator } = this.props.form;
     let { companyList } = this.props;
 
@@ -258,7 +258,7 @@ class Home extends Component {
                         </Col>
                       </Row>
                       <Row gutter={4}>
-                        <Col lg={12} md={12} sm={24} xs={24}>
+                        <Col lg={24} md={12} sm={24} xs={24}>
                           <p className={"form-names"}>Correo Electrónico</p>
                           <FormItem className='home-form-item'>
                             {getFieldDecorator('email', { initialValue: '',
@@ -271,7 +271,9 @@ class Home extends Component {
                             )}
                           </FormItem>
                         </Col>
-                        <Col lg={12} md={12} sm={24} xs={24}>
+                      </Row>
+                      <Row gutter={4}>
+                        <Col lg={24} md={12} sm={24} xs={24}>
                           <p className={"form-names"}>Empresa</p>
                           <FormItem className='home-form-item'>
                             {getFieldDecorator('company', {
@@ -290,7 +292,7 @@ class Home extends Component {
                           </FormItem>
                         </Col>
                       </Row>
-                      <Row gutter={6}>
+                      <Row gutter={4}>
                         <Col lg={12} md={10} sm={24} xs={24}>
                           <p className={"form-names"}>Contraseña</p>
                           <FormItem className='home-form-item'>
@@ -317,21 +319,6 @@ class Home extends Component {
                             )}
                           </FormItem>
                         </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={23} md={23} sm={23} xs={23}>
-                          <p className={"form-names"}>Cantidad de préstamo</p>
-                          <Slider marks={marks} defaultValue={this.state.sliderValue} onChange={this.handleSliderChange}
-                                   max={300000} min={80000} step={10000} 
-                                        tipFormatter={
-                                          function (d) { 
-                                            return format(d);
-                                          }} />
-                        </Col>
-                          
-                      </Row>
-                      <Row className={"row-loan"}>
-                        <p className={"form-names-loan"}>Monto solicitado: ${this.state.sliderValue}</p>
                       </Row>
                       
                       <Row>
