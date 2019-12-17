@@ -86,17 +86,21 @@ class Home extends Component {
         ERROR_MODAL("Error al realizar la acción", "Por favor carga los archivos correspondientes.");
       }else{
         if(documentId !== null && photo !== null && paymentReport !== null ){
-          console.log(values);
+  
           if(values.password !== values.confirmPassword){
             WARNING_MODAL("Las contraseñas no coinciden");
+          }else if(values.phoneNumber.toString()[0] !== "3" || values.phoneNumber.toString().length !== 10 ){
+            ERROR_MODAL("Error al realizar la acción", "Por favor ingresa un número de teléfono válido.");
           }else{
+            
             let data = values;
             data.documentId = documentId;
             data.photo = photo;
             data.documentId = documentId;
             data.paymentReport = paymentReport;
             data.sliderValue = this.state.sliderValue;
-            //console.log(data);
+            
+            //Actions
             this.props.newRegister(data);
           }
         }else{
