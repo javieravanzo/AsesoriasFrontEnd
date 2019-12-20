@@ -254,8 +254,10 @@ class LoanRequest extends Component {
     let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
+    console.log("ODL", outlayDatesList);
 
-    if(JSON.stringify(this.props.requestDataResponse) === '{}'){
+
+    if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
                   Cargando ...
                   <br/>
