@@ -127,7 +127,7 @@ class RequestStateModal extends Component {
 
     let item = this.props.item;
     //let {approve_modal} = this.state;
-    //console.log("AP", this.props.item);
+    console.log("AP", this.props.item);
 
     return (
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
@@ -149,7 +149,7 @@ class RequestStateModal extends Component {
                   <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Valor Total</b> <br/><br/>
+                  <b>Monto</b> <br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
               </Col>
@@ -203,36 +203,39 @@ class RequestStateModal extends Component {
                   {item.identificationId}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Empresa</b><br/><br/>
-                    {item.Company_idCompany}
+                  <b>Empresa</b><br/><br/>
+                  {item.Company_idCompany}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Cargo</b><br/><br/>
-                    {item.profession}
+                  <b>Saldo Usuario</b><br/><br/>
+                    <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                    value={item.totalRemainder} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Teléfono</b><br/><br/>
-                    {item.phoneNumber}
+                <Col xs={12} sm={12} md={8} lg={4} >
+                  <b>Valor total</b><br/><br/>
+                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                      value={item.quantity+item.interestValue+item.administrationValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
+                
               </Row>
               <br/>
               <br/>
               <Row>
-                <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Monto</b><br/><br/>
-                  {item.quantity} 
+                <Col xs={12} sm={12} md={7} lg={5}>
+                    <b>Teléfono</b><br/><br/>
+                    {item.phoneNumber}
                 </Col>
-                <Col xs={12} sm={12} md={8} lg={4} >
+                <Col xs={12} sm={12} md={8} lg={3} >
                     <b>Cuotas</b><br/><br/>
                     {item.split}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                     <b>Cuenta</b><br/><br/>
                     {item.account}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
+                <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Tipo de Cuenta</b><br/><br/>
-                    {item.accountType}
+                    {item.accountType === "null" ? "-" : item.accountType}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Número de cuenta</b><br/><br/>

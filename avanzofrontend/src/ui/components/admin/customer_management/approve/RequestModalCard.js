@@ -156,12 +156,12 @@ class RequestModalCard extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={6}>
                   <b>Ciclo de pagos</b><br/>
-                  <Select className={"payments-select"} placeholder="Selecciona el ciclo de pagos" allowClear={true} showSearch={true}>    
+                  <Select className={"payments-select"} defaultValue={"Ciclo 1 - Mensual"} placeholder="Selecciona el ciclo de pagos" allowClear={true} showSearch={true}>    
                     <Select.Option key={1} value={1}>
-                      {"Ciclo de pagos 1"}
+                      {"Ciclo 1 - Mensual" }
                     </Select.Option>
                     <Select.Option key={2} value={2}>
-                      {"Ciclo de pagos 2"}
+                      {"Ciclo 2 - Quincenal"}
                     </Select.Option>
                   </Select>
                 </Col>

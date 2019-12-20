@@ -82,7 +82,7 @@ class RequestStateModal extends Component {
                   <b>Fecha de Solicitud</b> <br/><br/> {item.createdDate.split("T")[0]}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Valor Total</b> <br/><br/>
+                  <b>Monto</b> <br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
               </Col>
@@ -140,9 +140,9 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row>
                 <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Monto</b><br/><br/>
+                  <b>Valor total</b><br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                      value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
+                      value={item.quantity+item.interestValue+item.administrationValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
                     <b>Cuotas</b><br/><br/>

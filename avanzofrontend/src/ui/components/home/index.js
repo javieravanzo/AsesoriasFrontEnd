@@ -270,7 +270,7 @@ class Home extends Component {
                                 {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                                 {required: true, message: 'Por favor, ingrese su correo electrónico.' }],
                             })(
-                                <Input maxLength={25} prefix={<Icon type="mail" className={'icon-prefix'} />}
+                                <Input maxLength={35} prefix={<Icon type="mail" className={'icon-prefix'} />}
                                       placeholder="Correo electrónico"/>
                             )}
                           </FormItem>

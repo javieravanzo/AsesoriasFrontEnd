@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import SignaturePad from 'react-signature-canvas';
-import { Divider, Form, Select, Button, Col, Row, Collapse, InputNumber, Table, Slider,
+import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider,
   Statistic, Typography, Card, Switch, Spin} from 'antd';
 
 //Subcomponents
@@ -22,7 +22,7 @@ import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows, ERROR_MODAL } from 
 
 //Constants
 const FormItem = Form.Item;
-const { Panel } = Collapse;
+//const { Panel } = Collapse;
 
 function format(d) {
   var formatter = new Intl.NumberFormat('en-US', {
@@ -47,7 +47,7 @@ const table = [
     dataIndex: 'quantity',
     width: "100px",
     align: "right",
-    render: text => <div className={"table-p"}>{"$"+text}</div>,
+    render: text => <div className={"table-p"}>{"$"+Math.round(text)}</div>,
     sorter: (a, b) =>{ return a.quantity.toString().localeCompare(b.quantity.toString())},
   },
   {
@@ -73,7 +73,7 @@ class LoanRequest extends Component {
       money_wallet: false,
       wallet_type: null,
       wallet_number: null,
-      bank_account: false,
+      bank_account: true,
       bank_name: null,
       bank_number: null,
       bank_type: null,
@@ -108,8 +108,8 @@ class LoanRequest extends Component {
     });
   };
 
-  sendReportInfo = () => {
-    this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
+  sendReportInfo = (maximumSplit) => {
+    this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee === null ? maximumSplit : this.state.fee, this.state.sliderValue);
   };
 
   handleSliderChange = (e) => {
@@ -129,7 +129,7 @@ class LoanRequest extends Component {
   handleWallet = (e) => {
     this.setState({
       money_wallet: e,
-      bank_account: false
+      bank_account: !e,
     });
   };
 
@@ -175,6 +175,9 @@ class LoanRequest extends Component {
     let {bank_account, bank_name, bank_number, bank_type, money_wallet, 
          wallet_number, wallet_type, signatureDone} = this.state;
 
+    console.log("State", bank_account, bank_name, bank_number, bank_type, money_wallet, 
+    wallet_number, wallet_type, signatureDone);
+
     if (bank_account){
       if(bank_name !== null && bank_number !== null && bank_type !== null && 
          bank_name !== "" && bank_number !== "" && bank_type !== "" && signatureDone !== null){
@@ -182,8 +185,7 @@ class LoanRequest extends Component {
          }
       return false;
     }else if(money_wallet){
-      if(wallet_number !== null && wallet_type !== null && signatureDone !== null &&
-        wallet_number !== "" && wallet_type !== ""){
+      if( wallet_type !== null && signatureDone !== null && wallet_type !== ""){
          return true;
         }
       return false;
@@ -214,7 +216,7 @@ class LoanRequest extends Component {
   
   };
 
-  checkRequest = (e) => {
+  checkRequest = (interestValue, adminValue) => {
     this.props.form.validateFields((err, values) => {
       if (err){
         this.setState({
@@ -229,7 +231,9 @@ class LoanRequest extends Component {
           moyen: values.moyen,
           accountType: this.state.money_wallet ? null : values.account_type,
           accountNumber: values.account_number,
-          isBank: this.state.money_wallet ? false :  true,        
+          isBank: this.state.money_wallet ? false :  true,
+          interest: this.state.sliderValue * interestValue,
+          administration: (this.state.fee%2) * adminValue,     
         }
         //console.log(data);
         this.props.createRequest(data, this.props.location.state ? this.props.location.state.token : undefined);
@@ -246,7 +250,7 @@ class LoanRequest extends Component {
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
-    let { interestValue, adminValue, maximumAmount, partialCapacity, maximumSplit, otherCollectionValue } = requestDataResponse;
+    let { interestValue, adminValue, partialCapacity, maximumSplit, otherCollectionValue, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
     let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
@@ -305,7 +309,7 @@ class LoanRequest extends Component {
                           rules: [
                             {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                           ]})(
-                              <InputNumber className={"form-input-number"} max={maximumAmount}
+                              <InputNumber className={"form-input-number"} max={partialCapacity}
                                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
                                     placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
                           )
@@ -323,10 +327,10 @@ class LoanRequest extends Component {
                               {initialValue: this.state.sliderValue, rules: [
                                 {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                               ]})(
-                                <Slider max={300000} min={80000} step={10000} className={"slider-amount"}
+                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={80000} step={10000} className={"slider-amount"}
                                         tipFormatter={
                                           function (d) { 
-                                            return format(d);
+                                            return format(d); 
                                           }} 
                                         onChange={this.handleSliderChange} style={{width: "90%"}} />
                                 )
@@ -335,7 +339,9 @@ class LoanRequest extends Component {
                         </Col>
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
-                          <span className={"request-title-amount"}>$300.000</span>
+                          <span className={"request-title-amount"}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                                                value={partialCapacity} thousandSeparator={'.'}
+                                                decimalSeparator={','} prefix={'$'}/></span>
                           </h3>
                         </Col>
                         
@@ -344,12 +350,12 @@ class LoanRequest extends Component {
                       <span className={"text-fees"}>*La cantidad máxima de cuotas de acuerdo con tu empresa es <span className={"fees-number-text"}>{maximumSplit}</span>.</span>
                       <FormItem className={"fees-item"}>
                         {getFieldDecorator('fees',
-                          {initialValue: maximumSplit,  rules: [
-                            {required: false, message: 'Por favor ingresa un número de cuotas'}
+                          {rules: [
+                            {required: true, message: 'Por favor ingresa un número de cuotas'}
                           ]})(
                             <Row>
-                              <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit} 
-                              onChange={(e) => this.onChangeFee(e)}/>
+                              <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit}
+                              onChange={(e) => this.onChangeFee(e)} onBlur={() => this.sendReportInfo(maximumSplit)}/>
                             </Row>
                           )
                         }
@@ -430,33 +436,17 @@ class LoanRequest extends Component {
                       </Card>
                     </Col>
                   </Row>
-                  <Row className={"form-request-rows-text"}>
-                  <span className={"text-fees"}>
-                    De acuerdo con las fechas que tenemos registradas para ti, los desembolsos se realizarán los días 20 - 13 de cada mes. 
-                    <Button className={"request-pending-button"} disabled={fee === null} onClick={() => this.sendReportInfo()}>
-                      <h3>
-                        <span className={"request-pendings"}>Ver informe de desembolsos</span>
-                      </h3>
-                    </Button>
-                  </span>
-                  </Row>
                   <br/>
                   {
                     JSON.stringify(outlayDatesList) !== '[]'  && 
                     <Row className={"form-request-rows"}>
-                      <Collapse>
-                        <Panel key="1" header="Informe de descuentos">
-                          <div>
-                            <div className="upload-text">
-                              De acuerdo a las cuotas que suministró, tendrá el siguiente informe de descuento. 
-                              <br/>
-                              <br/>
-                              <Table className={"new-table"} dataSource={outlayDatesList} columns={table} rowKey={'key'} 
-                                  size={'small'} scroll={{x:'500px'|true}}/>
-                            </div>
-                          </div>
-                        </Panel>
-                      </Collapse>
+                      <div className="upload-text">
+                        De acuerdo a las cuotas que suministró, tendrá el siguiente informe de descuento. 
+                        <br/>
+                        <br/>
+                        <Table className={"new-table"} dataSource={outlayDatesList} columns={table} rowKey={'id'} 
+                            size={'small'} pagination={false}/>
+                      </div>
                     </Row>
                   }
                   <br/>
@@ -475,10 +465,7 @@ class LoanRequest extends Component {
                   </Row>
                   <Row gutter={20} className={"form-request-rows"}>
                     <Col xs={12} sm={12} md={8} lg={7}>
-                      <Switch onChange={this.handleWallet} disabled={bank_account}/><span className={"type-account"}>{" Billera virtual"}</span>  
-                    </Col>
-                    <Col xs={12} sm={12} md={8} lg={7}>
-                      <Switch onChange={this.handleBankProp} disabled={money_wallet}/><span className={"type-account"}>{" Cuenta bancaria"}</span>  
+                      <Switch onChange={this.handleWallet}/><span className={"type-account"}>{this.state.bank_account? " Banco / Billetera virtual" :" Billera virtual / Banco"}</span>  
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={10} className={"form-bank-col"}>
                       {
@@ -503,7 +490,7 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Cuenta"}/>
                           <FormItem>
                             {getFieldDecorator('moyen',
-                              {rules: [
+                              {initialValue: accountBank, rules: [
                                 {required: false, message: 'Por favor selecciona una cuenta'}
                               ]})(
                                 <Select onChange={this.changeBankName} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
@@ -522,7 +509,7 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Tipo de cuenta"}/>
                           <FormItem>
                             {getFieldDecorator('account_type',
-                              {rules: [
+                              {initialValue: accountType, rules: [
                                 {required: false, message: 'Por favor ingresa un tipo de cuenta'}
                               ]})(
                                 <Select placeholder={"Tipo de cuenta"} showSearch={true} onChange={this.changeBankType}>
@@ -541,7 +528,7 @@ class LoanRequest extends Component {
                         <FieldTitle title={"Número de cuenta"}/>
                           <FormItem >
                             {getFieldDecorator('account_number',
-                              {rules: [
+                              {initialValue: accountNumber, rules: [
                                 {required: false, message: 'Por favor ingresa un número de cuenta' }
                               ]})(
                                 <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} onChange={this.changeBankNumber}/>
@@ -577,7 +564,7 @@ class LoanRequest extends Component {
                         <FieldTitle title={"Número de celular"}/>
                           <FormItem >
                             {getFieldDecorator('account_number',
-                              {rules: [
+                              {initialValue: phoneNumber, rules: [
                                 {required: false, message: 'Por favor ingresa un número de celular' }
                               ]})(
                                 <InputNumber className={"form-input-number"} placeholder={"Número de celular"} onChange={this.changeWalletNumber}/>
@@ -643,7 +630,7 @@ class LoanRequest extends Component {
                     <Col xs={24} sm={12} md={18} lg={19}/>
                     <Col xs={24} sm={12} md={6} lg={5}>
                       <Button className={"request-confirm-button"} icon="file"  disabled={!feeCondition}
-                              onClick={() => this.checkRequest()}>
+                              onClick={() => this.checkRequest(interestValue, adminValue)}>
                           Solicitar préstamo
                       </Button> 
                     </Col>

@@ -1,12 +1,12 @@
 //Libraries
 import React, { Component } from 'react';
-import { Col, Row, List, Divider} from 'antd';
+import { Col, Row, List, Divider, Spin} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
 import RequestModal from "./RequestStateModal";
-import MiniLoading from '../subcomponents/MiniLoading';
+//import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
 import {getAllRequest} from "../../../store/redux/actions/customer/customerActions";
@@ -48,9 +48,12 @@ class RequestState extends Component {
 
 
   if(JSON.stringify(tableData) === '{}'){
-    return (
-      <MiniLoading visible={true}/> 
-    );
+    return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+              Cargando ...
+              <br/>
+              <br/>
+              <Spin size="large" />
+            </div>);
   }else{
     return (
       <div className={"request-state-div"}>

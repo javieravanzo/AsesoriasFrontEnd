@@ -83,7 +83,9 @@ function createRequest(data, token){
   bodyFormData.append('moyen', data.moyen);
   bodyFormData.append('accountType', data.accountType);
   bodyFormData.append('accountNumber', data.accountNumber);
-  bodyFormData.append('isBank', data.isBank);  
+  bodyFormData.append('isBank', data.isBank); 
+  bodyFormData.append('interest', data.interest);
+  bodyFormData.append('administration', data.interest);
 
   if (token === undefined){
     return request({
