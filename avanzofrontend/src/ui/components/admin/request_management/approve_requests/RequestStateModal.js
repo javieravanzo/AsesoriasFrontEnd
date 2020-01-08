@@ -46,10 +46,6 @@ class RequestStateModal extends Component {
       return "Desembolsada";
     }else if(id=== 6){
       return "Rechazada"
-    }else if(id=== 7){
-      return "Finalizada"
-    }else if(id=== 8){
-      return "Devolución bancaria"
     }
   };
 
@@ -87,7 +83,6 @@ class RequestStateModal extends Component {
     } else {
       WARNING_MODAL('Advertencia', 'El reporte no está disponible');
     }
-
 
   };
 
@@ -182,7 +177,6 @@ class RequestStateModal extends Component {
                   <Step title="Aprobar RR.H H."/>
                   <Step title="Aprobar Admon."/>                 
                   <Step title="Desembolsada"/>
-                  <Step title="Finalizada"/>
                   
                 </Steps>
               </Row>
@@ -245,7 +239,7 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath)} >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.photo, item.documentId, item.paymentReport)} >
                         Ver documento
                   </Button> 
                 </Col>

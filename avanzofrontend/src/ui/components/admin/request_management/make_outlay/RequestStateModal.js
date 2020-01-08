@@ -1,9 +1,12 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Input} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
+
+//Subcomponents
+import FieldTitle from '../../../subcomponents/FieldTitle';
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
@@ -23,6 +26,7 @@ class RequestOutLayState extends Component {
     this.state = {
       visible: null,
       approve_modal: null,
+      transactionCode: null,
       card_style_requested: "requested",
       card_style_analysis: "analysis",
       card_style_approved: "approved",
@@ -44,10 +48,6 @@ class RequestOutLayState extends Component {
       return "Desembolsada";
     }else if(id=== 6){
       return "Rechazada"
-    }else if(id=== 7){
-      return "Finalizada"
-    }else if(id=== 8){
-      return "Devolución bancaria"
     }
   };
 
@@ -73,18 +73,26 @@ class RequestOutLayState extends Component {
     let data = {
       requestId: idRequest,
       approve: true,
+      transactionCode: this.state.transactionCode
     };
     //console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
 
+  onChangeTransactionCode = (e) => {
+    this.setState({
+      transactionCode: e.target.value
+    });
+  };
+
   onRejectRequest = (idRequest) => {
     let data = {
       requestId: idRequest,
       approve: false,
+      transactionCode: this.state.transactionCode
     };
-    //console.log("D", data);
+    console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
@@ -92,7 +100,8 @@ class RequestOutLayState extends Component {
   render(){
 
     let item = this.props.item;
-    //let {approve_modal} = this.state;
+    let {transactionCode} = this.state;
+    console.log(transactionCode);
 
     return (
       <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
@@ -146,9 +155,7 @@ class RequestOutLayState extends Component {
                     <Step title="Evaluada"/>
                     <Step title="Aprobar RR.H H."/>
                     <Step title="Aprobar Admon."/>                 
-                    <Step title="Desembolsada"/>
-                    <Step title="Finalizada"/>
-                    
+                    <Step title="Desembolsada"/>                    
                   </Steps>
                 </Row>
                 <br/><br/>
@@ -234,12 +241,20 @@ class RequestOutLayState extends Component {
               okText={"Aprobar"}
               cancelText={"Cancelar"}
               width={450}
+              okButtonProps={{disabled: transactionCode === null || transactionCode === "" ? true : false}}
               onOk={() => this.onConfirmRequest(item.idRequest)}
               onCancel={() => this.setState({approve_modal: false})}>
                 <div>
-                  ¿Está seguro de realizar el desembolso del crédito? Esta acción será irreversible.                  
+                  ¿Está seguro de realizar el desembolso del crédito? Esta acción será irreversible. Si la respuesta es correcta, ingrese el código de la transacción, sino de clic en el botón "Cancelar".                 
+                  <br/>
+                  <br/>
+                  <FieldTitle title={"Código de la transacción bancaria"}/>
+                  <Row>
+                    <Col lg={16} md={12} sm={12} xs={12}>
+                      <Input placeholder={"Ejemplo: 0005873288712761"} onChange={(e) => this.onChangeTransactionCode(e)} value={transactionCode}/>
+                    </Col>
+                  </Row>
                 </div>
-
             </Modal>
             <Modal 
               title="Rechazar crédito"
@@ -252,13 +267,11 @@ class RequestOutLayState extends Component {
                 <div>
                   ¿Está seguro de realizar el rechazo del crédito? Esta acción será irreversible.                  
                 </div>
-
             </Modal>
         </div>
       </Badge>
     );
   };
-
 }
 
 RequestOutLayState.propTypes = {

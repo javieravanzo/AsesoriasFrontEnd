@@ -44,14 +44,14 @@ const table = [
 ];
 
 //Functions
-function itemRender(current, type, originalElement) {
+/*function itemRender(current, type, originalElement) {
   if (type === 'prev' || type === 'Previous Page') {
     return <span title={'Anterior'} className={"item-renderer"}>{"<"}</span>;
   } if (type === 'next') {
     return <span title={'Siguiente'} className={"item-renderer"}>{">"}</span>;
   }
   return originalElement;
-};
+};*/
 
 class Customer extends Component {
 
@@ -83,12 +83,12 @@ class Customer extends Component {
   render() {
 
     let {homeDataResponse} = this.props;
-    //console.log("HDR", homeDataResponse);
+    console.log("HDR", homeDataResponse);
     let {loan, request} = this.state;
     let maximumAmount = homeDataResponse.maximumAmount;
     let partialQuantity = homeDataResponse.partialCapacity;
     let tableData = homeDataResponse.transactions;
-    let pendingRequests = homeDataResponse.pendingRequests;
+    let pendingRequests = homeDataResponse.request;
 
     if(JSON.stringify(homeDataResponse) === '{}' || tableData === undefined){
       return (
@@ -132,8 +132,7 @@ class Customer extends Component {
                     <Divider className={"second-divider"}/>
                     <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'idTransaction'} 
                           size={'small'} scroll={{x:'500px'|true}} locale={{emptyText: 'No se han realizado transacciones hasta ahora.'}}
-                          pagination={{ itemRender: itemRender, showSizeChanger: true,
-                          pageSizeOptions: ["5", "10", "15", "20"] }}/>
+                          />
                   </Col>
                 </Row>
                 <Row className={"row-request"}>
@@ -147,7 +146,14 @@ class Customer extends Component {
                   <Col xxl={9} lg={9} md={9} sm={10} xs={24} className={"request-pending-col"}>
                     <Button className={"request-pending-button"} onClick={() => this.setState({request: true})}>
                       <h3>
-                        <span className={"request-pendings"}>Tienes {pendingRequests} solicitud(es) pendientes...</span>
+                        {
+                          pendingRequests !== 0 && 
+                          <span className={"request-pendings"}>Tienes {pendingRequests} solicitud(es) pendientes...</span>
+                        }
+                        {
+                          pendingRequests === 0 && 
+                          <span className={"request-pendings"}>No tienes solicitudes pendientes...</span>
+                        }
                       </h3>
                     </Button>
                   </Col>

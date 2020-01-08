@@ -38,10 +38,6 @@ class RequestStateModal extends Component {
       return "Desembolsada";
     }else if(id=== 6){
       return "Rechazada"
-    }else if(id=== 7){
-      return "Finalizada"
-    }else if(id=== 8){
-      return "Devolución bancaria"
     }
   };
 
@@ -123,12 +119,7 @@ class RequestStateModal extends Component {
                   {
                     (item.state-1 !== 3) && 
                     <Step title="Desembolsada"/>
-                  }
-                  {
-                    (item.state-1 !== 3) && 
-                    <Step title="Finalizada"/>
-                  }
-                  
+                  }                 
                 </Steps>
               </Row>
               <br/><br/>

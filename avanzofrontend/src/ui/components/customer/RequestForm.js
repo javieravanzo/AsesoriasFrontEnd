@@ -67,7 +67,7 @@ class LoanRequest extends Component {
     super(props);
     
     this.state = {
-      sliderValue: 300000,
+      sliderValue: null,
       fee: null,
       loan: null,
       money_wallet: false,
@@ -78,13 +78,33 @@ class LoanRequest extends Component {
       bank_number: null,
       bank_type: null,
       signatureDone: false,
-      trimmedDataURL: null
+      trimmedDataURL: null, 
+      flagState: null,
     };    
 
     this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
     this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
 
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    //console.log("PV", prevState.sliderValue, nextProps.requestDataResponse);
+    //console.log("RD", JSON.stringify(nextProps.requestDataResponse) !== '{}');
+    if(JSON.stringify(nextProps.requestDataResponse) !== '{}'){
+      if(prevState.sliderValue === null){
+        return {
+          sliderValue: nextProps.requestDataResponse.partialCapacity,
+          bank_name: nextProps.requestDataResponse.accountBank,
+          bank_number: nextProps.requestDataResponse.accountNumber,
+          bank_type: nextProps.requestDataResponse.accountType
+        };
+      }else{
+        return{
+          flagState: true
+        }
+      }
+    }
+   }
 
   sigPad = {};
 
@@ -254,7 +274,7 @@ class LoanRequest extends Component {
     let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
-    console.log("ODL", outlayDatesList);
+    console.log("ODL", this.state.sliderValue);
 
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
@@ -311,16 +331,18 @@ class LoanRequest extends Component {
                           rules: [
                             {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                           ]})(
-                              <InputNumber className={"form-input-number"} max={partialCapacity}
+                              <InputNumber className={"form-input-number"} max={partialCapacity < 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000}
                                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
-                                    placeholder={"Monto requerido"} onChange={this.handleQuantity}/>
+                                    placeholder={"Monto requerido"} onChange={this.handleQuantity} disabled={sliderValue === 0 ? true : false}/>
                           )
                         }
                       </FormItem>
                       <Row className="icon-wrapper">
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
-                          <span className={"request-title-amount"}>$80.000</span>
+                          <span className={"request-title-amount"}>
+                            <CurrencyFormat  displayType={'text'} style={{width: "100%"}} value={partialCapacity < 80000 ? partialCapacity : 80000}
+                                             thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/></span>
                           </h3>
                         </Col>
                         <Col xxl={14} lg={14} md={8} sm={8} xs={14}>
@@ -329,7 +351,7 @@ class LoanRequest extends Component {
                               {initialValue: this.state.sliderValue, rules: [
                                 {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                               ]})(
-                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={80000} step={10000} className={"slider-amount"}
+                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000} step={10000} className={"slider-amount"}
                                         tipFormatter={
                                           function (d) { 
                                             return format(d); 
@@ -342,7 +364,7 @@ class LoanRequest extends Component {
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
                           <span className={"request-title-amount"}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                                value={partialCapacity} thousandSeparator={'.'}
+                                                value={partialCapacity < 80000 ? 80000 : partialCapacity} thousandSeparator={'.'}
                                                 decimalSeparator={','} prefix={'$'}/></span>
                           </h3>
                         </Col>
@@ -357,7 +379,8 @@ class LoanRequest extends Component {
                           ]})(
                             <Row>
                               <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit}
-                              onChange={(e) => this.onChangeFee(e)} onBlur={() => this.sendReportInfo(maximumSplit)}/>
+                              onChange={(e) => this.onChangeFee(e)} onBlur={() => this.sendReportInfo(maximumSplit)}
+                              disabled={sliderValue === 0 ? true : false} />
                             </Row>
                           )
                         }
@@ -467,7 +490,7 @@ class LoanRequest extends Component {
                   </Row>
                   <Row gutter={20} className={"form-request-rows"}>
                     <Col xs={12} sm={12} md={8} lg={7}>
-                      <Switch onChange={this.handleWallet}/><span className={"type-account"}>{this.state.bank_account? " Banco / Billetera virtual" :" Billera virtual / Banco"}</span>  
+                    <span className={"type-account"}>{"Banco "}<Switch onChange={this.handleWallet}/>{" Billetera virtual"}</span>  
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={10} className={"form-bank-col"}>
                       {
@@ -495,7 +518,7 @@ class LoanRequest extends Component {
                               {initialValue: accountBank, rules: [
                                 {required: false, message: 'Por favor selecciona una cuenta'}
                               ]})(
-                                <Select onChange={this.changeBankName} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                <Select onChange={this.changeBankName} disabled={sliderValue === 0 ? true : false} placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                                   {bankInfo.map((bank, i) =>(
                                     <Select.Option value={bank.bankName} key={i}>
                                       {bank.bankName}
@@ -514,7 +537,7 @@ class LoanRequest extends Component {
                               {initialValue: accountType, rules: [
                                 {required: false, message: 'Por favor ingresa un tipo de cuenta'}
                               ]})(
-                                <Select placeholder={"Tipo de cuenta"} showSearch={true} onChange={this.changeBankType}>
+                                <Select placeholder={"Tipo de cuenta"} disabled={sliderValue === 0 ? true : false} showSearch={true} onChange={this.changeBankType}>
                                   {bankTypeAccountInfo.map((accountType, i) =>(
                                     <Select.Option value={accountType.accountTypeName} key={i}>
                                       {accountType.accountTypeName}
@@ -533,7 +556,8 @@ class LoanRequest extends Component {
                               {initialValue: accountNumber, rules: [
                                 {required: false, message: 'Por favor ingresa un número de cuenta' }
                               ]})(
-                                <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} onChange={this.changeBankNumber}/>
+                                <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} 
+                                onChange={this.changeBankNumber} disabled={sliderValue === 0 ? true : false}/>
                               )
                             }
                           </FormItem>  
@@ -547,10 +571,10 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Billetera virtual"}/>
                           <FormItem>
                             {getFieldDecorator('moyen',
-                              {rules: [
+                              {initialValue: null, rules: [
                                 {required: false, message: 'Por favor ingresa un tipo de billetera'}
                               ]})(
-                                <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
+                                <Select placeholder={"Tipo de billetera"} disabled={sliderValue === 0 ? true : false} showSearch={true} onChange={this.changeWalletType}>
                                   {walletInfo.map((wallet, i) =>(
                                     <Select.Option value={wallet.walletName} key={i}>
                                       {wallet.walletName}
@@ -569,7 +593,8 @@ class LoanRequest extends Component {
                               {initialValue: phoneNumber, rules: [
                                 {required: false, message: 'Por favor ingresa un número de celular' }
                               ]})(
-                                <InputNumber className={"form-input-number"} placeholder={"Número de celular"} onChange={this.changeWalletNumber}/>
+                                <InputNumber className={"form-input-number"} placeholder={"Número de celular"} 
+                                onChange={this.changeWalletNumber} disabled={sliderValue === 0 ? true : false}/>
                               )
                             }
                           </FormItem>  

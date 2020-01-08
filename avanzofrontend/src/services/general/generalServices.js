@@ -8,7 +8,8 @@ function approveorRejectRequest(data){
     method: 'PUT',
     headers:{
       requestid: data.requestId,
-      approve: data.approve
+      approve: data.approve,
+      transactionCode: data.transactionCode
     }
   });
 };

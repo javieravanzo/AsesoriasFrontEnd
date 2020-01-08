@@ -49,6 +49,7 @@
 
 .ant-form-explain{
   color: #40a9ff !important;
+  font-size: 12px !important;
 }
 
 .has-error .ant-input-number, .has-error .ant-time-picker-input, .has-error .ant-input, .has-error .ant-input:hover{

@@ -5,7 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-//import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
+import { allowEmergingWindows, WARNING_MODAL } from '../../../subcomponents/modalMessages';
 
 //Actions
 import {approveCustomers} from "../../../../../store/redux/actions/admin/adminActions";
@@ -68,6 +68,29 @@ class RequestModalCard extends Component {
     }else{
       return "white";
     }
+  };
+
+  seeDocument = (file1, file2, file3) => {
+
+    //let url = filePath;
+    //console.log(url);
+
+    //console.log("URL", newUrl, newUrl[1]);
+    let baseURL = "http://3.133.128.42:4000/";
+
+    if (file1 !== null && file2 !== null && file3 !== null) {
+      let newWindow = window.open(baseURL + file1, "_blank");
+      let newWindow1 = window.open(baseURL + file2, "_blank");
+      let newWindow2 = window.open(baseURL + file3, "_blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' || 
+          !newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined' ||
+          !newWindow2 || newWindow2.closed || typeof newWindow2.closed === 'undefined') {
+        allowEmergingWindows();
+      }
+    } else {
+      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+    }
+
   };
 
   onConfirmRequest = () => {
@@ -181,7 +204,7 @@ class RequestModalCard extends Component {
               </Row>
               <Row style={{marginTop: "5px", marginBottom: "15px"}} gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={16} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.documentId, item.paymentReport, item.photo)} >
                         Ver documento
                   </Button> 
                 </Col>
