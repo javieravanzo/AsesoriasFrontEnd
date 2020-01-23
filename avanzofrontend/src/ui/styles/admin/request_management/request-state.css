@@ -132,11 +132,12 @@
 }
 
 .payments-select{
-  width: 100% !important;
+  width: 90% !important;
 }
 
 .amount-inputs{
-  width: 80% !important;
+  text-align: center !important;
+  width: 65% !important;
 }
 
 @media only screen and (max-width:500px) {

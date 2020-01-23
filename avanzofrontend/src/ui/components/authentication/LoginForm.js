@@ -91,7 +91,7 @@ class LoginForm extends Component {
                 </FormItem>
                 <FormItem>
                   {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Por ingrese su contraseña' }],
+                    rules: [{ required: true, message: 'Por favor, ingrese su contraseña' }],
                   })(
                   <Input prefix={<Icon type="lock" className={"field-icon"} />} type="password" placeholder="Contraseña"
                     onChange={(value) => this.onChangePassword(value)}/>)

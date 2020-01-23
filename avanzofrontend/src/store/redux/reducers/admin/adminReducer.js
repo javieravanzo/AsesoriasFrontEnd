@@ -6,7 +6,8 @@ const initialState={
   registerAdminResponse: null,
   requestResponse: null,
   requestOutLayResponse: null,
-  companyResponse: null, 
+  companyResponse: null,
+  companySalaryResponse: [],  
   companyList: null,
   customerList: null,
   customerListToApprove: null
@@ -34,6 +35,11 @@ export default function adminReducer(state = initialState, action){
         ...state,
         companyList: action.payload
       };
+    case C.GET_COMPANY_WITH_SALARY:
+      return{
+        ...state,
+        companySalaryResponse: action.payload
+      }
     case C.GET_ALL_CUSTOMERS:
       return{
         ...state,

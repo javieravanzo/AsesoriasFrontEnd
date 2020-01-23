@@ -71,12 +71,12 @@ class RequestStateModal extends Component {
 
     let url = filePath;
     //console.log(url);
-    let newUrl = url.split('.');
+    let newUrl = url;
     //console.log("URL", newUrl, newUrl[1]);
     let baseURL = "http://3.133.128.42:4000";
 
     if (url !== null) {
-      let newWindow = window.open(baseURL + newUrl[1], "blank");
+      let newWindow = window.open(baseURL + filePath, "blank");
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
         allowEmergingWindows();
       }
@@ -239,7 +239,7 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.photo, item.documentId, item.paymentReport)} >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath)} >
                         Ver documento
                   </Button> 
                 </Col>

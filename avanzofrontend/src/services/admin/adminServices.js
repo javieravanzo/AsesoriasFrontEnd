@@ -96,6 +96,17 @@ function getAllCompanies(){
   });
 };
 
+function getAllCompaniesWithSalaries(companyid){
+  return request({
+    url: '/Company/GetWithSalaries',
+    method: 'GET',
+    headers:{
+      companyid: companyid
+    }
+  });
+  
+}
+
 function getAllCustomers(){
   return request({
     url: '/Customer/GetAllWithCompany',
@@ -124,7 +135,8 @@ function approveCustomer(client, approve){
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
-  getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer
+  getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
+  getAllCompaniesWithSalaries
 };
 
 export default adminService;

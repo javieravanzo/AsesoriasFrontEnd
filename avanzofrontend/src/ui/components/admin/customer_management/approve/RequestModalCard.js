@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Button, Modal, Select, Input} from 'antd';
+import {Col, Row, Tooltip, Icon, Button, Modal, Select, Input, InputNumber} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
@@ -94,12 +94,12 @@ class RequestModalCard extends Component {
   };
 
   onConfirmRequest = () => {
-    this.props.approveCustomers(this.props.item.idClient, true);
+    this.props.approveCustomers(this.props.item.idNewClient, true);
     this.setState({approve_modal: false});
   };
 
   onRejectRequest = () => {
-    this.props.approveCustomers(this.props.item.idClient, false);
+    this.props.approveCustomers(this.props.item.idNewClient, false);
     this.setState({reject_modal: false});
   };
 
@@ -164,7 +164,7 @@ class RequestModalCard extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                   <b>Cargo</b><br/>
-                  {item.profession === null ? "-" : item.profession}
+                  {item.profession === null || item.profession === undefined ? "-" : item.profession}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                   <b>Dirección</b><br/>
@@ -175,7 +175,7 @@ class RequestModalCard extends Component {
               <Row>
                 <Col xs={12} sm={12} md={8} lg={5} >
                   <b>Monto</b><br/>
-                  <Input className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
+                  <InputNumber formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={6}>
                   <b>Ciclo de pagos</b><br/>
@@ -195,11 +195,11 @@ class RequestModalCard extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Cuenta</b><br/>
-                    {item.accountBank === null ? "-" : item.accountBank}
+                    {item.accountBank === null || item.profession === undefined ? "-" : item.accountBank}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={5}>
                     <b>Número de cuenta</b><br/>
-                    {item.accountNumber === null ? "-" : item.accountNumber}
+                    {item.accountNumber === null || item.profession === undefined  ? "-" : item.accountNumber}
                 </Col>
               </Row>
               <Row style={{marginTop: "5px", marginBottom: "15px"}} gutter={4}>

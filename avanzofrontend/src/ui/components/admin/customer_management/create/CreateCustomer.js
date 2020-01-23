@@ -1,7 +1,7 @@
 //Libraries
 import React, { Component } from 'react';
 import { Form, Select, Button, Col, Row, Collapse, InputNumber,
-         Input, DatePicker, Modal, Upload, message, Icon} from 'antd';
+         Input, DatePicker, Modal, Upload, message, Icon, Switch, Spin} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
@@ -12,6 +12,8 @@ import { SUCCESS_MODAL, ERROR_MODAL } from '../../../subcomponents/modalMessages
 //Actions
 import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";
 import {createCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+
+import { getOutlayData } from "../../../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../../../styles/admin/create-company.css';
@@ -36,10 +38,14 @@ class CustomerManagement extends Component {
       report: null,
       loan: null,
       upload: null,
-      particular_modal: null
+      particular_modal: null,
+      bank_account: true,
+      money_wallet: false      
     };
 
     this.props.getCompanies();
+    this.props.getOutlayData(parseInt(localStorage.user_id, 10), undefined);
+
 
   };
 
@@ -48,12 +54,25 @@ class CustomerManagement extends Component {
       if (err){
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
       }else{  
-        values.birthDate = values.birthDate !== undefined ? new Date(values.birthDate._d) : null;
-        values.customer_initDate = values.customer_initDate !== undefined ? new Date(values.customer_initDate._d) : null;
-        values.expeditionDate = values.expeditionDate !== undefined ? new Date(values.expeditionDate._d) : null;
-        //console.log("Values", values);
-        this.props.createCustomer(values);
+        if(values.phoneNumber.toString()[0] !== "3" || values.phoneNumber.toString().length !== 10 ){
+          ERROR_MODAL("Error al realizar la acción", "Por favor ingresa un número de teléfono válido.");
+        }else if (values.fixedNumber.toString().length !== 7) {
+          ERROR_MODAL("Error al realizar la acción", "Por favor ingresa un número de teléfono fijo válido.");
+        }else{  
+          values.birthDate = values.birthDate !== undefined ? new Date(values.birthDate._d) : null;
+          values.customer_initDate = values.customer_initDate !== undefined ? new Date(values.customer_initDate._d) : null;
+          values.expeditionDate = values.expeditionDate !== undefined ? new Date(values.expeditionDate._d) : null;
+          //console.log("Values", values);
+          this.props.createCustomer(values);
+        }
       }
+    });
+  };
+
+  handleWallet = (e) => {
+    this.setState({
+      money_wallet: e,
+      bank_account: !e,
     });
   };
 
@@ -72,7 +91,9 @@ class CustomerManagement extends Component {
 
     let { companyList } = this.props;
     let {getFieldDecorator} = this.props.form;
-    //let {particular_modal, multiple_modal} = this.state;
+    let { outlayDataResponse } = this.props;
+    let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
+    let {bank_account, money_wallet} = this.state;
     const props = {
       name: 'file',
       action: BaseURL + 'Customer/MultipleCreate',
@@ -96,372 +117,446 @@ class CustomerManagement extends Component {
     
     };
 
-    return (
-      <div className={"company-div"}>
-          <Row gutter={8}>
-            <Col xs={24} sm={24} md={8} lg={19}/>
-            <Col xs={24} sm={12} md={8} lg={5}>
-              <Button className={"request-confirm-button"} icon="file-excel" 
-                      onClick={() => this.setState({particular_modal: true})}>
-                      Crear múltiples clientes
-              </Button> 
-            </Col>
-            <Modal 
-              title="Crear clientes"
-              visible={this.state.particular_modal}
-              okText={"Cerrar"}
-              cancelText={"Cancelar"}
-              width={450}
-              onOk={() => this.onLoadFile()}
-              onCancel={() => this.setState({particular_modal: false})}>
-                <div>
-                  <div>
-                    Suba el archivo de Excel con los campos correspondientes para crear clientes.
-                    <i> Recuerde que el archivo debe tener unas condiciones y especificaciones obligatorias.</i>
-                    <b> Cuando agregue el archivo, será cargado instatáneamente.</b>
-                  </div>
-                    
-                  <br/>           
-                  <Upload {...props}>
-                    <Button>
-                      <Icon type="upload" /> Seleccionar y cargar archivo Excel
-                    </Button>
-                  </Upload>
+    if(JSON.stringify(this.props.outlayDataResponse) === '{}'){
+      return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+                  Cargando ...
                   <br/>
-                 
-                </div>
+                  <br/>
+                  <Spin size="large" />
+                </div>);
+    }else{
+      return (
+        <div className={"company-div"}>
+            <Row gutter={8}>
+              <Col xs={24} sm={24} md={8} lg={19}/>
+              <Col xs={24} sm={12} md={8} lg={5}>
+                <Button className={"request-confirm-button"} icon="file-excel" 
+                        onClick={() => this.setState({particular_modal: true})}>
+                        Crear múltiples clientes
+                </Button> 
+              </Col>
+              <Modal 
+                title="Crear clientes"
+                visible={this.state.particular_modal}
+                okText={"Cerrar"}
+                cancelText={"Cancelar"}
+                width={450}
+                onOk={() => this.onLoadFile()}
+                onCancel={() => this.setState({particular_modal: false})}>
+                  <div>
+                    <div>
+                      Suba el archivo de Excel con los campos correspondientes para crear clientes.
+                      <i> Recuerde que el archivo debe tener unas condiciones y especificaciones obligatorias.</i>
+                      <b> Cuando agregue el archivo, será cargado instatáneamente.</b>
+                    </div>
+                      
+                    <br/>           
+                    <Upload {...props}>
+                      <Button>
+                        <Icon type="upload" /> Seleccionar y cargar archivo Excel
+                      </Button>
+                    </Upload>
+                    <br/>
+                  
+                  </div>
 
-            </Modal>
-          </Row>
-          <Row className={"request-row-content"}>
-            <div>  
-              <Form>
-                <Collapse defaultActiveKey={['1']} bordered={false}>
-                  <Panel header="Información personal" key="1">
-                    <Row gutter={20} className={"form-request-rows"} >
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Nombres completos"}/>
-                        <FormItem>
-                          {getFieldDecorator('name',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un nombre'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Nombres completos"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Apellidos completos"}/>
-                        <FormItem>
-                          {getFieldDecorator('lastName',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un apellido'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Apellidos completos"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Tipo de Identificación"}/>
-                        <FormItem>
-                          {getFieldDecorator('documentType',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un tipo de identificación'}
-                            ]})(
-                              <Select placeholder={"Tipo de documento"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                <Select.Option value={"Cédula"}>Cédula</Select.Option>
-                                <Select.Option value={"Pasaporte"}>Pasaporte</Select.Option>
-                                <Select.Option value={"Otro"}>Otro</Select.Option>
+              </Modal>
+            </Row>
+            <Row className={"request-row-content"}>
+              <div>  
+                <Form>
+                  <Collapse defaultActiveKey={['1']} bordered={false}>
+                    <Panel header="Información personal" key="1">
+                      <Row gutter={20} className={"form-request-rows"} >
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Nombres completos"}/>
+                          <FormItem>
+                            {getFieldDecorator('name',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un nombre'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Nombres completos"} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Apellidos completos"}/>
+                          <FormItem>
+                            {getFieldDecorator('lastName',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un apellido'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Apellidos completos"} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Tipo de Identificación"}/>
+                          <FormItem>
+                            {getFieldDecorator('documentType',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un tipo de identificación'}
+                              ]})(
+                                <Select placeholder={"Tipo de documento"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                  <Select.Option value={"Cédula"}>Cédula</Select.Option>
+                                  <Select.Option value={"Pasaporte"}>Pasaporte</Select.Option>
+                                  <Select.Option value={"Otro"}>Otro</Select.Option>
+                                </Select>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"No. de Identificación"}/>
+                          <FormItem>
+                            {getFieldDecorator('identificationId',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un número de identificación'}
+                              ]})(
+                                <InputNumber maxLength={12} prefix={<Icon type="idcard" className={'icon-prefix'} />}
+                                              placeholder="Número de documento" className={"input-number"}/>
+                              )
+                            }
+                          </FormItem>
+                        </Col> 
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Teléfono fijo"}/>
+                          <FormItem>
+                            {getFieldDecorator('fixedNumber',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un teléfono fijo'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Teléfono fijo"} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Teléfono celular"}/>
+                          <FormItem>
+                            {getFieldDecorator('phoneNumber',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un teléfono celular'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Correo electrónico"}/>
+                          <FormItem>
+                            {getFieldDecorator('email',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un correo electrónico'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Género"}/>
+                          <FormItem>
+                            {getFieldDecorator('genus',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un correo electrónico'}
+                              ]})(
+                                <Select placeholder={"Género"} showSearch={true}>
+                                  <Select.Option value={"Masculino"}>Masculino</Select.Option>
+                                  <Select.Option value={"Femenino"}>Femenino</Select.Option>
+                                  <Select.Option value={"Otro"}>Otro</Select.Option>
+                                </Select>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Fecha de nacimiento"}/>
+                          <FormItem>
+                            {getFieldDecorator('birthDate',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un correo electrónico'}
+                              ]})(
+                                <DatePicker placeholder={"Fecha de nacimiento"}/>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Fecha de expedición"}/>
+                          <FormItem>
+                            {getFieldDecorator('expeditionDate',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un correo electrónico'}
+                              ]})(
+                                <DatePicker placeholder={"Fecha de expedición"} style={{width: "100% !important"}}/>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Cantidad máxima de préstamo"}/>
+                          <FormItem>
+                            {getFieldDecorator('maximumAmount',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa una cantidad de préstamo'}
+                              ]})(
+                                <Input placeholder={"Cantidad de prestámo"} style={{width: "100% !important"}}/>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Máximo número de cuotas"}/>
+                          <FormItem>
+                            {getFieldDecorator('split',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un número de cuotas'}
+                              ]})(
+                                <Input placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col lg={6} md={8} sm={12} xs={12}>
+                          <FieldTitle title={"Empresa"}/>
+                          <FormItem className='home-form-item'>
+                            {getFieldDecorator('idCompany', {
+                              rules: [ 
+                                {required: true, message: 'Por favor, ingrese su empresa.' }],
+                            })(
+                              <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
+                                notFoundContent={"No hay empresas disponibles"}>
+                                {companyList.map((type, i) => (
+                                  <Select.Option key={i} value={type.idCompany}>
+                                    {type.socialReason}
+                                  </Select.Option>))
+                                }
                               </Select>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"No. de Identificación"}/>
-                        <FormItem>
-                          {getFieldDecorator('identificationId',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un número de identificación'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"No. de Identificación"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col> 
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Teléfono fijo"}/>
-                        <FormItem>
-                          {getFieldDecorator('fixedNumber',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono fijo'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono fijo"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Teléfono celular"}/>
-                        <FormItem>
-                          {getFieldDecorator('phoneNumber',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un teléfono celular'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Correo electrónico"}/>
-                        <FormItem>
-                          {getFieldDecorator('email',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un correo electrónico'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Género"}/>
-                        <FormItem>
-                          {getFieldDecorator('genus',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un correo electrónico'}
-                            ]})(
-                              <Select placeholder={"Género"} showSearch={true}>
-                                <Select.Option value={"Masculino"}>Masculino</Select.Option>
-                                <Select.Option value={"Femenino"}>Femenino</Select.Option>
-                                <Select.Option value={"Otro"}>Otro</Select.Option>
+                            )}
+                          </FormItem>
+                        </Col>
+                        <Col lg={6} md={8} sm={12} xs={12}>
+                          <FieldTitle title={"Ciclo de pagos"}/>
+                          <FormItem className='home-form-item'>
+                            {getFieldDecorator('companyPayment', {
+                              rules: [ 
+                                {required: true, message: 'Por favor, ingrese su ciclo de pagos.' }],
+                            })(
+                              <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}>
+                                
+                                  <Select.Option key={1} value={1}>
+                                    {"Ciclo de pagos 1"}
+                                  </Select.Option>
+                                  <Select.Option key={2} value={2}>
+                                    {"Ciclo de pagos 2"}
+                                  </Select.Option>
+                                
                               </Select>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Fecha de nacimiento"}/>
-                        <FormItem>
-                          {getFieldDecorator('birthDate',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un correo electrónico'}
-                            ]})(
-                              <DatePicker placeholder={"Fecha de nacimiento"}/>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Fecha de expedición"}/>
-                        <FormItem>
-                          {getFieldDecorator('expeditionDate',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un correo electrónico'}
-                            ]})(
-                              <DatePicker placeholder={"Fecha de expedición"} style={{width: "100% !important"}}/>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Cantidad máxima de préstamo"}/>
-                        <FormItem>
-                          {getFieldDecorator('maximumAmount',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa una cantidad de préstamo'}
-                            ]})(
-                              <Input placeholder={"Cantidad de prestámo"} style={{width: "100% !important"}}/>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Máximo número de cuotas"}/>
-                        <FormItem>
-                          {getFieldDecorator('split',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa un número de cuotas'}
-                            ]})(
-                              <Input placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col lg={6} md={8} sm={12} xs={12}>
-                        <FieldTitle title={"Empresa"}/>
-                        <FormItem className='home-form-item'>
-                          {getFieldDecorator('idCompany', {
-                            rules: [ 
-                              {required: true, message: 'Por favor, ingrese su empresa.' }],
-                          })(
-                            <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
-                              notFoundContent={"No hay empresas disponibles"}>
-                              {companyList.map((type, i) => (
-                                <Select.Option key={i} value={type.idCompany}>
-                                  {type.socialReason}
-                                </Select.Option>))
+                            )}
+                          </FormItem>
+                        </Col>
+                      </Row>
+                    </Panel>  
+                    <Panel header="Información bancaria" key="2">
+                      <Row className={"form-request-rows"}>
+                        <Col xs={12} sm={12} md={8} lg={7}>
+                          <span className={"type-account"}>{"Banco "}<Switch onChange={this.handleWallet}/>{" Billetera virtual"}</span>  
+                        </Col>
+                      </Row>
+                      <br/>
+                    {
+                      bank_account && 
+                        <Row gutter={12} className={"form-request-rows"}>
+                          <Col xs={12} sm={12} md={7} lg={7} >
+                            <FieldTitle title={"Cuenta"}/>
+                            <FormItem>
+                              {getFieldDecorator('accountBank',
+                                {
+                                  rules: [
+                                  {required: false, message: 'Por favor selecciona una cuenta'}
+                                ]})(
+                                  <Select onChange={this.changeBankName}  placeholder={"Cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                    {bankInfo.map((bank, i) =>(
+                                      <Select.Option value={bank.bankName} key={i}>
+                                        {bank.bankName}
+                                      </Select.Option>
+                                    ))
+                                    }
+                                  </Select>
+                                )
                               }
-                            </Select>
-                          )}
-                        </FormItem>
-                      </Col>
-                      <Col lg={6} md={8} sm={12} xs={12}>
-                        <FieldTitle title={"Ciclo de pagos"}/>
-                        <FormItem className='home-form-item'>
-                          {getFieldDecorator('companyPayment', {
-                            rules: [ 
-                              {required: true, message: 'Por favor, ingrese su ciclo de pagos.' }],
-                          })(
-                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}>
-                              
-                                <Select.Option key={1} value={1}>
-                                  {"Ciclo de pagos 1"}
-                                </Select.Option>
-                                <Select.Option key={2} value={2}>
-                                  {"Ciclo de pagos 2"}
-                                </Select.Option>
-                              
-                            </Select>
-                          )}
-                        </FormItem>
-                      </Col>
-                    </Row>
-                  </Panel>  
-                  <Panel header="Información bancaria" key="2">
-                    <Row gutter={20} className={"form-request-rows"}>
-                      <Col xs={12} sm={12} md={6} lg={6}>
-                        <FieldTitle title={"Banco"}/>
-                        <FormItem >
-                          {getFieldDecorator('accountBank',
-                            {rules: [
-                              {required: false, message: 'Por favor ingrese el banco'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Banco"}/>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Tipo de cuenta"}/>
-                        <FormItem>
-                          {getFieldDecorator('accountType',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un tipo de cuenta'}
-                            ]})(
-                              <Select placeholder={"Tipo de cuenta"} showSearch={true}>
-                                <Select.Option value={"Ahorros"}>Ahorros</Select.Option>
-                                <Select.Option value={"Corriente"}>Corriente</Select.Option>
-                                <Select.Option value={"Otro"}>Otro</Select.Option>
-                              </Select>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={6} lg={12}>
-                        <FieldTitle title={"Número de cuenta"}/>
-                        <FormItem >
-                          {getFieldDecorator('accountNumber',
-                            {rules: [
-                              {required: false, message: 'Por favor ingrese el número de cuenta'}
-                            ]})(
-                              <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"}/>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>     
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Tipo Contrato"}/>
-                        <FormItem>
-                          {getFieldDecorator('contractType',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un tipo de contrato'}
-                            ]})(
-                              <Select placeholder={"Tipo de contrato"} showSearch={true}>
-                                <Select.Option value={"Término definido"}>Término definido</Select.Option>
-                                <Select.Option value={"Término indefinido"}>Término indefinido</Select.Option>
-                                <Select.Option value={"Otro"}>Otro</Select.Option>
-                              </Select>
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Salario"}/>
-                        <FormItem>
-                          {getFieldDecorator('salary',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un salario'}
-                            ]})(
-                              <InputNumber className={"form-input-number"} placeholder={"Salario"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Fecha ingreso"}/>
-                        <FormItem>
-                          {getFieldDecorator('entryDate',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa una fecha'}
-                            ]})(
-                              <DatePicker className={"form-input-number"} placeholder={"Fecha ingreso"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6}>
-                        <FieldTitle title={"Cargo"}/>
-                        <FormItem >
-                          {getFieldDecorator('profession',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un cargo' }
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Cargo"}/>
-                            )
-                          }
-                        </FormItem>  
-                      </Col>
-                    </Row>    
-                  </Panel>
-                </Collapse>
-                <Col xs={24} sm={12} md={18} lg={20}/>
-                <Col xs={24} sm={12} md={6} lg={4}>
-                  <Button className={"request-confirm-button"} icon="plus-circle" 
-                          onClick={() => this.onConfirmRequest()}>
-                        Crear cliente
-                  </Button> 
-                </Col>
-              </Form>
-            </div>
-        </Row>
-      </div>
-    );
-  
+                            </FormItem>
+                          </Col>
+                          <Col xs={12} sm={12} md={7} lg={7} >
+                            <FieldTitle title={"Tipo de cuenta"}/>
+                            <FormItem>
+                              {getFieldDecorator('accountType',
+                                { rules: [
+                                  {required: false, message: 'Por favor ingresa un tipo de cuenta'}
+                                ]})(
+                                  <Select placeholder={"Tipo de cuenta"}  showSearch={true} onChange={this.changeBankType}>
+                                    {bankTypeAccountInfo.map((accountType, i) =>(
+                                      <Select.Option value={accountType.accountTypeName} key={i}>
+                                        {accountType.accountTypeName}
+                                      </Select.Option>
+                                    ))
+                                    }
+                                  </Select>
+                                )
+                              }
+                            </FormItem>
+                          </Col>
+                          <Col xs={24} sm={24} md={10} lg={10}>
+                          <FieldTitle title={"Número de cuenta"}/>
+                            <FormItem >
+                              {getFieldDecorator('accountNumber',
+                                { rules: [
+                                  {required: false, message: 'Por favor ingresa un número de cuenta' }
+                                ]})(
+                                  <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} 
+                                  onChange={this.changeBankNumber} />
+                                )
+                              }
+                            </FormItem>  
+                          </Col>
+                        </Row>
+                      }
+                      {
+                        money_wallet &&
+                        <Row  gutter={12} className={"form-request-rows"}>
+                          <Col xs={12} sm={12} md={7} lg={7} >
+                            <FieldTitle title={"Billetera virtual"}/>
+                            <FormItem>
+                              {getFieldDecorator('accountBank',
+                                { rules: [
+                                  {required: false, message: 'Por favor ingresa un tipo de billetera'}
+                                ]})(
+                                  <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
+                                    {walletInfo.map((wallet, i) =>(
+                                      <Select.Option value={wallet.walletName} key={i}>
+                                        {wallet.walletName}
+                                      </Select.Option>
+                                    ))
+                                    }
+                                  </Select>
+                                )
+                              }
+                            </FormItem>
+                          </Col>
+                          <Col xs={24} sm={24} md={10} lg={10}>
+                          <FieldTitle title={"Número de celular"}/>
+                            <FormItem >
+                              {getFieldDecorator('accountNumber',
+                                { rules: [
+                                  {required: false, message: 'Por favor ingresa un número de celular' }
+                                ]})(
+                                  <InputNumber className={"form-input-number"} placeholder={"Número de celular"} 
+                                  onChange={this.changeWalletNumber} />
+                                )
+                              }
+                            </FormItem>  
+                          </Col>
+                        </Row>
+                      }
+                      <Row gutter={20} className={"form-request-rows"}>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Tipo Contrato"}/>
+                          <FormItem>
+                            {getFieldDecorator('contractType',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un tipo de contrato'}
+                              ]})(
+                                <Select placeholder={"Tipo de contrato"} showSearch={true}>
+                                  <Select.Option value={"Término definido"}>Término definido</Select.Option>
+                                  <Select.Option value={"Término indefinido"}>Término indefinido</Select.Option>
+                                  <Select.Option value={"Otro"}>Otro</Select.Option>
+                                </Select>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Salario"}/>
+                          <FormItem>
+                            {getFieldDecorator('salary',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un salario'}
+                              ]})(
+                                <InputNumber className={"form-input-number"} placeholder={"Salario"} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Fecha ingreso"}/>
+                          <FormItem>
+                            {getFieldDecorator('entryDate',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa una fecha'}
+                              ]})(
+                                <DatePicker className={"form-input-number"} placeholder={"Fecha ingreso"} />
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        <Col xs={12} sm={12} md={8} lg={6}>
+                          <FieldTitle title={"Cargo"}/>
+                          <FormItem >
+                            {getFieldDecorator('profession',
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un cargo' }
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Cargo"}/>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
+                      </Row>    
+                    </Panel>
+                  </Collapse>
+                  <Col xs={24} sm={12} md={18} lg={20}/>
+                  <Col xs={24} sm={12} md={6} lg={4}>
+                    <Button className={"request-confirm-button"} icon="plus-circle" 
+                            onClick={() => this.onConfirmRequest()}>
+                          Crear cliente
+                    </Button> 
+                  </Col>
+                </Form>
+              </div>
+          </Row>
+        </div>
+      );
+    } 
+    
   };
   
 };
 
 CustomerManagement.propTypes = {
-  companyList: PropTypes.array
+  companyList: PropTypes.array,
+  outlayDataResponse: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    companyList: state.login.companyList
+    companyList: state.login.companyList,
+    outlayDataResponse: state.customer.outlayDataResponse,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getCompanies: ( ) => dispatch(getCompanies( )),
-    createCustomer: (data) => dispatch(createCustomer(data))
+    createCustomer: (data) => dispatch(createCustomer(data)),
+    getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
   }
 };
 
 let CustomerManagementForm = Form.create()(CustomerManagement);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerManagementForm);
+

@@ -220,6 +220,24 @@ export const getAllCompanies = ( ) => {
   }
 };
 
+export const getCompanyWithSalary = (companyid) => {
+  return dispatch => {
+    return adminServices.getAllCompaniesWithSalaries(companyid)
+      .then(response => {
+        dispatch({
+          type: C.GET_COMPANY_WITH_SALARY,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_COMPANY_WITH_SALARY,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la información de la empresa', err.data);
+      });
+  }
+};
+
 export const getAllCustomers = ( ) => {
   return dispatch => {
     return adminServices.getAllCustomers( )

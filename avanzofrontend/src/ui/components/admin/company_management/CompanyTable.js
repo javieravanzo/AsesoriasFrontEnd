@@ -112,6 +112,8 @@ class CompanyTable extends Component {
           registeredDate: item.registeredDate,
           split: item.maximumSplit,
           quantity: item.defaultAmount,
+          approveHumanResources: item.approveHumanResources,
+          email: item.email,
           actions: <TableButtons item={item}/>
         };
 

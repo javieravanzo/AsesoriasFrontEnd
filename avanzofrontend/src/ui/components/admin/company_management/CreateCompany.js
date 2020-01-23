@@ -92,41 +92,47 @@ class CreateCompany extends Component {
       if (err){
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
       }else{
-        let newSalary = [{
-          companyRate: values.companyRate,
-          companyReportDate: values.companyReportDate,
-          companyFirstDate: values.companyFirstDate,
-          companySecondDate: values.companySecondDate,
-        }];
-        let data = {
-          address: values.address,
-          approveHumanResources: values.approveHumanResources,
-          companySalaries: this.state.companySalaries.length === 0 ? newSalary : this.state.companySalaries,
-          defaultAmount: values.defaultAmount,
-          economyActivity: values.economyActivity,
-          email: values.email,
-          maximumSplit: values.maximumSplit,
-          nit: values.nit,
-          socialReason: values.socialReason,
-          password: values.password,
-          companyMembers: [
-            {
-              memberName: values.memberName + "-" + values.memberLastName,
-              memberId: values.memberId,
-              profession: values.profession,
-              phoneNumber: values.phoneNumber,
-              memberEmail: values.memberEmail,
-            },
-            {
-              memberName: values.representantName + "-" + values.representantLastName,
-              memberId: values.representantId,
-              profession: values.representantProfession,
-              phoneNumber: values.representantPhone,
-              memberEmail: values.representantEmail,
-            }
-          ],               
-        };
-        this.props.createCompany(data);
+        if(values.password !== values.confirmPassword){
+          WARNING_MODAL("Las contraseñas no coinciden");
+        }else if(values.phoneNumber.toString()[0] !== "3" || values.phoneNumber.toString().length !== 10 ){
+          ERROR_MODAL("Error al realizar la acción", "Por favor ingresa un número de teléfono válido.");
+        }else{
+          let newSalary = [{
+            companyRate: values.companyRate,
+            companyReportDate: values.companyReportDate,
+            companyFirstDate: values.companyFirstDate,
+            companySecondDate: values.companySecondDate,
+          }];
+          let data = {
+            address: values.address,
+            approveHumanResources: values.approveHumanResources,
+            companySalaries: this.state.companySalaries.length === 0 ? newSalary : this.state.companySalaries,
+            defaultAmount: values.defaultAmount,
+            economyActivity: values.economyActivity,
+            email: values.email,
+            maximumSplit: values.maximumSplit,
+            nit: values.nit,
+            socialReason: values.socialReason,
+            password: values.password,
+            companyMembers: [
+              {
+                memberName: values.memberName + "-" + values.memberLastName,
+                memberId: values.memberId,
+                profession: values.profession,
+                phoneNumber: values.phoneNumber,
+                memberEmail: values.memberEmail,
+              },
+              {
+                memberName: values.representantName + "-" + values.representantLastName,
+                memberId: values.representantId,
+                profession: values.representantProfession,
+                phoneNumber: values.representantPhone,
+                memberEmail: values.representantEmail,
+              }
+            ],               
+          };
+          this.props.createCompany(data);
+        }
       }
     });
   };
@@ -163,25 +169,64 @@ class CreateCompany extends Component {
   };
 
   changeSalariesValues = (e, param) => {
-    
-    if(param === "companyRate"){
+    //if(param === "companyRate"){
       //console.log("E-P", e, param);
       this.setState({
         [param]: e
       });
-    }else{
+    //}else{
       //console.log("E-P", e.target.value, param);
-      this.setState({
-        [param]: e.target.value
-      });
+      //this.setState({
+      //  [param]: e.target.value
+      //});
+   // }
+    
+  };
+
+  changeDateValues = (e, param) => {
+    let setter;
+    let {companySecondDate, companyFirstDate, companyRate} = this.state;
+    setter = e.target.value.replace(/ /g, "");
+    let setterValue = setter.split(',');
+    console.log("s", setterValue, "C", companyFirstDate);
+
+    if(companyRate === "Mensual"){
+      if(setterValue.length === 1){
+        this.setState({
+          companyFirstDate: setterValue[0]
+        });
+      }else{
+        WARNING_MODAL("Advertencia", "Ingresa solo un día para el tipo de recurrencia mensual");
+      }    
+    }else if(companyRate === "Quincenal"){
+      if(setterValue.length < 3){
+        this.setState({
+          companyFirstDate: setterValue[0],
+          companySecondDate: setterValue[1]
+        });
+      }else{
+        WARNING_MODAL("Advertencia", "Ingresa solo dos días para el tipo de recurrencia quincenal");
+      }
+    }else{
+      WARNING_MODAL("Advertencia", "Primero, ingrese un tipo de ciclo para esta empresa");
     }
     
+  };
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Las dos contraseñas no coinciden');
+    } else {
+      callback();
+    }
   };
 
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {companySalaries} = this.state;
+    let {companySalaries, company} = this.state;
+    console.log("State", company)
 
     return (
       <div className={"company-div"}>
@@ -221,21 +266,10 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('email',
                             {rules: [
+                              {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                               {required: true, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"Contraseña por defecto"}/>
-                        <FormItem>
-                          {getFieldDecorator('password',
-                            {rules: [
-                              {required: true, message: 'Por favor ingresa una contraseña por defecto'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Contraseña por defecto"} />
                             )
                           }
                         </FormItem>
@@ -263,6 +297,31 @@ class CreateCompany extends Component {
                             )
                           }
                         </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Contraseña por defecto"}/>
+                        <FormItem>
+                          {getFieldDecorator('password',
+                            {rules: [
+                              {required: true, message: 'Por favor ingresa una contraseña por defecto'}
+                            ]})(
+                              <Input type="password"  className={"form-input-number"} placeholder={"Contraseña por defecto"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Confirmar contraseña"}/>
+                        <FormItem>
+                          {getFieldDecorator('confirmPassword',
+                            {rules: [
+                              {required: true, message: 'Por favor confirma la contraseña ingresada'},
+                              {validator: this.compareToFirstPassword}
+                            ]})(
+                              <Input type="password" className={"form-input-number"} placeholder={"Confirmar contraseña"} />
+                            )
+                          }
+                        </FormItem>
                       </Col>
                     </Row>
                   </Panel>
@@ -314,7 +373,7 @@ class CreateCompany extends Component {
                         <Table columns={columns} dataSource={companySalaries} size="small" bordered={false} locale={{emptyText: 'No hay registros'}}/>
                       }
                       <Row gutter={8} key={this.state.burstingKey}>
-                        <Col xs={12} sm={12} md={6} lg={6} key={this.state.burstingKey}>
+                        <Col xs={12} sm={12} md={8} lg={8} key={this.state.burstingKey}>
                           <FieldTitle title={"Ciclo de pagos"}/>
                           <FormItem >
                             {getFieldDecorator('companyRate',
@@ -329,38 +388,27 @@ class CreateCompany extends Component {
                             }
                           </FormItem>  
                         </Col>
-                        <Col xs={12} sm={12} md={6} lg={6}>
-                          <FieldTitle title={"Fecha de salario 1"}/>
+                        <Col xs={12} sm={12} md={8} lg={8}>
+                          <FieldTitle title={"Fechas de salario"}/>
                           <FormItem >
                             {getFieldDecorator('companyFirstDate',
                               {rules: [
-                                {required: true, message: 'Por favor ingresa una fecha de pago'}
+                                {required: true, message: 'Por favor ingresa las fechas de salario separado por comas'}
                               ]})(
-                                <Input key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de salario 1"} onChange={(e) => this.changeSalariesValues(e, 'companyFirstDate')}/>
+                                <Input max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de salario 1"} onChange={(e) => this.changeDateValues(e, 'companyFirstDate')}/>
                               )
                             }
                           </FormItem>  
                         </Col>
-                        <Col xs={12} sm={12} md={6} lg={6}>
-                          <FieldTitle title={"Fecha de salario 2"}/>
-                          <FormItem >
-                            {getFieldDecorator('companySecondDate',
-                              {rules: [
-                                {required: false, message: 'Por favor ingresa una fecha de pago'}
-                              ]})(
-                                <Input key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de salario 2"} onChange={(e) => this.changeSalariesValues(e, 'companySecondDate')}/>
-                              )
-                            }
-                          </FormItem>  
-                        </Col>
-                        <Col xs={12} sm={12} md={6} lg={6}>
+                        
+                        <Col xs={12} sm={12} md={8} lg={8}>
                           <FieldTitle title={"Fecha de reportes"}/>
                           <FormItem >
                             {getFieldDecorator('companyReportDate',
                               {rules: [
                                 {required: true, message: 'Por favor ingresa una fecha de reporte'}
                               ]})(
-                                <Input key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de reporte"} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
+                                <InputNumber max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fecha de reporte"} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
                               )
                             }
                           </FormItem>  
@@ -417,7 +465,7 @@ class CreateCompany extends Component {
                             {rules: [
                               {required: true, message: 'Por favor ingresa un teléfono celular'}
                             ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
+                              <InputNumber maxLength={10} minLength={10} className={"form-input-number"} placeholder={"Teléfono celular"} />
                             )
                           }
                         </FormItem>
@@ -427,6 +475,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('memberEmail',
                             {rules: [
+                              {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                               {required: true, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
