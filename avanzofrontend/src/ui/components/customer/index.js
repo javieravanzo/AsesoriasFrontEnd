@@ -34,7 +34,7 @@ const table = [
     sorter: (a, b) =>{ return a.quantity.toString().localeCompare(b.quantity.toString())},
   },
   {
-    title: <div className={"table-p"}>Fecha Solicitud</div>,
+    title: <div className={"table-p"}>Fecha de Transacción</div>,
     dataIndex: 'createdDate',
     width: "150px",
     align: "center",

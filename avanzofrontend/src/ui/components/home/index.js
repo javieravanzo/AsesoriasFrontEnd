@@ -1,7 +1,7 @@
 //Libraries
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {Card, Row, Col, Layout, Menu, Form, Input, Icon, InputNumber, Button, Select, Checkbox, Modal} from 'antd';
+import {Card, Row, Col, Layout, Menu, Form, Input, Icon, Button, Select, Checkbox, Modal} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
@@ -78,12 +78,14 @@ class Home extends Component {
 
   onSignInClicked(){
     //console.log("entro");
-    let { documentId, photo, paymentReport } = this.state;
+    let { documentId, photo, paymentReport, checkBox1 } = this.state;
     this.props.form.validateFields((err, values) => {
       if (err ){
-        ERROR_MODAL("Error al realizar la acción", "Por favor ingresa datos válidos y carga los archivos correspondientes.");
+        ERROR_MODAL("Error al realizar la acción", "Por favor, ingresa datos válidos, carga los archivos correspondientes y acepta los términos y condiciones.");
       }else if(documentId === null && photo === null && paymentReport === null ){
-        ERROR_MODAL("Error al realizar la acción", "Por favor carga los archivos correspondientes.");
+        ERROR_MODAL("Error al realizar la acción", "Por favor, carga los archivos correspondientes.");
+      }else if(checkBox1 === false ){
+        ERROR_MODAL("Error al realizar la acción", "Por favor, acepta los términos y condiciones.");
       }else{
         if(documentId !== null && photo !== null && paymentReport !== null ){
   
@@ -174,6 +176,27 @@ class Home extends Component {
     }
   };
 
+  onChangeName = (rule, value, callback) => {
+    //const { value } = e.target;
+    //const reg = /^-?[0-9]*(\.[0-9]*)?$/;
+    const reg = /[^a-zA-Z\s]$/;
+    if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
+      callback('Ingresa los nombres correctamente.');
+    }else{
+      callback();
+    }
+  };
+
+  validationLetters = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
+  };
+
+  validationNumbers = (e) => {
+    const input = e.target.value
+    e.target.value = input.replace(/[^0-9]/g, '')
+  };
+
   render() {
 
     /*const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
@@ -217,7 +240,7 @@ class Home extends Component {
                               rules: [
                                 { required: true, message: 'Por favor, ingrese su(s) nombre(s).' }],
                             })(
-                                <Input maxLength={21} className={"input-box"} prefix={<Icon type="user" className={'icon-prefix'} />}
+                                <Input onChange={this.validationLetters} maxLength={21} className={"input-box"} prefix={<Icon type="user" className={'icon-prefix'} />}
                                       placeholder="Nombres"/>
                             )}
                           </FormItem>
@@ -229,7 +252,7 @@ class Home extends Component {
                               rules: [
                                 { required: true, message: 'Por favor, ingrese su(s) apellido(s).' }],
                             })(
-                                <Input maxLength={21} prefix={<Icon type="user" className={'icon-prefix'} />}
+                                <Input onChange={this.validationLetters} maxLength={21} prefix={<Icon type="user" className={'icon-prefix'} />}
                                       placeholder="Apellidos"/>
                             )}
                           </FormItem>
@@ -243,7 +266,7 @@ class Home extends Component {
                               initialValue: '',
                               rules: [{ required: true, message: 'Por favor ingrese su número de cédula' }],
                             })(
-                                <InputNumber maxLength={12}  prefix={<Icon type="idcard" className={'icon-prefix'} />}
+                                <Input onChange={this.validationNumbers} maxLength={12}  prefix={<Icon type="idcard" className={'icon-prefix'} />}
                                             placeholder="Número de documento" className={"input-number"}/>
                             )}
                           </FormItem>
@@ -255,7 +278,7 @@ class Home extends Component {
                               initialValue: '',
                               rules: [{ required: true, message: 'Por favor ingrese el celular' }],
                             })(
-                            <InputNumber maxLength={10} placeholder="Número de celular"
+                            <Input onChange={this.validationNumbers} maxLength={10} placeholder="Número de celular"
                                 className={"input-number"}/>
                                 )}
                           </FormItem>
@@ -336,7 +359,7 @@ class Home extends Component {
                         <FormItem className='home-form-item'>
                           {getFieldDecorator('checkBox1', { initialValue: '',
                             rules: [
-                              { required: true }],
+                              { required: true, message: 'Por favor, acepta los términos y condiciones.' }],
                             })(
                               <Row>
                                 <Col lg={24} md={23} >
@@ -355,7 +378,7 @@ class Home extends Component {
                       </Row>
                       
                       <Row className={"button-home-row"}>
-                        <Button type="primary" htmlType="submit" className={this.state.checkBox1 ? "home-form-button" : "home-form-button-disabled"}  disabled={!this.state.checkBox1}
+                        <Button type="primary" htmlType="submit" className={"home-form-button"}
                                 onClick={() => this.onSignInClicked()}>
                           <p className={"login-button-text"}>Enviar datos</p>
                         </Button>

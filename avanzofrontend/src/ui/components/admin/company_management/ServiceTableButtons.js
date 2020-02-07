@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table, Button } from 'antd';
+import {Row, Col, Icon, Tooltip} from 'antd';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import EditModal from "./EditModal";
@@ -9,7 +9,7 @@ import EditModal from "./EditModal";
 import {updateCompany, getCompanyWithSalary} from "../../../../store/redux/actions/admin/adminActions";
 
 //Columns
-const columns = [
+/*const columns = [
   {
     title: 'Tipo de ciclo',
     dataIndex: 'companyRate',
@@ -26,7 +26,7 @@ const columns = [
     title: 'Fecha de pago 2',
     dataIndex: 'companySecondDate',
   }
-];
+];*/
 
 //Styles
 class TableButtons extends Component {

@@ -7,7 +7,7 @@ import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import SignaturePad from 'react-signature-canvas';
 import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider,
-  Statistic, Typography, Card, Switch, Spin} from 'antd';
+  Statistic, Typography, Card, Switch, Spin, Input} from 'antd';
 
 //Subcomponents
 import FieldTitle from '../subcomponents/FieldTitle';
@@ -51,7 +51,7 @@ const table = [
     sorter: (a, b) =>{ return a.quantity.toString().localeCompare(b.quantity.toString())},
   },
   {
-    title: <div className={"table-p"}>Fecha Desembolso</div>,
+    title: <div className={"table-p"}>Fecha Descuento</div>,
     dataIndex: 'date',
     width: "150px",
     align: "center",
@@ -93,7 +93,7 @@ class LoanRequest extends Component {
     if(JSON.stringify(nextProps.requestDataResponse) !== '{}'){
       if(prevState.sliderValue === null){
         return {
-          sliderValue: nextProps.requestDataResponse.partialCapacity,
+          sliderValue: Math.round(nextProps.requestDataResponse.partialCapacity),
           bank_name: nextProps.requestDataResponse.accountBank,
           bank_number: nextProps.requestDataResponse.accountNumber,
           bank_type: nextProps.requestDataResponse.accountType
@@ -123,9 +123,16 @@ class LoanRequest extends Component {
   };
 
   onChangeFee = (e) => {
-    this.setState({
-      fee: e
-    });
+    console.log(e);
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9]/g, '');
+    if(e.target.value !== ''){
+      this.setState({
+        fee: e.target.value
+      });
+    }
+
+    
   };
 
   sendReportInfo = (maximumSplit) => {
@@ -134,11 +141,15 @@ class LoanRequest extends Component {
 
   handleSliderChange = (e) => {
     this.setState({
-      sliderValue: Math.round(e),
+      sliderValue: Math.roundf(e),
     });
   };
 
   handleQuantity = (e) => {
+    const input = e;
+
+    e = input.replace(/[^0-9]/g, '');
+
     if(e<=300000 && e>=80000){
       this.setState({
         sliderValue: Math.round(e),
@@ -167,8 +178,10 @@ class LoanRequest extends Component {
   };
 
   changeWalletNumber = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9]/g, '');
     this.setState({
-      wallet_number: e
+      wallet_number: e.target.value
     });
   };
 
@@ -179,8 +192,10 @@ class LoanRequest extends Component {
   };
 
   changeBankNumber = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9]/g, '');
     this.setState({
-      bank_number: e
+      bank_number: e.target.value
     });
   };
 
@@ -261,6 +276,16 @@ class LoanRequest extends Component {
     });
   };
 
+  validationLetters = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
+  };
+
+  validationNumbers = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9]/g, '');
+  };
+
   render(){
 
     //console.log( this.props.requestDataResponse);
@@ -274,7 +299,7 @@ class LoanRequest extends Component {
     let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
-    console.log("ODL", this.state.sliderValue);
+    //console.log("ODL", this.state.sliderValue);
 
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
@@ -351,7 +376,7 @@ class LoanRequest extends Component {
                               {initialValue: this.state.sliderValue, rules: [
                                 {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                               ]})(
-                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000} step={10000} className={"slider-amount"}
+                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? Math.round(partialCapacity) : 80000} step={10000} className={"slider-amount"}
                                         tipFormatter={
                                           function (d) { 
                                             return format(d); 
@@ -378,7 +403,7 @@ class LoanRequest extends Component {
                             {required: true, message: 'Por favor ingresa un número de cuotas'}
                           ]})(
                             <Row>
-                              <InputNumber className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit}
+                              <Input className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit}
                               onChange={(e) => this.onChangeFee(e)} onBlur={() => this.sendReportInfo(maximumSplit)}
                               disabled={sliderValue === 0 ? true : false} />
                             </Row>
@@ -556,7 +581,7 @@ class LoanRequest extends Component {
                               {initialValue: accountNumber, rules: [
                                 {required: false, message: 'Por favor ingresa un número de cuenta' }
                               ]})(
-                                <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} 
+                                <Input className={"form-input-number"} placeholder={"Número de cuenta"} 
                                 onChange={this.changeBankNumber} disabled={sliderValue === 0 ? true : false}/>
                               )
                             }
@@ -593,7 +618,7 @@ class LoanRequest extends Component {
                               {initialValue: phoneNumber, rules: [
                                 {required: false, message: 'Por favor ingresa un número de celular' }
                               ]})(
-                                <InputNumber className={"form-input-number"} placeholder={"Número de celular"} 
+                                <Input  className={"form-input-number"} placeholder={"Número de celular"} 
                                 onChange={this.changeWalletNumber} disabled={sliderValue === 0 ? true : false}/>
                               )
                             }

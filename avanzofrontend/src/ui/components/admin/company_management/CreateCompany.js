@@ -185,7 +185,7 @@ class CreateCompany extends Component {
 
   changeDateValues = (e, param) => {
     let setter;
-    let {companySecondDate, companyFirstDate, companyRate} = this.state;
+    let {companyFirstDate, companyRate} = this.state;
     setter = e.target.value.replace(/ /g, "");
     let setterValue = setter.split(',');
     console.log("s", setterValue, "C", companyFirstDate);

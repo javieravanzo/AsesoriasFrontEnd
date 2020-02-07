@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Button, Modal, Select, Input, InputNumber} from 'antd';
+import {Col, Row, Tooltip, Icon, Button, Modal, Select, InputNumber} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 

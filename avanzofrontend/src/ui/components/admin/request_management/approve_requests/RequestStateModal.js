@@ -70,9 +70,7 @@ class RequestStateModal extends Component {
   seeDocument = (filePath) => {
 
     let url = filePath;
-    //console.log(url);
-    let newUrl = url;
-    //console.log("URL", newUrl, newUrl[1]);
+
     let baseURL = "http://3.133.128.42:4000";
 
     if (url !== null) {

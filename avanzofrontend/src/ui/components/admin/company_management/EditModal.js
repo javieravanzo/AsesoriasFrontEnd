@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table, Button } from 'antd';
+import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table } from 'antd';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
@@ -116,7 +116,7 @@ class SalariesTable extends Component {
   removeRow(id){
     let array = this.state.companySalaries;
     for(let i in array){
-      if(array[i].idCompanySalaries = id){
+      if(array[i].idCompanySalaries === id){
         array.pop(i);
       }
     };
