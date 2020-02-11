@@ -175,7 +175,7 @@ class RequestModalCard extends Component {
               <Row>
                 <Col xs={12} sm={12} md={8} lg={5} >
                   <b>Monto</b><br/>
-                  <InputNumber formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
+                  <InputNumber min={80000} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={6}>
                   <b>Ciclo de pagos</b><br/>
@@ -204,7 +204,7 @@ class RequestModalCard extends Component {
               </Row>
               <Row style={{marginTop: "5px", marginBottom: "15px"}} gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={16} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.documentId, item.paymentReport, item.photo)} >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.file1, item.file2, item.file3)} >
                         Ver documento
                   </Button> 
                 </Col>

@@ -141,7 +141,7 @@ class LoanRequest extends Component {
 
   handleSliderChange = (e) => {
     this.setState({
-      sliderValue: Math.roundf(e),
+      sliderValue: Math.round(e),
     });
   };
 
