@@ -34,9 +34,6 @@ function forgetPassword(email) {
 }
 
 function changePassword(data, token){
-
-  console.log("D", data, token);
-
   return request({
     url: '/Account/ConfirmPassword',
     method: 'PUT',

@@ -123,7 +123,6 @@ class LoanRequest extends Component {
   };
 
   onChangeFee = (e) => {
-    console.log(e);
     const input = e.target.value;
     e.target.value = input.replace(/[^0-9]/g, '');
     if(e.target.value !== ''){
@@ -208,10 +207,10 @@ class LoanRequest extends Component {
   defineDocumentsCondition = () => {
     
     let {bank_account, bank_name, bank_number, bank_type, money_wallet, 
-         wallet_number, wallet_type, signatureDone} = this.state;
+         wallet_type, signatureDone} = this.state;
 
-    console.log("State", bank_account, bank_name, bank_number, bank_type, money_wallet, 
-    wallet_number, wallet_type, signatureDone);
+    //console.log("State", bank_account, bank_name, bank_number, bank_type, money_wallet, 
+    //wallet_number, wallet_type, signatureDone);
 
     if (bank_account){
       if(bank_name !== null && bank_number !== null && bank_type !== null && 

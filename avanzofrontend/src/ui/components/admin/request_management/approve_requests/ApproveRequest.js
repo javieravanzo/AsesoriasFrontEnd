@@ -122,7 +122,6 @@ class ApproveRequest extends Component {
 
     let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
     let tableData = this.setData(this.props.requestResponse);
-    //console.log("TD", tableData);
     
     if(tableData === null){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>

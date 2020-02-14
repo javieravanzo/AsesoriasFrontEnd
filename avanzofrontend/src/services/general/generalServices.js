@@ -2,7 +2,6 @@
 import request from '../requestWrapper';
 
 function approveorRejectRequest(data){
-  //console.log("Data", data);
   return request({
     url: '/Request/ApproveorReject',
     method: 'PUT',

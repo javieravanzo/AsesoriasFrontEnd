@@ -89,7 +89,6 @@ class RequestStateModal extends Component {
       requestId: idRequest,
       approve: true,
     };
-    //console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
     SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
     this.setState({approve_modal: false});
@@ -101,7 +100,6 @@ class RequestStateModal extends Component {
       requestId: idRequest,
       approve: true,
     };
-    //console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
@@ -120,8 +118,7 @@ class RequestStateModal extends Component {
 
     let item = this.props.item;
     //let {approve_modal} = this.state;
-    console.log("AP", this.props.item);
-
+    
     return (
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>

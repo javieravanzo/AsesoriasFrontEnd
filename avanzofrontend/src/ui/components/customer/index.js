@@ -83,7 +83,7 @@ class Customer extends Component {
   render() {
 
     let {homeDataResponse} = this.props;
-    console.log("HDR", homeDataResponse);
+    //console.log("HDR", homeDataResponse);
     let {loan, request} = this.state;
     let maximumAmount = homeDataResponse.maximumAmount;
     let partialQuantity = homeDataResponse.partialCapacity;

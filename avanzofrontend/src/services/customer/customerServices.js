@@ -11,9 +11,6 @@ function getHomeData(){
 };
 
 function getRequestData(customerId, token) {
-
-  //console.log(localStorage.access_token);
-
   if (token === undefined){
     return request({
       url: '/Customer/GetRequestData',

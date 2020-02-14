@@ -36,14 +36,12 @@ class TableButtons extends Component {
   };
 
   inputServiceName(e, service){
-    //console.log(e);
     this.setState({
       [service]: e.target.value,
     });    
   };
 
   inputService(e, service){
-    //console.log(e);
     this.setState({
       [service]: e,
     });
@@ -68,7 +66,6 @@ class TableButtons extends Component {
       idUser: item.idUser,
       idAccount: item.idAccount,
     };
-    //console.log("DATA", data);
     this.props.updateCustomer(data);
     this.setState({
       visible: false

@@ -39,7 +39,7 @@ class ResetPassword extends Component{
 
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err){
-        console.log("Values", values, "Params", this.props.match.params);
+        //console.log("Values", values, "Params", this.props.match.params);
         this.props.changePassword(values, this.props.match.params.token);
         this.setState({
           burstingKey: this.state.burstingKey+1 
@@ -63,9 +63,9 @@ class ResetPassword extends Component{
   
     const {getFieldDecorator} = this.props.form;  
     const {requestSent} = this.state;
-    let { resetPasswordResponse } = this.props;
+    //let { resetPasswordResponse } = this.props;
 
-    console.log("RP", resetPasswordResponse);
+    //console.log("RP", resetPasswordResponse);
   
       return(
         <Layout>

@@ -75,7 +75,6 @@ class RequestOutLayState extends Component {
       approve: true,
       transactionCode: this.state.transactionCode
     };
-    //console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
@@ -92,7 +91,7 @@ class RequestOutLayState extends Component {
       approve: false,
       transactionCode: this.state.transactionCode
     };
-    console.log("D", data);
+    //console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
@@ -101,7 +100,7 @@ class RequestOutLayState extends Component {
 
     let item = this.props.item;
     let {transactionCode} = this.state;
-    console.log(transactionCode);
+    //console.log(transactionCode);
 
     return (
       <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>

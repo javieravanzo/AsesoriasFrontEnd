@@ -89,7 +89,6 @@ class SalariesTable extends Component {
 
   render() {
 
-    console.log("Props", this.props.companySalaries);
     let tableData = this.setData(this.props.companySalaries);
 
     return (

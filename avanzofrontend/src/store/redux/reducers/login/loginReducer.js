@@ -24,7 +24,6 @@ export default function loginReducer(state = initialState, action){
         isLogin: action.isLogin
       };
     case C.LOGGING:
-      //console.log("ACTIONPAYLOAD", action.payload);
       return{
         ...state,
         isLogin: action.payload

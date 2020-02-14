@@ -62,7 +62,7 @@ class CustomerManagement extends Component {
           values.birthDate = values.birthDate !== undefined ? new Date(values.birthDate._d) : null;
           values.customer_initDate = values.customer_initDate !== undefined ? new Date(values.customer_initDate._d) : null;
           values.expeditionDate = values.expeditionDate !== undefined ? new Date(values.expeditionDate._d) : null;
-          //console.log("Values", values);
+
           this.props.createCustomer(values);
         }
       }

@@ -10,7 +10,6 @@ function registerAdmin(data) {
 };
 
 function createCompany(data){
-  //console.log(data);
   return request({
     url: '/Company/Create',
     method: 'POST',
@@ -19,7 +18,6 @@ function createCompany(data){
 };
 
 function updateCompany(data){
-  //console.log(data);
   return request({
     url: '/Company/Update',
     method: 'PUT',

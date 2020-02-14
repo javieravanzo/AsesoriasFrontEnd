@@ -73,9 +73,6 @@ class RequestModalCard extends Component {
   seeDocument = (file1, file2, file3) => {
 
     //let url = filePath;
-    //console.log(url);
-
-    //console.log("URL", newUrl, newUrl[1]);
     let baseURL = "http://3.133.128.42:4000/";
 
     if (file1 !== null && file2 !== null && file3 !== null) {
