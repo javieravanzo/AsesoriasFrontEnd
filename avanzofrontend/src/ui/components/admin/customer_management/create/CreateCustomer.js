@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import { Form, Select, Button, Col, Row, Collapse, InputNumber,
          Input, DatePicker, Modal, Upload, message, Icon, Switch, Spin} from 'antd';
 import PropTypes from 'prop-types';
+import {Redirect} from 'react-router-dom';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../../../subcomponents/FieldTitle';
 import { SUCCESS_MODAL, ERROR_MODAL } from '../../../subcomponents/modalMessages';
+import routes from '../../../../../configuration/routing/Routes';
 
 //Actions
 import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";
@@ -86,6 +88,16 @@ class CustomerManagement extends Component {
   onChangeFile = () => {
 
   }
+
+  validationNumbers = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9]/g, '');
+  };
+
+  onChangeNames = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
+  };
 
   render(){
 
@@ -175,7 +187,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa un nombre'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Nombres completos"} />
+                                <Input onChange={(e) => this.onChangeNames(e)} className={"form-input-number"} placeholder={"Nombres completos"} />
                               )
                             }
                           </FormItem>
@@ -187,7 +199,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa un apellido'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Apellidos completos"} />
+                                <Input  onChange={(e) => this.onChangeNames(e)} className={"form-input-number"} placeholder={"Apellidos completos"} />
                               )
                             }
                           </FormItem>
@@ -215,7 +227,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa un número de identificación'}
                               ]})(
-                                <InputNumber maxLength={12} prefix={<Icon type="idcard" className={'icon-prefix'} />}
+                                <Input onChange={(e) => this.validationNumbers(e)} maxLength={12} prefix={<Icon type="idcard" className={'icon-prefix'} />}
                                               placeholder="Número de documento" className={"input-number"}/>
                               )
                             }
@@ -228,7 +240,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: false, message: 'Por favor ingresa un teléfono fijo'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Teléfono fijo"} />
+                                <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"Teléfono fijo"} />
                               )
                             }
                           </FormItem>
@@ -286,7 +298,7 @@ class CustomerManagement extends Component {
                           </FormItem>
                         </Col>
                         <Col xs={12} sm={12} md={8} lg={6} >
-                          <FieldTitle title={"Fecha de expedición"}/>
+                          <FieldTitle title={"Fecha de expedición del documento"}/>
                           <FormItem>
                             {getFieldDecorator('expeditionDate',
                               {rules: [
@@ -486,7 +498,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: false, message: 'Por favor ingresa un salario'}
                               ]})(
-                                <InputNumber className={"form-input-number"} placeholder={"Salario"} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} />
+                                <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"Salario"} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} />
                               )
                             }
                           </FormItem>
@@ -528,6 +540,10 @@ class CustomerManagement extends Component {
                 </Form>
               </div>
           </Row>
+          {
+            this.props.createCustomerResponse === true && 
+            <Redirect to={routes.admin_request_management}/>
+          }
         </div>
       );
     } 
@@ -539,12 +555,14 @@ class CustomerManagement extends Component {
 CustomerManagement.propTypes = {
   companyList: PropTypes.array,
   outlayDataResponse: PropTypes.object,
+  createCustomerResponse: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
   return {
     companyList: state.login.companyList,
     outlayDataResponse: state.customer.outlayDataResponse,
+    createCustomerResponse: state.admin.createCustomerResponse,
   }
 };
 

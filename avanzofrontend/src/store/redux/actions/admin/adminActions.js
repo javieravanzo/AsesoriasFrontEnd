@@ -78,13 +78,15 @@ export const createCustomer = (data) => {
       .then(response => {
         dispatch({
           type: C.CREATE_CUSTOMER,
-          payload: response.data
+          payload: response.data,
+          correct: true,
         });
         SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado satisfactoriamente");
       }).catch(err => {
         dispatch({
           type: C.CREATE_CUSTOMER,
           payload: err,
+          correct: false,
         });
         ERROR_MODAL('Error al crear el cliente', err.data.message);
       });

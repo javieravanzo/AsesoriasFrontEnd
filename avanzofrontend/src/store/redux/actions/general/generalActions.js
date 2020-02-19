@@ -20,7 +20,7 @@ export const approveorRejectRequest = (data, userId) => {
           type: C.APPROVE_REJECT_REQUEST,
           payload: response.data
         });
-        SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada exitosamente.")
+        SUCCESS_MODAL("Acción realizada exitosamente", response.data.message)
       }).catch(err => {
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,

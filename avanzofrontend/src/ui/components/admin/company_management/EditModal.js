@@ -98,7 +98,7 @@ class SalariesTable extends Component {
       nit: this.state.nit===null ? item.nit : this.state.nit,
       address: this.state.address===null ? item.address : this.state.address,
       socialReason: this.state.socialReason===null ? item.socialReason : this.state.socialReason,
-      economyActivity: this.state.economyActivity===null ? item.economyActivity : this.state.servieconomyActivity,
+      economyActivity: this.state.economyActivity===null ? item.economyActivity : this.state.economyActivity,
       maximumSplit: this.state.maximumSplit===null ? item.maximumSplit : this.state.maximumSplit,
       defaultAmount: this.state.defaultAmount===null ? item.defaultAmount : this.state.defaultAmount, 
       approveHumanResources: this.state.approveHumanResources===null ? item.approveHumanResources : this.state.approveHumanResources,
@@ -120,7 +120,6 @@ class SalariesTable extends Component {
         array.pop(i);
       }
     };
-    console.log("A",array);
     this.setState({
       companySalaries: array
     });
@@ -160,8 +159,8 @@ class SalariesTable extends Component {
 
   render() {
 
-    console.log("Visible", this.props.visible);
-    console.log("State", this.state.visible);
+    //console.log("Visible", this.props.visible);
+    //console.log("State", this.state.visible);
     //console.log("Props", this.props.companySalaryResponse);
     let tableData = this.setData(this.state.companySalaries);
 

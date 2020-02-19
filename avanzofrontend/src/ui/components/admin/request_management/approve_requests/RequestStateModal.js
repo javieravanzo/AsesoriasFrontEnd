@@ -240,7 +240,7 @@ class RequestStateModal extends Component {
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={5}>
                   <Button className={"request-reject-button"} icon="close-circle" 
-                          onClick={() => this.setState({approve_modal: true})}>
+                          onClick={() => this.setState({reject_modal: true})}>
                         Rechazar crédito
                   </Button> 
                 </Col>

@@ -173,9 +173,6 @@ class CreateCompany extends Component {
       datesArray.push(newSalary);
     }
     
-
-    
-    
   };
 
   changeRatesValues = (e, param) => {
@@ -185,17 +182,23 @@ class CreateCompany extends Component {
   };
 
   changeSalariesValues = (e, param) => {
-    let setter;
-    setter = e.target.value.toString().replace(/ /g, "");
-    let setterValue = setter.split(',');
+    let setter = e.target.value;
+    e.target.value = setter.replace(/[^0-9,]/g, '');
+    let setterValue = e.target.value.split(',');
     if(setterValue.length < 5){
       this.setState({
         [param]: e.target.value
       });
     }else{
       WARNING_MODAL("Advertencia", "Ingresa máximo cuatro días para los reportes.");
-    }    
+    }
   };
+
+  /*checkCharacters = (rule, value, callback) => {
+    const form = this.props.form;
+    let input = e;
+    e = input.replace(/[^0-9]/g, '');
+  };*/
 
   changeDateValues = (e, param) => {
     let setter;
@@ -276,7 +279,7 @@ class CreateCompany extends Component {
                             {rules: [
                               {required: true, message: 'Por favor ingresa un NIT válido' }
                             ]})(
-                              <InputNumber key={burstingFormKey} className={"form-input-number"} placeholder={"NIT"}/>
+                              <Input key={burstingFormKey} className={"form-input-number"} placeholder={"NIT"}/>
                             )
                           }
                         </FormItem>  
@@ -428,9 +431,10 @@ class CreateCompany extends Component {
                           <FormItem >
                             {getFieldDecorator('companyReportDate',
                               {rules: [
-                                {required: true, message: 'Por favor ingresa las fechas de reporte separadas por comas.'}
+                                {required: true, message: 'Por favor ingresa las fechas de reporte separadas por comas.'},
+                                
                               ]})(
-                                <Input max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fechas de reporte"} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
+                                <Input max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"(3, 13, 14, ... ) "} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
                               )
                             }
                           </FormItem>  
