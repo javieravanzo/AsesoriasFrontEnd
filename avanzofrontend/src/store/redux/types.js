@@ -45,6 +45,7 @@ export const adminTypes = {
   GET_REQUEST_LIST: "GET_REQUEST_LIST",
   GET_REQUEST_TO_APPROVE: "GET_REQUEST_TO_APPROVE",
   GET_REQUEST_TO_OUTLAY: "GET_REQUEST_TO_OUTLAY",
+  RESET_VALUES: "RESET_VALUES"
 };
 
 /* ---------------- General --------------------- */

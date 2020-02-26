@@ -7,6 +7,14 @@ import adminServices from '../../../../services/admin/adminServices';
 //Subcomponents
 import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
+export const resetValue = () => {
+  return dispatch => {
+    dispatch({
+      type: C.RESET_VALUES
+    });
+  }
+}
+
 export const registerAdmin = (data) => {
   return dispatch => {
     return adminServices.registerAdmin(data)
@@ -40,6 +48,7 @@ export const createCompany = (data) => {
         });
         SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
+        console.log("Error", err);
         dispatch({
           type: C.CREATE_COMPANY,
           payload: err,

@@ -1,19 +1,20 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Form, Input} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
-import { SUCCESS_MODAL, allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
+import { allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
 
 //Actions
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
 const Step = Steps.Step;
+const TextArea = Input.TextArea;
 
 class RequestStateModal extends Component {
 
@@ -29,6 +30,7 @@ class RequestStateModal extends Component {
       card_style_approved: "approved",
       card_style_rejected: "rejected",
       reject_modal: null,
+      text: "",
     };
     
   };
@@ -90,17 +92,6 @@ class RequestStateModal extends Component {
       approve: true,
     };
     this.props.approveorRejectRequest(data, localStorage.user_id);
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
-    this.setState({approve_modal: false});
-  
-  };
-
-  onConfirmRequest = (idRequest) => {
-    let data = {
-      requestId: idRequest,
-      approve: true,
-    };
-    this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
 
@@ -108,16 +99,25 @@ class RequestStateModal extends Component {
     let data = {
       requestId: idRequest,
       approve: false,
+      text: this.state.text
     };
     //console.log("D", data);
     this.props.approveorRejectRequest(data, localStorage.user_id);
-    this.setState({approve_modal: false});
+    this.setState({reject_modal: false});
   };
+
+  inputChange = (e) => {
+
+    let value = e.target.value;
+    this.setState({
+      text: value,
+    });
+};
 
   render(){
 
     let item = this.props.item;
-    //let {approve_modal} = this.state;
+    //let {text} = this.state;
     
     return (
         <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
@@ -276,10 +276,16 @@ class RequestStateModal extends Component {
             cancelText={"Atrás"}
             width={450}
             onOk={() => this.onRejectRequest(item.idRequest)}
-            onCancel={() => this.setState({reject_modal: false})}>
-              <div>
-                ¿Está seguro de realizar el rechazo del crédito? Esta acción será irreversible.                  
-              </div>
+            onCancel={() => this.setState({reject_modal: false})}
+            okButtonProps={{ disabled: !(this.state.text.length >= 20) }}>
+              <Form>
+                <p>¿Está seguro de realizar el rechazo del crédito? Esta acción será irreversible.
+                Si es así, especifique a continuación las razones por las cuales desea rechazar la solicitud.</p>
+                <br/>
+                <p style={{fontSize: '12px'}}>*Longitud mínima de 20 caracteres.</p> 
+                <TextArea onChange={event => this.inputChange(event)} rows={4} />
+              </Form>
+
 
           </Modal>
         </div>

@@ -252,7 +252,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa un teléfono celular'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
+                                <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"Teléfono celular"} />
                               )
                             }
                           </FormItem>
@@ -285,7 +285,7 @@ class CustomerManagement extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={6} >
+                        <Col xs={12} sm={12} md={8} lg={8} >
                           <FieldTitle title={"Fecha de nacimiento"}/>
                           <FormItem>
                             {getFieldDecorator('birthDate',
@@ -297,7 +297,7 @@ class CustomerManagement extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={6} >
+                        <Col xs={12} sm={12} md={8} lg={8} >
                           <FieldTitle title={"Fecha de expedición del documento"}/>
                           <FormItem>
                             {getFieldDecorator('expeditionDate',
@@ -309,14 +309,14 @@ class CustomerManagement extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={6} >
+                        <Col xs={12} sm={12} md={8} lg={8} >
                           <FieldTitle title={"Cantidad máxima de préstamo"}/>
                           <FormItem>
                             {getFieldDecorator('maximumAmount',
                               {rules: [
                                 {required: true, message: 'Por favor ingresa una cantidad de préstamo'}
                               ]})(
-                                <Input placeholder={"Cantidad de prestámo"} style={{width: "100% !important"}}/>
+                                <Input onChange={(e) => this.validationNumbers(e)} placeholder={"Cantidad de prestámo"} style={{width: "100% !important"}}/>
                               )
                             }
                           </FormItem>
@@ -328,7 +328,7 @@ class CustomerManagement extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa un número de cuotas'}
                               ]})(
-                                <Input placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
+                                <Input onChange={(e) => this.validationNumbers(e)} placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
                               )
                             }
                           </FormItem>
@@ -429,8 +429,8 @@ class CustomerManagement extends Component {
                                 { rules: [
                                   {required: false, message: 'Por favor ingresa un número de cuenta' }
                                 ]})(
-                                  <InputNumber className={"form-input-number"} placeholder={"Número de cuenta"} 
-                                  onChange={this.changeBankNumber} />
+                                  <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"Número de cuenta"} 
+                                  />
                                 )
                               }
                             </FormItem>  

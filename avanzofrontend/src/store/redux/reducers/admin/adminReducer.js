@@ -16,6 +16,11 @@ const initialState={
 
 export default function adminReducer(state = initialState, action){
   switch (action.type) {
+    case C.RESET_VALUES:
+      return{
+      ...state,
+        companyResponse: null
+      };
     case C.REGISTER_ADMIN:
       return{
         ...state,

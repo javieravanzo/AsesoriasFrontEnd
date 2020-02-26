@@ -8,7 +8,8 @@ function approveorRejectRequest(data){
     headers:{
       requestid: data.requestId,
       approve: data.approve,
-      transactionCode: data.transactionCode
+      transactionCode: data.transactionCode,
+      text: data.text,
     }
   });
 };

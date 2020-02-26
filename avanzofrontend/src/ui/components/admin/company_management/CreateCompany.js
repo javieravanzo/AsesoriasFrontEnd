@@ -13,7 +13,7 @@ import '../../../styles/admin/create-company.css';
 import { SUCCESS_MODAL, ERROR_MODAL, WARNING_MODAL } from '../../subcomponents/modalMessages';
 
 //Actions
-import {createCompany}  from "../../../../store/redux/actions/admin/adminActions";
+import {createCompany, resetValue}  from "../../../../store/redux/actions/admin/adminActions";
 
 //Constants
 //import {Roles} from "../../../lib/generalUtils/constants";
@@ -64,8 +64,11 @@ class CreateCompany extends Component {
       companySecondDate: null,
       companySalaries: [],
       burstingKey: 1,
+      clearSelect: false,
       burstingFormKey: 0
     };
+
+    this.props.resetValue();
 
   };
 
@@ -165,6 +168,7 @@ class CreateCompany extends Component {
       this.setState({
         companySalaries: datesArray,
         burstingKey: this.state.burstingKey+1,
+        clearSelect: !this.state.clearSelect,
         companyRate: null,
         companyReportDate: null,
         companyFirstDate: null,
@@ -238,18 +242,36 @@ class CreateCompany extends Component {
     }
   };
 
+  validationNumbersFee = (e) => {
+    console.log()
+    const input = e.toString();
+    e = input.replace(/[^0-9]/g, '');
+  };
+
   validationNumbers = (e) => {
-    let input = e;
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9]/g, '');
+  };
+
+  validationNITNumbers = (e) => {
+    const input = e.target.value;
+    e.target.value = input.replace(/[^0-9 /-]/g, '');
+  };
+
+  validationNumbersNumber = (e) => {
     if(e !== null){
+      const input = e.toString();
       e = input.replace(/[^0-9]/g, '');
     }
+    
   };
 
 
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {companySalaries, burstingFormKey} = this.state;
+    let {companySalaries, burstingFormKey, clearSelect} = this.state;
+    console.log("CS", clearSelect);
     
     return (
       <div className={"company-div"}>
@@ -279,7 +301,7 @@ class CreateCompany extends Component {
                             {rules: [
                               {required: true, message: 'Por favor ingresa un NIT válido' }
                             ]})(
-                              <Input key={burstingFormKey} className={"form-input-number"} placeholder={"NIT"}/>
+                              <Input onChange={(e) => this.validationNITNumbers(e)} key={burstingFormKey} className={"form-input-number"} placeholder={"NIT"}/>
                             )
                           }
                         </FormItem>  
@@ -372,7 +394,7 @@ class CreateCompany extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa una monto particular'}
                               ]})(
-                                <InputNumber formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                <InputNumber min={80000} onChange={(e) => this.validationNumbersNumber(e)}  formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
                                 className={"form-input-number"} placeholder={"Máxima cantidad a prestar"}/>
                               )
                           }
@@ -385,7 +407,7 @@ class CreateCompany extends Component {
                             {rules: [
                               {required: true, message: 'Por favor ingresa un máximo de cuotas'}
                             ]})(
-                              <InputNumber className={"form-input-number"} 
+                              <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} 
                               placeholder={"No. máximo de cuotas"} />
                             )
                           }
@@ -405,7 +427,7 @@ class CreateCompany extends Component {
                               {rules: [
                                 {required: true, message: 'Por favor ingresa un tipo de pago'}
                               ]})(
-                                <Select key={this.state.burstingKey} placeholder={"Tipo de salario"} showSearch={true} onSelect={(e) => this.changeRatesValues(e, 'companyRate')} onChange={this.handleSalaryRate} allowClear={true} autoClearSearchValue={true}>
+                                <Select key={this.state.burstingKey} placeholder={"Tipo de salario"} showSearch={true} onSelect={(e) => this.changeRatesValues(e, 'companyRate')} onChange={this.handleSalaryRate} allowClear={true} >
                                   <Select.Option value={"Quincenal"}>Quincenal</Select.Option>
                                   <Select.Option value={"Mensual"}>Mensual</Select.Option>
                                 </Select>
@@ -473,13 +495,13 @@ class CreateCompany extends Component {
                         </FormItem>  
                       </Col>     
                       <Col xs={12} sm={12} md={8} lg={6} >
-                        <FieldTitle title={"No. de identificación"}/>
+                        <FieldTitle title={"No. Identificación"}/>
                         <FormItem>
                           {getFieldDecorator('memberId',
                             {rules: [
                               {required: true, message: 'Por favor ingresa un número de identificación'}
                             ]})(
-                              <Input className={"form-input-number"} placeholder={"No. de Identificación"} />
+                              <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"No. de Identificación"} />
                             )
                           }
                         </FormItem>
@@ -558,7 +580,19 @@ class CreateCompany extends Component {
                             {rules: [
                               {required: false, message: 'Por favor ingresa un número de identificación'}
                             ]})(
-                              <Input className={"form-input-number"} placeholder={"No. de Identificación"} />
+                              <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"No. de Identificación"} />
+                            )
+                          }
+                        </FormItem>
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={6} >
+                        <FieldTitle title={"Teléfono celular"}/>
+                        <FormItem>
+                          {getFieldDecorator('representantPhone',
+                            {rules: [
+                              {required: false, message: 'Por favor ingresa un teléfono celular'}
+                            ]})(
+                              <InputNumber maxLength={10} minLength={10} className={"form-input-number"} placeholder={"Teléfono celular"} />
                             )
                           }
                         </FormItem>
@@ -575,23 +609,12 @@ class CreateCompany extends Component {
                           }
                         </FormItem>
                       </Col>
-                      <Col xs={12} sm={12} md={8} lg={8} >
-                        <FieldTitle title={"Teléfono celular"}/>
-                        <FormItem>
-                          {getFieldDecorator('representantPhone',
-                            {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono celular'}
-                            ]})(
-                              <Input className={"form-input-number"} placeholder={"Teléfono celular"} />
-                            )
-                          }
-                        </FormItem>
-                      </Col>
-                      <Col xs={12} sm={12} md={8} lg={8} >
+                      <Col xs={12} sm={12} md={8} lg={6} >
                         <FieldTitle title={"Correo electrónico"}/>
                         <FormItem>
                           {getFieldDecorator('representantEmail',
                             {rules: [
+                              {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                               {required: false, message: 'Por favor ingresa un correo electrónico'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
@@ -629,6 +652,7 @@ let CreateCompanyForm = Form.create()(CreateCompany);
 const mapDispatchToProps = (dispatch) => {
   return {
     createCompany: (data) => dispatch(createCompany(data)),
+    resetValue: () => dispatch(resetValue()),
   }
 };
 

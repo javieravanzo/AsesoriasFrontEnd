@@ -47,6 +47,7 @@ class ApproveCustomer extends Component{
           idUser: item.idUser,
           identificationId: item.identificationId,
           lastName: item.lastName,
+          defaultAmount: item.defaultAmount,
           maximumAmount: item.maximumAmount,
           montlyFee: item.montlyFee,
           phoneNumber: item.phoneNumber,

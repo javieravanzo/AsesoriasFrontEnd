@@ -100,10 +100,16 @@ class RequestModalCard extends Component {
     this.setState({reject_modal: false});
   };
 
+  validationInputNumbers = (e) => {
+    console.log("E", e);
+    const input = e.toString();
+    e = input.replace(/[^0-9]/g, '');
+  };
+
   render(){
 
     let item = this.props.item;
-    //let {approve_modal} = this.state;
+    console.log("DA", item.defaultAmount);
 
     return (
           <div key={item.key} className={"request-state-item-requested"}>
@@ -172,7 +178,7 @@ class RequestModalCard extends Component {
               <Row>
                 <Col xs={12} sm={12} md={8} lg={5} >
                   <b>Monto</b><br/>
-                  <InputNumber min={80000} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
+                  <InputNumber onChange={(e) => this.validationInputNumbers(e)} min={80000} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={6}>
                   <b>Ciclo de pagos</b><br/>
