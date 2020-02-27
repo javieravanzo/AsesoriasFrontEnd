@@ -365,7 +365,7 @@ class LoanRequest extends Component {
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
                           <span className={"request-title-amount"}>
-                            <CurrencyFormat  displayType={'text'} style={{width: "100%"}} value={partialCapacity < 80000 ? 80000 : Math.round(partialCapacity)}
+                            <CurrencyFormat  displayType={'text'} style={{width: "100%"}} value={80000}
                                              thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/></span>
                           </h3>
                         </Col>
@@ -375,7 +375,7 @@ class LoanRequest extends Component {
                               {initialValue: this.state.sliderValue, rules: [
                                 {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                               ]})(
-                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? 80000 : Math.round(partialCapacity)} step={10000} className={"slider-amount"}
+                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={80000} step={10000} className={"slider-amount"}
                                         tipFormatter={
                                           function (d) { 
                                             return format(d); 

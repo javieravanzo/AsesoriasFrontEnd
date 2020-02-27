@@ -205,10 +205,11 @@ class CreateCompany extends Component {
   };*/
 
   changeDateValues = (e, param) => {
-    let setter;
+    let setter = e.target.value;
+    e.target.value = setter.replace(/[^0-9,]/g, '');
     let {companyRate} = this.state;
-    setter = e.target.value.replace(/ /g, "");
-    let setterValue = setter.split(',');
+    //setter = e.target.value.replace(/ /g, "");
+    let setterValue = setter.replace(/[^0-9,]/g, '').split(',');
 
     if(companyRate === "Mensual"){
       if(setterValue.length === 1){

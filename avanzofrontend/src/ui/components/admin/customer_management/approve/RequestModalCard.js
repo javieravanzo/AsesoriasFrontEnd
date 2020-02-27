@@ -109,7 +109,7 @@ class RequestModalCard extends Component {
   render(){
 
     let item = this.props.item;
-    console.log("DA", item.defaultAmount);
+    console.log("DA", item);
 
     return (
           <div key={item.key} className={"request-state-item-requested"}>

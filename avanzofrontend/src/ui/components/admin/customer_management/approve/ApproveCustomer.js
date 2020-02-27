@@ -43,7 +43,7 @@ class ApproveCustomer extends Component{
           email: item.email,
           fixedNumber: item.fixedNumber,
           idAccount: item.idAccount,
-          idClient: item.idClient,
+          idNewClient: item.idNewClient,
           idUser: item.idUser,
           identificationId: item.identificationId,
           lastName: item.lastName,
@@ -56,6 +56,7 @@ class ApproveCustomer extends Component{
           profession: item.profession,
           socialReason: item.socialReason,
           totalRemainder: item.totalRemainder,
+
         };
 
         if(this.filterData(row)) {
