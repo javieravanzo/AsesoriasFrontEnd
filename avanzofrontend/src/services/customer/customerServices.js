@@ -122,9 +122,30 @@ function getAllRequest(customerId){
   });
 }
 
+function getAllRequestWasOutlayed(customerId){
+  return request({
+    url: '/Request/GetAllWasOutlayed',
+    method: 'GET',
+    headers:{
+      customerId: customerId
+    }
+  });
+}
+
+function getAllRequestWasRejected(customerId){
+  return request({
+    url: '/Request/GetAllWasRejected',
+    method: 'GET',
+    headers:{
+      customerId: customerId
+    }
+  });
+}
+
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList,
-  generateDocuments, createRequest, getAllTransactions, getAllRequest
+  generateDocuments, createRequest, getAllTransactions, getAllRequest,
+  getAllRequestWasOutlayed, getAllRequestWasRejected
 };
 
 export default customerService;

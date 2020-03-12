@@ -146,14 +146,16 @@ class LoanRequest extends Component {
 
   handleQuantity = (e) => {
     const input = e;
-
     e = input.replace(/[^0-9]/g, '');
-
     if(e<=300000 && e>=80000){
       this.setState({
         sliderValue: Math.round(e),
       });
     }    
+  };
+
+  handleQuantityBlur = (e) => {
+    console.log("Valor E", e);
   };
 
   handleWallet = (e) => {
@@ -355,9 +357,9 @@ class LoanRequest extends Component {
                           rules: [
                             {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                           ]})(
-                              <InputNumber className={"form-input-number"} max={partialCapacity < 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000}
+                              <InputNumber step={10000} className={"form-input-number"} max={partialCapacity < 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000}
                                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
-                                    placeholder={"Monto requerido"} onChange={this.handleQuantity} disabled={sliderValue < 80000 ? true : false}/>
+                                    placeholder={"Monto requerido"} onBlur={(e) => this.handleQuantityBlur(e)} onChange={this.handleQuantity} disabled={this.state.quantityBlur}/>
                           )
                         }
                       </FormItem>

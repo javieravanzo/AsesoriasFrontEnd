@@ -1,6 +1,6 @@
 //Libraries
 import React, { Component } from 'react';
-import { Col, Row, List, Divider, Spin} from 'antd';
+import { Col, Row, List, Spin, Tabs, Icon} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
@@ -9,11 +9,14 @@ import RequestModal from "./RequestStateModal";
 //import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
-import {getAllRequest} from "../../../store/redux/actions/customer/customerActions";
+import {getAllRequest, getAllOutlayedRequest} from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-state.css';
 import { SUCCESS_MODAL } from '../subcomponents/modalMessages';
+
+//Constants
+const { TabPane } = Tabs;
 
 class RequestState extends Component {
 
@@ -26,6 +29,7 @@ class RequestState extends Component {
     };
 
     this.props.getAllRequest(parseInt(localStorage.user_id, 10));
+    this.props.getAllOutlayedRequest(parseInt(localStorage.user_id, 10));
 
   };
 
@@ -45,9 +49,11 @@ class RequestState extends Component {
   render(){
 
   let tableData = this.props.requestList.request;
+  let tableOutlayedData = this.props.outlayedRequestList.request;
+  //console.log("TableData", tableData);
 
-
-  if(JSON.stringify(tableData) === '{}'){
+  if(JSON.stringify(tableData) === '{}' || JSON.stringify(tableData) === undefined ||
+     JSON.stringify(tableOutlayedData) === '{}' || JSON.stringify(tableOutlayedData) === undefined){
     return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
               Cargando ...
               <br/>
@@ -62,18 +68,33 @@ class RequestState extends Component {
             <h2 className={'request-terms-title'}>Revisar solicitudes</h2>
           </Col>
         </Row>
-        <Divider className={"form-request-divider"}/>
-        <Row>
-          <List
-              locale={{ emptyText: 'No hay solicitudes pendientes' }}
-              dataSource={tableData}
-              renderItem={(item, k) => (
-                <List.Item className={"request-state-list-item"}>
-                    <RequestModal item={item} key={k}/>
-                </List.Item>
-              )}
-            />
+        <Row className={"admin-row-content"}>
+          <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
+          <Tabs defaultActiveKey="1">
+            <TabPane tab={<span> <Icon type="unordered-list" />Solicitudes pendientes</span>} key="1">
+              <List
+                locale={{ emptyText: 'No hay solicitudes pendientes' }}
+                dataSource={tableData}
+                renderItem={(item, k) => (
+                  <List.Item className={"request-state-list-item"}>
+                      <RequestModal item={item} key={k}/>
+                  </List.Item>
+                )}/>
+            </TabPane>
+            <TabPane tab={<span> <Icon type="plus-circle" />Solicitudes desembolsadas</span>} key="2">
+              <List
+                  locale={{ emptyText: 'No hay solicitudes desembolsadas' }}
+                  dataSource={tableOutlayedData}
+                  renderItem={(item, k) => (
+                    <List.Item className={"request-state-list-item"}>
+                        <RequestModal item={item} key={k}/>
+                    </List.Item>
+                  )}/>
+            </TabPane>
+          </Tabs>
+          </Col>
         </Row>
+          
       </div>
     );
   }
@@ -83,17 +104,20 @@ class RequestState extends Component {
 
 RequestState.propTypes = {
   requestList: PropTypes.object,
+  outlayedRequestList: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
     requestList: state.customer.requestList,
+    outlayedRequestList: state.customer.outlayedRequestList,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getAllRequest: (customerId) => dispatch(getAllRequest(customerId)),
+    getAllOutlayedRequest: (customerId) => dispatch(getAllOutlayedRequest(customerId)),
   }
 };
 

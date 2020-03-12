@@ -16,6 +16,10 @@
   padding-top: 60px;
 }
 
+.home-form-item{
+  line-height: 0px !important;
+}
+
 
 .customer-home-card{
   width: 70% !important;
@@ -89,6 +93,11 @@
   margin-bottom: 1px !important;
   font-size: 10px !important;
   font-weight: bold !important;
+  line-height: -30px !important;
+}
+
+.upload-documents{
+  margin-bottom: 10px !important;
 }
 
 .row-loan{
@@ -145,6 +154,11 @@
   float: right !important;
   margin-top: 5px !important;
 }
+
+.terms-conditions{
+  text-align: justify !important;
+}
+
 
 @media only screen and (max-width:500px) {
   .home-img{

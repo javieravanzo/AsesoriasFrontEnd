@@ -6,7 +6,7 @@ import connect from "react-redux/es/connect/connect";
 import EditModal from "./EditModal";
 
 //Actions
-import {updateCompany, getCompanyWithSalary} from "../../../../store/redux/actions/admin/adminActions";
+import {updateCompany, getCompanyWithSalary, activateCompany} from "../../../../store/redux/actions/admin/adminActions";
 
 //Columns
 /*const columns = [
@@ -72,20 +72,31 @@ class TableButtons extends Component {
     }
    }*/
 
+   inputServiceTime = (e) => {
+    let item = e;
+    this.props.activateCompany(item.idCompany, parseInt(item.status) === 1 ? false : true);    
+  }; 
+
   render() {
 
     //let tableData = this.setData(this.props.companySalaryResponse);
 
     return (
       <div>
-        <Row gutter={16}>
-          <Col span={3}/>
+        <Row gutter={10}>
           <Col span={3}  className={"delete-col"}>
             <Tooltip title={"Editar empresa"}>
               <Icon className={"icon-button delete-icon"} onClick={() => this.setState({visible: !this.state.visible})}
                 type={"edit"} style={{ fontSize: '16px'}}/>
             </Tooltip>
-          </Col>         
+          </Col>
+          <Col span={3}/>
+          <Col span={3}  className={"delete-col"}>
+            <Tooltip title={"Activar/Desactivar empresa"}>
+              <Icon className={"icon-button delete-icon"} onClick={() => this.inputServiceTime(this.props.item)}
+                type={"poweroff"} style={{ fontSize: '16px'}}/>
+            </Tooltip>
+          </Col>   
         </Row>
         {
           this.state.visible && 
@@ -111,6 +122,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateCompany: (data) => dispatch(updateCompany(data)),
     getCompanyWithSalary: (data) => dispatch(getCompanyWithSalary(data)),
+    activateCompany: (company, status) => dispatch(activateCompany(company, status)),
   }
 };
 

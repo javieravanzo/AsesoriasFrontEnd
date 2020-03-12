@@ -70,6 +70,7 @@ class ApproveRequest extends Component {
           lastName: item.lastName,
           name: item.name,
           Company_idCompany: item.Company_idCompany,
+          socialReason: item.socialReason,
           profession: item.profession,
           split: item.split,
           account: item.account,
@@ -122,8 +123,9 @@ class ApproveRequest extends Component {
 
     let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
     let tableData = this.setData(this.props.requestResponse);
+    console.log("JSON", tableData, JSON.stringify(tableData));
     
-    if(tableData === null){
+    if(tableData === null || tableData === undefined || JSON.stringify(tableData) === '[]'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
                 Cargando ...
                 <br/>

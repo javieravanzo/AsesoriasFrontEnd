@@ -60,6 +60,20 @@ function createMultipleCustomer(data){
   });
 };
 
+
+function activateCompany(companyid, status){
+  return request({
+    url: '/Company/ChangePlatformStatus',
+    method: 'PUT',
+    headers:{
+      companyid: companyid,
+      status: status
+    }
+  });
+};
+
+
+
 function getAllRequest(userId){
   return request({
     url: '/Request/GetAllByAdmin',
@@ -134,7 +148,7 @@ const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
-  getAllCompaniesWithSalaries
+  getAllCompaniesWithSalaries, activateCompany
 };
 
 export default adminService;

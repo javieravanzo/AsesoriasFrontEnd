@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Form, Input} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Form, Select} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ import {approveorRejectRequest} from "../../../../../store/redux/actions/general
 
 //Constants
 const Step = Steps.Step;
-const TextArea = Input.TextArea;
+//const TextArea = Input.TextArea;
 
 class RequestStateModal extends Component {
 
@@ -108,7 +108,7 @@ class RequestStateModal extends Component {
 
   inputChange = (e) => {
 
-    let value = e.target.value;
+    let value = e;
     this.setState({
       text: value,
     });
@@ -193,7 +193,7 @@ class RequestStateModal extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                   <b>Empresa</b><br/><br/>
-                  {item.Company_idCompany}
+                  {item.socialReason}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                   <b>Saldo Usuario</b><br/><br/>
@@ -280,10 +280,13 @@ class RequestStateModal extends Component {
             okButtonProps={{ disabled: !(this.state.text.length >= 20) }}>
               <Form>
                 <p>¿Está seguro de realizar el rechazo del crédito? Esta acción será irreversible.
-                Si es así, especifique a continuación las razones por las cuales desea rechazar la solicitud.</p>
+                Si es así, especifique a continuación la razón por la cual desea rechazar la solicitud.</p>
                 <br/>
-                <p style={{fontSize: '12px'}}>*Longitud mínima de 20 caracteres.</p> 
-                <TextArea onChange={event => this.inputChange(event)} rows={4} />
+                <Select placeholder={"Elija una opción de rechazo"} onChange={e => this.inputChange(e)} onshowSearch={true} allowClear={true} autoClearSearchValue={true}>
+                  <Select.Option value={"Documentos Alterados"}>Documentos Alterados</Select.Option>
+                  <Select.Option value={"No se encuentra en base de datos de la empresa"}>No se encuentra en base de datos de la empresa</Select.Option>
+                  <Select.Option value={"No cuenta con capacidad de endeudamiento"}>No cuenta con capacidad de endeudamiento</Select.Option>
+                </Select>
               </Form>
 
 

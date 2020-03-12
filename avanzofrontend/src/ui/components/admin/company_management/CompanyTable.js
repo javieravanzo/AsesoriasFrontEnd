@@ -114,6 +114,7 @@ class CompanyTable extends Component {
           quantity: item.defaultAmount,
           approveHumanResources: item.approveHumanResources,
           email: item.email,
+          status: item.status,
           actions: <TableButtons item={item}/>
         };
 

@@ -115,7 +115,7 @@ class TableButtons extends Component {
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 No. Identificación:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.identificationId} onChange={(e) => this.inputService(e, 'identificationId')} placeholder={"No. Identificación"}/>
+                <InputNumber disabled={parseInt(localStorage.role_id, 10) === 2} className={"company-edit-nit"} defaultValue={this.props.item.identificationId} onChange={(e) => this.inputService(e, 'identificationId')} placeholder={"No. Identificación"}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Correo electrónico:

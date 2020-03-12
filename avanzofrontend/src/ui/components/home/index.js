@@ -17,7 +17,7 @@ import home from "../../assets/home2.PNG";
 
 //Styles
 import '../../styles/home/home.css'
-import { ERROR_MODAL, WARNING_MODAL } from '../subcomponents/modalMessages';
+import { ERROR_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
 
 //Functions
 /*function format(d) {
@@ -197,6 +197,32 @@ class Home extends Component {
     e.target.value = input.replace(/[^0-9]/g, '')
   };
 
+  openTermsandConditions = () => {
+    this.setState({
+      visibleTermModal: true
+    });
+    
+    let file1 = "https://drive.google.com/open?id=1QmZLrbxljJAcsHqY9EOL8epl6-wPLloj";
+    //let baseURL = "http://3.133.128.42:4000/";
+    let file2 = "https://drive.google.com/open?id=1tW9L5Mg7mKxfhZdwR2QqcAvJNnc8PXev";
+
+    if (file1 !== null && file2 !== null) {
+      let newWindow = window.open(file1, "_blank");
+      let newWindow1 = window.open(file2, "_blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' ||
+          !newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined'){
+        allowEmergingWindows();
+      }
+    }else {
+      WARNING_MODAL('Advertencia', 'Los términos y condiciones no están disponibles. Intenta más tarde.');
+    }
+
+    this.setState({
+      visibleTermModal: true
+    });
+
+  };
+
   render() {
 
     /*const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
@@ -348,7 +374,7 @@ class Home extends Component {
                         </Col>
                       </Row>
                       
-                      <Row>
+                      <Row className={"upload-documents"}>
                         <Col xs={24} sm={24} md={24} lg={24}>
                           <p className={"form-names"}>Cargar cédula, foto y comprobante de pago</p>
                           <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChange}
@@ -368,7 +394,7 @@ class Home extends Component {
                                       <Checkbox className={'checkbox-terms-conditions'} onChange={(e) => this.onChangeField(e, 'checkBox1')}/>
                                     </Col>
                                     <Col lg={22} md={22} sm={22} xs={22}>
-                                      <p onClick={() => this.setState({visibleTermModal: true})} className={"form-names-terms"}>{""} Acepto los <u>Términos, Condiciones y Políticas de uso de tratamientos de datos.</u></p>
+                                      <span onClick={() => this.openTermsandConditions()} className={"form-names-terms"}>{""} Acepto los <u>Términos, Condiciones de uso y Autorización de tratamiento de datos.</u></span>
                                     </Col>
                                   </Row>
                                 </Col>
@@ -384,15 +410,26 @@ class Home extends Component {
                         </Button>
                       </Row>
                       <Modal
-                        title={"Términos, Condiciones y Políticas de tratamiento de datos"}
+                        title={"Términos y condiciones de uso de la página web - Autorización de la política de tratamiento de datos"}
                         visible={this.state.visibleTermModal}
+                        width={600}
                         onCancel={() => this.setState({visibleTermModal: false})}
                         footer={
                           <Button key='submit' type='primary' disabled={this.state.clicked && this.props.newRegisterResponse === null} loading={this.state.clicked } onClick={() => this.setState({visibleTermModal: false, clicked: true})}>
                             Aceptar
                           </Button>}>
                         <div>
-                          <p>Términos y condiciones...</p>
+                          <p className={"terms-conditions"}>
+                             <br/>
+                             AVANZO solicita a los visitantes y usuarios de la página web la lectura de los términos, las condiciones de uso de la página web y la autorización de tratamiento de datos antes de iniciar su
+                             navegación o utilizar los servicios ofrecidos a través de este portal web. El acceso y navegación en la página web,
+                             así como el registro en la plataforma tecnológica de AVANZO, se encuentra precedido de un “click” en el botón Aceptar,
+                             lo cual constituye el conocimiento de la autorización del tratamiento de datos y la aceptación expresa del <b>usuario </b>
+                             de estos términos y condiciones. 
+                             <br/><br/>
+                             En caso de no estar de acuerdo con estas condiciones sugerimos al visitante y usuario que se abstenga de acceder o navegar por la página web.
+                             <br/>
+                            </p>
                         </div>
                       </Modal>
                     </Form>

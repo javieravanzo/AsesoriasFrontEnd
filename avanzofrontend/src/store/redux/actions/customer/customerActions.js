@@ -198,7 +198,25 @@ export const getAllRequest = (customerId) => {
           type: C.GET_REQUEST_LIST,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes .', err.data);
+        ERROR_MODAL('Error al traer la lista de solicitudes pendientes.', err.data);
+      });
+  };
+};  
+
+export const getAllOutlayedRequest = (customerId) => {
+  return dispatch => {
+    return customerService.getAllRequestWasOutlayed(customerId)
+      .then(response => {
+        dispatch({
+          type: C.GET_OUTLAYED_REQUEST_LIST,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_OUTLAYED_REQUEST_LIST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes desembolsadas.', err.data);
       });
   };
 };  

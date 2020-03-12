@@ -141,6 +141,27 @@ export const activateCustomer = (clientId, status) => {
   }
 };
 
+export const activateCompany = (clientId, status) => {
+  return dispatch => {
+    return adminServices.activateCompany(clientId, status)
+      .then(response => {
+        dispatch(getAllCompanies());
+        dispatch({
+          type: C.ACTIVATE_COMPANY,
+          payload: response.data
+        });
+        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.ACTIVATE_COMPANY,
+          payload: err,
+        });
+        ERROR_MODAL('Error al activar la empresa.', err.data);
+      });
+  }
+};
+
+
 export const createMultipleCustomer = (data) => {
   return dispatch => {
     return adminServices.createMultipleCustomer(data)

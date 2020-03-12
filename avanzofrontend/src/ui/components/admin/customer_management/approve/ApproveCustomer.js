@@ -103,7 +103,7 @@ class ApproveCustomer extends Component{
     let {name, identificationId, lastName, socialReason, email} = this.state;
     let tableData = this.setData(this.props.customerListToApprove);
 
-    if(tableData === null){
+    if(tableData === null || JSON.stringify(tableData) === '[]'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
                 Cargando ...
                 <br/>
