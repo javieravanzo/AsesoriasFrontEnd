@@ -5,7 +5,7 @@ import {adminTypes as C} from '../../types';
 import adminServices from '../../../../services/admin/adminServices';
 
 //Subcomponents
-import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+import { ERROR_MODAL, SUCCESS_MODAL, CONFIRM_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 export const resetValue = () => {
   return dispatch => {
@@ -46,7 +46,8 @@ export const createCompany = (data) => {
           payload: response.data,
           correct: true,
         });
-        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+        //SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+        CONFIRM_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
         console.log("Error", err);
         dispatch({
@@ -90,7 +91,8 @@ export const createCustomer = (data) => {
           payload: response.data,
           correct: true,
         });
-        SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado satisfactoriamente");
+        //SUCCESS_MODAL("Acción realizada exitosamente", "El cliente ha sido creado satisfactoriamente");
+        CONFIRM_MODAL("Acción realizada exitosamente", "El cliente ha sido creado satisfactoriamente");
       }).catch(err => {
         dispatch({
           type: C.CREATE_CUSTOMER,

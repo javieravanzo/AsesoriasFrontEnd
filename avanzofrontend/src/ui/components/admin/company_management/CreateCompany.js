@@ -65,7 +65,10 @@ class CreateCompany extends Component {
       companySalaries: [],
       burstingKey: 1,
       clearSelect: false,
-      burstingFormKey: 0
+      burstingFormKey: 0,
+      defaultPaymentRate: null,
+      defaultReportDate: null,
+      defaultSalaryDate: null,
     };
 
     this.props.resetValue();
@@ -103,12 +106,12 @@ class CreateCompany extends Component {
   createCompany = () => {
     this.props.form.validateFields((err, values) => {
       if (err){
-        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
+        ERROR_MODAL("Error al realizar la acción", " Ingresa datos válidos dentro del formulario.");
       }else{
         if(values.password !== values.confirmPassword){
           WARNING_MODAL("Las contraseñas no coinciden");
         }else if(values.phoneNumber.toString()[0] !== "3" || values.phoneNumber.toString().length !== 10 ){
-          ERROR_MODAL("Error al realizar la acción", "Por favor ingresa un número de teléfono válido.");
+          ERROR_MODAL("Error al realizar la acción", " ingresa un número de teléfono válido.");
         }else{
           let newSalary = [{
             companyRate: values.companyRate,
@@ -151,9 +154,19 @@ class CreateCompany extends Component {
   };
 
   addNewSalary = () => {
-    let {companyRate, companyReportDate, companyFirstDate, companySecondDate} = this.state;
+    
+    let {companyRate, companyReportDate, companyFirstDate, companySecondDate, burstingKey, defaultPaymentRate,
+         defaultSalaryDate, defaultReportDate } = this.state;
 
     let datesArray = this.state.companySalaries;
+
+    if(defaultPaymentRate === null){
+      WARNING_MODAL("Advertencia", 'Ingresa un tipo de ciclo de pagos');
+    }else if(defaultSalaryDate === null){
+      WARNING_MODAL("Advertencia", 'Ingresa las fechas de salario separadas por comas');
+    }else if(defaultSalaryDate === null){
+      WARNING_MODAL("Advertencia", 'Ingresa las fechas de reporte separadas por comas');
+    }
 
     let newSalary = {
       companyRate: companyRate,
@@ -173,15 +186,19 @@ class CreateCompany extends Component {
         companyReportDate: null,
         companyFirstDate: null,
         companySecondDate: null,
+        defaultPaymentRate: null,
+        defaultReportDate: null,
+        defaultSalaryDate: null,
       });
       datesArray.push(newSalary);
     }
-    
+    console.log("Salió", this.state.burstingKey);
   };
 
   changeRatesValues = (e, param) => {
     this.setState({
-      [param]: e
+      [param]: e,
+      defaultPaymentRate: e,
     });
   };
 
@@ -191,18 +208,13 @@ class CreateCompany extends Component {
     let setterValue = e.target.value.split(',');
     if(setterValue.length < 5){
       this.setState({
-        [param]: e.target.value
+        [param]: e.target.value,
+        defaultReportDate: e.target.value
       });
     }else{
       WARNING_MODAL("Advertencia", "Ingresa máximo cuatro días para los reportes.");
     }
   };
-
-  /*checkCharacters = (rule, value, callback) => {
-    const form = this.props.form;
-    let input = e;
-    e = input.replace(/[^0-9]/g, '');
-  };*/
 
   changeDateValues = (e, param) => {
     let setter = e.target.value;
@@ -214,7 +226,8 @@ class CreateCompany extends Component {
     if(companyRate === "Mensual"){
       if(setterValue.length === 1){
         this.setState({
-          companyFirstDate: setterValue[0]
+          companyFirstDate: setterValue[0],
+          defaultSalaryDate: setterValue[0],
         });
       }else{
         WARNING_MODAL("Advertencia", "Ingresa solo un día para el tipo de recurrencia mensual");
@@ -223,13 +236,14 @@ class CreateCompany extends Component {
       if(setterValue.length < 3){
         this.setState({
           companyFirstDate: setterValue[0],
-          companySecondDate: setterValue[1]
+          companySecondDate: setterValue[1],
+          defaultSalaryDate: setterValue[1] !== undefined ? setterValue[0]+","+setterValue[1] : setterValue[0],
         });
       }else{
         WARNING_MODAL("Advertencia", "Ingresa solo dos días para el tipo de recurrencia quincenal");
       }
     }else{
-      WARNING_MODAL("Advertencia", "Primero, ingrese un tipo de ciclo para esta empresa");
+      WARNING_MODAL("Advertencia", "Primero, Ingresa un tipo de ciclo para esta empresa");
     }
     
   };
@@ -267,12 +281,21 @@ class CreateCompany extends Component {
     
   };
 
+  cleanValues = () => {
+    this.setState({
+      defaultPaymentRate: null,
+      defaultReportDate: null,
+      defaultSalaryDate: null,
+    })
+  };
+
 
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {companySalaries, burstingFormKey, clearSelect} = this.state;
-    console.log("CS", clearSelect);
+    let {companySalaries, burstingFormKey, clearSelect, defaultPaymentRate, defaultReportDate, defaultSalaryDate} = this.state;
+    //console.log("CS", clearSelect);
+    console.log("UP", this.state.burstingKey);
     
     return (
       <div className={"company-div"}>
@@ -287,7 +310,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('socialReason',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa una razón social'}
+                              {required: true, message: 'Ingresa una razón social'}
                             ]})(
                               <Input key={burstingFormKey} className={"form-input-number"} placeholder={"Razón social"} />
                             )
@@ -300,7 +323,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('nit',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa un NIT válido' }
+                              {required: true, message: 'Ingresa un NIT válido' }
                             ]})(
                               <Input onChange={(e) => this.validationNITNumbers(e)} key={burstingFormKey} className={"form-input-number"} placeholder={"NIT"}/>
                             )
@@ -312,8 +335,8 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('email',
                             {rules: [
-                              {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
-                              {required: true, message: 'Por favor ingresa un correo electrónico'}
+                              {type: 'email', message: 'Ingresa un correo electrónico válido.'},
+                              {required: true, message: 'Ingresa un correo electrónico'}
                             ]})(
                               <Input key={burstingFormKey} className={"form-input-number"} placeholder={"Correo electrónico"} />
                             )
@@ -325,7 +348,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('economyActivity',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa una actividad económica'}
+                              {required: true, message: 'Ingresa una actividad económica'}
                             ]})(
                               <Input key={burstingFormKey} className={"form-input-number"} placeholder={"Actividad económica"}/>
                             )
@@ -337,7 +360,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('address',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa una dirección'}
+                              {required: true, message: 'Ingresa una dirección'}
                             ]})(
                               <Input key={burstingFormKey} className={"form-input-number"} placeholder={"Dirección"} />
                             )
@@ -349,7 +372,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('password',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa una contraseña por defecto'}
+                              {required: true, message: 'Ingresa una contraseña por defecto'}
                             ]})(
                               <Input key={burstingFormKey} type="password"  className={"form-input-number"} placeholder={"Contraseña por defecto"} />
                             )
@@ -361,7 +384,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('confirmPassword',
                             {rules: [
-                              {required: true, message: 'Por favor confirma la contraseña ingresada'},
+                              {required: true, message: 'Confirma la contraseña ingresada'},
                               {validator: this.compareToFirstPassword}
                             ]})(
                               <Input key={burstingFormKey} type="password" className={"form-input-number"} placeholder={"Confirmar contraseña"} />
@@ -378,7 +401,7 @@ class CreateCompany extends Component {
                           <FormItem >
                             {getFieldDecorator('approveHumanResources',
                               {rules: [
-                                {required: true, message: 'Por favor ingresa si se aprueba desde recursos humanos'}
+                                {required: true, message: 'Ingresa si se aprueba desde recursos humanos'}
                               ]})(
                                 <Select placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                                   <Select.Option value={"Sí"}>Sí</Select.Option>
@@ -393,7 +416,7 @@ class CreateCompany extends Component {
                           <FormItem >
                             {getFieldDecorator('defaultAmount',
                               {rules: [
-                                {required: true, message: 'Por favor ingresa una monto particular'}
+                                {required: true, message: 'Ingresa una monto particular'}
                               ]})(
                                 <InputNumber min={80000} onChange={(e) => this.validationNumbersNumber(e)}  formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
                                 className={"form-input-number"} placeholder={"Máxima cantidad a prestar"}/>
@@ -406,7 +429,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('maximumSplit',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa un máximo de cuotas'}
+                              {required: true, message: 'Ingresa un máximo de cuotas'}
                             ]})(
                               <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} 
                               placeholder={"No. máximo de cuotas"} />
@@ -421,52 +444,33 @@ class CreateCompany extends Component {
                         <Table columns={columns} dataSource={companySalaries} size="small" bordered={false} locale={{emptyText: 'No hay registros'}}/>
                       }
                       <Row gutter={8} key={this.state.burstingKey}>
-                        <Col xs={12} sm={12} md={8} lg={8} key={this.state.burstingKey}>
+                        <Col xs={12} sm={12} md={6} lg={6} key={this.state.burstingKey}>
                           <FieldTitle title={"Ciclo de pagos"}/>
-                          <FormItem >
-                            {getFieldDecorator('companyRate',
-                              {rules: [
-                                {required: true, message: 'Por favor ingresa un tipo de pago'}
-                              ]})(
-                                <Select key={this.state.burstingKey} placeholder={"Tipo de salario"} showSearch={true} onSelect={(e) => this.changeRatesValues(e, 'companyRate')} onChange={this.handleSalaryRate} allowClear={true} >
-                                  <Select.Option value={"Quincenal"}>Quincenal</Select.Option>
-                                  <Select.Option value={"Mensual"}>Mensual</Select.Option>
-                                </Select>
-                              )
-                            }
-                          </FormItem>  
+                            <Select value={defaultPaymentRate === null ? undefined : defaultPaymentRate} key={this.state.burstingKey} placeholder={"Tipo de salario"} showSearch={true} onSelect={(e) => this.changeRatesValues(e, 'companyRate')} onChange={this.handleSalaryRate} allowClear={true} >
+                              <Select.Option value={"Quincenal"}>Quincenal</Select.Option>
+                              <Select.Option value={"Mensual"}>Mensual</Select.Option>
+                            </Select>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={8}>
+                        <Col xs={12} sm={12} md={6} lg={6}>
                           <FieldTitle title={"Fechas de salario"}/>
-                          <FormItem >
-                            {getFieldDecorator('companyFirstDate',
-                              {rules: [
-                                {required: true, message: 'Por favor ingresa las fechas de salario separadas por comas.'}
-                              ]})(
-                                <Input max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fechas de salario"} onChange={(e) => this.changeDateValues(e, 'companyFirstDate')}/>
-                              )
-                            }
-                          </FormItem>  
+                            <Input value={defaultSalaryDate} max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"Fechas de salario"} onChange={(e) => this.changeDateValues(e, 'companyFirstDate')}/>
                         </Col>
                         
-                        <Col xs={12} sm={12} md={8} lg={8}>
+                        <Col xs={12} sm={12} md={6} lg={6}>
                           <FieldTitle title={"Fecha de reportes"}/>
-                          <FormItem >
-                            {getFieldDecorator('companyReportDate',
-                              {rules: [
-                                {required: true, message: 'Por favor ingresa las fechas de reporte separadas por comas.'},
-                                
-                              ]})(
-                                <Input max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"(3, 13, 14, ... ) "} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
-                              )
-                            }
-                          </FormItem>  
+                            <Input value={defaultReportDate} max={31} min={1} key={this.state.burstingKey} className={"form-input-number"} placeholder={"(3, 13, 14, ... ) "} onChange={(e) => this.changeSalariesValues(e, 'companyReportDate')}/>
+                        </Col>
+                        <Col xs={12} sm={8} md={3} lg={3}>
+                          <FieldTitle title={" "}/>
+                          <Button onClick={() => this.cleanValues()}>Limpiar</Button>
+                        </Col>
+                        <Col>
+                          <FieldTitle title={" "}/>
+                          <Tooltip title="Agregar nuevo ciclo de pagos">
+                            <Button className={"request-form-add"} onClick={() => this.addNewSalary()}>Agregar</Button> 
+                          </Tooltip>
                         </Col>
                       </Row>
-                      <Tooltip title="Agregar nuevo ciclo de pagos">
-                        
-                          <Icon type={"plus-circle"} className={"request-form-add"} onClick={() => this.addNewSalary()}/> 
-                      </Tooltip>
                     </Row>
                   </Panel>
                   <Panel header="Información de la persona encargada" key="4">
@@ -476,7 +480,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('memberName',
                             {rules: [
-                              {required: true, message: 'Por favor ingrese el nombre del encargado'}
+                              {required: true, message: 'Ingresa el nombre del encargado.'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Nombres"}/>
                             )
@@ -488,7 +492,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('memberLastName',
                             {rules: [
-                              {required: true, message: 'Por favor ingrese el apellido del encargado'}
+                              {required: true, message: 'Ingresa el apellido del encargado'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Apellidos"}/>
                             )
@@ -500,7 +504,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('memberId',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa un número de identificación'}
+                              {required: true, message: 'Ingresa un número de identificación'}
                             ]})(
                               <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"No. de Identificación"} />
                             )
@@ -512,7 +516,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('phoneNumber',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa un teléfono celular'}
+                              {required: true, message: 'Ingresa un teléfono celular'}
                             ]})(
                               <InputNumber maxLength={10} minLength={10} className={"form-input-number"} placeholder={"Teléfono celular"} />
                             )
@@ -524,8 +528,8 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('memberEmail',
                             {rules: [
-                              {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
-                              {required: true, message: 'Por favor ingresa un correo electrónico'}
+                              {type: 'email', message: 'Ingresa un correo electrónico válido.'},
+                              {required: true, message: 'Ingresa un correo electrónico'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
                             )
@@ -537,7 +541,7 @@ class CreateCompany extends Component {
                         <FormItem >
                           {getFieldDecorator('profession',
                             {rules: [
-                              {required: true, message: 'Por favor ingresa un cargo' }
+                              {required: true, message: 'Ingresa un cargo' }
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Cargo"}/>
                             )
@@ -555,7 +559,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('representantName',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un nombre'}
+                              {required: false, message: ' ingresa un nombre'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Nombres"} />
                             )
@@ -567,7 +571,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('representantLastName',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un apellido'}
+                              {required: false, message: ' ingresa un apellido'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Apellidos"} />
                             )
@@ -579,7 +583,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('representantId',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un número de identificación'}
+                              {required: false, message: ' ingresa un número de identificación'}
                             ]})(
                               <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} placeholder={"No. de Identificación"} />
                             )
@@ -591,7 +595,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('representantPhone',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un teléfono celular'}
+                              {required: false, message: ' ingresa un teléfono celular'}
                             ]})(
                               <InputNumber maxLength={10} minLength={10} className={"form-input-number"} placeholder={"Teléfono celular"} />
                             )
@@ -603,7 +607,7 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('representantProfession',
                             {rules: [
-                              {required: false, message: 'Por favor ingresa un cargo para el representante'}
+                              {required: false, message: ' ingresa un cargo para el representante'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Cargo"} />
                             )
@@ -615,8 +619,8 @@ class CreateCompany extends Component {
                         <FormItem>
                           {getFieldDecorator('representantEmail',
                             {rules: [
-                              {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
-                              {required: false, message: 'Por favor ingresa un correo electrónico'}
+                              {type: 'email', message: 'Ingresa un correo electrónico válido.'},
+                              {required: false, message: 'Ingresa un correo electrónico'}
                             ]})(
                               <Input className={"form-input-number"} placeholder={"Correo electrónico"} />
                             )
@@ -637,10 +641,6 @@ class CreateCompany extends Component {
               </Form>
             </div>
         </Row>
-        {
-          this.props.companyResponse === true && 
-            <Redirect to={routes.admin_customer_management}/>
-        }
       </div>
     );
   

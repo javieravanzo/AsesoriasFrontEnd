@@ -10,9 +10,16 @@
 }
 
 .request-form-add{
-  float: right !important;
-  font-size: 30px !important;
-  color: #3ab5ff !important;
-  margin-top: 5px !important;
-  margin-right: 10px !important;
+  color: #ffffff !important;
+  background-color: #2eaefd !important;
+  float: right;
+}
+
+.create-customer-button{
+  color: #ffffff !important;
+  background-color: #01609b !important;
+}
+
+.date-picker-expedition{
+  width: 100% !important;
 }

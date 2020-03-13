@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import { Form, Select, Button, Col, Row, Collapse, InputNumber,
          Input, DatePicker, Modal, Upload, message, Icon, Switch, Spin} from 'antd';
 import PropTypes from 'prop-types';
-import {Redirect} from 'react-router-dom';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../../../subcomponents/FieldTitle';
 import { SUCCESS_MODAL, ERROR_MODAL } from '../../../subcomponents/modalMessages';
-import routes from '../../../../../configuration/routing/Routes';
+import { allowEmergingWindows, WARNING_MODAL } from '../../../subcomponents/modalMessages';
 
 //Actions
 import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";
@@ -99,6 +98,21 @@ class CustomerManagement extends Component {
     e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
   };
 
+  seeDocument = () => {
+
+    let file = "https://drive.google.com/open?id=1P8dg2A08Sb7iZIGLKRsE4xFa_pG1CeTP";
+
+    if (file !== null ) {
+      let newWindow = window.open(file, "_blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        allowEmergingWindows();
+      }
+    } else {
+      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+    }
+
+  };
+
   render(){
 
     let { companyList } = this.props;
@@ -140,9 +154,15 @@ class CustomerManagement extends Component {
       return (
         <div className={"company-div"}>
             <Row gutter={8}>
-              <Col xs={24} sm={24} md={8} lg={19}/>
+              <Col xs={24} sm={24} md={8} lg={14}/>
               <Col xs={24} sm={12} md={8} lg={5}>
-                <Button className={"request-confirm-button"} icon="file-excel" 
+                <Button icon="download" 
+                        onClick={() => this.seeDocument()}>
+                        Descargar formato
+                </Button> 
+              </Col>
+              <Col xs={24} sm={12} md={8} lg={5}>
+                <Button className={"create-customer-button"} icon="file-excel" 
                         onClick={() => this.setState({particular_modal: true})}>
                         Crear múltiples clientes
                 </Button> 
@@ -285,7 +305,7 @@ class CustomerManagement extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={8} >
+                        <Col xs={12} sm={12} md={8} lg={6} >
                           <FieldTitle title={"Fecha de nacimiento"}/>
                           <FormItem>
                             {getFieldDecorator('birthDate',
@@ -297,19 +317,19 @@ class CustomerManagement extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={8} >
+                        <Col xs={12} sm={12} md={8} lg={7} >
                           <FieldTitle title={"Fecha de expedición del documento"}/>
                           <FormItem>
                             {getFieldDecorator('expeditionDate',
                               {rules: [
                                 {required: false, message: 'Por favor ingresa un correo electrónico'}
                               ]})(
-                                <DatePicker placeholder={"Fecha de expedición"} style={{width: "100% !important"}}/>
+                                <DatePicker placeholder={"Fecha de expedición"} className={"date-picker-expedition"}/>
                               )
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={8} >
+                        <Col xs={12} sm={12} md={8} lg={6} >
                           <FieldTitle title={"Cantidad máxima de préstamo"}/>
                           <FormItem>
                             {getFieldDecorator('maximumAmount',
@@ -321,19 +341,7 @@ class CustomerManagement extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={8} lg={6} >
-                          <FieldTitle title={"Máximo número de cuotas"}/>
-                          <FormItem>
-                            {getFieldDecorator('split',
-                              {rules: [
-                                {required: true, message: 'Por favor ingresa un número de cuotas'}
-                              ]})(
-                                <Input onChange={(e) => this.validationNumbers(e)} placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
-                              )
-                            }
-                          </FormItem>
-                        </Col>
-                        <Col lg={6} md={8} sm={12} xs={12}>
+                        <Col xs={12} sm={12} md={8} lg={5}>
                           <FieldTitle title={"Empresa"}/>
                           <FormItem className='home-form-item'>
                             {getFieldDecorator('idCompany', {
@@ -351,6 +359,19 @@ class CustomerManagement extends Component {
                             )}
                           </FormItem>
                         </Col>
+                        <Col xs={12} sm={12} md={8} lg={6} >
+                          <FieldTitle title={"Máximo número de cuotas"}/>
+                          <FormItem>
+                            {getFieldDecorator('split',
+                              {rules: [
+                                {required: true, message: 'Por favor ingresa un número de cuotas'}
+                              ]})(
+                                <Input onChange={(e) => this.validationNumbers(e)} placeholder={"Número de cuotas"} style={{width: "100% !important"}}/>
+                              )
+                            }
+                          </FormItem>
+                        </Col>
+                        
                         <Col lg={6} md={8} sm={12} xs={12}>
                           <FieldTitle title={"Ciclo de pagos"}/>
                           <FormItem className='home-form-item'>
@@ -540,10 +561,6 @@ class CustomerManagement extends Component {
                 </Form>
               </div>
           </Row>
-          {
-            this.props.createCustomerResponse === true && 
-            <Redirect to={routes.admin_request_management}/>
-          }
         </div>
       );
     } 
