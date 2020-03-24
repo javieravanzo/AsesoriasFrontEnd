@@ -433,7 +433,7 @@ class LoanRequest extends Component {
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b>
                             <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={Math.round(interestValue*sliderValue)} thousandSeparator={'.'}
+                                              value={Math.round(interestValue*sliderValue*30)} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -443,7 +443,7 @@ class LoanRequest extends Component {
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={Math.round(adminValue*sliderValue)} thousandSeparator={'.'}
+                                              value={Math.round(adminValue)} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -456,7 +456,7 @@ class LoanRequest extends Component {
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b style={{color: "#cecece"}}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={Math.round((sliderValue*adminValue)+(sliderValue*interestValue)+sliderValue)} thousandSeparator={'.'}
+                                              value={Math.round((adminValue)+(sliderValue*interestValue*30)+(sliderValue))} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -475,11 +475,11 @@ class LoanRequest extends Component {
                         </Row>
                         <Row gutter={8}>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "right"}}>
-                            <b style={{fontSize: "15px"}}>Total a pagar</b>
+                            <b style={{fontSize: "15px"}}>Total a pagar</b> 
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b style={{color: "#42a4ff"}}><CurrencyFormat  displayType={'text'} style={{width: "100%", fontSize: "15px"}}
-                                              value={Math.round((sliderValue*adminValue)+(sliderValue*interestValue)+sliderValue)} thousandSeparator={'.'}
+                                              value={Math.round((adminValue)+(sliderValue*interestValue*30)+sliderValue)} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
