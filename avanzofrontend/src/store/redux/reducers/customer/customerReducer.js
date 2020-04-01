@@ -8,7 +8,7 @@ const initialState={
   homeDataResponse: {},
   requestDataResponse: {},
   outlayDataResponse: {},
-  outlayDatesList: [],
+  outlayDatesList: {},
   documentsReponse: {},
   transactionList: [],
   requestList: {},

@@ -103,6 +103,10 @@ class LoanRequest extends Component {
           flagState: true
         }
       }
+    }else{
+      return {
+        flagState: true
+      }
     }
    }
 
@@ -135,13 +139,19 @@ class LoanRequest extends Component {
   };
 
   sendReportInfo = (maximumSplit) => {
-    this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee === null ? maximumSplit : this.state.fee, this.state.sliderValue);
+    console.log("E", maximumSplit);
+    if( this.state.fee !== null){
+      this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
+    }
   };
 
   handleSliderChange = (e) => {
     this.setState({
       sliderValue: Math.round(e),
     });
+    if(this.state.fee !== null){
+      this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, e);
+    }
   };
 
   handleQuantity = (e) => {
@@ -151,7 +161,11 @@ class LoanRequest extends Component {
       this.setState({
         sliderValue: Math.round(e),
       });
-    }    
+      if(this.state.fee !== null){
+        this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, e);
+      } 
+    } 
+   
   };
 
   handleQuantityBlur = (e) => {
@@ -433,7 +447,7 @@ class LoanRequest extends Component {
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b>
                             <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={Math.round(interestValue*sliderValue*30)} thousandSeparator={'.'}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.totalInterest} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -442,8 +456,8 @@ class LoanRequest extends Component {
                             <b>Administración</b>
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
-                            <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={Math.round(adminValue)} thousandSeparator={'.'}
+                            <b><CurrencyFormat displayType={'text'} style={{width: "100%"}}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.administrationValue} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -456,7 +470,7 @@ class LoanRequest extends Component {
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b style={{color: "#cecece"}}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={Math.round((adminValue)+(sliderValue*interestValue*30)+(sliderValue))} thousandSeparator={'.'}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.subTotal} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -466,7 +480,7 @@ class LoanRequest extends Component {
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={otherCollectionValue} thousandSeparator={'.'}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.ivaValue} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -479,7 +493,7 @@ class LoanRequest extends Component {
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b style={{color: "#42a4ff"}}><CurrencyFormat  displayType={'text'} style={{width: "100%", fontSize: "15px"}}
-                                              value={Math.round((adminValue)+(sliderValue*interestValue*30)+sliderValue)} thousandSeparator={'.'}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.totalValue} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -489,13 +503,13 @@ class LoanRequest extends Component {
                   </Row>
                   <br/>
                   {
-                    JSON.stringify(outlayDatesList) !== '[]'  && 
+                    (JSON.stringify(outlayDatesList.datesList) !== '[]' && JSON.stringify(outlayDatesList.datesList) !== undefined)  && 
                     <Row className={"form-request-rows"}>
                       <div className="upload-text">
                         De acuerdo a las cuotas que suministraste, tendrás el siguiente informe de descuentos. 
                         <br/>
                         <br/>
-                        <Table className={"new-table"} dataSource={outlayDatesList} columns={table} rowKey={'id'} 
+                        <Table className={"new-table"} dataSource={outlayDatesList.datesList} columns={table} rowKey={'id'} 
                             size={'small'} pagination={false}/>
                       </div>
                     </Row>
@@ -707,7 +721,7 @@ let RequestForm = Form.create()(LoanRequest);
 RequestForm.propTypes = {
   requestDataResponse: PropTypes.object,
   outlayDataResponse: PropTypes.object,
-  outlayDatesList: PropTypes.array,
+  outlayDatesList: PropTypes.object,
   requestResponse: PropTypes.bool
 };
 
