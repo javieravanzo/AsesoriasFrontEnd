@@ -308,9 +308,32 @@ export const getAllCustomersToApprove = ( ) => {
   }
 };
 
-export const approveCustomers = (client, approve) => {
+export const getDateListToCustomer = (companyId) => {
   return dispatch => {
-    return adminServices.approveCustomer(client, approve)
+    return adminServices.getDateListToCustomer(companyId)
+      .then(response => {
+        dispatch({
+          type: C.GET_DATELIST_TO_CUSTOMER,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_DATELIST_TO_CUSTOMER,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer las fechas de la empresa de clientes', err.data);
+      });
+  }
+};
+
+
+
+export const approveCustomers = (client, approve, cycleId) => {
+
+  console.log("Actions", cycleId);
+
+  return dispatch => {
+    return adminServices.approveCustomer(client, approve, cycleId)
       .then(response => {
         dispatch(getAllCustomersToApprove());
         dispatch({

@@ -133,13 +133,27 @@ function getAllCustomersToApprove(){
   });
 };
 
-function approveCustomer(client, approve){
+function getDateListToCustomer(companyid){
+  return request({
+    url: '/Customer/GetDateListToCustomer',
+    method: 'GET',
+    headers:{
+      companyid: companyid
+    }
+  });
+};
+
+function approveCustomer(client, approve, cycleId){
+
+  console.log("Services", cycleId);
+
   return request({
     url: '/Customer/ApproveorReject',
     method: 'PUT',
-    headers:{
+    headers: {
       clientId: parseInt(client, 10),
-      approve: approve
+      approve: approve,
+      cycleId: cycleId
     }
   });
 };
@@ -148,7 +162,7 @@ const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
-  getAllCompaniesWithSalaries, activateCompany
+  getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer
 };
 
 export default adminService;

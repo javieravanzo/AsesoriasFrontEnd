@@ -12,6 +12,7 @@ import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider,
 //Subcomponents
 import FieldTitle from '../subcomponents/FieldTitle';
 import routes from '../../../configuration/routing/Routes';
+import {bankTypeAccountInfo} from '../../../configuration/constants';
 
 //Actions
 import { getRequestData, getOutlayData, getOultayDatesList, createRequest } from "../../../store/redux/actions/customer/customerActions";
@@ -138,10 +139,14 @@ class LoanRequest extends Component {
     
   };
 
-  sendReportInfo = (maximumSplit) => {
-    console.log("E", maximumSplit);
-    if( this.state.fee !== null){
-      this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
+  sendReportInfo = (e, maximumSplit) => {
+    console.log("e", e, maximumSplit);
+    if(e <= maximumSplit){
+      if( this.state.fee !== null){
+        this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
+      }
+    }else{
+      WARNING_MODAL("Advertencia", "Por ingresa un número de cuotas válido");
     }
   };
 
@@ -311,7 +316,7 @@ class LoanRequest extends Component {
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, otherCollectionValue, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
-    let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
+    let { bankInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
     //console.log("ODL", this.state.sliderValue);
@@ -419,7 +424,7 @@ class LoanRequest extends Component {
                           ]})(
                             <Row>
                               <Input className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit}
-                              onChange={(e) => this.onChangeFee(e)} onBlur={() => this.sendReportInfo(maximumSplit)}
+                              onChange={(e) => this.onChangeFee(e)} onBlur={(e) => this.sendReportInfo(e.target.value, maximumSplit)}
                               disabled={sliderValue < 80000 ? true : false} />
                             </Row>
                           )

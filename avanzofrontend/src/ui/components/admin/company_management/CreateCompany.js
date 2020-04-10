@@ -1,12 +1,12 @@
 //Libraries
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
-import { Form, Select, Button, Col, Row, Collapse, InputNumber, Input, Tooltip, Icon, Table} from 'antd';
+//import {Redirect} from 'react-router-dom';
+import { Form, Select, Button, Col, Row, Collapse, InputNumber, Input, Tooltip, Table} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import FieldTitle from '../../subcomponents/FieldTitle';
-import routes from '../../../../configuration/routing/Routes';
+//import routes from '../../../../configuration/routing/Routes';
 
 //Styles
 import '../../../styles/admin/create-company.css';
@@ -115,7 +115,7 @@ class CreateCompany extends Component {
         }else{
           let newSalary = [{
             companyRate: values.companyRate,
-            companyReportDate: values.companyReportDate,
+            companyReportDates: values.companyReportDate,
             companyFirstDate: values.companyFirstDate,
             companySecondDate: values.companySecondDate,
           }];
@@ -155,8 +155,8 @@ class CreateCompany extends Component {
 
   addNewSalary = () => {
     
-    let {companyRate, companyReportDate, companyFirstDate, companySecondDate, burstingKey, defaultPaymentRate,
-         defaultSalaryDate, defaultReportDate } = this.state;
+    let {companyRate, companyReportDate, companyFirstDate, companySecondDate, defaultPaymentRate,
+         defaultSalaryDate } = this.state;
 
     let datesArray = this.state.companySalaries;
 
@@ -170,7 +170,7 @@ class CreateCompany extends Component {
 
     let newSalary = {
       companyRate: companyRate,
-      companyReportDate: companyReportDate,
+      companyReportDates: companyReportDate,
       companyFirstDate: companyFirstDate,
       companySecondDate: companySecondDate,
     };

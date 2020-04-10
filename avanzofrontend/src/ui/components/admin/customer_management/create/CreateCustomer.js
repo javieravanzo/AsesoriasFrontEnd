@@ -9,6 +9,7 @@ import connect from 'react-redux/es/connect/connect';
 import FieldTitle from '../../../subcomponents/FieldTitle';
 import { SUCCESS_MODAL, ERROR_MODAL } from '../../../subcomponents/modalMessages';
 import { allowEmergingWindows, WARNING_MODAL } from '../../../subcomponents/modalMessages';
+import {bankTypeAccountInfo} from '../../../../../configuration/constants';
 
 //Actions
 import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";

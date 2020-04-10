@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { allowEmergingWindows, WARNING_MODAL } from '../../../subcomponents/modalMessages';
 
 //Actions
-import {approveCustomers} from "../../../../../store/redux/actions/admin/adminActions";
+import {approveCustomers, getDateListToCustomer} from "../../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
@@ -30,8 +30,11 @@ class RequestModalCard extends Component {
       card_style_approved: "approved",
       card_style_rejected: "rejected",
       reject_modal: null,
+      cycle: null,
     };
    
+    this.props.getDateListToCustomer(this.props.item.idCompany);
+
   };
 
   defineBadgeName = (id) => {
@@ -91,25 +94,38 @@ class RequestModalCard extends Component {
   };
 
   onConfirmRequest = () => {
-    this.props.approveCustomers(this.props.item.idNewClient, true);
-    this.setState({approve_modal: false});
+    console.log("SC", this.state.cycle);
+    if(this.state.cycle === null || this.state.cycle === undefined){
+      WARNING_MODAL("Advertencia", "Por favor escoja un ciclo de pagos para el usuario");
+      this.setState({approve_modal: false});
+    }else{
+      this.props.approveCustomers(this.props.item.idNewClient, true, this.state.cycle);
+      this.setState({approve_modal: false});
+    }
   };
 
   onRejectRequest = () => {
-    this.props.approveCustomers(this.props.item.idNewClient, false);
+    this.props.approveCustomers(this.props.item.idNewClient, false, -1);
     this.setState({reject_modal: false});
   };
 
   validationInputNumbers = (e) => {
-    console.log("E", e);
     const input = e.toString();
     e = input.replace(/[^0-9]/g, '');
+  };
+
+  changeCycle = (e) => {
+    console.log("E", e);
+    this.setState({
+      cycle: e
+    });
   };
 
   render(){
 
     let item = this.props.item;
-    console.log("DA", item);
+    let cycles = this.props.customerDateList !== null ? this.props.customerDateList : [];
+    console.log("Cycle", this.state.cycle);
 
     return (
           <div key={item.key} className={"request-state-item-requested"}>
@@ -182,14 +198,14 @@ class RequestModalCard extends Component {
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={6}>
                   <b>Ciclo de pagos</b><br/>
-                  <Select className={"payments-select"} defaultValue={"Ciclo 1 - Mensual"} placeholder="Selecciona el ciclo de pagos" allowClear={true} showSearch={true}>    
-                    <Select.Option key={1} value={1}>
-                      {"Ciclo 1 - Mensual" }
-                    </Select.Option>
-                    <Select.Option key={2} value={2}>
-                      {"Ciclo 2 - Quincenal"}
-                    </Select.Option>
-                  </Select>
+                      <Select className={"payments-select"} placeholder="Selecciona el ciclo de pagos" onChange={this.changeCycle} allowClear={true} showSearch={true}>    
+                        {
+                        cycles.map((type, i) => (
+                          <Select.Option key={i} value={type.idCompanySalaries}>
+                            {type.companyRateName + "-" + type.companyPaymentDates}
+                          </Select.Option>))
+                        }
+                      </Select>
                 </Col>
                 
                 <Col xs={12} sm={12} md={8} lg={4} >
@@ -259,17 +275,20 @@ class RequestModalCard extends Component {
 
 RequestModalCard.propTypes = {
   customerList: PropTypes.array,
+  customerDateList: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
   return {
     customerList: state.admin.customerList,
+    customerDateList: state.admin.customerDateList,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    approveCustomers: (client, approve) => dispatch(approveCustomers(client, approve)), 
+    approveCustomers: (client, approve, cycleId) => dispatch(approveCustomers(client, approve, cycleId)), 
+    getDateListToCustomer: (companyId) => dispatch(getDateListToCustomer(companyId)),
   }
 };
 

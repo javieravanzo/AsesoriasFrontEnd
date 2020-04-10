@@ -11,7 +11,8 @@ const initialState={
   companySalaryResponse: [],  
   companyList: null,
   customerList: null,
-  customerListToApprove: null
+  customerListToApprove: null, 
+  customerDateList: null,
 };
 
 export default function adminReducer(state = initialState, action){
@@ -60,12 +61,18 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         customerListToApprove: action.payload
-      };  
+      };
+    case C.GET_DATELIST_TO_CUSTOMER:
+      return{
+        ...state,
+        customerDateList: action.payload
+      }  
     case C.GET_REQUEST_TO_OUTLAY:
       return{
         ...state,
         requestOutLayResponse: action.payload
-      };       
+      };  
+
     default:
       return state;
   }
