@@ -27,7 +27,7 @@ const columns = [
   },
   {
     title: 'Fecha de reporte',
-    dataIndex: 'companyReportDate',
+    dataIndex: 'companyReportDates',
   },
   {
     title: 'Fecha de pago 1',
