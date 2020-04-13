@@ -293,9 +293,9 @@ class CreateCompany extends Component {
   render(){
     
     let {getFieldDecorator} = this.props.form;
-    let {companySalaries, burstingFormKey, clearSelect, defaultPaymentRate, defaultReportDate, defaultSalaryDate} = this.state;
-    //console.log("CS", clearSelect);
-    console.log("UP", this.state.burstingKey);
+    let {companySalaries, burstingFormKey, defaultPaymentRate, defaultReportDate, defaultSalaryDate} = this.state;
+  
+    //console.log("UP", this.state.burstingKey);
     
     return (
       <div className={"company-div"}>

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 //Subcomponents
 import { allowEmergingWindows, WARNING_MODAL } from '../../../subcomponents/modalMessages';
+import BaseURL from '../../../../../services/BaseURL';
 
 //Actions
 import {approveCustomers, getDateListToCustomer} from "../../../../../store/redux/actions/admin/adminActions";
@@ -75,13 +76,12 @@ class RequestModalCard extends Component {
 
   seeDocument = (file1, file2, file3) => {
 
-    //let url = filePath;
-    let baseURL = "http://3.133.128.42:4000/";
+    console.log("File1", file1, "File2", file2, "File3", file3);
 
     if (file1 !== null && file2 !== null && file3 !== null) {
-      let newWindow = window.open(baseURL + file1, "_blank");
-      let newWindow1 = window.open(baseURL + file2, "_blank");
-      let newWindow2 = window.open(baseURL + file3, "_blank");
+      let newWindow = window.open(BaseURL +"/"+ file1, "_blank");
+      let newWindow1 = window.open(BaseURL +"/"+ file2, "_blank");
+      let newWindow2 = window.open(BaseURL +"/"+ file3, "_blank");
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' || 
           !newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined' ||
           !newWindow2 || newWindow2.closed || typeof newWindow2.closed === 'undefined') {
@@ -125,7 +125,7 @@ class RequestModalCard extends Component {
 
     let item = this.props.item;
     let cycles = this.props.customerDateList !== null ? this.props.customerDateList : [];
-    console.log("Cycle", this.state.cycle);
+    console.log("item", this.props.item);
 
     return (
           <div key={item.key} className={"request-state-item-requested"}>
@@ -182,8 +182,8 @@ class RequestModalCard extends Component {
                   {item.socialReason}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
-                  <b>Cargo</b><br/>
-                  {item.profession === null || item.profession === undefined ? "-" : item.profession}
+                  <b>No. Celular</b><br/>
+                  {item.phoneNumber}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                   <b>Dirección</b><br/>
@@ -196,13 +196,13 @@ class RequestModalCard extends Component {
                   <b>Monto</b><br/>
                   <InputNumber onChange={(e) => this.validationInputNumbers(e)} min={80000} formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} className={"amount-inputs"} defaultValue={item.defaultAmount} placeholder="Monto máximo"/>
                 </Col>
-                <Col xs={12} sm={12} md={8} lg={6}>
+                <Col xs={12} sm={12} md={8} lg={8}>
                   <b>Ciclo de pagos</b><br/>
                       <Select className={"payments-select"} placeholder="Selecciona el ciclo de pagos" onChange={this.changeCycle} allowClear={true} showSearch={true}>    
                         {
                         cycles.map((type, i) => (
                           <Select.Option key={i} value={type.idCompanySalaries}>
-                            {type.companyRateName + "-" + type.companyPaymentDates}
+                            {type.companyRateName + " - " + type.companyPaymentDates}
                           </Select.Option>))
                         }
                       </Select>
@@ -210,15 +210,11 @@ class RequestModalCard extends Component {
                 
                 <Col xs={12} sm={12} md={8} lg={4} >
                     <b>Cuotas</b><br/>
-                    {item.maximumSplit}
+                    {item.montlyFee}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Cuenta</b><br/>
-                    {item.accountBank === null || item.profession === undefined ? "-" : item.accountBank}
-                </Col>
-                <Col xs={12} sm={12} md={7} lg={5}>
-                    <b>Número de cuenta</b><br/>
-                    {item.accountNumber === null || item.profession === undefined  ? "-" : item.accountNumber}
+                <Col xs={12} sm={12} md={7} lg={7}>
+                    <b>Correo Electrónico</b><br/>
+                    {item.email}
                 </Col>
               </Row>
               <Row style={{marginTop: "5px", marginBottom: "15px"}} gutter={4}>

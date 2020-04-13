@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table } from 'antd';
+import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table, Spin } from 'antd';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
@@ -11,7 +11,7 @@ import {updateCompany, getCompanyWithSalary} from "../../../../store/redux/actio
 const columns = [
   {
     title: 'Tipo de ciclo',
-    dataIndex: 'companyRate',
+    dataIndex: 'companyRateName',
   },
   {
     title: 'Fecha de reporte',
@@ -20,10 +20,6 @@ const columns = [
   {
     title: 'Fecha de pago 1',
     dataIndex: 'companyFirstDate',
-  },
-  {
-    title: 'Fecha de pago 2',
-    dataIndex: 'companySecondDate',
   },
   {
     title: 'Acciones',
@@ -134,12 +130,11 @@ class SalariesTable extends Component {
         let item = linkList[i];
         let row = {
           key: i,
-          companyFirstDate: item.companyFirstDate,
+          companyFirstDate: item.companyPaymentDates,
           companyPaymentNumber: item.companyPaymentNumber,
           companyRate: item.companyRate,
           companyRateName: item.companyRateName,
-          companyReportDate: item.companyReportDate,
-          companySecondDate: item.companySecondDate,
+          companyReportDate: item.companyReportDates,
           idCompanySalaries: item.idCompanySalaries,  
           actions:  <Row gutter={16}>
                       <Col span={3}/>
@@ -163,6 +158,7 @@ class SalariesTable extends Component {
     //console.log("State", this.state.visible);
     //console.log("Props", this.props.companySalaryResponse);
     let tableData = this.setData(this.state.companySalaries);
+    console.log("TableD", tableData);
 
     return (
       <div>
@@ -185,7 +181,7 @@ class SalariesTable extends Component {
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 NIT:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.nit} onChange={(e) => this.inputServiceNumber(e, 'nit')} placeholder={"NIT"}/>
+                <Input className={"company-edit-nit"} defaultValue={this.props.item.nit} onChange={(e) => this.inputServiceName(e, 'nit')} placeholder={"NIT"}/>
               </Col>
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Correo electrónico:
@@ -225,8 +221,17 @@ class SalariesTable extends Component {
             
             <br/>
             <Row>
+              { 
+                tableData.length === 0 && 
+                <div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+                  Cargando ...
+                  <br/>
+                  <br/>
+                  <Spin size="large" />
+                 </div>
+              }
               {
-                this.props.companySalaryResponse && 
+                (this.props.companySalaryResponse && tableData.length !== 0) && 
                 <Table columns={columns} dataSource={tableData} key={'idCompanySalaries'} size="small" bordered={false} locale={{emptyText: 'No hay registros'}}/>
               }
             </Row>

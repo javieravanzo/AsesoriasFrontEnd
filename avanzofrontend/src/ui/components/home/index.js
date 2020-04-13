@@ -203,7 +203,6 @@ class Home extends Component {
     });
     
     let file1 = "https://drive.google.com/open?id=1QmZLrbxljJAcsHqY9EOL8epl6-wPLloj";
-    //let baseURL = "http://3.133.128.42:4000/";
     let file2 = "https://drive.google.com/open?id=1tW9L5Mg7mKxfhZdwR2QqcAvJNnc8PXev";
 
     if (file1 !== null && file2 !== null) {

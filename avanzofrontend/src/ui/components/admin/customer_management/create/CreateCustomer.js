@@ -14,6 +14,8 @@ import {bankTypeAccountInfo} from '../../../../../configuration/constants';
 //Actions
 import {getCompanies} from "../../../../../store/redux/actions/general/loginActions";
 import {createCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+import {getDateListToCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+
 
 import { getOutlayData } from "../../../../../store/redux/actions/customer/customerActions";
 
@@ -114,16 +116,28 @@ class CustomerManagement extends Component {
 
   };
 
+  changeCompany = (e) => {
+
+    console.log("E", e);
+
+    if(e !== null && e !== undefined){
+      this.props.getDateListToCustomer(e);
+    }
+    
+
+  };
+
   render(){
 
     let { companyList } = this.props;
     let {getFieldDecorator} = this.props.form;
     let { outlayDataResponse } = this.props;
-    let { bankInfo, bankTypeAccountInfo, walletInfo } = outlayDataResponse;
+    let { bankInfo, walletInfo } = outlayDataResponse;
     let {bank_account, money_wallet} = this.state;
+    let cycles = this.props.customerDateList !== null ? this.props.customerDateList : [];
     const props = {
       name: 'file',
-      action: BaseURL + 'Customer/MultipleCreate',
+      action: BaseURL + '/Customer/MultipleCreate',
       headers: {
         authorization: 'Bearer '+ localStorage.access_token,
         
@@ -233,9 +247,9 @@ class CustomerManagement extends Component {
                                 {required: true, message: 'Por favor ingresa un tipo de identificación'}
                               ]})(
                                 <Select placeholder={"Tipo de documento"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                  <Select.Option value={"Cédula"}>Cédula</Select.Option>
-                                  <Select.Option value={"Pasaporte"}>Pasaporte</Select.Option>
-                                  <Select.Option value={"Otro"}>Otro</Select.Option>
+                                  <Select.Option value={1}>Cédula</Select.Option>
+                                  <Select.Option value={2}>Pasaporte</Select.Option>
+                                  <Select.Option value={3}>Cédula de extranjería</Select.Option>
                                 </Select>
                               )
                             }
@@ -349,7 +363,7 @@ class CustomerManagement extends Component {
                               rules: [ 
                                 {required: true, message: 'Por favor, ingrese su empresa.' }],
                             })(
-                              <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
+                              <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true} onChange={this.changeCompany}
                                 notFoundContent={"No hay empresas disponibles"}>
                                 {companyList.map((type, i) => (
                                   <Select.Option key={i} value={type.idCompany}>
@@ -381,14 +395,12 @@ class CustomerManagement extends Component {
                                 {required: true, message: 'Por favor, ingrese su ciclo de pagos.' }],
                             })(
                               <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}>
-                                
-                                  <Select.Option key={1} value={1}>
-                                    {"Ciclo de pagos 1"}
-                                  </Select.Option>
-                                  <Select.Option key={2} value={2}>
-                                    {"Ciclo de pagos 2"}
-                                  </Select.Option>
-                                
+                                {
+                                  cycles.map((type, i) => (
+                                    <Select.Option key={i} value={type.idCompanySalaries}>
+                                      {type.companyRateName + " - " + type.companyPaymentDates}
+                                    </Select.Option>))
+                                }
                               </Select>
                             )}
                           </FormItem>
@@ -434,8 +446,8 @@ class CustomerManagement extends Component {
                                 ]})(
                                   <Select placeholder={"Tipo de cuenta"}  showSearch={true} onChange={this.changeBankType}>
                                     {bankTypeAccountInfo.map((accountType, i) =>(
-                                      <Select.Option value={accountType.accountTypeName} key={i}>
-                                        {accountType.accountTypeName}
+                                      <Select.Option value={accountType.id} key={i}>
+                                        {accountType.name}
                                       </Select.Option>
                                     ))
                                     }
@@ -471,8 +483,8 @@ class CustomerManagement extends Component {
                                 ]})(
                                   <Select placeholder={"Tipo de billetera"} showSearch={true} onChange={this.changeWalletType}>
                                     {walletInfo.map((wallet, i) =>(
-                                      <Select.Option value={wallet.walletName} key={i}>
-                                        {wallet.walletName}
+                                      <Select.Option value={wallet.bankName} key={i}>
+                                        {wallet.bankName}
                                       </Select.Option>
                                     ))
                                     }
@@ -574,6 +586,7 @@ CustomerManagement.propTypes = {
   companyList: PropTypes.array,
   outlayDataResponse: PropTypes.object,
   createCustomerResponse: PropTypes.bool,
+  customerDateList: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
@@ -581,6 +594,7 @@ const mapStateToProps = (state) => {
     companyList: state.login.companyList,
     outlayDataResponse: state.customer.outlayDataResponse,
     createCustomerResponse: state.admin.createCustomerResponse,
+    customerDateList: state.admin.customerDateList,
   }
 };
 
@@ -589,6 +603,7 @@ const mapDispatchToProps = (dispatch) => {
     getCompanies: ( ) => dispatch(getCompanies( )),
     createCustomer: (data) => dispatch(createCustomer(data)),
     getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
+    getDateListToCustomer: (companyId) => dispatch(getDateListToCustomer(companyId)),
   }
 };
 

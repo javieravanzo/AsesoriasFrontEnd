@@ -15,7 +15,7 @@ const table = [
   {
     title: <div>Nombres</div>,
     dataIndex: 'name',
-    width: "120px",
+    width: "110px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.name.localeCompare(b.name)},
@@ -31,7 +31,7 @@ const table = [
   {
     title: <div className={"table-p"}>Correo Electrónico</div>,
     dataIndex: 'email',
-    width: "100px",
+    width: "120px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.email.localeCompare(b.email)},
@@ -39,18 +39,10 @@ const table = [
   {
     title: <div className={"table-p"}>Fecha Creación</div>,
     dataIndex: 'createdDate',
-    width: "80px",
+    width: "60px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
-  },
-  {
-    title: <div className={"table-p"}>Estado</div>,
-    dataIndex: 'platformState',
-    width: "50px",
-    align: "center",
-    render: text => <div className={"table-p"}>{text}</div>,
-    sorter: (a, b) =>{ return a.platformState.localeCompare(b.platformState)},
   },
   {
     title: <div className={"table-p"}>Empresa</div>,
@@ -68,6 +60,18 @@ const table = [
     render: text => <div className={"table-div"}>{text}</div>,
   } 
 ];
+
+//Table State
+/*,
+  {
+    title: <div className={"table-p"}>Estado</div>,
+    dataIndex: 'platformState',
+    width: "50px",
+    align: "center",
+    render: text => <div className={"table-p"}>{text}</div>,
+    sorter: (a, b) =>{ return a.platformState.localeCompare(b.platformState)},
+  },
+*/
 
 //Functions
 function itemRender(current, type, originalElement) {

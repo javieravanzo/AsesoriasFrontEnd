@@ -22,6 +22,7 @@ class ApproveCustomer extends Component{
       socialReason: null,
       identificationId: null,
       email: null,
+      loadInfo: false
     };
 
     this.props.getAllCustomersToApprove();
@@ -41,15 +42,11 @@ class ApproveCustomer extends Component{
           key: i,
           createdDate: item.createdDate,
           email: item.email,
-          fixedNumber: item.fixedNumber,
-          idAccount: item.idAccount,
           idNewClient: item.idNewClient,
-          idUser: item.idUser,
           identificationId: item.identificationId,
           lastName: item.lastName,
           defaultAmount: item.defaultAmount,
-          maximumAmount: item.maximumAmount,
-          montlyFee: item.montlyFee,
+          montlyFee: item.maximumSplit,
           phoneNumber: item.phoneNumber,
           name: item.name,
           platformState: item.platformState,
@@ -57,6 +54,10 @@ class ApproveCustomer extends Component{
           socialReason: item.socialReason,
           totalRemainder: item.totalRemainder,
           idCompany: item.idCompany,
+          address: item.address,
+          file1: item.file1,
+          file2: item.file2,
+          file3: item.file3
         };
 
         if(this.filterData(row)) {
@@ -101,8 +102,9 @@ class ApproveCustomer extends Component{
   render(){
     
     let {name, identificationId, lastName, socialReason, email} = this.state;
+    console.log("CLA", this.props.customerListToApprove);
     let tableData = this.setData(this.props.customerListToApprove);
-    console.log("TD", tableData, JSON.stringify(tableData) === '[]', JSON.stringify(tableData));
+    //console.log("TD", tableData, JSON.stringify(tableData) === '[]', JSON.stringify(tableData));
 
     if(tableData === null){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>

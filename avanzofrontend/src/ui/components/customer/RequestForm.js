@@ -308,14 +308,14 @@ class LoanRequest extends Component {
 
   render(){
 
-    //console.log( this.props.requestDataResponse);
+    console.log("BankInfo", bankTypeAccountInfo);
     //console.log( "TK", this.props.location.state.token);
 
     let {fee, sliderValue, bank_account, money_wallet} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
-    let { interestValue, adminValue, partialCapacity, maximumSplit, otherCollectionValue, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
+    let { interestValue, adminValue, partialCapacity, maximumSplit, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
     let { bankInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
@@ -582,10 +582,10 @@ class LoanRequest extends Component {
                               {initialValue: accountType, rules: [
                                 {required: false, message: 'Por favor ingresa un tipo de cuenta'}
                               ]})(
-                                <Select placeholder={"Tipo de cuenta"} disabled={sliderValue < 80000 ? true : false} showSearch={true} onChange={this.changeBankType}>
+                                <Select placeholder={"Tipo de cuenta"} disabled={sliderValue < 80000 ? true : false} showSearch={true} allowClear={true} autoClearSearchValue={true} onChange={this.changeBankType}>
                                   {bankTypeAccountInfo.map((accountType, i) =>(
-                                    <Select.Option value={accountType.accountTypeName} key={i}>
-                                      {accountType.accountTypeName}
+                                    <Select.Option value={accountType.id} key={i}>
+                                      {accountType.name}
                                     </Select.Option>
                                   ))
                                   }
@@ -621,8 +621,8 @@ class LoanRequest extends Component {
                               ]})(
                                 <Select placeholder={"Tipo de billetera"} disabled={sliderValue < 80000 ? true : false} showSearch={true} onChange={this.changeWalletType}>
                                   {walletInfo.map((wallet, i) =>(
-                                    <Select.Option value={wallet.walletName} key={i}>
-                                      {wallet.walletName}
+                                    <Select.Option value={wallet.bankName} key={i}>
+                                      {wallet.bankName}
                                     </Select.Option>
                                   ))
                                   }

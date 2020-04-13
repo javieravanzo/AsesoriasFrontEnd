@@ -9,6 +9,9 @@ import PropTypes from 'prop-types';
 import '../../../../styles/admin/request_management/request-state.css';
 import { allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
 
+//Subcomponents
+import BaseURL from '../../../../../services/BaseURL';
+
 //Actions
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
@@ -73,10 +76,8 @@ class RequestStateModal extends Component {
 
     let url = filePath;
 
-    let baseURL = "http://3.133.128.42:4000";
-
     if (url !== null) {
-      let newWindow = window.open(baseURL + filePath, "blank");
+      let newWindow = window.open(BaseURL +"/"+ filePath, "blank");
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
         allowEmergingWindows();
       }

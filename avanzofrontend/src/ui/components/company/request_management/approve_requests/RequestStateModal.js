@@ -9,6 +9,9 @@ import PropTypes from 'prop-types';
 import '../../../../styles/admin/request_management/request-state.css';
 import { SUCCESS_MODAL, allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
 
+//Subcomponents
+import BaseURL from '../../../../../services/BaseURL';
+
 //Actions
 import {approveorRejectRequestByCompany} from "../../../../../store/redux/actions/general/generalActions";
 
@@ -77,10 +80,9 @@ class RequestStateModal extends Component {
     //console.log(url);
     let newUrl = url.split('.');
     //console.log("URL", newUrl, newUrl[1]);
-    let baseURL = "http://3.133.128.42:4000";
 
     if (url !== null) {
-      let newWindow = window.open(baseURL + newUrl[1], "blank");
+      let newWindow = window.open( BaseURL +"/"+  newUrl[1], "blank");
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
         allowEmergingWindows();
       }
