@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
 //Actions
-import {activateCustomer, updateCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+import {activateCustomer, updateCustomer, deleteClient} from "../../../../../store/redux/actions/admin/adminActions";
 
 //Styles
 
@@ -26,6 +26,7 @@ class TableButtons extends Component {
       email: null,
       phoneNumber: null,
       loading: false,
+      delete: null,
     };
 
     this.inputServiceName = this.inputServiceName.bind(this);
@@ -50,6 +51,14 @@ class TableButtons extends Component {
   inputServiceTime(e){
     let item = e;
     this.props.activateCustomer(item.idClient, parseInt(item.platformState, 10) === 1 ? false : true);    
+  };
+
+  deleteUser(e){
+    let item = e;
+    this.props.deleteClient(item.idClient);   
+    this.setState({
+      delete: false
+    });
   };
 
   handleEdit(item){
@@ -83,13 +92,19 @@ class TableButtons extends Component {
                 type={"edit"} style={{ fontSize: '16px'}}/>
             </Tooltip>
           </Col>
-          <Col span={2}/>
+          
           <Col span={6}  className={"delete-col"}>
             <Tooltip title={"Activar/Desactivar cliente"}>
               <Icon className={"icon-button delete-icon"} onClick={() => this.inputServiceTime(this.props.item)}
                 type={"poweroff"} style={{ fontSize: '16px'}}/>
             </Tooltip>
-          </Col>          
+          </Col>
+          <Col span={6}  className={"delete-col"}>
+            <Tooltip title={"Eliminar cliente"}>
+              <Icon className={"icon-button delete-icon"} onClick={() => this.setState({delete: true})}
+                type={"close-circle"} style={{ fontSize: '16px'}}/>
+            </Tooltip>
+          </Col>           
         </Row>
         <Modal
             title={"Editar cliente"}
@@ -145,6 +160,18 @@ class TableButtons extends Component {
               
             </Row>
         </Modal>
+        <Modal
+          title={"Eliminar cliente"}
+          visible={this.state.delete}
+          okText={"Aceptar"}
+          cancelText={"Cancelar"}
+          width={500}
+          onOk={() => this.deleteUser(this.props.item)}
+          onCancel={() => this.setState({delete: false})}>
+          <p>
+            ¿Está seguro de eliminar el cliente? Este proceso será irreversible.
+          </p>
+        </Modal>
       </div>
     );
   };
@@ -164,6 +191,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     activateCustomer: (clientId, status) => dispatch(activateCustomer(clientId, status)),
     updateCustomer: (data) => dispatch(updateCustomer(data)),
+    deleteClient: (clientid) => dispatch(deleteClient(clientid))
   }
 };
 

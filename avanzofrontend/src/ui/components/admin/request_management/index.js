@@ -5,6 +5,8 @@ import {Row, Col, Tabs, Icon} from 'antd';
 //Components
 import ApproveRequest from './approve_requests/ApproveRequest';
 import MakeOutlay from './make_outlay/MakeOutlay';
+import RejectedRequest from './rejected_requests/RejectedRequest';
+import PendingRequest from './pending_rrhh/PendingRequest';
 
 //Styles
 import '../../../styles/admin/index.css';
@@ -59,6 +61,12 @@ class Customer_Management extends Component {
                 <MakeOutlay/>
               </TabPane>
             }
+            <TabPane tab={<span> <Icon type="close-circle" />Solicitudes rechazadas </span>} key="3">
+              <RejectedRequest/>
+            </TabPane>
+            <TabPane tab={<span> <Icon type="team" />Pendientes RR.HH.</span>} key="4">
+              <PendingRequest/>
+            </TabPane>
           </Tabs>
           </Col>
         </Row>

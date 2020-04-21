@@ -158,7 +158,7 @@ class SalariesTable extends Component {
     //console.log("State", this.state.visible);
     //console.log("Props", this.props.companySalaryResponse);
     let tableData = this.setData(this.state.companySalaries);
-    console.log("TableD", tableData);
+    //console.log("TableD", tableData);
 
     return (
       <div>

@@ -76,7 +76,7 @@ class RequestModalCard extends Component {
 
   seeDocument = (file1, file2, file3) => {
 
-    console.log("File1", file1, "File2", file2, "File3", file3);
+    //console.log("File1", file1, "File2", file2, "File3", file3);
 
     if (file1 !== null && file2 !== null && file3 !== null) {
       let newWindow = window.open(BaseURL +"/"+ file1, "_blank");
@@ -94,7 +94,7 @@ class RequestModalCard extends Component {
   };
 
   onConfirmRequest = () => {
-    console.log("SC", this.state.cycle);
+    //console.log("SC", this.state.cycle);
     if(this.state.cycle === null || this.state.cycle === undefined){
       WARNING_MODAL("Advertencia", "Por favor escoja un ciclo de pagos para el usuario");
       this.setState({approve_modal: false});
@@ -115,7 +115,7 @@ class RequestModalCard extends Component {
   };
 
   changeCycle = (e) => {
-    console.log("E", e);
+    //console.log("E", e);
     this.setState({
       cycle: e
     });
@@ -125,7 +125,7 @@ class RequestModalCard extends Component {
 
     let item = this.props.item;
     let cycles = this.props.customerDateList !== null ? this.props.customerDateList : [];
-    console.log("item", this.props.item);
+    //console.log("item", this.props.item);
 
     return (
           <div key={item.key} className={"request-state-item-requested"}>
@@ -258,9 +258,9 @@ class RequestModalCard extends Component {
             cancelText={"Cancelar"}
             width={450}
             onOk={() => this.onRejectRequest()}
-            onCancel={() => this.setState({approve_modal: false})}>
+            onCancel={() => this.setState({reject_modal: false})}>
               <div>
-                ¿Está seguro de realizar el rechazo del cliente?. El usuario será envíado a un estado de rechazado o pendiente de evaluación particular.               
+                ¿Está seguro de realizar el rechazo del cliente? El usuario será envíado a un estado de rechazado o pendiente de evaluación particular.               
               </div>
           </Modal>
         </div>

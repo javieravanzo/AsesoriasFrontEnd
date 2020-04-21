@@ -192,7 +192,7 @@ class CreateCompany extends Component {
       });
       datesArray.push(newSalary);
     }
-    console.log("Salió", this.state.burstingKey);
+    //console.log("Salió", this.state.burstingKey);
   };
 
   changeRatesValues = (e, param) => {
@@ -258,7 +258,6 @@ class CreateCompany extends Component {
   };
 
   validationNumbersFee = (e) => {
-    console.log()
     const input = e.toString();
     e = input.replace(/[^0-9]/g, '');
   };

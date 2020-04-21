@@ -118,13 +118,12 @@ class CustomerManagement extends Component {
 
   changeCompany = (e) => {
 
-    console.log("E", e);
+    //console.log("E", e);
 
     if(e !== null && e !== undefined){
       this.props.getDateListToCustomer(e);
     }
     
-
   };
 
   render(){

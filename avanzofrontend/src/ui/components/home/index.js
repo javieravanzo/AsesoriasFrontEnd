@@ -393,7 +393,7 @@ class Home extends Component {
                                       <Checkbox className={'checkbox-terms-conditions'} onChange={(e) => this.onChangeField(e, 'checkBox1')}/>
                                     </Col>
                                     <Col lg={22} md={22} sm={22} xs={22}>
-                                      <span onClick={() => this.openTermsandConditions()} className={"form-names-terms"}>{""} Acepto los <u>Términos, Condiciones de uso y Autorización de tratamiento de datos.</u></span>
+                                      <span className={"form-names-terms"}>{""} Acepto los <u onClick={() => this.openTermsandConditions()}>Términos, Condiciones de uso y Autorización de tratamiento de datos.</u></span>
                                     </Col>
                                   </Row>
                                 </Col>
@@ -414,7 +414,7 @@ class Home extends Component {
                         width={600}
                         onCancel={() => this.setState({visibleTermModal: false})}
                         footer={
-                          <Button key='submit' type='primary' disabled={this.state.clicked && this.props.newRegisterResponse === null} loading={this.state.clicked } onClick={() => this.setState({visibleTermModal: false, clicked: true})}>
+                          <Button key='submit' type='primary' disabled={this.state.clicked && this.props.newRegisterResponse === null} onClick={() => this.setState({visibleTermModal: false, clicked: true})}>
                             Aceptar
                           </Button>}>
                         <div>

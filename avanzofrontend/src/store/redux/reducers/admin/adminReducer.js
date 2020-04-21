@@ -13,6 +13,8 @@ const initialState={
   customerList: null,
   customerListToApprove: null, 
   customerDateList: null,
+  rejectedRequest: null,
+  pendingRHRequest: null,
 };
 
 export default function adminReducer(state = initialState, action){
@@ -56,11 +58,21 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         customerList: action.payload
-      };
+      };      
     case C.GET_CUSTOMERS_TO_APPROVE:
       return{
         ...state,
         customerListToApprove: action.payload
+      };
+    case C.GET_REJECTED_REQUEST:
+      return{
+        ...state,
+        rejectedRequest: action.payload
+      };
+    case C.GET_PENDINGRH_REQUEST:
+      return{
+        ...state,
+        pendingRHRequest: action.payload
       };
     case C.GET_DATELIST_TO_CUSTOMER:
       return{

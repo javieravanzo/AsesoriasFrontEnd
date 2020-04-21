@@ -32,26 +32,33 @@ const table = [
     sorter: (a, b) =>{ return a.nit.toString().localeCompare(b.nit.toString())},
   },
   {
-    title: <div className={"table-p"}>Cantidad Préstamo</div>,
+    title: <div className={"table-p"}>Cantidad</div>,
     dataIndex: 'quantity',
-    width: "80px",
+    width: "60px",
     align: "center",
     render: text => <div className={"table-p"}>{"$"+text}</div>,
     sorter: (a, b) =>{ return a.quantity.toString().localeCompare(b.quantity.toString())},
   },
   {
-    title: <div className={"table-p"}>Cantidad Cuotas</div>,
+    title: <div className={"table-p"}>Cuotas</div>,
     dataIndex: 'split',
-    width: "80px",
+    width: "50px",
     align: "center",
     render: text => <div className={"table-p"}>{text}</div>,
     sorter: (a, b) =>{ return a.split.toString().localeCompare(b.split.toString())},
   },
-  
+  {
+    title: <div className={"table-p"}>Estado</div>,
+    dataIndex: 'status',
+    width: "50px",
+    align: "center",
+    render: text => <div className={"table-p"}>{text}</div>,
+    sorter: (a, b) =>{ return a.split.toString().localeCompare(b.split.toString())},
+  },  
   {
     title: <div className={"table-p"}>Fecha Creación</div>,
     dataIndex: 'registeredDate',
-    width: "110px",
+    width: "100px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
     sorter: (a, b) =>{ return a.registeredDate.localeCompare(b.registeredDate)},
@@ -114,7 +121,7 @@ class CompanyTable extends Component {
           quantity: item.defaultAmount,
           approveHumanResources: item.approveHumanResources,
           email: item.email,
-          status: item.status,
+          status: item.status === 1 ? "Activo" : "Inactivo",
           actions: <TableButtons item={item}/>
         };
 

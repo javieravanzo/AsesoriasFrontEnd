@@ -140,7 +140,7 @@ class LoanRequest extends Component {
   };
 
   sendReportInfo = (e, maximumSplit) => {
-    console.log("e", e, maximumSplit);
+    //console.log("e", e, maximumSplit);
     if(e <= maximumSplit){
       if( this.state.fee !== null){
         this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
@@ -308,7 +308,7 @@ class LoanRequest extends Component {
 
   render(){
 
-    console.log("BankInfo", bankTypeAccountInfo);
+    //console.log("BankInfo", bankTypeAccountInfo);
     //console.log( "TK", this.props.location.state.token);
 
     let {fee, sliderValue, bank_account, money_wallet} = this.state;
@@ -447,7 +447,7 @@ class LoanRequest extends Component {
                         </Row>
                         <Row gutter={8}>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "right"}}>
-                          <b>Interés total</b>
+                          <b>Interés total (28,16% E.A.)</b>
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                           <b>
@@ -481,11 +481,21 @@ class LoanRequest extends Component {
                         </Row>
                         <Row gutter={8}>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "right"}}>
-                            <b>Otros cobros</b>
+                            <b>IVA</b>
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                                               value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.ivaValue} thousandSeparator={'.'}
+                                              decimalSeparator={','} prefix={'$'}/></b>
+                          </Col>
+                        </Row>
+                        <Row gutter={8}>
+                          <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "right"}}>
+                            <b>Otros cobros</b>
+                          </Col>
+                          <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
+                            <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : 0} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>

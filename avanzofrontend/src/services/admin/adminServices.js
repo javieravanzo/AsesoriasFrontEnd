@@ -116,7 +116,6 @@ function getAllCompaniesWithSalaries(companyid){
       companyid: companyid
     }
   });
-  
 }
 
 function getAllCustomers(){
@@ -133,6 +132,20 @@ function getAllCustomersToApprove(){
   });
 };
 
+function getAllRejectedRequest(){
+  return request({
+    url: '/Request/GetAllRejected',
+    method: 'GET'
+  });
+};
+
+function getAllPendingRHRequest(){
+  return request({
+    url: '/Request/GetAllPendingRRHH',
+    method: 'GET'
+  });
+};
+
 function getDateListToCustomer(companyid){
   return request({
     url: '/Customer/GetDateListToCustomer',
@@ -145,8 +158,6 @@ function getDateListToCustomer(companyid){
 
 function approveCustomer(client, approve, cycleId){
 
-  console.log("Services", cycleId);
-
   return request({
     url: '/Customer/ApproveorReject',
     method: 'PUT',
@@ -156,13 +167,28 @@ function approveCustomer(client, approve, cycleId){
       cycleId: cycleId
     }
   });
+
+};
+
+
+function deleteClient(client){
+
+  return request({
+    url: '/Customer/Delete',
+    method: 'PUT',
+    headers: {
+      clientId: parseInt(client, 10),
+    }
+  });
+  
 };
 
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
-  getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer
+  getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
+  getAllPendingRHRequest, deleteClient
 };
 
 export default adminService;

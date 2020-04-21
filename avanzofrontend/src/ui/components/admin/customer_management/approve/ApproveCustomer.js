@@ -102,7 +102,7 @@ class ApproveCustomer extends Component{
   render(){
     
     let {name, identificationId, lastName, socialReason, email} = this.state;
-    console.log("CLA", this.props.customerListToApprove);
+    //console.log("CLA", this.props.customerListToApprove);
     let tableData = this.setData(this.props.customerListToApprove);
     //console.log("TD", tableData, JSON.stringify(tableData) === '[]', JSON.stringify(tableData));
 

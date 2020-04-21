@@ -49,7 +49,7 @@ export const createCompany = (data) => {
         //SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
         CONFIRM_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
-        console.log("Error", err);
+        //console.log("Error", err);
         dispatch({
           type: C.CREATE_COMPANY,
           payload: err,
@@ -163,7 +163,6 @@ export const activateCompany = (clientId, status) => {
   }
 };
 
-
 export const createMultipleCustomer = (data) => {
   return dispatch => {
     return adminServices.createMultipleCustomer(data)
@@ -214,6 +213,42 @@ export const getAllRequestToApprove = () => {
           payload: err,
         });
         ERROR_MODAL('Error al traer la lista de solicitudes para aprobar', err.data.message);
+      });
+  }
+};
+
+export const getAllRejectedRequest = () => {
+  return dispatch => {
+    return adminServices.getAllRejectedRequest()
+      .then(response => {
+        dispatch({
+          type: C.GET_REJECTED_REQUEST,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REJECTED_REQUEST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes rechazadas', err.data.message);
+      });
+  }
+};
+
+export const getAllPendingRHRequest = () => {
+  return dispatch => {
+    return adminServices.getAllPendingRHRequest()
+      .then(response => {
+        dispatch({
+          type: C.GET_PENDINGRH_REQUEST,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_PENDINGRH_REQUEST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes pendientes por RR.HH.', err.data.message);
       });
   }
 };
@@ -330,8 +365,6 @@ export const getDateListToCustomer = (companyId) => {
 
 export const approveCustomers = (client, approve, cycleId) => {
 
-  console.log("Actions", cycleId);
-
   return dispatch => {
     return adminServices.approveCustomer(client, approve, cycleId)
       .then(response => {
@@ -347,6 +380,28 @@ export const approveCustomers = (client, approve, cycleId) => {
           payload: err,
         });
         ERROR_MODAL('Error al modificar el estado del cliente', err.data);
+      });
+  }
+
+};
+
+export const deleteClient = (client) => {
+  
+  return dispatch => {
+    return adminServices.deleteClient(client)
+      .then(response => {
+        dispatch(getAllCustomers());
+        dispatch({
+          type: C.DELETE_CUSTOMERS,
+          payload: response.data
+        });
+        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.DELETE_CUSTOMERS,
+          payload: err,
+        });
+        ERROR_MODAL('Error al realizar el proceso', err.data);
       });
   }
 };
