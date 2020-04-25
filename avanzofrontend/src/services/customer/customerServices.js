@@ -74,7 +74,7 @@ function createRequest(data, token){
 
   var bodyFormData = new FormData();
 
-  bodyFormData.append('file', data.file);
+  
   bodyFormData.append('quantity', data.quantity);
   bodyFormData.append('split', data.split);
   bodyFormData.append('moyen', data.moyen);
@@ -83,7 +83,12 @@ function createRequest(data, token){
   bodyFormData.append('isBank', data.isBank); 
   bodyFormData.append('interest', data.interest);
   bodyFormData.append('administration', data.interest);
-
+  bodyFormData.append('idCompany', data.idCompany);
+  bodyFormData.append('identificationId', data.identificationId);
+  bodyFormData.append('file', data.file);
+  bodyFormData.append('paymentSupport', data.paymentSupport);
+  bodyFormData.append('workingSupport', data.workingSupport);
+  
   if (token === undefined){
     return request({
       url: '/Request/Create',

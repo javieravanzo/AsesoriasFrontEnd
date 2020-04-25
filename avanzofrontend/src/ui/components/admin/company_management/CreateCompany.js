@@ -122,6 +122,8 @@ class CreateCompany extends Component {
           let data = {
             address: values.address,
             approveHumanResources: values.approveHumanResources,
+            paymentSupport: values.paymentSupport,
+            workingSupport: values.workingSupport,
             companySalaries: this.state.companySalaries.length === 0 ? newSalary : this.state.companySalaries,
             defaultAmount: values.defaultAmount,
             economyActivity: values.economyActivity,
@@ -403,14 +405,48 @@ class CreateCompany extends Component {
                                 {required: true, message: 'Ingresa si se aprueba desde recursos humanos'}
                               ]})(
                                 <Select placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
-                                  <Select.Option value={"Sí"}>Sí</Select.Option>
-                                  <Select.Option value={"No"}>No</Select.Option>
+                                  <Select.Option value={true}>Sí</Select.Option>
+                                  <Select.Option value={false}>No</Select.Option>
                                 </Select>
                               )
                           }
                         </FormItem>  
                       </Col>
                       <Col xs={12} sm={12} md={5} lg={8}>
+                          <FieldTitle title={"¿Comprobante de pago?"}/>
+                          <FormItem >
+                            {getFieldDecorator('paymentSupport',
+                              {rules: [
+                                {required: true, message: 'Ingresa si es necesario adjuntar el comprobante de pago'}
+                              ]})(
+                                <Select placeholder={"¿Comprobante de pago?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                  <Select.Option value={true}>Sí</Select.Option>
+                                  <Select.Option value={false}>No</Select.Option>
+                                </Select>
+                              )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={5} lg={8}>
+                          <FieldTitle title={"¿Certificado laboral?"}/>
+                          <FormItem >
+                            {getFieldDecorator('workingSupport',
+                              {rules: [
+                                {required: true, message: 'Ingresa si se es necesario adjuntar el certificado laboral'}
+                              ]})(
+                                <Select placeholder={"¿Certificado laboral?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                  <Select.Option value={true}>Sí</Select.Option>
+                                  <Select.Option value={false}>No</Select.Option>
+                                </Select>
+                              )
+                          }
+                        </FormItem>  
+                      </Col>
+                    
+                    
+                    </Row>
+                    <Row gutter={12} className={"form-request-rows"}>
+                      <Col xs={12} sm={12} md={5} lg={10}>
                           <FieldTitle title={"Máxima cantidad a prestar"}/>
                           <FormItem >
                             {getFieldDecorator('defaultAmount',
@@ -423,7 +459,7 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      <Col xs={12} sm={12} md={5} lg={8}>
+                      <Col xs={12} sm={12} md={5} lg={10}>
                         <FieldTitle title={"Cantidad de cuotas máxima"}/>
                         <FormItem >
                           {getFieldDecorator('maximumSplit',

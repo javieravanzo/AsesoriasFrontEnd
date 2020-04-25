@@ -189,7 +189,11 @@ class Home extends Component {
 
   validationLetters = (e) => {
     const input = e.target.value;
-    e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
+    //e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
+    e.target.value = input.replace(/[^A-zÀ-ú\s]$/g, '');
+    
+    //e.target.value = input.replace(/[A-Za-zÀ-ÖØ-öø-ÿ]$/g, '');
+    //[A-Za-zÀ-ÖØ-öø-ÿ]
   };
 
   validationNumbers = (e) => {

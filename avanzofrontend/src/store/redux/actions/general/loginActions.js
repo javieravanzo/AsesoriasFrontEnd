@@ -16,7 +16,6 @@ function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName,
   localStorage.setItem('expires_on', expires_on);
   localStorage.setItem('user_name', user_name);
   localStorage.setItem('role_id', roleId);
-  localStorage.setItem('role_name', roleName);
   localStorage.setItem('email', email);  
   localStorage.setItem('user_id', userId);
 

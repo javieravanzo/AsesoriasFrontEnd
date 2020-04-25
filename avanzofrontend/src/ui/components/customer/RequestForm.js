@@ -81,6 +81,8 @@ class LoanRequest extends Component {
       signatureDone: false,
       trimmedDataURL: null, 
       flagState: null,
+      workingDocument: null,
+      paymentDocument: null,
     };    
 
     this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
@@ -284,16 +286,39 @@ class LoanRequest extends Component {
           quantity: values.quantity,
           split: this.state.fee,
           moyen: values.moyen,
+          paymentSupport: this.state.paymentDocument !== null ? this.state.paymentDocument : null,
+          workingSupport: this.state.workingDocument !== null ? this.state.workingDocument : null,
           accountType: this.state.money_wallet ? null : values.account_type,
           accountNumber: values.account_number,
           isBank: this.state.money_wallet ? false :  true,
           interest: this.state.sliderValue * interestValue,
-          administration: (this.state.fee%2) * adminValue,     
+          administration: (this.state.fee%2) * adminValue,
+          idCompany: this.props.requestDataResponse.idCompany,  
+          identificationId: this.props.requestDataResponse.identificationId,  
         }
         //console.log(data);
         this.props.createRequest(data, this.props.location.state ? this.props.location.state.token : undefined);
       }     
     });
+  };
+
+  onChangeWorking = (e) =>{
+    let fileType = e.target.files;
+
+    this.setState({
+      workingDocument: fileType[0]
+    });
+
+  };
+
+  onChangePaymentSupport  = (e) =>{
+
+  let fileType = e.target.files;
+
+    this.setState({
+      paymentDocument: fileType[0]
+    });
+
   };
 
   validationLetters = (e) => {
@@ -315,7 +340,8 @@ class LoanRequest extends Component {
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
-    let { interestValue, adminValue, partialCapacity, maximumSplit, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
+    let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
+          paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
     let { bankInfo, walletInfo } = outlayDataResponse;
     let { trimmedDataURL } = this.state;    
 
@@ -485,7 +511,7 @@ class LoanRequest extends Component {
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : outlayDatesList.ivaValue} thousandSeparator={'.'}
+                                              value={JSON.stringify(outlayDatesList) === '{}' ? "-" : Math.ceil(outlayDatesList.ivaValue)} thousandSeparator={'.'}
                                               decimalSeparator={','} prefix={'$'}/></b>
                           </Col>
                         </Row>
@@ -656,12 +682,51 @@ class LoanRequest extends Component {
                         </Col>
                       </Row>
                     }
+                    { 
+                      (workingSupport || paymentSupport) &&
+                        <Row>
+                          <Col lg={1} md={3} sm={5} xs={4}>
+                            <Button className={"step-one"}>
+                              3.
+                            </Button>
+                          </Col>
+                          <Col lg={23} md={21} sm={19} xs={20}>
+                            <div>
+                              <h3>Certificados y soportes</h3>
+                              <Divider className={"form-request-divider"}/>
+                            </div>
+                          </Col>
+                        </Row>
+                    }
                     
+
+                      <Row className={"form-request-rows"}>
+
+                        {
+                          (workingSupport) && 
+                          <Col xs={24} sm={24} md={12} lg={12}>
+                            <FieldTitle title={"Cargar certificado laboral"}/>
+                            <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
+                                  accept=".pdf, application/pdf"/>
+                          </Col>
+                        }
+                        {
+                          (paymentSupport) && 
+                          <Col xs={24} sm={24} md={12} lg={12}>
+                            <FieldTitle title={"Cargar comprobante de pago"}/>
+                            <input key={this.state.kBK} type="file" onChange={this.onChangePaymentSupport}
+                                  accept=".pdf, application/pdf"/>
+                          </Col>
+                        }
+                        <br/>
+                        
+                      </Row> 
+                      <br/>                 
                 
                     <Row>
                       <Col lg={1} md={3} sm={5} xs={4}>
                         <Button className={"step-one"}>
-                          3.
+                          4.
                         </Button>
                       </Col>
                       <Col lg={23} md={21} sm={19} xs={20}>

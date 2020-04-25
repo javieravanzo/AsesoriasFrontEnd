@@ -146,6 +146,9 @@ export const resetValue = () => {
 }
 
 export const createRequest = (data, token) => {
+
+  console.log("Data", data);
+
   return dispatch => {
     return customerService.createRequest(data, token)
       .then(response => {
