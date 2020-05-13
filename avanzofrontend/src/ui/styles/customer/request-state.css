@@ -70,11 +70,11 @@
 
 .request-item-requested-alert{
   background-color: #62b3ff !important;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: center !important;
   width: 763px !important;
   background-color: '#fff';
-  min-height: 90px !important;
+  min-height: 70px !important;
   border-radius: 5px !important;
   border-color: #000 !important;
   position: 'relative';
@@ -86,18 +86,24 @@
 
 .request-item-requested-reject{
   background-color: #cc0000 !important;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
   text-align: center !important;
   width: 763px !important;
   background-color: '#fff';
-  min-height: 70px !important;
+  min-height: 50px !important;
   border-radius: 5px !important;
   border-color: #000 !important;
   position: 'relative';
   box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
-  padding: 20px 20px 20px 20px !important;
+  padding: 14px 10px 5px 10px !important;
   margin-right: auto;
   margin-left: auto;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.rejected-row{
+  height: 50% !important;
 }
 
 .request-item-alert-icon{

@@ -70,10 +70,28 @@ function generateDocuments(customerId, split, quantity) {
   });
 };
 
+function dataURLtoFile(dataurl, filename) {
+ 
+  var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), 
+      n = bstr.length, 
+      u8arr = new Uint8Array(n);
+      
+  while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+  }
+  
+  return new File([u8arr], filename, {type:mime});
+};
+
 function createRequest(data, token){
 
-  var bodyFormData = new FormData();
+  let signature = data.file;
 
+  var file = dataURLtoFile(signature, 'hello.png');
+
+  var bodyFormData = new FormData();
   
   bodyFormData.append('quantity', data.quantity);
   bodyFormData.append('split', data.split);
@@ -85,7 +103,9 @@ function createRequest(data, token){
   bodyFormData.append('administration', data.interest);
   bodyFormData.append('idCompany', data.idCompany);
   bodyFormData.append('identificationId', data.identificationId);
-  bodyFormData.append('file', data.file);
+  bodyFormData.append('loanData', data.loanData);
+  bodyFormData.append('fileString', signature);
+  bodyFormData.append('file', file);
   bodyFormData.append('paymentSupport', data.paymentSupport);
   bodyFormData.append('workingSupport', data.workingSupport);
   

@@ -9,7 +9,7 @@ import RequestModal from "./RequestStateModal";
 //import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
-import {getAllRequest, getAllOutlayedRequest} from "../../../store/redux/actions/customer/customerActions";
+import {getAllRequest, getAllOutlayedRequest, getAllRequestsWasRejected} from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-state.css';
@@ -30,6 +30,8 @@ class RequestState extends Component {
 
     this.props.getAllRequest(parseInt(localStorage.user_id, 10));
     this.props.getAllOutlayedRequest(parseInt(localStorage.user_id, 10));
+    this.props.getAllRequestsWasRejected(parseInt(localStorage.user_id, 10));
+    
 
   };
 
@@ -50,6 +52,7 @@ class RequestState extends Component {
 
   let tableData = this.props.requestList.request;
   let tableOutlayedData = this.props.outlayedRequestList.request;
+  let tableRejectData = this.props.rejectedRequestList.request;
   //console.log("TableData", tableData);
 
   if(JSON.stringify(tableData) === '{}' || JSON.stringify(tableData) === undefined ||
@@ -91,6 +94,16 @@ class RequestState extends Component {
                     </List.Item>
                   )}/>
             </TabPane>
+            <TabPane tab={<span> <Icon type="close-circle" />Solicitudes rechazadas</span>} key="3">
+              <List
+                  locale={{ emptyText: 'No hay solicitudes rechazadas' }}
+                  dataSource={tableRejectData}
+                  renderItem={(item, k) => (
+                    <List.Item className={"request-state-list-item"}>
+                        <RequestModal item={item} key={k}/>
+                    </List.Item>
+                  )}/>
+            </TabPane>
           </Tabs>
           </Col>
         </Row>
@@ -105,12 +118,14 @@ class RequestState extends Component {
 RequestState.propTypes = {
   requestList: PropTypes.object,
   outlayedRequestList: PropTypes.object,
+  rejectedRequestList: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
     requestList: state.customer.requestList,
     outlayedRequestList: state.customer.outlayedRequestList,
+    rejectedRequestList: state.customer.rejectedRequestList,
   }
 };
 
@@ -118,6 +133,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllRequest: (customerId) => dispatch(getAllRequest(customerId)),
     getAllOutlayedRequest: (customerId) => dispatch(getAllOutlayedRequest(customerId)),
+    getAllRequestsWasRejected: (customerId) => dispatch(getAllRequestsWasRejected(customerId)),
+    
   }
 };
 

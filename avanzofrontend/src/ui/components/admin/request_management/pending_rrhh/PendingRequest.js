@@ -170,7 +170,7 @@ class ApproveRequest extends Component {
                         <RequestModal item={item} key={k}/>
                     </List.Item>
                   )}
-                  locale={{emptyText: "No hay solicitudes rechazadas"}}/>
+                  locale={{emptyText: "No hay solicitudes para aprobar por el área de recursos humanos"}}/>
           </Row>
         </div>
       );

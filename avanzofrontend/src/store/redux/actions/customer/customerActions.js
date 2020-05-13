@@ -147,7 +147,20 @@ export const resetValue = () => {
 
 export const createRequest = (data, token) => {
 
-  console.log("Data", data);
+  
+  /*let img_b64 = data.file;
+  let png = img_b64.split(',')[1];
+
+  let the_file = new Blob([window.atob(png)],  {type: 'image/png', encoding: 'utf-8'});
+
+  let fr = new FileReader();
+  fr.onload = function ( oFREvent ) {
+      let v = oFREvent.target.result.split(',')[1]; // encoding is messed up here, so we fix it
+      v = atob(v);
+      let good_b64 = btoa(decodeURIComponent(escape(v)));
+      document.getElementById("uploadPreview").src = "data:image/png;base64," + good_b64;
+  };
+  fr.readAsDataURL(the_file);*/
 
   return dispatch => {
     return customerService.createRequest(data, token)
@@ -220,6 +233,24 @@ export const getAllOutlayedRequest = (customerId) => {
           payload: err,
         });
         ERROR_MODAL('Error al traer la lista de solicitudes desembolsadas.', err.data);
+      });
+  };
+};  
+
+export const getAllRequestsWasRejected = (customerId) => {
+  return dispatch => {
+    return customerService.getAllRequestWasRejected(customerId)
+      .then(response => {
+        dispatch({
+          type: C.GET_REJECTED_REQUEST_LIST,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REJECTED_REQUEST_LIST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes rechazadas.', err.data);
       });
   };
 };  

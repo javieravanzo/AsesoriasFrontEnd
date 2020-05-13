@@ -46,10 +46,8 @@ export const createCompany = (data) => {
           payload: response.data,
           correct: true,
         });
-        //SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
         CONFIRM_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
-        //console.log("Error", err);
         dispatch({
           type: C.CREATE_COMPANY,
           payload: err,
@@ -78,6 +76,28 @@ export const updateCompany = (data) => {
           correct: false,
         });
         ERROR_MODAL('Error al editar la empresa', err.data.message);
+      });
+  }
+};
+
+export const updateCompanySalaries = (data) => {
+  return dispatch => {
+    return adminServices.updateCompanySalaries(data)
+      .then(response => {
+        dispatch(getCompanyWithSalary());
+        dispatch({
+          type: C.UPDATE_COMPANY_SALARIES,
+          payload: response.data,
+          correct: true,
+        });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.UPDATE_COMPANY_SALARIES,
+          payload: err,
+          correct: false,
+        });
+        ERROR_MODAL('Error al editar el ciclo de pago', err.data.message);
       });
   }
 };

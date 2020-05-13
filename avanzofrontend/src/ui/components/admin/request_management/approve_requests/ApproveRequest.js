@@ -125,7 +125,7 @@ class ApproveRequest extends Component {
     let tableData = this.setData(this.props.requestResponse);
     //console.log("JSON", tableData, JSON.stringify(tableData));
     
-    if(tableData === null || tableData === undefined || JSON.stringify(tableData) === '[]'){
+    if(this.props.requestResponse === null){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
                 Cargando ...
                 <br/>

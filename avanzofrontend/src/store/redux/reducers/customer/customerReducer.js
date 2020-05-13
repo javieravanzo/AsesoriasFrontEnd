@@ -13,6 +13,7 @@ const initialState={
   transactionList: [],
   requestList: {},
   outlayedRequestList: {},
+  rejectedRequestList: {},
   requestResponse: null,
 };
 
@@ -68,6 +69,11 @@ export default function customerReducer(state = initialState, action){
       return{
         ...state,
         outlayedRequestList: action.payload,
+      };
+    case C.GET_REJECTED_REQUEST_LIST:
+      return{
+        ...state,
+        rejectedRequestList: action.payload,
       };
     case C.CREATE_REQUEST:
       return{

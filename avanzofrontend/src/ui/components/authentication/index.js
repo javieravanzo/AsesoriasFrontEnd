@@ -19,7 +19,7 @@ import routes from "../../../configuration/routing/Routes";
 import '../../styles/authentication/login.css';
 
 //Assets
-import second_background from "../../assets/authentication/background2.png";
+import second_background from "../../assets/authentication/background.png";
 
 
 //Constants
@@ -65,7 +65,7 @@ class Login extends Component {
         {
           (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register && this.props.pathname !== routes.admin_register && this.props.pathname !== routes.home) && 
           <Layout>
-            <Sider width={400} style={{backgroundColor: "#fff"}}>
+            <Sider width={420} style={{backgroundColor: "#fff"}}>
                 <Switch>            
                   <Route path={routes.login} component={WrappedNormalLoginStandard} />
                   <Route path={routes.forgot_password} component={WrappedForgotPassword} />

@@ -25,6 +25,14 @@ function updateCompany(data){
   });
 };
 
+function updateCompanySalaries(data){
+  return request({
+    url: '/Company/UpdateCompanySalaries',
+    method: 'PUT',
+    data: data
+  });
+};
+
 function createCustomer(data){
   return request({
     url: '/Customer/Create',
@@ -60,7 +68,6 @@ function createMultipleCustomer(data){
   });
 };
 
-
 function activateCompany(companyid, status){
   return request({
     url: '/Company/ChangePlatformStatus',
@@ -71,8 +78,6 @@ function activateCompany(companyid, status){
     }
   });
 };
-
-
 
 function getAllRequest(userId){
   return request({
@@ -188,7 +193,7 @@ const adminService = {
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
-  getAllPendingRHRequest, deleteClient
+  getAllPendingRHRequest, deleteClient, updateCompanySalaries
 };
 
 export default adminService;

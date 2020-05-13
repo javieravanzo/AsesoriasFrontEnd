@@ -7,6 +7,7 @@ import CurrencyFormat from "react-currency-format";
 import '../../styles/customer/request-state.css';
 
 //Constants
+import {requestState} from '../../../configuration/constants';
 const Step = Steps.Step;
 
 class RequestStateModal extends Component {
@@ -154,7 +155,7 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               {
-                item.state === 3 &&
+                item.idRequestState === requestState.RR_HH &&
                 <div className={"request-item-requested-alert"}>
                   <Row>
                     <h3> 
@@ -165,7 +166,7 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.state === 5 &&
+                item.idRequestState === requestState.OUTLAYED &&
                 <div className={"request-item-requested-confirm"}>
                   <Row>
                     <h3> 
@@ -176,13 +177,12 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.state === 4 &&
+                item.idRequestState === requestState.REJECTED &&
                 <div className={"request-item-requested-reject"}>
-                  <Row>
-                    <h3> 
-                      <Icon type="close-circle" className={"request-item-alert-icon"}/> 
-                      {" "}¡Tu solicitud fue rechazada por este motivo: ... !
-                    </h3>
+                  <Row className={"rejected-row"}>
+                    <span>  
+                      {" "}¡Tu solicitud fue rechazada por este motivo: {item.observation} !
+                    </span>
                   </Row>
                 </div>
               }

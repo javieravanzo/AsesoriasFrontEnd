@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Badge, Button} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ import BaseURL from '../../../../../services/BaseURL';
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
-const Step = Steps.Step;
+//const Step = Steps.Step;
 //const TextArea = Input.TextArea;
 
 class RequestStateModal extends Component {
@@ -150,25 +150,9 @@ class RequestStateModal extends Component {
           {
             this.state.visible && 
             <div>
+
               <Row>
                 <Divider/>
-                <Col xs={24} sm={12} md={8} lg={6} >
-                  <b>Flujo de aprobación</b>
-                </Col>  
-              </Row>
-              <br/><br/>
-              <Row>
-                <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
-                  <Step title="Solicitada"/>
-                  <Step title="Evaluada"/>
-                  <Step title="Aprobar RR.H H."/>
-                  <Step title="Aprobar Admon."/>                 
-                  <Step title="Desembolsada"/>
-                  
-                </Steps>
-              </Row>
-              <br/><br/>
-              <Row>
                 <Col xs={24} sm={12} md={8} lg={6} >
                   <b>Información adicional</b>
                 </Col>  
@@ -225,18 +209,14 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row gutter={4}>
-                <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath)} >
+                <Col xs={24} sm={12} md={18} lg={8}>
+                  <Button style={{marginLeft: "20px"}} icon="file" onClick={() => this.seeDocument(item.filePath)} >
                         Ver documento
                   </Button> 
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                  
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-             
-                </Col>
-                
+                <Col xs={24} sm={12} md={6} lg={14} style={{marginTop: "10px"}}>
+                  <b>Observación </b> {item.observation}
+                </Col>               
               </Row>
             </div>
           }

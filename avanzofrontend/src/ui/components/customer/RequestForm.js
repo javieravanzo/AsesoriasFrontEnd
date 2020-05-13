@@ -29,6 +29,7 @@ function format(d) {
   var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    maximumSignificantDigits: 1,
   });
 
   return formatter.format(d);
@@ -48,7 +49,11 @@ const table = [
     dataIndex: 'quantity',
     width: "100px",
     align: "right",
-    render: text => <div className={"table-p"}>{"$"+Math.round(text)}</div>,
+    render: text => 
+      <div className={"table-p"}>
+        <CurrencyFormat  displayType={'text'} style={{width: "100%"}} value={Math.round(text)}
+                         thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
+      </div>,
     sorter: (a, b) =>{ return a.quantity.toString().localeCompare(b.quantity.toString())},
   },
   {
@@ -281,6 +286,7 @@ class LoanRequest extends Component {
         });
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
       }else{
+
         let data = {
           file: this.state.trimmedDataURL,
           quantity: values.quantity,
@@ -294,8 +300,10 @@ class LoanRequest extends Component {
           interest: this.state.sliderValue * interestValue,
           administration: (this.state.fee%2) * adminValue,
           idCompany: this.props.requestDataResponse.idCompany,  
-          identificationId: this.props.requestDataResponse.identificationId,  
-        }
+          identificationId: this.props.requestDataResponse.identificationId,
+          loanData: this.props.outlayDatesList.datesList[0].quantity,
+        };
+
         //console.log(data);
         this.props.createRequest(data, this.props.location.state ? this.props.location.state.token : undefined);
       }     
@@ -764,7 +772,7 @@ class LoanRequest extends Component {
                         <br/>
                         <br/>
                         {trimmedDataURL
-                          ? <img alt="signature" style={{backgroundSize: '200px 50px', width: '200px', backgroundColor: 'white'}}
+                          ? <img alt="signature" style={{margin: 'auto', backgroundSize: '200px 50px', width: '200px', backgroundColor: 'white'}}
                             src={trimmedDataURL} />
                           : null}
                       </Card>

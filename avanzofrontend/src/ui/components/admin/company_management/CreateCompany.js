@@ -194,7 +194,7 @@ class CreateCompany extends Component {
       });
       datesArray.push(newSalary);
     }
-    //console.log("Salió", this.state.burstingKey);
+    
   };
 
   changeRatesValues = (e, param) => {
