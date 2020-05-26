@@ -26,4 +26,5 @@ export default {
   customer_transactions: "/customer-transactions",
   customer_form_request: "/customer-form-request",
   customer_review_requests: "/customer-review-requests", 
+  customer_account: "/customer-account",
 };  

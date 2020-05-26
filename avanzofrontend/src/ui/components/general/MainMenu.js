@@ -122,7 +122,14 @@ class MainMenu extends Component {
                   </NavLink>  
                 </Menu.Item>
               }
-                          
+              {
+                (parseInt(role,10) === 4) && 
+                <Menu.Item className={"menu-user-request"}>
+                  <NavLink to={routes.customer_account}>
+                    <Icon type="control"/>Cuenta
+                  </NavLink>
+                </Menu.Item>
+              }            
               {
                 (parseInt(role,10) === 4) && 
                 <Menu.Item className={"menu-user-transactions"}>

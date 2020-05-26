@@ -167,10 +167,17 @@ function getAllRequestWasRejected(customerId){
   });
 }
 
+function getAccountDetail(){
+  return request({
+    url: '/Customer/GetAccountDetail',
+    method: 'GET'
+  });
+}
+
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList,
   generateDocuments, createRequest, getAllTransactions, getAllRequest,
-  getAllRequestWasOutlayed, getAllRequestWasRejected
+  getAllRequestWasOutlayed, getAllRequestWasRejected, getAccountDetail
 };
 
 export default customerService;

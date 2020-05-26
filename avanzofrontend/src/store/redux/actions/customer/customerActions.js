@@ -254,3 +254,21 @@ export const getAllRequestsWasRejected = (customerId) => {
       });
   };
 };  
+
+export const getAccountDetail = () => {
+  return dispatch => {
+    return customerService.getAccountDetail()
+      .then(response => {
+        dispatch({
+          type: C.GET_ACCOUNT_DETAIL,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_ACCOUNT_DETAIL,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer el detalle de cuenta.', err.data);
+      });
+  };
+};  

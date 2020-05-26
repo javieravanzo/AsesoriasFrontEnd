@@ -116,7 +116,7 @@ class LoanRequest extends Component {
         flagState: true
       }
     }
-   }
+  }
 
   sigPad = {};
 
@@ -515,7 +515,7 @@ class LoanRequest extends Component {
                         </Row>
                         <Row gutter={8}>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "right"}}>
-                            <b>IVA</b>
+                            <b>IVA (19%)</b>
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} style={{textAlign: "left"}}>
                             <b><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
@@ -554,13 +554,13 @@ class LoanRequest extends Component {
                   {
                     (JSON.stringify(outlayDatesList.datesList) !== '[]' && JSON.stringify(outlayDatesList.datesList) !== undefined)  && 
                     <Row className={"form-request-rows"}>
-                      <div className="upload-text">
+                      
                         De acuerdo a las cuotas que suministraste, tendrás el siguiente informe de descuentos. 
                         <br/>
                         <br/>
-                        <Table className={"new-table"} dataSource={outlayDatesList.datesList} columns={table} rowKey={'id'} 
+                        <Table dataSource={outlayDatesList.datesList} columns={table} rowKey={'id'} 
                             size={'small'} pagination={false}/>
-                      </div>
+                      
                     </Row>
                   }
                   <br/>
@@ -706,32 +706,31 @@ class LoanRequest extends Component {
                           </Col>
                         </Row>
                     }
-                    
 
-                      <Row className={"form-request-rows"}>
+                    {
+                      (workingSupport) && 
+                      
+                        <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
+                          <FieldTitle title={"Cargar certificado laboral"}/>
+                          <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
+                                accept=".pdf, application/pdf"/>
+                        </Col>
+                      
+                    }
+                    {
+                      (paymentSupport) && 
+                      
+                        <Col lg={12} md={12} sm={12} xs={24} className={"documents-column2"}>
+                          <FieldTitle title={"Cargar comprobante de pago"}/>
+                          <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChangePaymentSupport}
+                                accept=".pdf, application/pdf"/>
+                        </Col>
+                      
+                    }
 
-                        {
-                          (workingSupport) && 
-                          <Col xs={24} sm={24} md={12} lg={12}>
-                            <FieldTitle title={"Cargar certificado laboral"}/>
-                            <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
-                                  accept=".pdf, application/pdf"/>
-                          </Col>
-                        }
-                        {
-                          (paymentSupport) && 
-                          <Col xs={24} sm={24} md={12} lg={12}>
-                            <FieldTitle title={"Cargar comprobante de pago"}/>
-                            <input key={this.state.kBK} type="file" onChange={this.onChangePaymentSupport}
-                                  accept=".pdf, application/pdf"/>
-                          </Col>
-                        }
-                        <br/>
-                        
-                      </Row> 
-                      <br/>                 
+                    <br/> <br/>                 
                 
-                    <Row>
+                    <Row className={"form-request-rows2"}>
                       <Col lg={1} md={3} sm={5} xs={4}>
                         <Button className={"step-one"}>
                           4.

@@ -14,6 +14,7 @@ const initialState={
   requestList: {},
   outlayedRequestList: {},
   rejectedRequestList: {},
+  accountDetail: null,
   requestResponse: null,
 };
 
@@ -79,6 +80,11 @@ export default function customerReducer(state = initialState, action){
       return{
         ...state,
         requestResponse: action.correct
+      }
+    case C.GET_ACCOUNT_DETAIL:
+      return{
+        ...state,
+        accountDetail: action.payload
       }
     case C.RESET_VALUES:
       return{

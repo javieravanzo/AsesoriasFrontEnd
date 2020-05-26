@@ -72,17 +72,23 @@ class RequestStateModal extends Component {
     }
   };
 
-  seeDocument = (filePath) => {
+  seeDocument = (filePath, paymentSupport, workingSupport) => {
+
+    console.log("FP", filePath, "PS", paymentSupport, "WS", workingSupport);
 
     let url = filePath;
 
     if (url !== null) {
-      let newWindow = window.open(BaseURL +"/"+ filePath, "blank");
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      let newWindow = window.open(BaseURL + filePath, "_blank");
+      let newWindow1 = window.open(BaseURL + paymentSupport, "_blank");
+      let newWindow2 = window.open(BaseURL + workingSupport, "_blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' || 
+          !newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined' ||
+          !newWindow2 || newWindow2.closed || typeof newWindow2.closed === 'undefined' ) {
         allowEmergingWindows();
       }
     } else {
-      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+      WARNING_MODAL('Advertencia', 'Los documentos no están disponibles no está disponible');
     }
 
   };
@@ -235,7 +241,7 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath)} >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath, item.paymentSupport, item.workingSupport)} >
                         Ver documento
                   </Button> 
                 </Col>

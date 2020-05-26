@@ -18,6 +18,8 @@ import Customer from "../customer/index";
 import Customer_Transactions from "../customer/Transactions";
 import Customer_RequestForm from "../customer/RequestForm";
 import Customer_ListRequest from "../customer/RequestState";
+import Customer_Account from "../customer/AccountState";
+
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";    
@@ -53,6 +55,7 @@ class Router extends Component {
             <Route path={routes.customer_transactions} component={Customer_Transactions}/>
             <Route path={routes.customer_form_request} component={Customer_RequestForm}/>
             <Route path={routes.customer_review_requests} component={Customer_ListRequest}/>
+            <Route path={routes.customer_account} component={Customer_Account}/>
             <Route render = {()=><Redirect to={routes.customer}/>}/>
           </Switch>
         }

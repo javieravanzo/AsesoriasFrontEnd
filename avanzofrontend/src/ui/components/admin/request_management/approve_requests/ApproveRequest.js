@@ -78,6 +78,8 @@ class ApproveRequest extends Component {
           accountNumber: item.accountNumber,
           phoneNumber: item.phoneNumber,
           filePath: item.filePath,
+          workingSupport: item.workingSupport,
+          paymentSupport: item.paymentSupport
         };
 
         if(this.filterData(row)) {

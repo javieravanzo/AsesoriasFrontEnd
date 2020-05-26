@@ -1,0 +1,38 @@
+.account-div{
+  margin-top: 10px !important;
+  margin-bottom: 0px !important;
+  width: 85%;
+  margin: auto;
+}
+
+.account-main-row{
+  text-align: center !important;
+}
+
+.account-name-row{
+  text-align: left !important;
+}
+
+.account-left-column{
+  text-align: left !important;
+}
+
+.account-main-column{
+  margin-left: 8%;
+}
+
+.account-button{
+  margin-top: 30px;
+  text-align: right;
+}
+
+.account-column{
+  width: 95% !important;
+  margin: auto !important;
+  border-color: #000 !important;
+  border-width: 1px !important;
+}
+
+.account-card{
+  border: 1px solid #000 !important;
+}

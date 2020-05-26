@@ -10,6 +10,10 @@
   margin: auto !important;
 }
 
+.form-request-rows2{
+  width: 100% !important;
+}
+
 .form-request-rows-text{
   width: 90% !important;
   margin: auto !important;
@@ -45,6 +49,17 @@
   margin-bottom: 20px !important;
 }
 
+.dates-list{
+  width: 100% !important;
+  
+  
+}
+
+.new-table{
+  padding-bottom: 30px !important;
+  height: 100% !important;
+}
+
 .documents-buttons{
   background-color: #01609b !important;
   color: white !important;
@@ -57,6 +72,14 @@
 .download-card{
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+
+.documents-column{
+  margin-left: 6% !important;
+}
+
+.documents-column2{
+  margin-bottom: 15px !important;
 }
 
 .request-confirm-button{
