@@ -71,7 +71,7 @@ class RequestState extends Component {
             <h2 className={'request-terms-title'}>Revisar solicitudes</h2>
           </Col>
         </Row>
-        <Row className={"admin-row-content"}>
+        <Row >
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
           <Tabs defaultActiveKey="1">
             <TabPane tab={<span> <Icon type="unordered-list" />Solicitudes pendientes</span>} key="1">

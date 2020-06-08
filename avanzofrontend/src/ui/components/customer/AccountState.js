@@ -58,7 +58,7 @@ class AccountState extends Component {
               </Button>
             </Col>
           </Row>
-          <Divider/>
+          <Divider className={"account-divider"}/>
           <Row gutter={12}>
             <Col lg={12} className={"account-left-column"}>
               <Row className={"account-name-row"}>

@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table, Spin} from 'antd';
+import {Row, Col, Icon, Tooltip, Modal, Input, InputNumber, Select, Table, Spin, Checkbox} from 'antd';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
@@ -58,6 +58,8 @@ class EditCompanyModal extends Component {
       defaultPaymentRate: null,
       defaultReportDate: null,
       defaultSalaryDate: null,
+      changeSplit: false,
+      changeAmount: false,
     };
 
     this.props.getCompanyWithSalary(this.props.item.idCompany);
@@ -82,8 +84,25 @@ class EditCompanyModal extends Component {
     }
   };
 
+  changeSplit(e){
+    this.setState({
+      changeSplit: e.target.checked
+    });
+  };
+
+  changeAmount(e){
+    this.setState({
+      changeAmount: e.target.checked
+    });
+  };
   
   inputServiceNumber(e, service){
+    this.setState({
+      [service]: e,
+    });
+  };
+
+  inputServiceSplit(e, service){
     this.setState({
       [service]: e,
     });
@@ -113,7 +132,9 @@ class EditCompanyModal extends Component {
       email: this.state.email===null ? item.email : this.state.email,
       companySalaries: this.state.companySalaries.length>0 ? this.state.companySalaries : this.props.companySalaryResponse,
       idCompany: item.idCompany,
-      idUser: item.idUser
+      idUser: item.idUser,
+      changeSplit: this.state.changeSplit,
+      changeAmount: this.state.changeAmount,
     };
     this.props.updateCompany(data);
     this.setState({
@@ -336,10 +357,18 @@ class EditCompanyModal extends Component {
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 Cantidad de cuotas máxima:
                 <br/>
-                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumSplit} placeholder={"Cantidad de cuotas"} onChange={(e) => this.inputServiceNumber(e, 'maximumSplit')}/>
+                <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumSplit} placeholder={"Cantidad de cuotas"} onChange={(e) => this.inputServiceSplit(e, 'maximumSplit')}/>
               </Col>
             </Row>
             <br/>
+            <Row gutter={6}>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Checkbox onChange={(e) => this.changeSplit(e)}>{" Cambiar cuotas a los clientes asociados"}</Checkbox>
+              </Col>
+              <Col lg={12} md={12} sm={24} xs={24}>
+                <Checkbox onChange={(e) =>this.changeAmount(e)}>{" Cambiar cantidad a los clientes asociados"}</Checkbox>
+              </Col>
+            </Row>
             <br/>
             <Row>
               { 

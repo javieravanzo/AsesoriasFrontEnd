@@ -65,11 +65,11 @@ class RequestStateModal extends Component {
     let item = this.props.item;
     //console.log(item);
     return (
-        <Badge count={this.defineBadgeName(item.idRequestState)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
+        <Badge count={this.defineBadgeName(item.idRequestState)} className={"request-badge"} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
-                <b>Número de Solicitud</b> <br/><br/>
+                <b>No. de Solicitud</b> <br/><br/>
                 {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
@@ -93,14 +93,14 @@ class RequestStateModal extends Component {
           {
             this.state.visible && 
             <div>
-              <Row>
+              <Row className={"additional-info"}>
                 <Divider/>
                 <Col xs={24} sm={12} md={8} lg={6} >
                   <b>Flujo de aprobación</b>
                 </Col>  
               </Row>
               <br/><br/>
-              <Row>
+              <Row className={"additional-info"}>
                 <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
                   <Step title="Solicitada"/>
                   <Step title="En evaluación"/>
@@ -131,24 +131,24 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row>
-                <Col xs={12} sm={12} md={8} lg={4} >
+                <Col xs={12} sm={12} md={8} lg={4} className="request-item-initial-col">
                   <b>Valor total</b><br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.quantity+item.interestValue+item.administrationValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
-                <Col xs={12} sm={12} md={8} lg={4} >
+                <Col xs={12} sm={12} md={8} lg={4} className="request-item-initial-col" >
                     <b>Cuotas</b><br/><br/>
                     {item.split}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={4} className="request-item-initial-col">
                     <b>Cuenta</b><br/><br/>
                     {item.account}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
+                <Col xs={12} sm={12} md={7} lg={6} className="request-item-initial-col">
                     <b>Tipo de Cuenta</b><br/><br/>
                     {item.accountType !== "null" ? item.accountType : "-" }
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
+                <Col xs={12} sm={12} md={7} lg={6} className="request-item-initial-col">
                     <b>Número de cuenta</b><br/><br/>
                     {item.accountNumber}
                 </Col>

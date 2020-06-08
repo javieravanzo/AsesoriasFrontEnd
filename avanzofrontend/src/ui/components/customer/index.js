@@ -108,17 +108,17 @@ class Customer extends Component {
                       </Typography.Title>       
                     </Typography>
                   </Col>      
-                  <Col xxl={11} lg={11} md={11} sm={24} xs={24}>
-                    <Card className={"customer-credit-card"}>
+                  <Col xxl={11} lg={11} md={11} sm={24} xs={24} className={"data-align"}>
+                    <Card className={"customer-credit-card-index"}>
                       <Row gutter={4}>
-                        <Col span={8}>
-                          <Statistic title={<h3>Cupo disponible</h3>} value={(partialQuantity)} prefix={"$"}/>
+                        <Col span={8} lg={8} md={12} sm={24} xs={24}>
+                          <Statistic title={<h3 className="tag-weigth">Cupo disponible</h3>} value={(partialQuantity)} prefix={"$"}/>
                         </Col>
-                        <Col span={8}>
-                          <Statistic title={<h3>Cupo usado</h3>} value={(maximumAmount-partialQuantity)} prefix={"$"}/>
+                        <Col span={8} lg={8} md={12} sm={24} xs={24}>
+                          <Statistic title={<h3 className="tag-weigth">Cupo usado</h3>} value={(maximumAmount-partialQuantity)} prefix={"$"}/>
                         </Col>
-                        <Col span={8}>
-                          <Statistic title={<h3>Cupo total</h3>} value={maximumAmount} prefix={"$"}/>
+                        <Col span={8} lg={8} md={12} sm={24} xs={24}>
+                          <Statistic title={<h3 className="tag-weigth">Cupo total</h3>} value={maximumAmount} prefix={"$"}/>
                         </Col>
                       </Row>    
                     </Card>

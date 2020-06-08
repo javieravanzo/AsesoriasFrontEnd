@@ -113,10 +113,15 @@
 
 @media only screen and (max-width:500px) {
   
+  .request-badge{
+    text-align: center !important;
+    display: block;
+  }
+
   .request-state-div{
     margin-top: 70px !important;
     margin-bottom: 0px !important;
-    width: 85%;
+    width: 95%;
     margin: auto;
   }
   
@@ -124,7 +129,7 @@
     padding-top: 0px !important;
     padding-bottom: 0px !important;
     color: #000 !important;
-    width: 95% !important;
+    width: 80% !important;
     margin-right: auto;
     margin-left: auto;
   }
@@ -221,6 +226,10 @@
   
   .request-item-alert-icon{
     font-size: 28px !important;
+  }
+
+  .additional-info{
+    display: none !important;
   }
   
 }

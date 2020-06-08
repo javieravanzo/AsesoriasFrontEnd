@@ -69,43 +69,64 @@ class App extends Component {
 
     let signedIn = this.isSignedIn();
 
-    if(!signedIn){
-      if (this.props.location.pathname === routes.login || this.props.location.pathname === routes.forgot_password || this.props.location.pathname === routes.confirm_password ||
-        this.props.location.pathname === routes.confirm_account || this.props.location.pathname === routes.admin_register){
-          return( <Login pathname={this.props.location.pathname}/> );
-        }else{
-          return(
-            <div>           
-              <Layout className={'back-home'}>
-                <Switch>         
-                  <Route exact path={routes.integration_form} component={IFormRequest}/>
-                  <Route exact path={routes.integration_transactions} component={ITransactions} />
-                  <Route exact path={routes.reset_password} component={WrappedResetPassword}/>
-                  <Route render = {()=><Home/>}/>
-                </Switch>
-              </Layout>
-            </div>
-          );
-        }          
-    }else{
+    //console.log("Route", this.props.location.pathname);
+    //console.log("IntegrationForm", routes.integration_form);
+    //console.log("Comp", this.props.location.pathname === routes.integration_form);
+    //console.log("Includes", this.props.location.pathname.includes('integration-form'));
+
+    if((this.props.location.pathname).includes('integration-form')){
       return(
-          <div>
-            <MainMenu viewPortWidth={this.state.viewportWidth}/>
-            <Information/>
-            <Layout className={'back-home'}>
-              <Router/>
-            </Layout>
-            <Layout >
-              <Footer className={'back-home2'}>
-                <br/>
-                <Divider className={"layout-divider"}/>
-                <div className={"footer-div"}>
-                  Avanzo © 2019 
-                </div>
-              </Footer>
-            </Layout>
-          </div>)
-    }
+        <div>           
+          <Layout className={'back-home'}>
+            <Switch>         
+              <Route exact path={routes.integration_form} component={IFormRequest}/>
+              <Route render = {()=><IFormRequest/>}/>
+            </Switch>
+          </Layout>
+        </div>
+      );
+    }else{
+      if(!signedIn){
+        if (this.props.location.pathname === routes.login ||
+            this.props.location.pathname === routes.forgot_password ||
+            this.props.location.pathname === routes.confirm_password ||
+            this.props.location.pathname === routes.confirm_account ||
+            this.props.location.pathname === routes.admin_register){
+            return( <Login pathname={this.props.location.pathname}/> );
+          }else{
+            return(
+              <div>           
+                <Layout className={'back-home'}>
+                  <Switch>         
+                    <Route exact path={routes.integration_form} component={IFormRequest}/>
+                    <Route exact path={routes.integration_transactions} component={ITransactions} />
+                    <Route exact path={routes.reset_password} component={WrappedResetPassword}/>
+                    <Route render = {()=><Home/>}/>
+                  </Switch>
+                </Layout>
+              </div>
+            );
+          }          
+      }else{
+        return(
+            <div>
+              <MainMenu viewPortWidth={this.state.viewportWidth}/>
+              <Information/>
+              <Layout className={'back-home'}>
+                <Router/>
+              </Layout>
+              <Layout >
+                <Footer className={'back-home2'}>
+                  <br/>
+                  <Divider className={"layout-divider"}/>
+                  <div className={"footer-div"}>
+                    Avanzo © 2019 
+                  </div>
+                </Footer>
+              </Layout>
+            </div>)
+      }
+    } 
   };
 
 }

@@ -36,3 +36,35 @@
 .account-card{
   border: 1px solid #000 !important;
 }
+
+
+@media only screen and (max-width:500px) {
+  
+  .account-div{
+    margin-top: 40px !important;
+    margin-bottom: 0px !important;
+    width: 90%;
+    margin: auto;
+  }
+
+  .account-divider{
+    display: none !important;
+  }
+
+  .information-col{
+    font-size: 12px !important;
+  }
+
+  .account-left-column{
+    margin-bottom: 10px !important;
+  }
+
+  .account-main-column{
+    margin-left: 0px;
+  }
+  
+  .account-column{
+    width: 100% !important;
+  }
+
+}

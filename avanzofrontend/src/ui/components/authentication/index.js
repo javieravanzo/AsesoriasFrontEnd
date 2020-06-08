@@ -33,7 +33,33 @@ const WrappedConfirmAccount = Form.create()(ConfirmAccount);
 
 class Login extends Component {
   
+  constructor(props) {
+    super(props);
+    this.state = { 
+      width: 0, height: 0 
+    };
+    
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+  
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+  
+  updateWindowDimensions() {
+    this.setState({ 
+      width: window.innerWidth,
+      height: window.innerHeight });
+  }
+
   render() {
+
+    console.log("Width: ", this.state.width);
     
      return (
       <div className='login'>
@@ -65,7 +91,7 @@ class Login extends Component {
         {
           (this.props.pathname !== routes.customer_register && this.props.pathname !== routes.company_register && this.props.pathname !== routes.admin_register && this.props.pathname !== routes.home) && 
           <Layout>
-            <Sider width={420} style={{backgroundColor: "#fff"}}>
+            <Sider width={this.state.width < 500 ? this.state.width : 400} style={{backgroundColor: "#fff"}}>
                 <Switch>            
                   <Route path={routes.login} component={WrappedNormalLoginStandard} />
                   <Route path={routes.forgot_password} component={WrappedForgotPassword} />

@@ -172,6 +172,8 @@
   border-radius: 5px !important;
 }
 
+
+
 .form-bank-col{
   text-align: right !important;
 }
@@ -205,13 +207,37 @@
 
 @media only screen and (max-width:500px) {
 
+  .div-bank-requires{
+    margin-top: 10px !important;
+  }
+
+  .form-bank-col{
+    text-align: center !important;
+  }
+
+  .bank-requires{
+    text-align: "left" !important;
+    font-size: 10px !important;
+    border-radius: 5px !important;
+    font-weight: 200 !important;
+  }
+
+
+  .signature-field{
+    margin-bottom: 20px !important;
+    width: 80% !important;
+    height: 80% !important;
+    margin-left: 0px !important;
+    background-color: #dadada !important;
+  }
+
   .signature-field{
     width: 100% !important;
     height: 100px !important;
   }
 
   .request-div{
-    margin-top: 40px !important;
+    margin-top: 50px !important;
     margin-bottom: 0px !important;
     width: 90%;
    

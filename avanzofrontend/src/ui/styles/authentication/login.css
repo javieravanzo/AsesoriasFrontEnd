@@ -168,7 +168,7 @@
 
 .shop{
   width: 100% !important;
-  display: table-cell;
+ 
   vertical-align: middle;
   opacity: 0.95;
   filter: alpha(opacity=10);

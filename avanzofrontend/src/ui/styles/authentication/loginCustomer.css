@@ -53,9 +53,6 @@
 
 @media only screen and (max-width:950px) {
 
-  .background2{
-    display: flex !important;
-  }
 
   .sign-in-background{
     display: none !important;

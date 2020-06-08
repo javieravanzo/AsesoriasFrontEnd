@@ -578,13 +578,13 @@ class LoanRequest extends Component {
                     </Col>
                   </Row>
                   <Row gutter={20} className={"form-request-rows"}>
-                    <Col xs={12} sm={12} md={8} lg={7}>
+                    <Col xs={24} sm={24} md={8} lg={7}>
                     <span className={"type-account"}>{"Banco "}<Switch onChange={this.handleWallet}/>{" Billetera virtual"}</span>  
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={10} className={"form-bank-col"}>
+                    <Col xs={24} sm={24} md={12} lg={10} className={"form-bank-col"}>
                       {
                         bank_account &&
-                        <div >
+                        <div className={"div-bank-requires"}>
                           <span className={"bank-requires"}>* El tiempo de desembolso depende de los ciclos ACH</span>
                         </div> 
                       }
@@ -690,8 +690,30 @@ class LoanRequest extends Component {
                         </Col>
                       </Row>
                     }
+
+                    {
+                      (workingSupport === true) && 
+                      
+                        <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
+                          <FieldTitle title={"Cargar certificado laboral"}/>
+                          <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
+                                accept=".pdf, application/pdf"/>
+                        </Col>
+                      
+                    }
+                    {
+                      (paymentSupport === true) && 
+                      
+                        <Col lg={12} md={12} sm={12} xs={24} className={"documents-column2"}>
+                          <FieldTitle title={"Cargar comprobante de pago"}/>
+                          <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChangePaymentSupport}
+                                accept=".pdf, application/pdf"/>
+                        </Col>
+                      
+                    }
+
                     { 
-                      (workingSupport || paymentSupport) &&
+                      ((workingSupport === true || paymentSupport === true)) &&
                         <Row>
                           <Col lg={1} md={3} sm={5} xs={4}>
                             <Button className={"step-one"}>
@@ -706,29 +728,7 @@ class LoanRequest extends Component {
                           </Col>
                         </Row>
                     }
-
-                    {
-                      (workingSupport) && 
-                      
-                        <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
-                          <FieldTitle title={"Cargar certificado laboral"}/>
-                          <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
-                                accept=".pdf, application/pdf"/>
-                        </Col>
-                      
-                    }
-                    {
-                      (paymentSupport) && 
-                      
-                        <Col lg={12} md={12} sm={12} xs={24} className={"documents-column2"}>
-                          <FieldTitle title={"Cargar comprobante de pago"}/>
-                          <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChangePaymentSupport}
-                                accept=".pdf, application/pdf"/>
-                        </Col>
-                      
-                    }
-
-                    <br/> <br/>                 
+                    <br/>               
                 
                     <Row className={"form-request-rows2"}>
                       <Col lg={1} md={3} sm={5} xs={4}>
@@ -756,13 +756,13 @@ class LoanRequest extends Component {
                             ref={(ref) => { this.sigPad = ref }} />
                         </Row>
                         <Row gutter={6}>
-                          <Col xs={4} sm={10} md={12} lg={16}/>
-                          <Col xs={10} sm={7} md={6} lg={4}>
+                          <Col xs={2} sm={2} md={12} lg={16}/>
+                          <Col xs={10} sm={10} md={6} lg={4}>
                             <Button className={"request-signature-clean-button"} style={{width: '100%', height: '30px'}} onClick={this.clear}>
                               Limpiar firma
                             </Button>
                           </Col>
-                          <Col xs={10} sm={7} md={6} lg={4}>
+                          <Col xs={10} sm={10} md={6} lg={4}>
                             <Button className={"request-signature-make-button"} style={{width: '100%', height: '30px'}} onClick={this.trim}>
                               Realizar firma
                             </Button>
