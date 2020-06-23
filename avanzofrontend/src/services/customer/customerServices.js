@@ -172,12 +172,24 @@ function getAccountDetail(){
     url: '/Customer/GetAccountDetail',
     method: 'GET'
   });
+};
+
+function generateCodes(email, phonenumber, clientid){
+  return request({
+    url: '/Request/GenerateCodes',
+    method: 'GET',
+    headers: {
+      email: email,
+      phonenumber: phonenumber,
+      clientid: clientid
+    }
+  });
 }
 
 const customerService = {
-  getHomeData, getRequestData, getOutLayData, getOultayDatesList,
-  generateDocuments, createRequest, getAllTransactions, getAllRequest,
-  getAllRequestWasOutlayed, getAllRequestWasRejected, getAccountDetail
+  getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, createRequest,
+  getAllTransactions, getAllRequest, getAllRequestWasOutlayed, getAllRequestWasRejected,
+  getAccountDetail, generateCodes
 };
 
 export default customerService;

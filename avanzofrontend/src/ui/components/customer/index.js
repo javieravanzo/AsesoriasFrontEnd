@@ -101,14 +101,14 @@ class Customer extends Component {
             <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
               <Card className={"customer-card"}>
                 <Row className={"customer-row-card"}>
-                  <Col xxl={13} lg={13} md={13} sm={24} xs={24}>
+                  <Col xxl={12} lg={12} md={13} sm={24} xs={24}>
                     <Typography>
                       <Typography.Title level={3} className={"customer-title"}>
                         ¡Bienvenido, {localStorage.getItem('user_name') +"!"}
                       </Typography.Title>       
                     </Typography>
                   </Col>      
-                  <Col xxl={11} lg={11} md={11} sm={24} xs={24} className={"data-align"}>
+                  <Col xxl={12} lg={12} md={11} sm={24} xs={24} className={"data-align"}>
                     <Card className={"customer-credit-card-index"}>
                       <Row gutter={4}>
                         <Col span={8} lg={8} md={12} sm={24} xs={24}>

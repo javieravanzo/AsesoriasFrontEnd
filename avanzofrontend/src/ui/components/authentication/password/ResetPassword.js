@@ -115,7 +115,7 @@ class ResetPassword extends Component{
                   </div>
                 </div>
                 <div className={"bottom-title"}>
-                  Avanzo © 2019
+                  Avanzo © 2020
                 </div>           
                 {
                   (this.props.correct === true) &&

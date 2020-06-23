@@ -41,12 +41,14 @@
   text-align: center !important;
   margin-top: 10px !important;
   margin-right: 25px !important;
-  padding-top: 12px !important;
+  padding-top: 22px !important;
   padding-bottom: 12px !important;
   box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
   background-color: #42a4ff !important;
   border: 5px !important;
   border-color: black !important;
+  border-radius: 15px !important;
+  font-size: 15px !important; 
 }
 
 .new-table{
@@ -100,7 +102,7 @@
 
 @media only screen and (max-width:500px) {
   .customer-div{
-    margin-top: 70px !important;
+    margin-top: 50px !important;
     margin-bottom: 0px !important;
     width: 100%;
     margin: auto;
@@ -110,6 +112,7 @@
     margin-left: 2px !important;
     margin-right: 2px !important;
     box-shadow: none;
+    font-size: 10px !important;
   }
 
   .customer-row-card{
@@ -127,13 +130,17 @@
     margin-left: 20px !important;
     font-size: 20px !important;
   }
+
+  .text-data{
+    font-size: 18px !important;
+  }
   
   .customer-credit-card-index{
-    width: 80% !important;
-    margin-left: 10% !important;
-    font-size: 5px !important; 
-    padding-top: 1px !important;
-    padding-bottom: 1px !important;
+    width: 90% !important;
+    margin-left: 6% !important;
+    font-size: 4px !important; 
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
     text-align: right !important;
     margin-top: 10px !important;
     margin-right: 0px !important;

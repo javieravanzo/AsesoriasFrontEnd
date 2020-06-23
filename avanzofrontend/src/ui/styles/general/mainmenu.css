@@ -29,17 +29,12 @@
   margin-left: 20px !important;
 }
 
-.menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request, .menu-admin-home{
+.menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request, .menu-admin-home, .menu-logout{
   float: right !important;
   margin-top: 5px !important;
 }
 
 .menu-admin-customer, .menu-admin-loan, .menu-admin-report{
-  float: right !important;
-  margin-top: 5px !important;
-}
-
-.menu-logout{
   float: right !important;
   margin-top: 5px !important;
 }
@@ -75,7 +70,7 @@
 
 @media only screen and (max-width: 500px) {
 
-  .menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request, .menu-logout{
+  .menu-user-home, .menu-user-loan, .menu-user-transactions, .menu-user-request{
     float: none !important;
   }
 
@@ -87,5 +82,11 @@
     display: none;
     margin-right: 100px !important;
   }
+
+  .menu-logout{
+    display: none !important;
+  }
+
+
 
 }

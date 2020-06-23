@@ -366,7 +366,7 @@ class EditCompanyModal extends Component {
                 <Checkbox onChange={(e) => this.changeSplit(e)}>{" Cambiar cuotas a los clientes asociados"}</Checkbox>
               </Col>
               <Col lg={12} md={12} sm={24} xs={24}>
-                <Checkbox onChange={(e) =>this.changeAmount(e)}>{" Cambiar cantidad a los clientes asociados"}</Checkbox>
+                <Checkbox onChange={(e) =>this.changeAmount(e)}>{" Cambiar monto a los clientes asociados"}</Checkbox>
               </Col>
             </Row>
             <br/>

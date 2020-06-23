@@ -272,3 +272,23 @@ export const getAccountDetail = () => {
       });
   };
 };  
+
+export const generateCodes = (email, phonenumber, clientid) => {
+  return dispatch => {
+    return customerService.generateCodes(email, phonenumber, clientid)
+      .then(response => {
+        dispatch({
+          type: C.GENERATE_CODES,
+          payload: response.data,
+          code: true
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GENERATE_CODES,
+          payload: err,
+          code: true
+        });
+        ERROR_MODAL('Error al generar los códigos de validación.', err.data);
+      });
+  };
+};  

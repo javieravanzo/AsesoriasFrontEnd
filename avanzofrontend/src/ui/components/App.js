@@ -67,8 +67,8 @@ class App extends Component {
 
   render(){
 
-    let signedIn = this.isSignedIn();
-
+    let signedIn = (this.props.location.pathname).includes('integration-form') ? true: this.isSignedIn();
+    console.log("SI", signedIn);
     //console.log("Route", this.props.location.pathname);
     //console.log("IntegrationForm", routes.integration_form);
     //console.log("Comp", this.props.location.pathname === routes.integration_form);
@@ -120,7 +120,7 @@ class App extends Component {
                   <br/>
                   <Divider className={"layout-divider"}/>
                   <div className={"footer-div"}>
-                    Avanzo © 2019 
+                    Avanzo © 2020 
                   </div>
                 </Footer>
               </Layout>

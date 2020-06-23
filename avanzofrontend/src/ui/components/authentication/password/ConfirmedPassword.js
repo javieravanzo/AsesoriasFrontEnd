@@ -85,7 +85,7 @@ class ConfirmedPassword extends Component {
           }
         </div>
         <div className={"bottom-title"}>
-          Avanzo © 2019
+          Avanzo © 2020
         </div>
       </div>
     );

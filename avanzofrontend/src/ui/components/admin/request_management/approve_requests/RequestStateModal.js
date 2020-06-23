@@ -79,18 +79,27 @@ class RequestStateModal extends Component {
     let url = filePath;
 
     if (url !== null) {
-      let newWindow = window.open(BaseURL + filePath, "_blank");
-      let newWindow1 = window.open(BaseURL + paymentSupport, "_blank");
-      let newWindow2 = window.open(BaseURL + workingSupport, "_blank");
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' || 
-          !newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined' ||
-          !newWindow2 || newWindow2.closed || typeof newWindow2.closed === 'undefined' ) {
+      let newWindow = window.open(BaseURL + "/" + filePath, "_blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' ) {
         allowEmergingWindows();
       }
     } else {
-      WARNING_MODAL('Advertencia', 'Los documentos no están disponibles no está disponible');
+      WARNING_MODAL('Advertencia', 'El documento no está disponibles no está disponible');
     }
 
+    if (  paymentSupport !== "" && workingSupport !== "" ) {  
+      if (paymentSupport !== null && workingSupport !== null ) {
+        let newWindow1 = window.open(BaseURL + "/" + paymentSupport, "_blank");
+        let newWindow2 = window.open(BaseURL + "/" + workingSupport, "_blank");
+        if (!newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined' ||
+            !newWindow2 || newWindow2.closed || typeof newWindow2.closed === 'undefined' ) {
+          allowEmergingWindows();
+        }
+      } else {
+        WARNING_MODAL('Advertencia', 'Los documentos no están disponibles no está disponible');
+      }
+    }  
+    
   };
 
   onConfirmRequest = (idRequest) => {

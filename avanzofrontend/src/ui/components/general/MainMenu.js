@@ -162,7 +162,9 @@ class MainMenu extends Component {
                   </NavLink>
                 </Menu.Item>
               }
+              
             </Menu>
+            
         </Header>
         <Modal
             title="Cerrar sesión"

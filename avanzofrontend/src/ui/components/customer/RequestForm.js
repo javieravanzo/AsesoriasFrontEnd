@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import SignaturePad from 'react-signature-canvas';
-import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider,
+import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider, Modal, 
   Statistic, Typography, Card, Switch, Spin, Input} from 'antd';
 
 //Subcomponents
@@ -15,11 +15,12 @@ import routes from '../../../configuration/routing/Routes';
 import {bankTypeAccountInfo} from '../../../configuration/constants';
 
 //Actions
-import { getRequestData, getOutlayData, getOultayDatesList, createRequest } from "../../../store/redux/actions/customer/customerActions";
+import { getRequestData, getOutlayData, getOultayDatesList, createRequest, generateCodes } from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-form.css';
 import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows, ERROR_MODAL } from '../subcomponents/modalMessages';
+import { tsNonNullExpression } from '@babel/types';
 
 //Constants
 const FormItem = Form.Item;
@@ -88,6 +89,11 @@ class LoanRequest extends Component {
       flagState: null,
       workingDocument: null,
       paymentDocument: null,
+      confirmed_data: false,
+      form_data: null,
+      phoneConfirmation: null,
+      emailConfirmation: null,
+      enterCodes: null,
     };    
 
     this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
@@ -111,7 +117,12 @@ class LoanRequest extends Component {
           flagState: true
         }
       }
-    }else{
+    }else if(nextProps.generateCodes !== null){
+      return {
+        confirmed_data: false,
+        enterCodes: true,
+      };
+    }else{  
       return {
         flagState: true
       }
@@ -235,19 +246,19 @@ class LoanRequest extends Component {
   defineDocumentsCondition = () => {
     
     let {bank_account, bank_name, bank_number, bank_type, money_wallet, 
-         wallet_type, signatureDone} = this.state;
+         wallet_type} = this.state;
 
     //console.log("State", bank_account, bank_name, bank_number, bank_type, money_wallet, 
     //wallet_number, wallet_type, signatureDone);
 
     if (bank_account){
       if(bank_name !== null && bank_number !== null && bank_type !== null && 
-         bank_name !== "" && bank_number !== "" && bank_type !== "" && signatureDone !== null){
+         bank_name !== "" && bank_number !== "" && bank_type !== ""){
           return true;
          }
       return false;
     }else if(money_wallet){
-      if( wallet_type !== null && signatureDone !== null && wallet_type !== ""){
+      if( wallet_type !== null && wallet_type !== ""){
          return true;
         }
       return false;
@@ -304,8 +315,13 @@ class LoanRequest extends Component {
           loanData: this.props.outlayDatesList.datesList[0].quantity,
         };
 
+        this.setState({
+          form_data: data,
+          confirmed_data: true,
+        });
+        
         //console.log(data);
-        this.props.createRequest(data, this.props.location.state ? this.props.location.state.token : undefined);
+        //this.props.createRequest(data, this.props.location.state ? this.props.location.state.token : undefined);
       }     
     });
   };
@@ -329,6 +345,60 @@ class LoanRequest extends Component {
 
   };
 
+  changeNewEmail = (e) => {
+
+    let email = e.target.value;
+
+    if (email !== null || email !== ""){
+      this.setState({
+        emailConfirmation: email,
+      });
+    }else{
+      ERROR_MODAL("Error al realizar la acción", "Por favor confirma tu correo electrónico.");
+    }
+    //console.log("Email", e.target.value);
+  
+  };
+
+  changeNewPhone = (e) => {
+    
+    let phone = e.target.value;
+
+    if (phone !== null || phone !== ""){
+      this.setState({
+        phoneConfirmation: phone,
+      });
+    }else{
+      ERROR_MODAL("Error al realizar la acción", "Por favor confirma tu número de celular.");
+    }
+  
+  };
+
+  confirmData = () => {
+
+    let {phoneConfirmation, emailConfirmation} = this.state;
+
+    if(phoneConfirmation !== null && emailConfirmation !== null){
+
+      this.props.generateCodes( emailConfirmation, phoneConfirmation, parseInt(localStorage.user_id, 10));
+
+    }else{
+
+      ERROR_MODAL("Error al realizar la acción", "Los datos ingresados no son válidos.");
+
+    }
+
+  };
+
+  confirmCodes = () => {
+
+    this.setState({
+      enterCodes: false,
+    });
+    this.props.createRequest(this.state.form_data, this.props.location.state ? this.props.location.state.token : undefined);
+
+  };
+
   validationLetters = (e) => {
     const input = e.target.value;
     e.target.value = input.replace(/[^a-zA-Z\s]$/g, '');
@@ -343,8 +413,8 @@ class LoanRequest extends Component {
 
     //console.log("BankInfo", bankTypeAccountInfo);
     //console.log( "TK", this.props.location.state.token);
-
-    let {fee, sliderValue, bank_account, money_wallet} = this.state;
+    let signature = false;
+    let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
@@ -468,7 +538,7 @@ class LoanRequest extends Component {
                     </Col>
                     <Col xs={24} sm={24} md={12} lg={12}>
                       <Card>
-                        <Row gutter={8} className={"information-col"}>
+                        <Row gutter={8}>
                           <Col xs={12} sm={24} md={12} lg={12} style={{textAlign: "right"}}>
                             <b>Cantidad solicitada</b>
                           </Col>
@@ -558,7 +628,7 @@ class LoanRequest extends Component {
                         De acuerdo a las cuotas que suministraste, tendrás el siguiente informe de descuentos. 
                         <br/>
                         <br/>
-                        <Table dataSource={outlayDatesList.datesList} columns={table} rowKey={'id'} 
+                        <Table className={"dates-table"} dataSource={outlayDatesList.datesList} columns={table} rowKey={'id'} 
                             size={'small'} pagination={false}/>
                       
                     </Row>
@@ -728,8 +798,10 @@ class LoanRequest extends Component {
                           </Col>
                         </Row>
                     }
-                    <br/>               
-                
+                 
+
+                  { 
+                    (signature === true) &&
                     <Row className={"form-request-rows2"}>
                       <Col lg={1} md={3} sm={5} xs={4}>
                         <Button className={"step-one"}>
@@ -743,43 +815,8 @@ class LoanRequest extends Component {
                         </div>
                       </Col>
                     </Row>
-
-                  <Row className={"form-request-rows"} gutter={8}>
-                    <Col xs={24} sm={12} md={12} lg={24}> 
-                      <Card className={"download-card"}>
-                        <Row style={{textAlign: "center", fontWeight: "bold", fontSize: "15px"}}>
-                            Autorización de descuento
-                        </Row>
-                        <br/>
-                        <Row className={"signature-field"}>
-                          <SignaturePad canvasProps={{style:{width: '100%', height: '100%'}}}
-                            ref={(ref) => { this.sigPad = ref }} />
-                        </Row>
-                        <Row gutter={6}>
-                          <Col xs={2} sm={2} md={12} lg={16}/>
-                          <Col xs={10} sm={10} md={6} lg={4}>
-                            <Button className={"request-signature-clean-button"} style={{width: '100%', height: '30px'}} onClick={this.clear}>
-                              Limpiar firma
-                            </Button>
-                          </Col>
-                          <Col xs={10} sm={10} md={6} lg={4}>
-                            <Button className={"request-signature-make-button"} style={{width: '100%', height: '30px'}} onClick={this.trim}>
-                              Realizar firma
-                            </Button>
-                          </Col>
-                        </Row>
-                        <br/>
-                        <br/>
-                        {trimmedDataURL
-                          ? <img alt="signature" style={{margin: 'auto', backgroundSize: '200px 50px', width: '200px', backgroundColor: 'white'}}
-                            src={trimmedDataURL} />
-                          : null}
-                      </Card>
-                    </Col>
-                  </Row>
-
-                  
-                  
+                  }
+                                   
                   <Row className={"form-request-rows"}>
                     <Col xs={24} sm={12} md={18} lg={19}/>
                     <Col xs={24} sm={12} md={6} lg={5}>
@@ -788,7 +825,6 @@ class LoanRequest extends Component {
                           Solicitar préstamo
                       </Button> 
                     </Col>
-                    
                   </Row>
                 </Form>
               </div>
@@ -796,6 +832,112 @@ class LoanRequest extends Component {
                 this.props.requestResponse && 
                 <Redirect to={routes.customer}/>
               }
+              <Modal 
+                 title={"Confirmar datos"}
+                 visible={confirmed_data}
+                 onCancel={() => this.setState({confirmed_data: false})}
+                 footer={
+                  <Button key='submit' type='primary' onClick={() => this.confirmData()}>
+                    Aceptar
+                  </Button>}
+                 >
+                 <Row className={"form-request-rows2"}>
+                  <Col lg={3} md={3} sm={3} xs={4}>
+                    <Button className={"step-one"}>
+                      4.
+                    </Button>
+                  </Col>
+                  <Col lg={21} md={21} sm={21} xs={20}>
+                    <div>
+                      <h3>Confirmar correo electrónico y número de celular</h3>
+                      <Divider className={"form-request-divider"}/>
+                    </div>
+                  </Col>
+                 </Row>
+                 <Form>
+                  <Row  gutter={12} className={"form-request-rows"}>
+                    <Col xs={24} sm={24} md={14} lg={14} >
+                      <FieldTitle title={"Correo Electrónico"}/>
+                      <FormItem>
+                        {getFieldDecorator('email',
+                          {rules: [
+                            {required: false, message: 'Por favor confirma tu correo electrónico'}
+                          ]})(
+                            <Input  className={"form-input-number"} placeholder={"Confirmar correo"} 
+                            onChange={this.changeNewEmail}/>
+                          )
+                        }
+                      </FormItem>
+                    </Col>
+                    <Col xs={24} sm={24} md={10} lg={10}>
+                    <FieldTitle title={"Número de celular"}/>
+                      <FormItem >
+                        {getFieldDecorator('phone_confirmation',
+                          {rules: [
+                            {required: false, message: 'Por favor confirma tu número de celular' }
+                          ]})(
+                            <Input  className={"form-input-number"} placeholder={"Confirmar celular"} 
+                            onChange={this.changeNewPhone}/>
+                          )
+                        }
+                      </FormItem>  
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal>
+              <Modal 
+                 title={"Ingresar códigos"}
+                 visible={enterCodes}
+                 onCancel={() => this.setState({enterCodes: false})}
+                 footer={
+                  <Button key='submit' type='primary' onClick={() => this.confirmCodes()}>
+                    Confirmar códigos
+                  </Button>}
+                 >
+                 <Row className={"form-request-rows2"}>
+                  <Col lg={3} md={3} sm={3} xs={4}>
+                    <Button className={"step-one"}>
+                      5.
+                    </Button>
+                  </Col>
+                  <Col lg={21} md={21} sm={21} xs={20}>
+                    <div>
+                      <h3>Ingresar códigos de validación</h3>
+                      <Divider className={"form-request-divider"}/>
+                    </div>
+                  </Col>
+                 </Row>
+                 <Form>
+                  <Row  gutter={12} className={"form-request-rows"}>
+                    <Col xs={24} sm={24} md={20} lg={20} >
+                      <FieldTitle title={"Código Correo"}/>
+                      <FormItem>
+                        {getFieldDecorator('code1',
+                          {rules: [
+                            {required: false, message: 'Por favor confirma tu correo electrónico'}
+                          ]})(
+                            <Input  className={"form-input-number"} placeholder={"Código enviado al correo"} 
+                            onChange={this.changeNewEmail}/>
+                          )
+                        }
+                      </FormItem>
+                    </Col>
+                    <Col xs={24} sm={24} md={20} lg={20}>
+                    <FieldTitle title={"Código Celular"}/>
+                      <FormItem >
+                        {getFieldDecorator('code2',
+                          {rules: [
+                            {required: false, message: 'Por favor confirma tu número de celular' }
+                          ]})(
+                            <Input  className={"form-input-number"} placeholder={"Código enviado al celular"} 
+                            onChange={this.changeNewPhone}/>
+                          )
+                        }
+                      </FormItem>  
+                    </Col>
+                  </Row>
+                </Form>
+              </Modal>
           </Row>
         </div>
       );
@@ -809,7 +951,8 @@ RequestForm.propTypes = {
   requestDataResponse: PropTypes.object,
   outlayDataResponse: PropTypes.object,
   outlayDatesList: PropTypes.object,
-  requestResponse: PropTypes.bool
+  requestResponse: PropTypes.bool,
+  generateCodesResponse: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
@@ -818,6 +961,7 @@ const mapStateToProps = (state) => {
     outlayDataResponse: state.customer.outlayDataResponse,
     outlayDatesList: state.customer.outlayDatesList,
     requestResponse: state.customer.requestResponse,
+    generateCodesResponse: state.customer.generateCodesResponse
   }
 };
 
@@ -827,6 +971,7 @@ const mapDispatchToProps = (dispatch) => {
     getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
     getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),
     createRequest: (data, token) => dispatch(createRequest(data, token)),
+    generateCodes: (email, phonenumber, clientid) => dispatch(generateCodes(email, phonenumber, clientid)),
   }
 };
 

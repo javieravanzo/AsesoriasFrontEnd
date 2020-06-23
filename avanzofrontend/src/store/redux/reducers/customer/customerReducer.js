@@ -16,6 +16,7 @@ const initialState={
   rejectedRequestList: {},
   accountDetail: null,
   requestResponse: null,
+  generateCodesResponse: null,
 };
 
 export default function customerReducer(state = initialState, action){
@@ -85,6 +86,11 @@ export default function customerReducer(state = initialState, action){
       return{
         ...state,
         accountDetail: action.payload
+      }
+    case C.GENERATE_CODES:
+      return{
+        ...state,
+        generateCodesResponse: action.code
       }
     case C.RESET_VALUES:
       return{
