@@ -38,7 +38,7 @@ export const integrationRegister = (data) => {
           type: C.INTEGRATION_REGISTER,
           payload: false,
         });
-        WARNING_MODAL('Advertencia',  'Por favor, regístrate en nuestro portal');
+        //WARNING_MODAL('Advertencia',  'Por favor, regístrate en nuestro portal');
       });
   }
 };

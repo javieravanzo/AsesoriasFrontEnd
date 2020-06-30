@@ -5,7 +5,7 @@ import Math from "math";
 import PropTypes from 'prop-types';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
-import SignaturePad from 'react-signature-canvas';
+//import SignaturePad from 'react-signature-canvas';
 import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider, Modal, 
   Statistic, Typography, Card, Switch, Spin, Input} from 'antd';
 
@@ -15,12 +15,11 @@ import routes from '../../../configuration/routing/Routes';
 import {bankTypeAccountInfo} from '../../../configuration/constants';
 
 //Actions
-import { getRequestData, getOutlayData, getOultayDatesList, createRequest, generateCodes } from "../../../store/redux/actions/customer/customerActions";
+import { getRequestData, getOutlayData, getOultayDatesList, createRequest, generateCodes, resetValue } from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-form.css';
 import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows, ERROR_MODAL } from '../subcomponents/modalMessages';
-import { tsNonNullExpression } from '@babel/types';
 
 //Constants
 const FormItem = Form.Item;
@@ -96,15 +95,17 @@ class LoanRequest extends Component {
       enterCodes: null,
     };    
 
+    this.props.resetValue();
     this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
     this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
 
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    //console.log("PV", prevState.sliderValue, nextProps.requestDataResponse);
+    //console.log("PV", nextProps.generateCodesResponse);
+    //console.log("GCR", nextProps.generateCodesResponse === true);
     //console.log("RD", JSON.stringify(nextProps.requestDataResponse) !== '{}');
-    if(JSON.stringify(nextProps.requestDataResponse) !== '{}'){
+    if(JSON.stringify(nextProps.requestDataResponse) !== '{}' && nextProps.generateCodesResponse !== true){
       if(prevState.sliderValue === null){
         return {
           sliderValue: Math.round(nextProps.requestDataResponse.partialCapacity) < 80000 ? 80000 : Math.round(nextProps.requestDataResponse.partialCapacity),
@@ -117,7 +118,7 @@ class LoanRequest extends Component {
           flagState: true
         }
       }
-    }else if(nextProps.generateCodes !== null){
+    }else if(nextProps.generateCodesResponse === true){
       return {
         confirmed_data: false,
         enterCodes: true,
@@ -412,7 +413,9 @@ class LoanRequest extends Component {
   render(){
 
     //console.log("BankInfo", bankTypeAccountInfo);
-    //console.log( "TK", this.props.location.state.token);
+    //console.log( "GenerateCodes", this.props.generateCodesResponse);
+    //console.log("ODL", this.state.sliderValue);
+    
     let signature = false;
     let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
@@ -421,10 +424,7 @@ class LoanRequest extends Component {
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
     let { bankInfo, walletInfo } = outlayDataResponse;
-    let { trimmedDataURL } = this.state;    
-
-    //console.log("ODL", this.state.sliderValue);
-
+    //let { trimmedDataURL } = this.state;    
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
@@ -967,6 +967,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    resetValue: () => dispatch(resetValue()),
     getRequestData: (customerId, token) => dispatch(getRequestData(customerId, token)),
     getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
     getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),

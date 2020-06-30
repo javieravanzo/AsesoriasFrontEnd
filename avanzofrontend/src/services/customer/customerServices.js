@@ -70,7 +70,7 @@ function generateDocuments(customerId, split, quantity) {
   });
 };
 
-function dataURLtoFile(dataurl, filename) {
+/*function dataURLtoFile(dataurl, filename) {
  
   var arr = dataurl.split(','),
       mime = arr[0].match(/:(.*?);/)[1],
@@ -83,13 +83,13 @@ function dataURLtoFile(dataurl, filename) {
   }
   
   return new File([u8arr], filename, {type:mime});
-};
+};*/
 
 function createRequest(data, token){
 
   let signature = data.file;
 
-  var file = dataURLtoFile(signature, 'hello.png');
+  var file = "FILE";
 
   var bodyFormData = new FormData();
   

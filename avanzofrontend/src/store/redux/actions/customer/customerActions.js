@@ -286,7 +286,7 @@ export const generateCodes = (email, phonenumber, clientid) => {
         dispatch({
           type: C.GENERATE_CODES,
           payload: err,
-          code: true
+          code: false
         });
         ERROR_MODAL('Error al generar los códigos de validación.', err.data);
       });

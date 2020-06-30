@@ -95,7 +95,8 @@ export default function customerReducer(state = initialState, action){
     case C.RESET_VALUES:
       return{
         ...state,
-        requestResponse: null
+        requestResponse: null,
+        generateCodesResponse: null
       }
     default:
       return state;
