@@ -15,7 +15,9 @@ const initialState={
   customerDateList: null,
   rejectedRequest: null,
   pendingRHRequest: null,
+  generateReportData: null
 };
+
 
 export default function adminReducer(state = initialState, action){
   switch (action.type) {
@@ -84,7 +86,11 @@ export default function adminReducer(state = initialState, action){
         ...state,
         requestOutLayResponse: action.payload
       };  
-
+    case C.GENERATE_BANK_REPORT:
+      return{
+        ...state,
+        generateReportData: action.payload
+      }
     default:
       return state;
   }

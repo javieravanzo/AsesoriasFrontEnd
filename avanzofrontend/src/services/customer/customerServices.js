@@ -186,10 +186,23 @@ function generateCodes(email, phonenumber, clientid){
   });
 }
 
+function checkCodes(userid, phonecode, emailcode){
+  console.log("Services PC", phonecode, "EC", emailcode);
+  return request({
+    url: '/Request/ValidateCodes',
+    method: 'GET',
+    headers: {
+      userid: userid,
+      phonecode: phonecode,
+      emailcode: emailcode,
+    }
+  });
+};
+
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, createRequest,
   getAllTransactions, getAllRequest, getAllRequestWasOutlayed, getAllRequestWasRejected,
-  getAccountDetail, generateCodes
+  getAccountDetail, generateCodes, checkCodes
 };
 
 export default customerService;

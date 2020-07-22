@@ -175,7 +175,6 @@ function approveCustomer(client, approve, cycleId){
 
 };
 
-
 function deleteClient(client){
 
   return request({
@@ -188,12 +187,21 @@ function deleteClient(client){
   
 };
 
+function generateBankReport(){
+
+  return request({
+    url: '/Reports/GenerateBankReport',
+    method: 'GET',
+  });
+
+};
+
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
-  getAllPendingRHRequest, deleteClient, updateCompanySalaries
+  getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport
 };
 
 export default adminService;

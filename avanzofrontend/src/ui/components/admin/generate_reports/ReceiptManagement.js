@@ -1,6 +1,8 @@
 //Libraries
 import React, {Component} from 'react';
 import {Row, Col, Button, Divider, Table, Modal, Select} from 'antd';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Components
 
@@ -8,7 +10,8 @@ import {Row, Col, Button, Divider, Table, Modal, Select} from 'antd';
 import '../../../styles/admin/index.css';
 import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
 
-//Assets
+//Actions
+import {generateReport} from "../../../../store/redux/actions/admin/adminActions";
 
 //Functions
 function itemRender(current, type, originalElement) {
@@ -98,6 +101,23 @@ class ReceiptManagement extends Component {
     return rows;
   };
 
+  sendReport(){
+    this.props.generateReport();
+  };
+
+  /*seeDocument = (file) => {
+
+    if (file !== null ) {
+      let newWindow = window.open(file, "_blank");
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        allowEmergingWindows();
+      }
+    } else {
+      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+    }
+
+  };*/
+
   render() {
 
     let tableData = [
@@ -162,15 +182,21 @@ class ReceiptManagement extends Component {
 
     return (
       <div className={"company-div"}>
-        <Row gutter={30}>
-          <Col xs={24} sm={24} md={12} lg={16}/>
-          <Col xs={24} sm={24} md={12} lg={4}> 
+        <Row gutter={12}>
+          <Col xs={24} sm={0} md={6} lg={11}/>
+          <Col xs={24} sm={12} md={6} lg={5}> 
+            <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
+                    onClick={() => this.sendReport()}>
+                  Archivo de desembolsos
+            </Button> 
+          </Col>
+          <Col xs={24} sm={12} md={6} lg={4}> 
             <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
                     onClick={() => this.setState({approve_modal: true})}>
                   Informe individual
             </Button> 
           </Col>
-          <Col xs={24} sm={24} md={12} lg={4}> 
+          <Col xs={24} sm={12} md={6} lg={4}> 
             <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
                     onClick={() => this.onConfirmRequest()}>
                   Informe masivo
@@ -209,7 +235,23 @@ class ReceiptManagement extends Component {
         </div>
       );
   };
-}
+};
 
+ReceiptManagement.propTypes = {
+  generateReportData: PropTypes.object,
+};
 
-export default ReceiptManagement;
+const mapStateToProps = (state) => {
+  return {
+    generateReportData: state.admin.generateReportData,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    generateReport: ( ) => dispatch(generateReport( )),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReceiptManagement);
+

@@ -5,9 +5,9 @@ import Math from "math";
 import PropTypes from 'prop-types';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
-//import SignaturePad from 'react-signature-canvas';
 import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider, Modal, 
-  Statistic, Typography, Card, Switch, Spin, Input} from 'antd';
+         Statistic, Typography, Card, Switch, Spin, Input, Checkbox} from 'antd';
+//import SignaturePad from 'react-signature-canvas';
 
 //Subcomponents
 import FieldTitle from '../subcomponents/FieldTitle';
@@ -15,7 +15,8 @@ import routes from '../../../configuration/routing/Routes';
 import {bankTypeAccountInfo} from '../../../configuration/constants';
 
 //Actions
-import { getRequestData, getOutlayData, getOultayDatesList, createRequest, generateCodes, resetValue } from "../../../store/redux/actions/customer/customerActions";
+import { getRequestData, getOutlayData, getOultayDatesList, createRequest,
+         generateCodes, resetValue, checkCodes } from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-form.css';
@@ -93,6 +94,14 @@ class LoanRequest extends Component {
       phoneConfirmation: null,
       emailConfirmation: null,
       enterCodes: null,
+      emailCode: null,
+      phoneCode: null,
+      newEmailCode: null,
+      newPhoneCode: null,
+      defaultState: null,
+      oneRequestCreated: null,
+      loadConfirmation: null,
+      loadCodes: null,
     };    
 
     this.props.resetValue();
@@ -102,10 +111,10 @@ class LoanRequest extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    //console.log("PV", nextProps.generateCodesResponse);
-    //console.log("GCR", nextProps.generateCodesResponse === true);
-    //console.log("RD", JSON.stringify(nextProps.requestDataResponse) !== '{}');
-    if(JSON.stringify(nextProps.requestDataResponse) !== '{}' && nextProps.generateCodesResponse !== true){
+    console.log("Props", nextProps.checkCodesResponse, nextProps.generateCodesResponse);
+    console.log("Cond", (nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null));
+    if(JSON.stringify(nextProps.requestDataResponse) !== '{}' && nextProps.generateCodesResponse === null){
+      console.log("Entro1");
       if(prevState.sliderValue === null){
         return {
           sliderValue: Math.round(nextProps.requestDataResponse.partialCapacity) < 80000 ? 80000 : Math.round(nextProps.requestDataResponse.partialCapacity),
@@ -118,17 +127,42 @@ class LoanRequest extends Component {
           flagState: true
         }
       }
-    }else if(nextProps.generateCodesResponse === true){
+    }else if(nextProps.generateCodesResponse === true && nextProps.checkCodesResponse === null){
+      console.log("Entro2");
       return {
         confirmed_data: false,
         enterCodes: true,
+        loadConfirmation: false,
       };
-    }else{  
+    }else if(nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null){
+      console.log("Entro3");
       return {
-        flagState: true
-      }
+        loadConfirmation: false,
+      };
+    }else if(nextProps.checkCodesResponse === true && prevState.oneRequestCreated === null){ 
+      console.log("Entro4"); 
+      return {
+        flagState: nextProps.createRequest(prevState.form_data, nextProps.location.state ? nextProps.location.state.token : undefined),
+        oneRequestCreated: true,
+        enterCodes: false,
+      };
+    }else if(nextProps.requestResponse === false){
+      console.log("Entro5");
+      return {
+        loadCodes: false,
+      };
+    }else if(nextProps.checkCodesResponse === false){
+      console.log("Entro6");
+      return {
+        loadCodes: false,
+      };
+    }else{
+      console.log("Entro7");
+      return {
+        defaultState: true
+      };
     }
-  }
+  };
 
   sigPad = {};
 
@@ -153,13 +187,10 @@ class LoanRequest extends Component {
       this.setState({
         fee: e.target.value
       });
-    }
-
-    
+    }    
   };
 
   sendReportInfo = (e, maximumSplit) => {
-    //console.log("e", e, maximumSplit);
     if(e <= maximumSplit){
       if( this.state.fee !== null){
         this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
@@ -357,7 +388,22 @@ class LoanRequest extends Component {
     }else{
       ERROR_MODAL("Error al realizar la acción", "Por favor confirma tu correo electrónico.");
     }
-    //console.log("Email", e.target.value);
+ 
+  };
+
+  changeEmailCode = (e) => {
+
+    let emailCode = e.target.value;
+
+    console.log("EnteredEmail", emailCode);
+
+    if (emailCode !== null || emailCode !== ""){
+      this.setState({
+        newEmailCode: emailCode,
+      });
+    }else{
+      ERROR_MODAL("Error al realizar la acción", "Por favor ingresa el código enviado a tu email.");
+    }
   
   };
 
@@ -375,7 +421,27 @@ class LoanRequest extends Component {
   
   };
 
+  changePhoneCode = (e) => {
+    
+    let phone = e.target.value;
+
+    console.log("EnteredPhone", phone);
+
+    if (phone !== null || phone !== ""){
+      this.setState({
+        newPhoneCode: phone,
+      });
+    }else{
+      ERROR_MODAL("Error al realizar la acción", "Por favor ingresa el código enviado a tu teléfono.");
+    }
+  
+  };
+
   confirmData = () => {
+
+    this.setState({
+      loadConfirmation: true
+    });
 
     let {phoneConfirmation, emailConfirmation} = this.state;
 
@@ -392,11 +458,24 @@ class LoanRequest extends Component {
   };
 
   confirmCodes = () => {
+    
+    let {newPhoneCode, phoneCode, newEmailCode, emailCode, loadCodes} = this.state;
 
     this.setState({
-      enterCodes: false,
+      loadCodes: true,
     });
-    this.props.createRequest(this.state.form_data, this.props.location.state ? this.props.location.state.token : undefined);
+
+    console.log("LC", newPhoneCode, newEmailCode);    
+
+    //console.log("Phone Code: ", newPhoneCode, phoneCode);
+    //console.log("Email Code: ", newEmailCode, emailCode);
+    this.props.checkCodes(parseInt(localStorage.user_id, 10), newPhoneCode, newEmailCode);
+
+    /*this.setState({
+      enterCodes: false,
+    });*/
+
+    //this.props.createRequest(this.state.form_data, this.props.location.state ? this.props.location.state.token : undefined);
 
   };
 
@@ -410,6 +489,14 @@ class LoanRequest extends Component {
     e.target.value = input.replace(/[^0-9]/g, '');
   };
 
+  onChangeField(e, param){
+    
+    this.setState({
+        checkBox1: e.target.checked
+      });
+
+  };
+
   render(){
 
     //console.log("BankInfo", bankTypeAccountInfo);
@@ -417,7 +504,7 @@ class LoanRequest extends Component {
     //console.log("ODL", this.state.sliderValue);
     
     let signature = false;
-    let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes} = this.state;
+    let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes, emailConfirmation, phoneConfirmation} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
@@ -425,6 +512,7 @@ class LoanRequest extends Component {
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
     let { bankInfo, walletInfo } = outlayDataResponse;
     //let { trimmedDataURL } = this.state;    
+    console.log("STATE", this.state.loadConfirmation );
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
@@ -763,8 +851,7 @@ class LoanRequest extends Component {
 
                     {
                       (workingSupport === true) && 
-                      
-                        <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
+                      <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
                           <FieldTitle title={"Cargar certificado laboral"}/>
                           <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
                                 accept=".pdf, application/pdf"/>
@@ -773,8 +860,7 @@ class LoanRequest extends Component {
                     }
                     {
                       (paymentSupport === true) && 
-                      
-                        <Col lg={12} md={12} sm={12} xs={24} className={"documents-column2"}>
+                      <Col lg={12} md={12} sm={12} xs={24} className={"documents-column2"}>
                           <FieldTitle title={"Cargar comprobante de pago"}/>
                           <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChangePaymentSupport}
                                 accept=".pdf, application/pdf"/>
@@ -799,7 +885,6 @@ class LoanRequest extends Component {
                         </Row>
                     }
                  
-
                   { 
                     (signature === true) &&
                     <Row className={"form-request-rows2"}>
@@ -837,7 +922,7 @@ class LoanRequest extends Component {
                  visible={confirmed_data}
                  onCancel={() => this.setState({confirmed_data: false})}
                  footer={
-                  <Button key='submit' type='primary' onClick={() => this.confirmData()}>
+                  <Button key='submit' type='primary' disabled={emailConfirmation === null || phoneConfirmation === null } loading={this.state.loadConfirmation === true} onClick={() => this.confirmData()}>
                     Aceptar
                   </Button>}
                  >
@@ -890,7 +975,7 @@ class LoanRequest extends Component {
                  visible={enterCodes}
                  onCancel={() => this.setState({enterCodes: false})}
                  footer={
-                  <Button key='submit' type='primary' onClick={() => this.confirmCodes()}>
+                  <Button key='submit' type='primary' loading={this.state.loadCodes === true} onClick={() => this.confirmCodes()}>
                     Confirmar códigos
                   </Button>}
                  >
@@ -914,29 +999,35 @@ class LoanRequest extends Component {
                       <FormItem>
                         {getFieldDecorator('code1',
                           {rules: [
-                            {required: false, message: 'Por favor confirma tu correo electrónico'}
+                            {required: false, message: 'Por favor ingresa el código envíado a tu correo electrónico.'}
                           ]})(
-                            <Input  className={"form-input-number"} placeholder={"Código enviado al correo"} 
-                            onChange={this.changeNewEmail}/>
+                            <Input  className={"form-input-codes"} placeholder={"Código enviado al correo"} 
+                            onChange={this.changeEmailCode}/>
                           )
                         }
                       </FormItem>
                     </Col>
                     <Col xs={24} sm={24} md={20} lg={20}>
-                    <FieldTitle title={"Código Celular"}/>
+                      <FieldTitle title={"Código Celular"}/>
                       <FormItem >
                         {getFieldDecorator('code2',
                           {rules: [
-                            {required: false, message: 'Por favor confirma tu número de celular' }
+                            {required: false, message: 'Por favor ingresa el código envíado a tu teléfono celular.' }
                           ]})(
-                            <Input  className={"form-input-number"} placeholder={"Código enviado al celular"} 
-                            onChange={this.changeNewPhone}/>
+                            <Input  className={"form-input-codes"} placeholder={"Código enviado al celular"} 
+                            onChange={this.changePhoneCode}/>
                           )
                         }
                       </FormItem>  
                     </Col>
                   </Row>
                 </Form>
+                 <Row className={"signature-message"}>
+                  <Col lg={2} md={2} sm={2} xs={2} />
+                  <Col lg={20} md={20} sm={20} xs={20} className={"signature-message-col"}>
+                    <span>{""} Al dar clic en <b>Confirmar códigos</b>, estás firmando electrónicamente la solicitud.</span>
+                  </Col>
+                 </Row>
               </Modal>
           </Row>
         </div>
@@ -953,6 +1044,8 @@ RequestForm.propTypes = {
   outlayDatesList: PropTypes.object,
   requestResponse: PropTypes.bool,
   generateCodesResponse: PropTypes.bool,
+  generateCodesData: PropTypes.string,
+  checkCodesResponse: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
@@ -961,7 +1054,9 @@ const mapStateToProps = (state) => {
     outlayDataResponse: state.customer.outlayDataResponse,
     outlayDatesList: state.customer.outlayDatesList,
     requestResponse: state.customer.requestResponse,
-    generateCodesResponse: state.customer.generateCodesResponse
+    generateCodesResponse: state.customer.generateCodesResponse,
+    generateCodesData: state.customer.generateCodesData,
+    checkCodesResponse: state.customer.checkCodesResponse,
   }
 };
 
@@ -973,6 +1068,7 @@ const mapDispatchToProps = (dispatch) => {
     getOultayDatesList: (customerId, split, quantity) => dispatch(getOultayDatesList(customerId, split, quantity)),
     createRequest: (data, token) => dispatch(createRequest(data, token)),
     generateCodes: (email, phonenumber, clientid) => dispatch(generateCodes(email, phonenumber, clientid)),
+    checkCodes: (userid, phonecode, emailcode) => dispatch(checkCodes(userid, phonecode, emailcode)),
   }
 };
 

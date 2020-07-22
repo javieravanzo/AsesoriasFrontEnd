@@ -425,3 +425,22 @@ export const deleteClient = (client) => {
       });
   }
 };
+
+
+export const generateReport = (client) => {
+  return dispatch => {
+    return adminServices.generateBankReport()
+      .then(response => {
+        dispatch({
+          type: C.GENERATE_BANK_REPORT,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GENERATE_BANK_REPORT,
+          payload: err,
+        });
+        ERROR_MODAL('Error al realizar el proceso', err);
+      });
+  }
+};

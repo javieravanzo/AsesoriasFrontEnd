@@ -134,9 +134,10 @@ export const getCompanies = () => {
       }).catch(err => {
         dispatch({
           type: C.GET_COMPANIES,
-          payload: err,
+          payload: [],
         });
-        ERROR_MODAL('Error al registrar el usuario',  err.response.message);
+        console.log({Error: err});
+        ERROR_MODAL('Ocurrió un error al traer el listado de empresas',  'No es posible traer el listado de empresas.');
       });
   }
 };

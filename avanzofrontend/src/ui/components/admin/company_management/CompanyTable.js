@@ -75,8 +75,10 @@ const table = [
 //Functions
 function itemRender(current, type, originalElement) {
   if (type === 'prev' || type === 'Previous Page') {
+    //Send preview page
     return <span title={'Anterior'} className={"item-renderer"}>{"<"}</span>;
   } if (type === 'next') {
+    //Send next
     return <span title={'Siguiente'} className={"item-renderer"}>{">"}</span>;
   }
   return originalElement;

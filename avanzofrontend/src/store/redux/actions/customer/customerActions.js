@@ -285,10 +285,31 @@ export const generateCodes = (email, phonenumber, clientid) => {
       }).catch(err => {
         dispatch({
           type: C.GENERATE_CODES,
-          payload: err,
+          payload: err.data,
           code: false
         });
         ERROR_MODAL('Error al generar los códigos de validación.', err.data);
+      });
+  };
+};  
+
+export const checkCodes = (userid, phonecode, emailcode) => {
+  console.log("Actions PC", phonecode, "EC", emailcode);
+  return dispatch => {
+    return customerService.checkCodes(userid, phonecode, emailcode)
+      .then(response => {
+        dispatch({
+          type: C.CHECK_CODES,
+          payload: response.data,
+          response: true
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.CHECK_CODES,
+          payload: err.data,
+          response: false
+        });
+        ERROR_MODAL('Error al validar los códigos generados.', err.data);
       });
   };
 };  
