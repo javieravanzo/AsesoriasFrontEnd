@@ -1,8 +1,9 @@
 /* ----------------- Company ------------------- */
 export const bankTypeAccountInfo = [
-  {id: 1, name: "Cuenta de ahorros"},
-  {id: 2, name: "Cuenta corriente"},
-  {id: 3, name: "Otro"}
+  {id: 1, name: "Cuenta de ahorros", code: "CA"},
+  {id: 2, name: "Cuenta corriente", code: "CC"},
+  {id: 3, name: "Tarjeta Prepago Maestro", code: "TP"},
+  {id: 3, name: "Depósitos Electrónicos", code: "DE"},
 ];
 
 /* ------------------ Request State ---------------- */

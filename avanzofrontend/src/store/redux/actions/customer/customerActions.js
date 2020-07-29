@@ -78,7 +78,7 @@ export const getRequestData = (customerId, token) => {
           type: C.GET_REQUEST_DATA,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la información particular de la solicitud', err.data.message);
+        ERROR_MODAL('Error al traer la información particular de la solicitud', err.data);
       });
   };
 };  

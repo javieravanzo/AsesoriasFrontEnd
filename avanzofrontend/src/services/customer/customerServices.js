@@ -2,6 +2,20 @@
 import request from '../requestWrapper';
 import integrationRequest from '../integrationWrapper';
 
+/*function dataURLtoFile(dataurl, filename) {
+  
+  var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), 
+      n = bstr.length, 
+      u8arr = new Uint8Array(n);
+  while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+  }
+  
+  return new File([u8arr], filename, {type:mime});
+};*/
+
 function getHomeData(){
 
   return request({
@@ -70,21 +84,6 @@ function generateDocuments(customerId, split, quantity) {
   });
 };
 
-/*function dataURLtoFile(dataurl, filename) {
- 
-  var arr = dataurl.split(','),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]), 
-      n = bstr.length, 
-      u8arr = new Uint8Array(n);
-      
-  while(n--){
-      u8arr[n] = bstr.charCodeAt(n);
-  }
-  
-  return new File([u8arr], filename, {type:mime});
-};*/
-
 function createRequest(data, token){
 
   let signature = data.file;
@@ -99,8 +98,13 @@ function createRequest(data, token){
   bodyFormData.append('accountType', data.accountType);
   bodyFormData.append('accountNumber', data.accountNumber);
   bodyFormData.append('isBank', data.isBank); 
+
   bodyFormData.append('interest', data.interest);
-  bodyFormData.append('administration', data.interest);
+  bodyFormData.append('administration', data.administration);
+  bodyFormData.append('iva', data.iva);
+  bodyFormData.append('otherValues', data.otherValues);
+  bodyFormData.append('totalValue', data.totalValue);
+
   bodyFormData.append('idCompany', data.idCompany);
   bodyFormData.append('identificationId', data.identificationId);
   bodyFormData.append('loanData', data.loanData);

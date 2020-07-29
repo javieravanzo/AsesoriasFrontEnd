@@ -106,6 +106,7 @@ class RequestStateModal extends Component {
     let data = {
       requestId: idRequest,
       approve: true,
+      text: "Aprobado",
     };
     this.props.approveorRejectRequest(data, localStorage.user_id);
     this.setState({approve_modal: false});

@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 
 //Styles
 import '../../../styles/admin/index.css';
-import { SUCCESS_MODAL } from '../../subcomponents/modalMessages';
+import BaseURL from '../../../../services/BaseURL';
+import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../../subcomponents/modalMessages';
 
 //Actions
 import {generateReport} from "../../../../store/redux/actions/admin/adminActions";
@@ -21,6 +22,24 @@ function itemRender(current, type, originalElement) {
     return <span title={'Siguiente'} className={"item-renderer"}>{">"}</span>;
   }
   return originalElement;
+};
+
+function seeDocument(file, BaseURL){
+
+  let newFile = BaseURL + file;
+  console.log("B", file);
+
+  if (newFile !== null ) {
+    let newWindow = window.open(newFile, "_blank");
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      allowEmergingWindows();
+    }
+  } else {
+    WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+  }
+
+  return true;
+
 };
 
 //Constants
@@ -66,11 +85,21 @@ class ReceiptManagement extends Component {
     super(props);
     
     this.state = {
-      approve_modal: null
+      approve_modal: null,
+      reportData: null
     };
 
     this.setData = this.setData.bind(this);
 
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.generateReportData !== null){
+      console.log("GRD", nextProps.generateReportData);
+      return {
+        reportData: seeDocument(nextProps.generateReportData.data, BaseURL),
+      };
+    }
   };
 
   onConfirmRequest = () => {
@@ -105,18 +134,7 @@ class ReceiptManagement extends Component {
     this.props.generateReport();
   };
 
-  /*seeDocument = (file) => {
-
-    if (file !== null ) {
-      let newWindow = window.open(file, "_blank");
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-        allowEmergingWindows();
-      }
-    } else {
-      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
-    }
-
-  };*/
+  
 
   render() {
 

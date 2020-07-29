@@ -1,12 +1,12 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Input} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-import FieldTitle from '../../../subcomponents/FieldTitle';
+//import FieldTitle from '../../../subcomponents/FieldTitle';
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
@@ -99,7 +99,7 @@ class RequestOutLayState extends Component {
   render(){
 
     let item = this.props.item;
-    let {transactionCode} = this.state;
+    //let {transactionCode} = this.state;
     //console.log(transactionCode);
 
     return (
@@ -240,19 +240,11 @@ class RequestOutLayState extends Component {
               okText={"Aprobar"}
               cancelText={"Cancelar"}
               width={450}
-              okButtonProps={{disabled: transactionCode === null || transactionCode === "" ? true : false}}
               onOk={() => this.onConfirmRequest(item.idRequest)}
               onCancel={() => this.setState({approve_modal: false})}>
                 <div>
                   ¿Está seguro de realizar el desembolso del crédito? Esta acción será irreversible. Si la respuesta es correcta, ingrese el código de la transacción, sino de clic en el botón "Cancelar".                 
                   <br/>
-                  <br/>
-                  <FieldTitle title={"Código de la transacción bancaria"}/>
-                  <Row>
-                    <Col lg={16} md={12} sm={12} xs={12}>
-                      <Input placeholder={"Ejemplo: 0005873288712761"} onChange={(e) => this.onChangeTransactionCode(e)} value={transactionCode}/>
-                    </Col>
-                  </Row>
                 </div>
             </Modal>
             <Modal 

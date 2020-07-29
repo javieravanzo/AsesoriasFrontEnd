@@ -2,7 +2,7 @@
 import {integrationTypes as C} from '../../types';
 
 //Subcomponents
-import { WARNING_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
+//import { WARNING_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 //Services
 import integrationService from '../../../../services/integration/integrationServices'; 

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider, Modal, 
-         Statistic, Typography, Card, Switch, Spin, Input, Checkbox} from 'antd';
+         Statistic, Typography, Card, Switch, Spin, Input} from 'antd';
 //import SignaturePad from 'react-signature-canvas';
 
 //Subcomponents
@@ -111,10 +111,10 @@ class LoanRequest extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("Props", nextProps.checkCodesResponse, nextProps.generateCodesResponse);
-    console.log("Cond", (nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null));
+    //console.log("Props", nextProps.checkCodesResponse, nextProps.generateCodesResponse);
+    //console.log("Cond", (nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null));
     if(JSON.stringify(nextProps.requestDataResponse) !== '{}' && nextProps.generateCodesResponse === null){
-      console.log("Entro1");
+      //console.log("Entro1");
       if(prevState.sliderValue === null){
         return {
           sliderValue: Math.round(nextProps.requestDataResponse.partialCapacity) < 80000 ? 80000 : Math.round(nextProps.requestDataResponse.partialCapacity),
@@ -128,36 +128,36 @@ class LoanRequest extends Component {
         }
       }
     }else if(nextProps.generateCodesResponse === true && nextProps.checkCodesResponse === null){
-      console.log("Entro2");
+      //console.log("Entro2");
       return {
         confirmed_data: false,
         enterCodes: true,
         loadConfirmation: false,
       };
     }else if(nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null){
-      console.log("Entro3");
+      //console.log("Entro3");
       return {
         loadConfirmation: false,
       };
     }else if(nextProps.checkCodesResponse === true && prevState.oneRequestCreated === null){ 
-      console.log("Entro4"); 
+      //console.log("Entro4"); 
       return {
         flagState: nextProps.createRequest(prevState.form_data, nextProps.location.state ? nextProps.location.state.token : undefined),
         oneRequestCreated: true,
         enterCodes: false,
       };
     }else if(nextProps.requestResponse === false){
-      console.log("Entro5");
+      //console.log("Entro5");
       return {
         loadCodes: false,
       };
     }else if(nextProps.checkCodesResponse === false){
-      console.log("Entro6");
+      //console.log("Entro6");
       return {
         loadCodes: false,
       };
     }else{
-      console.log("Entro7");
+      //console.log("Entro7");
       return {
         defaultState: true
       };
@@ -280,9 +280,6 @@ class LoanRequest extends Component {
     let {bank_account, bank_name, bank_number, bank_type, money_wallet, 
          wallet_type} = this.state;
 
-    //console.log("State", bank_account, bank_name, bank_number, bank_type, money_wallet, 
-    //wallet_number, wallet_type, signatureDone);
-
     if (bank_account){
       if(bank_name !== null && bank_number !== null && bank_type !== null && 
          bank_name !== "" && bank_number !== "" && bank_type !== ""){
@@ -340,8 +337,11 @@ class LoanRequest extends Component {
           accountType: this.state.money_wallet ? null : values.account_type,
           accountNumber: values.account_number,
           isBank: this.state.money_wallet ? false :  true,
-          interest: this.state.sliderValue * interestValue,
-          administration: (this.state.fee%2) * adminValue,
+          interest: this.props.outlayDatesList.totalInterest,
+          administration: this.props.outlayDatesList.administrationValue,
+          iva: this.props.outlayDatesList.ivaValue,
+          otherValues: 0,
+          totalValue: this.props.outlayDatesList.totalValue,
           idCompany: this.props.requestDataResponse.idCompany,  
           identificationId: this.props.requestDataResponse.identificationId,
           loanData: this.props.outlayDatesList.datesList[0].quantity,
@@ -395,7 +395,7 @@ class LoanRequest extends Component {
 
     let emailCode = e.target.value;
 
-    console.log("EnteredEmail", emailCode);
+    //console.log("EnteredEmail", emailCode);
 
     if (emailCode !== null || emailCode !== ""){
       this.setState({
@@ -425,7 +425,7 @@ class LoanRequest extends Component {
     
     let phone = e.target.value;
 
-    console.log("EnteredPhone", phone);
+    //console.log("EnteredPhone", phone);
 
     if (phone !== null || phone !== ""){
       this.setState({
@@ -459,13 +459,13 @@ class LoanRequest extends Component {
 
   confirmCodes = () => {
     
-    let {newPhoneCode, phoneCode, newEmailCode, emailCode, loadCodes} = this.state;
+    let {newPhoneCode, newEmailCode} = this.state;
 
     this.setState({
       loadCodes: true,
     });
 
-    console.log("LC", newPhoneCode, newEmailCode);    
+    //console.log("LC", newPhoneCode, newEmailCode);    
 
     //console.log("Phone Code: ", newPhoneCode, phoneCode);
     //console.log("Email Code: ", newEmailCode, emailCode);
@@ -512,7 +512,7 @@ class LoanRequest extends Component {
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
     let { bankInfo, walletInfo } = outlayDataResponse;
     //let { trimmedDataURL } = this.state;    
-    console.log("STATE", this.state.loadConfirmation );
+    //console.log("STATE", this.state.loadConfirmation );
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
@@ -786,7 +786,7 @@ class LoanRequest extends Component {
                               ]})(
                                 <Select placeholder={"Tipo de cuenta"} disabled={sliderValue < 80000 ? true : false} showSearch={true} allowClear={true} autoClearSearchValue={true} onChange={this.changeBankType}>
                                   {bankTypeAccountInfo.map((accountType, i) =>(
-                                    <Select.Option value={accountType.id} key={i}>
+                                    <Select.Option value={accountType.name} key={i}>
                                       {accountType.name}
                                     </Select.Option>
                                   ))
@@ -823,7 +823,7 @@ class LoanRequest extends Component {
                               ]})(
                                 <Select placeholder={"Tipo de billetera"} disabled={sliderValue < 80000 ? true : false} showSearch={true} onChange={this.changeWalletType}>
                                   {walletInfo.map((wallet, i) =>(
-                                    <Select.Option value={wallet.bankName} key={i}>
+                                    <Select.Option value={wallet.bankCode} key={i}>
                                       {wallet.bankName}
                                     </Select.Option>
                                   ))
