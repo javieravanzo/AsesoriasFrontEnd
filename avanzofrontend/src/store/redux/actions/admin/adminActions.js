@@ -431,16 +431,17 @@ export const generateReport = (client) => {
   return dispatch => {
     return adminServices.generateBankReport()
       .then(response => {
+        console.log("ResponData", response.data);
         dispatch({
           type: C.GENERATE_BANK_REPORT,
-          payload: response.data
+          payload: response.data.data
         });
       }).catch(err => {
         dispatch({
           type: C.GENERATE_BANK_REPORT,
-          payload: err,
+          payload: "",
         });
-        ERROR_MODAL('Error al realizar el proceso', err);
+        ERROR_MODAL('Error al realizar el proceso', err.message);
       });
   }
 };

@@ -68,12 +68,8 @@ class App extends Component {
   render(){
 
     let signedIn = (this.props.location.pathname).includes('integration-form') ? true: this.isSignedIn();
-    console.log("SI", signedIn);
     //console.log("Route", this.props.location.pathname);
-    //console.log("IntegrationForm", routes.integration_form);
-    //console.log("Comp", this.props.location.pathname === routes.integration_form);
-    //console.log("Includes", this.props.location.pathname.includes('integration-form'));
-
+    
     if((this.props.location.pathname).includes('integration-form')){
       return(
         <div>           

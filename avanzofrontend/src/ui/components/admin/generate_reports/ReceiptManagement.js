@@ -29,7 +29,7 @@ function seeDocument(file, BaseURL){
   let newFile = BaseURL + file;
   console.log("B", file);
 
-  if (newFile !== null ) {
+  if (file !== null && file !== "") {
     let newWindow = window.open(newFile, "_blank");
     if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
       allowEmergingWindows();
@@ -97,7 +97,7 @@ class ReceiptManagement extends Component {
     if(nextProps.generateReportData !== null){
       console.log("GRD", nextProps.generateReportData);
       return {
-        reportData: seeDocument(nextProps.generateReportData.data, BaseURL),
+        reportData: seeDocument(nextProps.generateReportData, BaseURL),
       };
     }
   };
@@ -256,7 +256,7 @@ class ReceiptManagement extends Component {
 };
 
 ReceiptManagement.propTypes = {
-  generateReportData: PropTypes.object,
+  generateReportData: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
