@@ -1,12 +1,18 @@
 //Libraries
-import {Layout, Menu, Modal, Icon} from 'antd';
+import {Layout, Menu, Modal, Icon, Badge, Tooltip} from 'antd';
 import React, {Component} from 'react';
 import { Redirect } from "react-router";
 import {withRouter, NavLink} from 'react-router-dom';
+import { UserAddOutlined } from '@ant-design/icons';
+import connect from 'react-redux/es/connect/connect';
+import PropTypes from 'prop-types';
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
 import icon from "../../assets/authentication/avanzoMenu.jpg";
+
+//Actions
+import {getCustomersCountToApprove} from "../../../store/redux/actions/admin/adminActions";
 
 //Styles
 import '../../styles/general/mainmenu.css';
@@ -30,6 +36,8 @@ class MainMenu extends Component {
     this.logOut = this.logOut.bind(this);
     this.handleCancelModal = this.handleCancelModal.bind(this);
     this.isSignedIn=this.isSignedIn.bind(this);
+
+    this.props.getCustomersCountToApprove();
 
   };
 
@@ -60,6 +68,7 @@ class MainMenu extends Component {
     let {loggedIn} = this.state;
     //let {role} = this.props;
     let role = parseInt(localStorage.role_id, 10);
+    //console.log("Props",  this.props.countCustomerData.count);
 
     return(
       <Layout className="layout" >
@@ -178,6 +187,14 @@ class MainMenu extends Component {
           <p>¿Confirma que desea cerrar sesión?</p>
         </Modal>
         {
+          (parseInt(role,10) === 2 && this.props.countCustomerData !== null ) &&
+          <Badge className={"menu-counter-badge"} style={{ backgroundColor: '#1890ff'}} count={this.props.countCustomerData.count}>
+            <Tooltip title="Nuevos clientes por aprobar" placement="topLeft">  
+              <UserAddOutlined className={"menu-counter-text"}/>
+            </Tooltip> 
+          </Badge> 
+        }
+        {
           !loggedIn &&
           <Redirect to={"/"}/>
         }
@@ -187,25 +204,25 @@ class MainMenu extends Component {
   
 }
 
-/*MainMenu.propTypes = {
-  logout: PropTypes.func,
+MainMenu.propTypes = {
   isLogin: PropTypes.bool,
-  role: PropTypes.number.isRequired
+  countCustomerData: PropTypes.object
 };
 
 const mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
-    role: state.login.role
+    role: state.login.role,
+    countCustomerData: state.admin.countCustomerData,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(logout())
+    getCustomersCountToApprove: () => dispatch(getCustomersCountToApprove())
   }
-};*/
+};
 
-//export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MainMenu));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MainMenu));
 
-export default (withRouter(MainMenu));
+//export default (withRouter(MainMenu));

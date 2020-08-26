@@ -6,6 +6,7 @@ import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
 import CurrencyFormat from "react-currency-format";
+import { WARNING_MODAL, SUCCESS_MODAL } from '../subcomponents/modalMessages';
 //import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
@@ -13,6 +14,16 @@ import {getAccountDetail} from "../../../store/redux/actions/customer/customerAc
 
 //Styles
 import '../../styles/customer/account-state.css';
+
+//Functions
+function format(d) {
+  var formatter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+  });
+
+  return formatter.format(d);
+};
 
 class AccountState extends Component {
 
@@ -30,6 +41,17 @@ class AccountState extends Component {
     //this.carousel = React.createRef();
 
     this.props.getAccountDetail();
+
+  };
+
+  checkAccount = () => {
+
+    if(this.props.accountDetail.totalRemainder > 0){
+      WARNING_MODAL("Advertencia", "El paz y salvo no puede ser descargado porque existe una deuda de alrededor de " + format(this.props.accountDetail.totalRemainder)
+       + " con Avanzo.");
+    }else{
+      SUCCESS_MODAL("Acción realizada exitosamente", "El paz y salvo ha sido descargado de forma correcta.")
+    }
 
   };
 
@@ -53,7 +75,7 @@ class AccountState extends Component {
               </Typography>
             </Col>
             <Col lg={5} md={6} sm={12} xs={12} className={"account-button"}>
-              <Button type="primary" icon="download">
+              <Button type="primary" icon="download" onClick={() => this.checkAccount()}>
                 Paz y salvo
               </Button>
             </Col>

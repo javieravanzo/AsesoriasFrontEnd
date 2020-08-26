@@ -8,7 +8,7 @@ const initialState={
   resetPasswordResponse: null,
   correct: false,
   newRegisterResponse: null,
-  companyList: [],
+  registerInfo: {},
 };
 
 export default function loginReducer(state = initialState, action){
@@ -47,7 +47,7 @@ export default function loginReducer(state = initialState, action){
     case Cu.GET_COMPANIES:
       return{
         ...state,
-        companyList: action.payload
+        registerInfo: action.payload
       };
     default:
       return state;

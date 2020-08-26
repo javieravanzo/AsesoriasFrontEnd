@@ -22,6 +22,11 @@ import { getRequestData, getOutlayData, getOultayDatesList, createRequest,
 import '../../styles/customer/request-form.css';
 import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows, ERROR_MODAL } from '../subcomponents/modalMessages';
 
+//Assets
+import efecty from "../../assets/efecty.PNG";
+import davivienda from "../../assets/davivienda.PNG";
+import bancolombia from "../../assets/bancolombia.PNG";
+
 //Constants
 const FormItem = Form.Item;
 //const { Panel } = Collapse;
@@ -340,8 +345,8 @@ class LoanRequest extends Component {
           interest: this.props.outlayDatesList.totalInterest,
           administration: this.props.outlayDatesList.administrationValue,
           iva: this.props.outlayDatesList.ivaValue,
-          otherValues: 0,
-          totalValue: this.props.outlayDatesList.totalValue,
+          otherValues: values.moyen === "EFECTY" ? 2000 : 0,
+          totalValue: values.moyen !== "EFECTY" ? this.props.outlayDatesList.totalValue : this.props.outlayDatesList.totalValue + 2000,
           idCompany: this.props.requestDataResponse.idCompany,  
           identificationId: this.props.requestDataResponse.identificationId,
           loanData: this.props.outlayDatesList.datesList[0].quantity,
@@ -454,6 +459,14 @@ class LoanRequest extends Component {
       ERROR_MODAL("Error al realizar la acción", "Los datos ingresados no son válidos.");
 
     }
+
+  };
+
+  reSendCodes = () => {
+
+    let {phoneConfirmation, emailConfirmation} = this.state;
+
+    this.props.generateCodes( emailConfirmation, phoneConfirmation, parseInt(localStorage.user_id, 10));
 
   };
 
@@ -736,29 +749,36 @@ class LoanRequest extends Component {
                     </Col>
                   </Row>
                   <Row gutter={20} className={"form-request-rows"}>
-                    <Col xs={24} sm={24} md={8} lg={7}>
-                    <span className={"type-account"}>{"Banco "}<Switch onChange={this.handleWallet}/>{" Billetera virtual"}</span>  
-                    </Col>
-                    <Col xs={24} sm={24} md={12} lg={10} className={"form-bank-col"}>
-                      {
-                        bank_account &&
-                        <div className={"div-bank-requires"}>
-                          <span className={"bank-requires"}>* El tiempo de desembolso depende de los ciclos ACH</span>
-                        </div> 
-                      }
-                      {
-                        (!bank_account && !money_wallet) && 
-                        <div >
-                          <span>* Escoge un medio para realizar el desembolso</span>
-                        </div> 
-                      }
-                    </Col>
+                    <Row className={"div-banks-images"}>
+                      <Col xs={24} sm={12} md={8} lg={8}>
+                        <img src={efecty} alt="efecty" className="request-efecty-logo" />
+                      </Col>
+                      <Col xs={24} sm={12} md={8} lg={8}>
+                        <img src={davivienda} alt="davivienda" className="request-davivienda-logo" />
+                      </Col>
+                      <Col xs={24} sm={12} md={8} lg={8}>
+                        <img src={bancolombia} alt="bancolombia" className="request-bancolombia-logo" />
+                      </Col>
+                    </Row>
+                    <br/>
+                    <Row className={"div-banks-images"}>
+                      <div className={"div-bank-requires"}>
+                        <span className={"bank-requires"}>Recuerda que con estas alianzas, puedes tener tu dinero en menos tiempo (24h hábiles después de la aprobación del crédito).</span>
+                      </div> 
+                    </Row>
+                    <br/>
+                    <Row>
+                      <Col xs={24} sm={24} md={8} lg={7}>
+                        <span className={"type-account"}>{"Banco "}<Switch onChange={this.handleWallet}/>{" Billetera virtual"}</span>  
+                      </Col>
+                      <Col xs={24} sm={24} md={12} lg={10}/>
+                    </Row>
                   </Row>
                   <br/>
                     {
                       bank_account && 
                       <Row gutter={12} className={"form-request-rows"}>
-                        <Col xs={12} sm={12} md={7} lg={7} >
+                        <Col xs={12} sm={12} md={6} lg={6}>
                           <FieldTitle title={"Cuenta"}/>
                           <FormItem>
                             {getFieldDecorator('moyen',
@@ -777,7 +797,7 @@ class LoanRequest extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={12} sm={12} md={7} lg={7} >
+                        <Col xs={12} sm={12} md={4} lg={4} >
                           <FieldTitle title={"Tipo de cuenta"}/>
                           <FormItem>
                             {getFieldDecorator('account_type',
@@ -796,7 +816,7 @@ class LoanRequest extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={24} sm={24} md={10} lg={10}>
+                        <Col xs={12} sm={12} md={7} lg={7}>
                         <FieldTitle title={"Número de cuenta"}/>
                           <FormItem >
                             {getFieldDecorator('account_number',
@@ -809,12 +829,25 @@ class LoanRequest extends Component {
                             }
                           </FormItem>  
                         </Col>
+                        <Col xs={12} sm={12} md={7} lg={7}>
+                        <FieldTitle title={"Confirmar número de cuenta"}/>
+                          <FormItem >
+                            {getFieldDecorator('account_numberConfirmation',
+                              {initialValue: accountNumber, rules: [
+                                {required: false, message: 'Por favor confirma un número de cuenta' }
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Confirma número de cuenta"} 
+                                onChange={this.changeBankNumber} disabled={sliderValue < 80000 ? true : false}/>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
                       </Row>
                     }
                     {
                       money_wallet &&
                       <Row  gutter={12} className={"form-request-rows"}>
-                        <Col xs={12} sm={12} md={7} lg={7} >
+                        <Col xs={12} sm={12} md={8} lg={8} >
                           <FieldTitle title={"Billetera virtual"}/>
                           <FormItem>
                             {getFieldDecorator('moyen',
@@ -823,7 +856,7 @@ class LoanRequest extends Component {
                               ]})(
                                 <Select placeholder={"Tipo de billetera"} disabled={sliderValue < 80000 ? true : false} showSearch={true} onChange={this.changeWalletType}>
                                   {walletInfo.map((wallet, i) =>(
-                                    <Select.Option value={wallet.bankCode} key={i}>
+                                    <Select.Option value={wallet.bankName} key={i}>
                                       {wallet.bankName}
                                     </Select.Option>
                                   ))
@@ -833,7 +866,7 @@ class LoanRequest extends Component {
                             }
                           </FormItem>
                         </Col>
-                        <Col xs={24} sm={24} md={10} lg={10}>
+                        <Col xs={24} sm={24} md={8} lg={8}>
                         <FieldTitle title={"Número de celular"}/>
                           <FormItem >
                             {getFieldDecorator('account_number',
@@ -841,6 +874,19 @@ class LoanRequest extends Component {
                                 {required: false, message: 'Por favor ingresa un número de celular' }
                               ]})(
                                 <Input  className={"form-input-number"} placeholder={"Número de celular"} 
+                                onChange={this.changeWalletNumber} disabled={sliderValue < 80000 ? true : false}/>
+                              )
+                            }
+                          </FormItem>  
+                        </Col>
+                        <Col xs={24} sm={24} md={8} lg={8}>
+                        <FieldTitle title={"Confirmar número de celular"}/>
+                          <FormItem >
+                            {getFieldDecorator('account_numberConfirmation',
+                              {initialValue: phoneNumber, rules: [
+                                {required: false, message: 'Por favor confirma tu número de celular' }
+                              ]})(
+                                <Input  className={"form-input-number"} placeholder={"Confirmar número de celular"} 
                                 onChange={this.changeWalletNumber} disabled={sliderValue < 80000 ? true : false}/>
                               )
                             }
@@ -955,8 +1001,8 @@ class LoanRequest extends Component {
                       </FormItem>
                     </Col>
                     <Col xs={24} sm={24} md={10} lg={10}>
-                    <FieldTitle title={"Número de celular"}/>
-                      <FormItem >
+                      <FieldTitle title={"Número de celular"}/>
+                        <FormItem >
                         {getFieldDecorator('phone_confirmation',
                           {rules: [
                             {required: false, message: 'Por favor confirma tu número de celular' }
@@ -968,6 +1014,7 @@ class LoanRequest extends Component {
                       </FormItem>  
                     </Col>
                   </Row>
+                 
                 </Form>
               </Modal>
               <Modal 
@@ -1026,6 +1073,12 @@ class LoanRequest extends Component {
                   <Col lg={2} md={2} sm={2} xs={2} />
                   <Col lg={20} md={20} sm={20} xs={20} className={"signature-message-col"}>
                     <span>{""} Al dar clic en <b>Confirmar códigos</b>, estás firmando electrónicamente la solicitud.</span>
+                  </Col>
+                 </Row>
+                 <Row className={"signature-message"}>
+                  <Col lg={2} md={2} sm={2} xs={2} />
+                  <Col lg={20} md={20} sm={20} xs={20} className={"signature-message-col"}>
+                    <span>Si los códigos de validación no te han llegado, por favor haz clic <b><u onClick={() => this.reSendCodes()}>aquí</u></b> para enviarlos de nuevo.</span>
                   </Col>
                  </Row>
               </Modal>

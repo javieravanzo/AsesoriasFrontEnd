@@ -1,8 +1,88 @@
-.menu-logo{
+.home-main-div{
+  background-color: #fff !important;
+  width: 78%;
+  margin: auto;
+}
+
+.home-header-row{
+  margin-top: 15px;
+}
+
+.home-menu-logo{
   margin-top: 2px;
-  height: 40px;
+  height: 60px;
   margin-bottom: 5px;
-  margin-left: 10px;
+  font-size: 20px;
+}
+
+.home-header-third-col{
+  margin-top: 30px !important;
+  text-align: right;
+}
+
+.home-menu-text{
+  font-size: 20px !important;
+  color: #000 !important;
+}
+
+.network-fb-icon{
+  position: fixed !important;
+  z-index: 2;
+  font-size: 40px;
+  color: #0055d4 !important;
+  margin-top: 21% !important;
+}
+
+.network-ig-icon{
+  position: fixed !important;
+  z-index: 2;
+  font-size: 44px;
+  color: #f700ff !important;
+  margin-top: 17% !important;
+}
+
+.home-login-button {
+  height: 32px !important;
+  width: 30% !important;
+  margin: auto;
+  margin-top: 20px !important; 
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.home-second-row{
+  margin-top: 30px !important;
+  border: 5px ;
+}
+
+.home-main-second-row{
+  
+  border: 5px;
+  width: 75% !important;
+  margin: auto !important;
+  margin-top: 22px !important;
+}
+
+
+.home-second-row-col1{
+  margin: auto;
+  text-align: center !important;
+  width: 80%;
+}
+
+.home-second-row-col2{
+  text-align: center !important;
+}
+
+.home-register-datepicker{
+  width: 100% !important;
+}
+
+.home-img{
+  width: 80% !important;
+  margin-left: 20px !important;
 }
 
 .menu-home-style{
@@ -14,6 +94,7 @@
 
 .home-main-row{
   padding-top: 60px;
+  padding-bottom: 40px;
 }
 
 .home-form-item{
@@ -22,10 +103,43 @@
 
 
 .customer-home-card{
-  width: 70% !important;
+  width: 100% !important;
   margin: auto !important;
   box-shadow: 3px 4px 5px 0px rgba(0, 0, 0, 0.2);
   font-family: sans-serif !important;
+  border-radius: 15px !important;
+  background-color: #ececec !important;
+}
+
+.home-left-col-row{
+  margin-top: 40px !important;
+}
+
+.home-register-row-text{
+  text-align: center !important;
+}
+
+.home-zero-row-text{
+  text-align: left !important;
+  width: 60% !important;
+  margin: auto !important; 
+}
+
+.home-zero-text{
+  font-size: 18px !important;
+  color: #0055d4 !important;
+  margin-bottom: 1px !important; 
+  text-align: center !important;
+}
+
+.home-zero-input-text{
+  font-size: 14px !important;
+  color: #000 !important;
+}
+
+.home-text-register{
+  text-align: center !important;
+  margin-top: 5px !important;
 }
 
 .home-first-text{
@@ -43,21 +157,24 @@
 
 
 
-.home-second-row{
-  margin-top: 10px;
-}
-
-.home-img{
-  width: 90%;
-  margin-left: 15px !important;
-}
-
 .form-home{
   margin-left: 0px !important;
 }
 
 .input-box{
   font-size: 13px !important;
+  margin-bottom: 20px !important;
+}
+
+.home-input-login{
+  width: 100% !important;
+  margin-bottom: 20px !important;
+}
+
+.home-input-box{
+  font-size: 13px !important;
+  margin-bottom: 20px !important;
+
 }
 
 .ant-slider-mark-text{
@@ -139,16 +256,6 @@
   text-align: center !important;
 }
 
-.home-login-button {
-  height: 32px !important;
-  width: 98% !important;
-  margin: auto;
-  margin-top: 2px !important; 
-  background-color: #1890ff !important;
-  border-color: #1890ff !important;
-  color: #000 !important;
-  font-weight: bold !important;
-}
 
 .login-menu-item{
   float: right !important;

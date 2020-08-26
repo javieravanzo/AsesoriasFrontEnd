@@ -15,7 +15,8 @@ const initialState={
   customerDateList: null,
   rejectedRequest: null,
   pendingRHRequest: null,
-  generateReportData: null
+  generateReportData: null,
+  countCustomerData: null
 };
 
 
@@ -90,6 +91,11 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         generateReportData: action.payload
+      }
+    case C.GET_CUSTOMERS_COUNT_TO_APPROVE:
+      return{
+        ...state,
+        countCustomerData: action.payload
       }
     default:
       return state;

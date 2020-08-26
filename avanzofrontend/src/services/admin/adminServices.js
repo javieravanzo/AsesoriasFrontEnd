@@ -137,6 +137,13 @@ function getAllCustomersToApprove(){
   });
 };
 
+function getCustomersCountToApprove(){
+  return request({
+    url: '/Customer/GetCountToApprove',
+    method: 'GET'
+  });
+};
+
 function getAllRejectedRequest(){
   return request({
     url: '/Request/GetAllRejected',
@@ -201,7 +208,7 @@ const adminService = {
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
-  getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport
+  getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport, getCustomersCountToApprove
 };
 
 export default adminService;

@@ -363,6 +363,24 @@ export const getAllCustomersToApprove = ( ) => {
   }
 };
 
+export const getCustomersCountToApprove = ( ) => {
+  return dispatch => {
+    return adminServices.getCustomersCountToApprove( )
+      .then(response => {
+        dispatch({
+          type: C.GET_CUSTOMERS_COUNT_TO_APPROVE,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_CUSTOMERS_COUNT_TO_APPROVE,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la cantidad de clientes por aprobar', err.data);
+      });
+  }
+};
+
 export const getDateListToCustomer = (companyId) => {
   return dispatch => {
     return adminServices.getDateListToCustomer(companyId)

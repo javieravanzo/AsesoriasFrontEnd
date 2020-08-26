@@ -166,8 +166,11 @@
   font-size: 12px !important;
 }
 
+.div-banks-images{
+  text-align: center !important;
+}
+
 .bank-requires{
-  background-color: #1d92ff !important;
   color: black !important;
   padding: 5px !important;
   padding-left: 15px !important;
@@ -217,6 +220,20 @@
 .signature-message{
   width: 100% !important;
 }
+
+.request-efecty-logo{
+  width: 40%;
+}
+
+.request-davivienda-logo{
+  margin-top: 4px;
+  width: 85%;
+}
+
+.request-bancolombia-logo{
+  width: 70%;
+}
+
 
 @media only screen and (max-width:500px) {
 

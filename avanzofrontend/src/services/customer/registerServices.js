@@ -25,11 +25,14 @@ function newRegister(data) {
   bodyFormData.append('lastName', data.lastName);
   bodyFormData.append('email', data.email);
   bodyFormData.append('identificationId', data.identificationId);
+  bodyFormData.append('documentType', data.documentType);
+  bodyFormData.append('city', data.city);
+  bodyFormData.append('birthDate', data.birthDate);
+  bodyFormData.append('salary', data.salary);
   bodyFormData.append('phoneNumber', data.phoneNumber);
   bodyFormData.append('company', data.company);
   bodyFormData.append('password', data.password);
-  bodyFormData.append('documentId', data.documentId); 
-  bodyFormData.append('photo', data.photo); 
+  bodyFormData.append('documentId', data.documentId);  
   bodyFormData.append('paymentReport', data.paymentReport); 
   
   return request({

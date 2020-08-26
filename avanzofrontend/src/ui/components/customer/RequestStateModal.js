@@ -134,7 +134,7 @@ class RequestStateModal extends Component {
                 <Col xs={12} sm={12} md={8} lg={4} className="request-item-initial-col">
                   <b>Valor total</b><br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                      value={item.quantity+item.interestValue+item.administrationValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
+                      value={item.totalValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} className="request-item-initial-col" >
                     <b>Cuotas</b><br/><br/>

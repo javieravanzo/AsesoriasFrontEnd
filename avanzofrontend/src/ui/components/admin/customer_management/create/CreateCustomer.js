@@ -324,7 +324,7 @@ class CustomerManagement extends Component {
                           <FormItem>
                             {getFieldDecorator('birthDate',
                               {rules: [
-                                {required: false, message: 'Por favor ingresa un correo electrónico'}
+                                {required: false, message: 'Por favor ingresa una fecha de nacimiento'}
                               ]})(
                                 <DatePicker placeholder={"Fecha de nacimiento"}/>
                               )

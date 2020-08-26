@@ -1,30 +1,33 @@
 {
   "files": {
-    "main.css": "/static/css/main.29f4abe5.chunk.css",
-    "main.js": "/static/js/main.04b96db4.chunk.js",
-    "main.js.map": "/static/js/main.04b96db4.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.2a090828.js",
-    "runtime-main.js.map": "/static/js/runtime-main.2a090828.js.map",
-    "static/css/2.1a174094.chunk.css": "/static/css/2.1a174094.chunk.css",
-    "static/js/2.78173a71.chunk.js": "/static/js/2.78173a71.chunk.js",
-    "static/js/2.78173a71.chunk.js.map": "/static/js/2.78173a71.chunk.js.map",
+    "main.css": "/static/css/main.0d4358f7.chunk.css",
+    "main.js": "/static/js/main.16a58194.chunk.js",
+    "main.js.map": "/static/js/main.16a58194.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.3eb653f7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.3eb653f7.js.map",
+    "static/css/2.95f08a74.chunk.css": "/static/css/2.95f08a74.chunk.css",
+    "static/js/2.1f5a0bb9.chunk.js": "/static/js/2.1f5a0bb9.chunk.js",
+    "static/js/2.1f5a0bb9.chunk.js.map": "/static/js/2.1f5a0bb9.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.db9b69d24f7d164e46ce217976ae7744.js": "/precache-manifest.db9b69d24f7d164e46ce217976ae7744.js",
+    "precache-manifest.08c09764e1cc1d5a7270f8060e5b566a.js": "/precache-manifest.08c09764e1cc1d5a7270f8060e5b566a.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/2.1a174094.chunk.css.map": "/static/css/2.1a174094.chunk.css.map",
-    "static/css/main.29f4abe5.chunk.css.map": "/static/css/main.29f4abe5.chunk.css.map",
-    "static/js/2.78173a71.chunk.js.LICENSE.txt": "/static/js/2.78173a71.chunk.js.LICENSE.txt",
+    "static/css/2.95f08a74.chunk.css.map": "/static/css/2.95f08a74.chunk.css.map",
+    "static/css/main.0d4358f7.chunk.css.map": "/static/css/main.0d4358f7.chunk.css.map",
+    "static/js/2.1f5a0bb9.chunk.js.LICENSE.txt": "/static/js/2.1f5a0bb9.chunk.js.LICENSE.txt",
     "static/media/avanzo.jpg": "/static/media/avanzo.f5f62129.jpg",
     "static/media/avanzoMenu.jpg": "/static/media/avanzoMenu.7387a43a.jpg",
     "static/media/background.png": "/static/media/background.2ca52f59.png",
     "static/media/background2.png": "/static/media/background2.5f906126.png",
-    "static/media/home2.PNG": "/static/media/home2.f48bb85c.PNG"
+    "static/media/bancolombia.PNG": "/static/media/bancolombia.10b86039.PNG",
+    "static/media/davivienda.PNG": "/static/media/davivienda.65033537.PNG",
+    "static/media/efecty.PNG": "/static/media/efecty.5c91cbe4.PNG",
+    "static/media/home3.PNG": "/static/media/home3.66285450.PNG"
   },
   "entrypoints": [
-    "static/js/runtime-main.2a090828.js",
-    "static/css/2.1a174094.chunk.css",
-    "static/js/2.78173a71.chunk.js",
-    "static/css/main.29f4abe5.chunk.css",
-    "static/js/main.04b96db4.chunk.js"
+    "static/js/runtime-main.3eb653f7.js",
+    "static/css/2.95f08a74.chunk.css",
+    "static/js/2.1f5a0bb9.chunk.js",
+    "static/css/main.0d4358f7.chunk.css",
+    "static/js/main.16a58194.chunk.js"
   ]
 }

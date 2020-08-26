@@ -1,38 +1,38 @@
 //Libraries
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {Card, Row, Col, Layout, Menu, Form, Input, Icon, Button, Select, Checkbox, Modal} from 'antd';
+import {Card, Row, Col, Form, Input, Icon, Button} from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons';
+import { InstagramOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
 //Subcomponents
+import Register from './newRegister';
+
 import routes from '../../../configuration/routing/Routes';
 
 //Actions
 import {newRegister, getCompanies} from "../../../store/redux/actions/general/loginActions";
+import {login} from "../../../store/redux/actions/general/loginActions";
 
 //Assets
 import icon from "../../assets/authentication/avanzoMenu.jpg";
-import home from "../../assets/home2.PNG";
+import home from "../../assets/home3.PNG";
 
 //Styles
 import '../../styles/home/home.css'
 import { ERROR_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
 
 //Functions
-/*function format(d) {
-  var formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
 
-  return formatter.format(d);
-};*/
 
 //Constants
-const { Header } = Layout;
 const FormItem = Form.Item;
-//const { Dragger } = Upload;
+
+const IconFont = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
+});
 
 class Home extends Component {
 
@@ -49,6 +49,8 @@ class Home extends Component {
       checkBox1: false,
       visibleTermModal: false,
       clicked: false,
+      email: null,
+      password: null,
     };
     
     this.next = this.next.bind(this);
@@ -226,256 +228,145 @@ class Home extends Component {
 
   };
 
+  sendMessage = (e) => {
+    this.props.form.validateFields((err, values) => {
+      if (err){
+        this.setState({
+          isLoading: false,
+        });
+        ERROR_MODAL("Error al realizar la acción", "Por favor ingrese un email y contraseña válidos.");
+      }else{
+        this.props.login(values.email, values.password);
+      }     
+    });
+  };
+
+  onChangeEmail(email) {
+    this.setState({ email: email.target.value })
+  };
+
+  onChangePassword(password) {
+    this.setState({ password: password.target.value })
+  };
+
   render() {
 
     /*const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
                    100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};*/
     const { getFieldDecorator } = this.props.form;
-    let { companyList } = this.props;
-    console.log({CompanyList: this.props.companyList});
+    let role = parseInt(localStorage.getItem("role_id"), 10);
+    let isLogged = this.props.isLogin !== undefined ? this.props.isLogin : false;
+    let { registerInfo } = this.props;
+    console.log({registerInfo: this.props.registerInfo});
 
-    return (
-      <div >
-        <Layout>
-          <Header className={"header-menu1"} >         
-            <Menu
-              mode="horizontal"
-              className={"menu-home-style"}>
-                <Menu.Item>
-                  <img src={icon} alt="menulogo" className="menu-logo" />
-                </Menu.Item>
-                <Menu.Item className={"login-menu-item"}>
-                  <Button type="primary" htmlType="submit" className="home-login-button" 
-                            onClick={() => this.setState({login: true})}>Iniciar sesión</Button>
-                </Menu.Item>
-            </Menu>
-          </Header>
-          <Layout>
-            <Row className={"home-main-row"}>
-              <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
-                <Card className={"customer-home-card"}>
-                  <span className={"home-first-text"}>Llena estos datos con tus campos personales y nos pondremos en contacto contigo.</span> 
-                  <Row className={"home-second-row"}>
-                    <Col xxl={12} lg={12} md={12} sm={24} xs={24}>
+    
+      return (    
+        <div>
+          <IconFont className={"network-fb-icon"} type="icon-facebook" />
+          <InstagramOutlined className={"network-ig-icon"} />
+          <div className="home-main-div" >
+              <Row className="home-header-row">
+                <Col xxl={6} lg={6} md={8} sm={10} xs={12}>
+                  <img src={icon} alt="menulogo" className="home-menu-logo" />
+                </Col>
+                <Col xxl={10} lg={10} md={10} sm={4} xs={0}/>
+                <Col xxl={8} lg={8} md={6} sm={10} xs={12} className="home-header-third-col">
+                  <span className="home-menu-text">{"Centro de ayuda     |    Políticas de uso"}</span>
+                </Col>
+              </Row>
+              <Row className="home-second-row">
+                  <Card className={"customer-home-card"}>
+                    <Col xxl={13} lg={13} md={12} sm={24} xs={24} className="home-second-row-col1">
+                      <Row className={"home-left-col-row"}>
+                        <span className={"home-zero-text"}>Bienvenido, si ya estás registrado en nuestra plataforma, inicia sesión.</span>
+                      </Row>
+                      <br/>
+                      <br/>
+                      <Form onSubmit={this.handleSubmit} className={"form-home"}>
+                        <Row className={"home-zero-row-text"}>
+                          <p className={"home-zero-input-text"}>Correo electrónico</p>
+                          <FormItem>
+                            {getFieldDecorator('email', {
+                              rules: [
+                                {type: "email", message: "Ingrese un correo válido, por favor."},
+                                {required: true, message: 'Por favor, ingrese su correo electrónico.'}],
+                            })(
+                              <Input prefix={<Icon type="user" className={"field-icon"} />} placeholder="Email" 
+                              onChange={(value) => this.onChangeEmail(value)}/>
+                            )}
+                          </FormItem>
+                        </Row>
+                        
+                        <br/>
+                        <Row className={"home-zero-row-text"}>
+                          <p className={"home-zero-input-text"}>Contraseña</p>
+                          <FormItem>
+                            {getFieldDecorator('password', {
+                              rules: [{ required: true, message: 'Por favor, ingrese su contraseña' }],
+                            })(
+                            <Input className={"home-input-login"} prefix={<Icon type="lock" className={"field-icon"} />} type="password" placeholder="Contraseña"
+                              onChange={(value) => this.onChangePassword(value)}/>)
+                            }
+                          </FormItem>
+                        </Row>
+
+                        <Button type="primary" htmlType="submit" className="home-login-button" 
+                                onClick={() => this.sendMessage()}>Iniciar sesión</Button>
+                        <p className="home-text-register"><u><a href="#register">Registrarse</a></u></p>
+                        <br/>
+                      </Form>
+                    </Col>
+                    <Col xxl={11} lg={11} md={12} sm={24} xs={24} className="home-second-row-col2">
                       <img src={home} alt="homes" className="home-img" />
                       <br/>
                     </Col>
-                    <Col xxl={12} lg={12} md={12} sm={24} xs={24}>
-                      <Form className={"form-home"}> 
-                      <Row gutter={4}>      
-                        <Col lg={12} md={12} sm={12} xs={12}>
-                          <p className={"form-names"}>Nombres</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('name', { initialValue: '',
-                              rules: [
-                                { required: true, message: 'Por favor, ingrese su(s) nombre(s).' }],
-                            })(
-                                <Input onChange={this.validationLetters} maxLength={21} className={"input-box"} prefix={<Icon type="user" className={'icon-prefix'} />}
-                                      placeholder="Nombres"/>
-                            )}
-                          </FormItem>
-                        </Col>
-                        <Col lg={12} md={12} sm={12} xs={12}>
-                          <p className={"form-names"}>Apellidos</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('lastName', { initialValue: '',
-                              rules: [
-                                { required: true, message: 'Por favor, ingrese su(s) apellido(s).' }],
-                            })(
-                                <Input onChange={this.validationLetters} maxLength={21} prefix={<Icon type="user" className={'icon-prefix'} />}
-                                      placeholder="Apellidos"/>
-                            )}
-                          </FormItem>
-                        </Col>
-                      </Row>
-                      <Row gutter={4}>      
-                        <Col lg={12} md={12} sm={12} xs={12}>
-                          <p className={"form-names"}>Cédula</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('identificationId', {
-                              initialValue: '',
-                              rules: [{ required: true, message: 'Por favor ingrese su número de cédula' }],
-                            })(
-                                <Input onChange={this.validationNumbers} maxLength={12}  prefix={<Icon type="idcard" className={'icon-prefix'} />}
-                                            placeholder="Número de documento" className={"input-number"}/>
-                            )}
-                          </FormItem>
-                        </Col>
-                        <Col lg={12} md={12} sm={12} xs={12}>
-                          <p className={"form-names"}>Número de celular</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('phoneNumber', {
-                              initialValue: '',
-                              rules: [{ required: true, message: 'Por favor ingrese el celular' }],
-                            })(
-                            <Input onChange={this.validationNumbers} maxLength={10} placeholder="Número de celular"
-                                className={"input-number"}/>
-                                )}
-                          </FormItem>
-                        </Col>
-                      </Row>
-                      <Row gutter={4}>
-                        <Col lg={24} md={12} sm={24} xs={24}>
-                          <p className={"form-names"}>Correo Electrónico</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('email', { initialValue: '',
-                              rules: [ 
-                                {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
-                                {required: true, message: 'Por favor, ingrese su correo electrónico.' }],
-                            })(
-                                <Input maxLength={35} prefix={<Icon type="mail" className={'icon-prefix'} />}
-                                      placeholder="Correo electrónico"/>
-                            )}
-                          </FormItem>
-                        </Col>
-                      </Row>
-                      <Row gutter={4}>
-                        <Col lg={24} md={12} sm={24} xs={24}>
-                          <p className={"form-names"}>Empresa</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('company', {
-                              rules: [ 
-                                {required: true, message: 'Por favor, ingrese su empresa.' }],
-                            })(
-                              <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
-                                notFoundContent={"No hay empresas disponibles"}>
-                                {companyList.map((type, i) => (
-                                  <Select.Option key={i} value={type.idCompany}>
-                                    {type.socialReason}
-                                  </Select.Option>))
-                                }
-                              </Select>
-                            )}
-                          </FormItem>
-                        </Col>
-                      </Row>
-                      <Row gutter={4}>
-                        <Col lg={12} md={10} sm={24} xs={24}>
-                          <p className={"form-names"}>Contraseña</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('password', { initialValue: '',
-                              rules: [ 
-                                {required: true, message: 'Por favor, ingrese una contraseña válida.' }],
-                            })(
-                                <Input maxLength={20} type="password"  prefix={<Icon type="lock" className={'icon-prefix'} />}
-                                      placeholder="Contraseña"/>
-                            )}
-                          </FormItem>
-                        </Col>
-                        <Col lg={12} md={12} sm={24} xs={24}>
-                          <p className={"form-names"}>Confirmar contraseña</p>
-                          <FormItem className='home-form-item'>
-                            {getFieldDecorator('confirmPassword', { initialValue: '',
-                              rules: [ 
-                                {required: true, message: 'Por favor, ingrese una contraseña válida.' },
-                                {validator: this.compareToFirstPassword}
-                              ],
-                            })(
-                                <Input maxLength={20} type="password"  prefix={<Icon type="lock" className={'icon-prefix'} />}
-                                      placeholder="Confirmar contraseña"/>
-                            )}
-                          </FormItem>
-                        </Col>
-                      </Row>
-                      
-                      <Row className={"upload-documents"}>
-                        <Col xs={24} sm={24} md={24} lg={24}>
-                          <p className={"form-names"}>Cargar cédula, foto y comprobante de pago</p>
-                          <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChange}
-                                accept=".pdf, application/pdf"/>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <FormItem className='home-form-item'>
-                          {getFieldDecorator('checkBox1', { initialValue: '',
-                            rules: [
-                              { required: true, message: 'Por favor, acepta los términos y condiciones.' }],
-                            })(
-                              <Row>
-                                <Col lg={24} md={23} >
-                                  <Row gutter={2}>
-                                    <Col lg={2} md={2} sm={2} xs={2} className={"checkbox-terms-firstCol"}>
-                                      <Checkbox className={'checkbox-terms-conditions'} onChange={(e) => this.onChangeField(e, 'checkBox1')}/>
-                                    </Col>
-                                    <Col lg={22} md={22} sm={22} xs={22}>
-                                      <span className={"form-names-terms"}>{""} Acepto los <u onClick={() => this.openTermsandConditions()}>Términos, Condiciones de uso y Autorización de tratamiento de datos.</u></span>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                          )}
-                        </FormItem>
-                      </Row>
-                      
-                      <Row className={"button-home-row"}>
-                        <Button type="primary" htmlType="submit" className={"home-form-button"}
-                                onClick={() => this.onSignInClicked()}>
-                          <p className={"login-button-text"}>Enviar datos</p>
-                        </Button>
-                      </Row>
-                      <Modal
-                        title={"Términos y condiciones de uso de la página web - Autorización de la política de tratamiento de datos"}
-                        visible={this.state.visibleTermModal}
-                        width={600}
-                        onCancel={() => this.setState({visibleTermModal: false})}
-                        footer={
-                          <Button key='submit' type='primary' disabled={this.state.clicked && this.props.newRegisterResponse === null} onClick={() => this.setState({visibleTermModal: false, clicked: true})}>
-                            Aceptar
-                          </Button>}>
-                        <div>
-                          <p className={"terms-conditions"}>
-                             <br/>
-                             AVANZO solicita a los visitantes y usuarios de la página web la lectura de los términos, las condiciones de uso de la página web y la autorización de tratamiento de datos antes de iniciar su
-                             navegación o utilizar los servicios ofrecidos a través de este portal web. El acceso y navegación en la página web,
-                             así como el registro en la plataforma tecnológica de AVANZO, se encuentra precedido de un “click” en el botón Aceptar,
-                             lo cual constituye el conocimiento de la autorización del tratamiento de datos y la aceptación expresa del <b>usuario </b>
-                             de estos términos y condiciones. 
-                             <br/><br/>
-                             En caso de no estar de acuerdo con estas condiciones sugerimos al visitante y usuario que se abstenga de acceder o navegar por la página web.
-                             <br/>
-                            </p>
-                        </div>
-                      </Modal>
-                    </Form>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-            </Row>
-          </Layout>
-        </Layout>
-        
-        {
-          (this.props.newRegisterResponse === true) &&
-          <Redirect to={routes.confirm_account}/> 
-        }
+                  </Card>
+                </Row>
+              
+              {JSON.stringify(registerInfo) !== '{}' && 
+                <Register registerInfo={registerInfo}/>
+              }
 
-        
-        {
-          (this.state.login === true) &&
-          <Redirect to={routes.login}/> 
-        }
-      </div>
-    );
+            {
+              (this.props.newRegisterResponse === true) &&
+              <Redirect to={routes.confirm_account}/> 
+            }
+ 
+            {(isLogged && (role===4)) &&
+              <Redirect to={routes.customer}/>
+            }
+            {(isLogged && (role===3)) &&
+              <Redirect to={routes.company_request_management}/>
+            }
+            {(isLogged && (role===2 || role===1)) &&
+              <Redirect to={routes.admin_company_management}/>
+            }
+          </div>
+        </div>
+      );
+    
   }
 }
 
 Home.propTypes = {
   newRegisterResponse: PropTypes.bool,
-  companyList: PropTypes.array
+  registerInfo: PropTypes.object,
+  isLogin: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
   return {
     newRegisterResponse: state.login.newRegisterResponse,
-    companyList: state.login.companyList
+    registerInfo: state.login.registerInfo,
+    isLogin: state.login.isLogin
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     newRegister: (customerId) => dispatch(newRegister(customerId)),
-    getCompanies: ( ) => dispatch(getCompanies( ))
+    getCompanies: ( ) => dispatch(getCompanies( )),
+    login: (email, password) => dispatch(login(email, password))
   }
 };
 
