@@ -126,6 +126,7 @@ export const getCompanies = () => {
   return dispatch => {
     return registerService.getCompanies()
       .then(response => {
+        console.log("GetCompanies", response.data);
         dispatch({
           type: C.GET_COMPANIES,
           payload: response.data,

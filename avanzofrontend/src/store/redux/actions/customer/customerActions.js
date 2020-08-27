@@ -96,7 +96,7 @@ export const getOutlayData = (customerId, token) => {
           type: C.GET_OUTLAY_DATA,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la información del desembolso', err.data.message);
+        ERROR_MODAL('Error al traer la información del desembolso', err.data);
       });
   };
 };  

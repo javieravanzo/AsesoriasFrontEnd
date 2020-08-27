@@ -128,7 +128,8 @@ class CustomerManagement extends Component {
 
   render(){
 
-    let { companyList } = this.props;
+    let { registerInfo } = this.props;
+    console.log("CL", registerInfo);
     let {getFieldDecorator} = this.props.form;
     let { outlayDataResponse } = this.props;
     let { bankInfo, walletInfo } = outlayDataResponse;
@@ -364,7 +365,7 @@ class CustomerManagement extends Component {
                             })(
                               <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true} onChange={this.changeCompany}
                                 notFoundContent={"No hay empresas disponibles"}>
-                                {companyList.map((type, i) => (
+                                {(registerInfo.companyRow).map((type, i) => (
                                   <Select.Option key={i} value={type.idCompany}>
                                     {type.socialReason}
                                   </Select.Option>))
@@ -582,7 +583,7 @@ class CustomerManagement extends Component {
 };
 
 CustomerManagement.propTypes = {
-  companyList: PropTypes.array,
+  registerInfo: PropTypes.object,
   outlayDataResponse: PropTypes.object,
   createCustomerResponse: PropTypes.bool,
   customerDateList: PropTypes.array,
@@ -590,7 +591,7 @@ CustomerManagement.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    companyList: state.login.companyList,
+    registerInfo: state.login.registerInfo,
     outlayDataResponse: state.customer.outlayDataResponse,
     createCustomerResponse: state.admin.createCustomerResponse,
     customerDateList: state.admin.customerDateList,

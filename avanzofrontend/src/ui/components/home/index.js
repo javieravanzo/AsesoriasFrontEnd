@@ -276,7 +276,7 @@ class Home extends Component {
               </Row>
               <Row className="home-second-row">
                   <Card className={"customer-home-card"}>
-                    <Col xxl={13} lg={13} md={12} sm={24} xs={24} className="home-second-row-col1">
+                    <Col xxl={12} lg={12} md={12} sm={24} xs={24} className="home-second-row-col1">
                       <Row className={"home-left-col-row"}>
                         <span className={"home-zero-text"}>Bienvenido, si ya estás registrado en nuestra plataforma, inicia sesión.</span>
                       </Row>
@@ -316,7 +316,7 @@ class Home extends Component {
                         <br/>
                       </Form>
                     </Col>
-                    <Col xxl={11} lg={11} md={12} sm={24} xs={24} className="home-second-row-col2">
+                    <Col xxl={12} lg={12} md={12} sm={24} xs={24} className="home-second-row-col2">
                       <img src={home} alt="homes" className="home-img" />
                       <br/>
                     </Col>
