@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Form, Select} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Form, Select, Popover} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
@@ -16,6 +16,9 @@ import BaseURL from '../../../../../services/BaseURL';
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
+import {defineBadgeName, defineButtonClass} from '../../../../../configuration/constants';
+
+
 const Step = Steps.Step;
 //const TextArea = Input.TextArea;
 
@@ -36,40 +39,6 @@ class RequestStateModal extends Component {
       text: "",
     };
     
-  };
-
-  defineBadgeName = (id) => {
-    if(id === 1){
-      return "Solicitada";
-    }else if(id === 2){
-      return "Evaluada";
-    }else if(id === 3){
-      return "Aprobada RR.HH.";
-    }else if(id === 4){
-      return "Aprobada Admon.";
-    }else if(id === 5){
-      return "Desembolsada";
-    }else if(id=== 6){
-      return "Rechazada"
-    }
-  };
-
-  defineButtonClass = (id) => {
-    if(id === 1){
-      return "#c1c1c1";
-    }else if(id === 2){
-      return "yellow";
-    }else if(id === 3){
-      return "#ffa962";
-    }else if(id === 4){
-      return "#62ffb5";
-    }else if(id === 5){
-      return "#6cff55 ";
-    }else if(id === 6){
-      return "#ff4747";
-    }else{
-      return "white";
-    }
   };
 
   seeDocument = (filePath, paymentSupport, workingSupport) => {
@@ -137,7 +106,7 @@ class RequestStateModal extends Component {
     //let {text} = this.state;
     
     return (
-        <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
+        <Badge count={defineBadgeName(item.requestStateId)} style={{backgroundColor: defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={24} sm={12} md={2} lg={2}>
@@ -150,7 +119,7 @@ class RequestStateModal extends Component {
                 {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {this.defineBadgeName(item.idRequestState)}
+                  <b>Estado</b> <br/><br/>  {defineBadgeName(item.idRequestState)}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
@@ -184,12 +153,11 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row>
                 <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
-                  <Step title="Solicitada"/>
-                  <Step title="Evaluada"/>
-                  <Step title="Aprobar RR.H H."/>
-                  <Step title="Aprobar Admon."/>                 
-                  <Step title="Desembolsada"/>
-                  
+                  <Step key={0} title={<Popover content="Solicitada">Sol.</Popover>} />
+                  <Step key={1} title={<Popover content="Aprobada Recursos Humanos">Aprob. Rec.</Popover>} />
+                  <Step key={2} title={<Popover content="Aprobada Administración">Aprob. Adm.</Popover>}/>
+                  <Step key={3} title={<Popover content="En desembolso">Des.</Popover>}/>
+                  <Step key={4} title={<Popover content="Finalizada">Fin.</Popover>} /> 
                 </Steps>
               </Row>
               <br/><br/>

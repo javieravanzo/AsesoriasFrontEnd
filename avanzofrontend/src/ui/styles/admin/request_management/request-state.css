@@ -96,21 +96,7 @@
   margin-left: auto;
 }
 
-.request-item-requested-confirm{
-  background-color: #6cff55 !important;
-  margin-bottom: 20px;
-  text-align: center !important;
-  width: 763px !important;
-  background-color: '#fff';
-  min-height: 60px !important;
-  border-radius: 5px !important;
-  border-color: #000 !important;
-  position: 'relative';
-  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.45);
-  padding: 20px 20px 20px 20px !important;
-  margin-right: auto;
-  margin-left: auto;
-}
+
 
 .request-item-alert-icon{
   font-size: 28px !important;

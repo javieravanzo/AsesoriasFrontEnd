@@ -84,7 +84,7 @@ class RequestState extends Component {
                   </List.Item>
                 )}/>
             </TabPane>
-            <TabPane tab={<span> <Icon type="plus-circle" />Solicitudes desembolsadas</span>} key="2">
+            <TabPane tab={<span> <Icon type="plus-circle" />Solicitudes finalizadas</span>} key="2">
               <List
                   locale={{ emptyText: 'No hay solicitudes desembolsadas' }}
                   dataSource={tableOutlayedData}
@@ -94,7 +94,7 @@ class RequestState extends Component {
                     </List.Item>
                   )}/>
             </TabPane>
-            <TabPane tab={<span> <Icon type="close-circle" />Solicitudes rechazadas</span>} key="3">
+            <TabPane tab={<span> <Icon type="close-circle" />Solicitudes negadas</span>} key="3">
               <List
                   locale={{ emptyText: 'No hay solicitudes rechazadas' }}
                   dataSource={tableRejectData}

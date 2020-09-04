@@ -16,6 +16,7 @@ import BaseURL from '../../../../../services/BaseURL';
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
+import {defineBadgeName, defineButtonClass} from '../../../../../configuration/constants';
 const Step = Steps.Step;
 //const TextArea = Input.TextArea;
 
@@ -36,40 +37,6 @@ class RequestStateModal extends Component {
       text: "",
     };
     
-  };
-
-  defineBadgeName = (id) => {
-    if(id === 1){
-      return "Solicitada";
-    }else if(id === 2){
-      return "Evaluada";
-    }else if(id === 3){
-      return "Aprobada RR.HH.";
-    }else if(id === 4){
-      return "Aprobada Admon.";
-    }else if(id === 5){
-      return "Desembolsada";
-    }else if(id=== 6){
-      return "Rechazada"
-    }
-  };
-
-  defineButtonClass = (id) => {
-    if(id === 1){
-      return "#c1c1c1";
-    }else if(id === 2){
-      return "yellow";
-    }else if(id === 3){
-      return "#ffa962";
-    }else if(id === 4){
-      return "#62ffb5";
-    }else if(id === 5){
-      return "#6cff55 ";
-    }else if(id === 6){
-      return "#ff4747";
-    }else{
-      return "white";
-    }
   };
 
   seeDocument = (filePath) => {
@@ -122,7 +89,7 @@ class RequestStateModal extends Component {
     //let {text} = this.state;
     
     return (
-        <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
+        <Badge count={defineBadgeName(item.requestStateId)} style={{backgroundColor: defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={24} sm={12} md={2} lg={2}>

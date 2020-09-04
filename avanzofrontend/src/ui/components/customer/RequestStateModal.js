@@ -1,14 +1,28 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Popover} from 'antd';
 import CurrencyFormat from "react-currency-format";
 
 //Styles
 import '../../styles/customer/request-state.css';
 
 //Constants
-import {requestState} from '../../../configuration/constants';
+import {requestState, defineBadgeName, defineButtonClass} from '../../../configuration/constants';
 const Step = Steps.Step;
+
+const steps = [
+  <Step key={0} title={<Popover content="Solicitada">Sol.</Popover>} />,
+  <Step key={1} title={<Popover content="Aprobada Recursos Humanos">Aprob. Rec.</Popover>}/>,
+  <Step key={2} title={<Popover content="Aprobada Administración">Aprob. Adm.</Popover>} />,
+  <Step key={3} title={<Popover content="En desembolso">Des.</Popover>}/>,
+  <Step key={4} title={<Popover content="Finalizada">Fin.</Popover>} />,  
+  <Step key={5} title={<Popover content="Documentos errados">Documentos errados</Popover>}/>,
+  <Step key={6} title={<Popover content="Rechazada">Rechazada</Popover>} />,
+  <Step key={7} title={<Popover content="Devolución bancaria">Dev.</Popover>}/>,  
+  <Step key={8} title={<Popover content="Procesadas sin cambio">PSC.</Popover>}/>,
+  <Step key={9} title={<Popover content="Procesada documentos con cambio">PCC.</Popover>}/>,
+  <Step key={10} title={<Popover content="Rechazadas por el banco procesadas">Rech. B.</Popover>}/>,
+];
 
 class RequestStateModal extends Component {
 
@@ -26,46 +40,76 @@ class RequestStateModal extends Component {
     
   };
 
-  defineBadgeName = (id) => {
-    if(id === 1){
-      return "Solicitada";
-    }else if(id === 2){
-      return "Evaluada";
-    }else if(id === 3){
-      return "Aprobada RR.HH.";
-    }else if(id === 4){
-      return "Aprobada Admon.";
-    }else if(id === 5){
-      return "Desembolsada";
-    }else if(id=== 6){
-      return "Rechazada"
-    }
-  };
+  setContent(idRequestState){
 
-  defineButtonClass = (id) => {
-    if(id === 1){
-      return "#c1c1c1";
-    }else if(id === 2){
-      return "yellow";
-    }else if(id === 3){
-      return "#ffa962";
-    }else if(id === 4){
-      return "#62ffb5";
-    }else if(id === 5){
-      return "#6cff55 ";
-    }else if(id === 6){
-      return "#ff4747";
+    let array = [];
+
+    if(idRequestState <= 5){
+      
+      for(let i = 0; i < 5; i++){
+        array.push(steps[i]);
+      }
+
+      return (
+        <Steps current={idRequestState-1} initial={0} size="small" >
+          {array}
+        </Steps>
+      );
+
     }else{
-      return "white";
-    }
+
+      if(idRequestState === 6){
+        array.push(steps[0]);
+        array.push(steps[5]);
+
+        return (
+          <Steps style={{textAlign: "left !important"}} current={1} initial={0} size="small" >
+            {array}
+          </Steps>
+        );
+      }
+
+      if(idRequestState === 7){
+        //State = Step-1 because arrays starts in 0.
+        array.push(steps[0]);
+        array.push(steps[6]);
+
+        return (
+          <Steps current={1} initial={0} size="small" >
+            {array}
+          </Steps>
+        );
+
+      }
+
+      if(idRequestState === 8){
+        //State = Step-1 because arrays starts in 0.
+        array.push(steps[0]);
+        array.push(steps[1]);
+        array.push(steps[2]);
+        array.push(steps[3]);
+        array.push(steps[7]);
+
+        return (
+          <Steps current={4}  initial={0} size="small" >
+            {array}
+          </Steps>
+        );
+
+      }
+
+    }    
+
   };
 
   render(){
 
     let item = this.props.item;
+    let real_steps = this.setContent(this.props.item.idRequestState);
+
     //console.log(item);
     return (
-        <Badge count={this.defineBadgeName(item.idRequestState)} className={"request-badge"} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
+        <Badge count={defineBadgeName(item.idRequestState)} className={"request-badge"} style={{backgroundColor: defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col">
@@ -101,27 +145,7 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               <Row className={"additional-info"}>
-                <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
-                  <Step title="Solicitada"/>
-                  <Step title="En evaluación"/>
-                  {
-                    (item.state-1 !== 3) && 
-                    <Step title="Aprobar RR.HH."/>
-                  }
-                  {
-                    (item.state-1 !== 3) && 
-                    <Step title="Aprobar Admon."/>
-                  }
-                  
-                  {
-                    (item.state-1 === 3) && 
-                    <Step title="Rechazada"/>
-                  }
-                  {
-                    (item.state-1 !== 3) && 
-                    <Step title="Desembolsada"/>
-                  }                 
-                </Steps>
+                {real_steps}      
               </Row>
               <br/><br/>
               <Row>
@@ -155,7 +179,7 @@ class RequestStateModal extends Component {
               </Row>
               <br/><br/>
               {
-                item.idRequestState === requestState.RR_HH &&
+                item.idRequestState === 32 &&
                 <div className={"request-item-requested-alert"}>
                   <Row>
                     <h3> 
@@ -177,7 +201,7 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.idRequestState === requestState.REJECTED &&
+                item.idRequestState === 45 &&
                 <div className={"request-item-requested-reject"}>
                   <Row className={"rejected-row"}>
                     <span>  
