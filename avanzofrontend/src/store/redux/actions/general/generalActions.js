@@ -8,7 +8,7 @@ import generalServices from '../../../../services/general/generalServices';
 import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 //Actions
-import {getAllRequestToOutLay, getAllRequestToApprove} from '../admin/adminActions';
+import {getAllRequestToOutLay, getAllRequestToApprove, getAllPendingRHRequest} from '../admin/adminActions';
 
 export const approveorRejectRequest = (data, userId) => {
   return dispatch => {
@@ -16,6 +16,7 @@ export const approveorRejectRequest = (data, userId) => {
       .then(response => {
         dispatch(getAllRequestToOutLay(userId));
         dispatch(getAllRequestToApprove());
+        dispatch(getAllPendingRHRequest());
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: response.data

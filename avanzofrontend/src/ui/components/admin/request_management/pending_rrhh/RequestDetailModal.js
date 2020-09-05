@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Popover} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
@@ -102,7 +102,7 @@ class RequestStateModal extends Component {
                 {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {this.defineBadgeName(item.idRequestState)}
+                  <b>Estado</b> <br/><br/>  {defineBadgeName(item.idRequestState)}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
@@ -126,12 +126,11 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row>
                 <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
-                  <Step title="Solicitada"/>
-                  <Step title="Evaluada"/>
-                  <Step title="Aprobar RR.H H."/>
-                  <Step title="Aprobar Admon."/>                 
-                  <Step title="Desembolsada"/>
-                  
+                  <Step key={0} title={<Popover content="Solicitada">Sol.</Popover>} />
+                  <Step key={1} title={<Popover content="Aprobada Recursos Humanos">Aprob. Rec.</Popover>} />
+                  <Step key={2} title={<Popover content="Aprobada Administración">Aprob. Adm.</Popover>}/>
+                  <Step key={3} title={<Popover content="En desembolso">Des.</Popover>}/>
+                  <Step key={4} title={<Popover content="Finalizada">Fin.</Popover>} /> 
                 </Steps>
               </Row>
               <br/><br/>

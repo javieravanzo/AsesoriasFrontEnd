@@ -63,7 +63,7 @@ class NewRegister extends Component {
 
   onSignInClicked(){
     //console.log("entro");
-    let { documentId, photo, paymentReport, checkBox1 } = this.state;
+    let { documentId, paymentReport, checkBox1 } = this.state;
     this.props.form.validateFields((err, values) => {
       if (err){
         ERROR_MODAL("Error al realizar la acción", "Por favor, ingresa datos válidos, carga los archivos correspondientes y acepta los términos y condiciones.");
