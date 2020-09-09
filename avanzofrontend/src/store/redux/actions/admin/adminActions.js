@@ -407,6 +407,7 @@ export const approveCustomers = (client, approve, cycleId) => {
     return adminServices.approveCustomer(client, approve, cycleId)
       .then(response => {
         dispatch(getAllCustomersToApprove());
+        dispatch(getCustomersCountToApprove());
         dispatch({
           type: C.APPROVE_CUSTOMERS,
           payload: response.data
@@ -443,7 +444,6 @@ export const deleteClient = (client) => {
       });
   }
 };
-
 
 export const generateReport = (client) => {
   return dispatch => {

@@ -78,17 +78,15 @@ class RequestModalCard extends Component {
 
     //console.log("File1", file1, "File2", file2, "File3", file3);
 
-    if (file1 !== null && file2 !== null && file3 !== null) {
+    if (file1 !== null && file3 !== null) {
       let newWindow = window.open(BaseURL +"/"+ file1, "_blank");
-      let newWindow1 = window.open(BaseURL +"/"+ file2, "_blank");
       let newWindow2 = window.open(BaseURL +"/"+ file3, "_blank");
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined' || 
-          !newWindow1 || newWindow1.closed || typeof newWindow1.closed === 'undefined' ||
           !newWindow2 || newWindow2.closed || typeof newWindow2.closed === 'undefined') {
         allowEmergingWindows();
       }
     } else {
-      WARNING_MODAL('Advertencia', 'El reporte no está disponible');
+      WARNING_MODAL('Advertencia', 'Alguno de los documentos no está disponible');
     }
 
   };

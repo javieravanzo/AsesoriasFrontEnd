@@ -69,7 +69,6 @@
 .home-second-row-col1{
   margin: auto;
   text-align: center !important;
-  width: 80%;
 }
 
 .home-second-row-col2{
@@ -81,7 +80,7 @@
 }
 
 .home-img{
-  width: 75% !important;
+  width: 70% !important;
   margin-left: 20px !important;
 }
 

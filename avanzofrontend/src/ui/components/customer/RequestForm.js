@@ -330,6 +330,8 @@ class LoanRequest extends Component {
           isLoading: false,
         });
         ERROR_MODAL("Error al realizar la acción", "Por favor ingrese datos válidos dentro del formulario.");
+      }else if (values.account_numberConfirmation !== values.account_number){
+        WARNING_MODAL("Error al realizar la acción", "Los números de cuenta no coinciden.")
       }else{
 
         let data = {
@@ -523,6 +525,7 @@ class LoanRequest extends Component {
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
+    console.log("WS", workingSupport, paymentSupport);
     let { bankInfo, walletInfo } = outlayDataResponse;
     //let { trimmedDataURL } = this.state;    
     //console.log("STATE", this.state.loadConfirmation );
@@ -895,27 +898,55 @@ class LoanRequest extends Component {
                       </Row>
                     }
 
-                    {
-                      (workingSupport === true) && 
-                      <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
-                          <FieldTitle title={"Cargar certificado laboral"}/>
-                          <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
-                                accept=".pdf, application/pdf"/>
+                    { 
+                      (bank_account || money_wallet) && 
+                      <Row gutter={12} className={"form-request-rows"}>
+                        <span className={"available-part"}>Módulo Precupo</span>
+                        <br/>
+                        <Col xs={12} sm={12} md={8} lg={8}>
+                          <FieldTitle title={"Sueldo Base"}/>
+                          <FormItem>
+                            {getFieldDecorator('salary_base',
+                              {initialValue: accountBank, rules: [
+                                {required: false, message: 'Por favor ingresa un sueldo base'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Sueldo Base"} />
+                              )
+                            }
+                          </FormItem>
                         </Col>
-                      
-                    }
-                    {
-                      (paymentSupport === true) && 
-                      <Col lg={12} md={12} sm={12} xs={24} className={"documents-column2"}>
-                          <FieldTitle title={"Cargar comprobante de pago"}/>
-                          <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChangePaymentSupport}
-                                accept=".pdf, application/pdf"/>
+                        <Col xs={12} sm={12} md={8} lg={8} >
+                          <FieldTitle title={"Total Ingresos Quincenales"}/>
+                          <FormItem>
+                            {getFieldDecorator('biweekly_salary',
+                              {initialValue: accountType, rules: [
+                                {required: false, message: 'Por favor ingresa un total ingresos quincenales'}
+                              ]})(
+                                <Input className={"form-input-number"} placeholder={"Total Devengado"}/>
+                              )
+                            }
+                          </FormItem>
                         </Col>
-                      
+                        <Col xs={12} sm={12} md={8} lg={8}>
+                          <FieldTitle title={"Total Deducciones"}/>
+                            <FormItem >
+                              {getFieldDecorator('general_deduction',
+                                {initialValue: accountNumber, rules: [
+                                  {required: false, message: 'Por favor ingresa tus deducciones por nómina' }
+                                ]})(
+                                  <Input className={"form-input-number"} placeholder={"Total Deduccioens"}/>
+                                )
+                              }
+                            </FormItem>  
+                        </Col>
+                      </Row>  
+                    
                     }
 
+
+
                     { 
-                      ((workingSupport === true || paymentSupport === true)) &&
+                      ((parseInt(paymentSupport, 10) === 1) || (parseInt(workingSupport, 10) === 1)) &&
                         <Row>
                           <Col lg={1} md={3} sm={5} xs={4}>
                             <Button className={"step-one"}>
@@ -924,10 +955,22 @@ class LoanRequest extends Component {
                           </Col>
                           <Col lg={23} md={21} sm={19} xs={20}>
                             <div>
-                              <h3>Certificados y soportes</h3>
+                              <h3>Certificados y comprobantes</h3>
                               <Divider className={"form-request-divider"}/>
                             </div>
                           </Col>
+                          <Row>
+                            <Col xs={24} sm={24} md={12} lg={10} className={"documents-column"}>
+                              <FieldTitle title={"Cargar certificado laboral"}/>
+                              <input key={this.state.kBK} type="file" onChange={this.onChangeWorking}
+                                    accept=".pdf, application/pdf"/>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={10} className={"documents-column2"}>
+                              <FieldTitle title={"Cargar comprobante de pago"}/>
+                              <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChangePaymentSupport}
+                                    accept=".pdf, application/pdf"/>
+                            </Col>
+                          </Row>
                         </Row>
                     }
                  
@@ -947,6 +990,8 @@ class LoanRequest extends Component {
                       </Col>
                     </Row>
                   }
+
+
                                    
                   <Row className={"form-request-rows"}>
                     <Col xs={24} sm={12} md={18} lg={19}/>

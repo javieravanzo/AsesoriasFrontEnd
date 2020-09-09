@@ -82,6 +82,7 @@ class NewRegister extends Component {
             
             let data = values;
             console.log("Data", data);
+            data.company = values.company.split('*')[1];
             data.documentId = documentId;
             data.paymentReport = paymentReport;
             data.sliderValue = this.state.sliderValue;
@@ -343,7 +344,7 @@ class NewRegister extends Component {
                             <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
                               notFoundContent={"No hay empresas disponibles"}>
                               {registerInfo.companyRow.map((type, i) => (
-                                <Select.Option key={i} value={type.idCompany}>
+                                <Select.Option key={i} value={type.socialReason+"*"+type.idCompany}>
                                   {type.socialReason}
                                 </Select.Option>))
                               }
