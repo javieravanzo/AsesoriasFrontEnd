@@ -352,6 +352,9 @@ class LoanRequest extends Component {
           idCompany: this.props.requestDataResponse.idCompany,  
           identificationId: this.props.requestDataResponse.identificationId,
           loanData: this.props.outlayDatesList.datesList[0].quantity,
+          salary_base: values.salary_base,
+          biweekly_salary: values.biweekly_salary,
+          general_deduction: values.general_deduction,
         };
 
         this.setState({
@@ -480,10 +483,6 @@ class LoanRequest extends Component {
       loadCodes: true,
     });
 
-    //console.log("LC", newPhoneCode, newEmailCode);    
-
-    //console.log("Phone Code: ", newPhoneCode, phoneCode);
-    //console.log("Email Code: ", newEmailCode, emailCode);
     this.props.checkCodes(parseInt(localStorage.user_id, 10), newPhoneCode, newEmailCode);
 
     /*this.setState({
@@ -513,11 +512,7 @@ class LoanRequest extends Component {
   };
 
   render(){
-
-    //console.log("BankInfo", bankTypeAccountInfo);
-    //console.log( "GenerateCodes", this.props.generateCodesResponse);
-    //console.log("ODL", this.state.sliderValue);
-    
+   
     let signature = false;
     let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes, emailConfirmation, phoneConfirmation} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
@@ -525,10 +520,9 @@ class LoanRequest extends Component {
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
-    console.log("WS", workingSupport, paymentSupport);
+    
     let { bankInfo, walletInfo } = outlayDataResponse;
-    //let { trimmedDataURL } = this.state;    
-    //console.log("STATE", this.state.loadConfirmation );
+    
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
@@ -907,22 +901,26 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Sueldo Base"}/>
                           <FormItem>
                             {getFieldDecorator('salary_base',
-                              {initialValue: accountBank, rules: [
+                              {rules: [
                                 {required: false, message: 'Por favor ingresa un sueldo base'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Sueldo Base"} />
+                                <InputNumber className={"form-input-number"} min={0}
+                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                    placeholder={"Sueldo Base"}/>
                               )
                             }
                           </FormItem>
                         </Col>
                         <Col xs={12} sm={12} md={8} lg={8} >
-                          <FieldTitle title={"Total Ingresos Quincenales"}/>
+                          <FieldTitle title={"Total Ingresos"}/>
                           <FormItem>
                             {getFieldDecorator('biweekly_salary',
-                              {initialValue: accountType, rules: [
-                                {required: false, message: 'Por favor ingresa un total ingresos quincenales'}
+                              {rules: [
+                                {required: false, message: 'Por favor ingresa un total ingresos'}
                               ]})(
-                                <Input className={"form-input-number"} placeholder={"Total Devengado"}/>
+                                <InputNumber className={"form-input-number"} min={0}
+                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                    placeholder={"Total Devengado"}/>
                               )
                             }
                           </FormItem>
@@ -931,10 +929,12 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Total Deducciones"}/>
                             <FormItem >
                               {getFieldDecorator('general_deduction',
-                                {initialValue: accountNumber, rules: [
+                                {rules: [
                                   {required: false, message: 'Por favor ingresa tus deducciones por nómina' }
                                 ]})(
-                                  <Input className={"form-input-number"} placeholder={"Total Deduccioens"}/>
+                                  <InputNumber className={"form-input-number"} min={0}
+                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                    placeholder={"Total Deducciones"}/>
                                 )
                               }
                             </FormItem>  

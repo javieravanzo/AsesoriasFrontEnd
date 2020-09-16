@@ -277,6 +277,7 @@ export const generateCodes = (email, phonenumber, clientid) => {
   return dispatch => {
     return customerService.generateCodes(email, phonenumber, clientid)
       .then(response => {
+        SUCCESS_MODAL("Acción realizada exitosamente", "Los códigos han sido enviados correctamente.");
         dispatch({
           type: C.GENERATE_CODES,
           payload: response.data,

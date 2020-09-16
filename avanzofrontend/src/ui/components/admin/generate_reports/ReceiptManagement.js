@@ -86,7 +86,8 @@ class ReceiptManagement extends Component {
     
     this.state = {
       approve_modal: null,
-      reportData: null
+      reportData: null,
+      nextState: null,
     };
 
     this.setData = this.setData.bind(this);
@@ -99,6 +100,10 @@ class ReceiptManagement extends Component {
       return {
         reportData: seeDocument(nextProps.generateReportData, BaseURL),
       };
+    }else{
+      return {
+        nextState: true,
+      }
     }
   };
 

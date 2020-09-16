@@ -447,6 +447,7 @@ export const deleteClient = (client) => {
 
 export const generateReport = (client) => {
   return dispatch => {
+    dispatch(resetValue());
     return adminServices.generateBankReport()
       .then(response => {
         console.log("ResponData", response.data);

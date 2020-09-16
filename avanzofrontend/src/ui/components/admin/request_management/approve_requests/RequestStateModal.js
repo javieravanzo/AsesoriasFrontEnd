@@ -177,8 +177,9 @@ class RequestStateModal extends Component {
                   {item.identificationId}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
-                  <b>Empresa</b><br/><br/>
-                  {item.socialReason}
+                  <b>Pre-cupo calculado</b><br/><br/>
+                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                      value={item.computedCapacity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={4}>
                   <b>Saldo Usuario</b><br/><br/>
@@ -196,8 +197,8 @@ class RequestStateModal extends Component {
               <br/>
               <Row>
                 <Col xs={12} sm={12} md={7} lg={5}>
-                    <b>Teléfono</b><br/><br/>
-                    {item.phoneNumber}
+                    <b>Empresa</b><br/><br/>
+                    {item.socialReason}
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={3} >
                     <b>Cuotas</b><br/><br/>

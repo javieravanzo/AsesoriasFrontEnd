@@ -11,7 +11,8 @@ export function ERROR_MODAL(title, err_message) {
 export function SUCCESS_MODAL(title, err_message) {
   Modal.success({
     title: title,
-    content: err_message
+    content: err_message, 
+    zIndex: 1001,
   });
 };
 

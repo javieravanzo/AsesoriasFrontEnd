@@ -182,7 +182,7 @@ class RequestStateModal extends Component {
                   </Button> 
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={14} style={{marginTop: "10px"}}>
-                  <b>Observación </b> {item.observation}
+                  <b>Observación:  </b> {item.observation}
                 </Col>               
               </Row>
             </div>

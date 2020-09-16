@@ -25,7 +25,8 @@ export default function adminReducer(state = initialState, action){
     case C.RESET_VALUES:
       return{
       ...state,
-        companyResponse: null
+        companyResponse: null,
+        generateReportData: null,
       };
     case C.REGISTER_ADMIN:
       return{

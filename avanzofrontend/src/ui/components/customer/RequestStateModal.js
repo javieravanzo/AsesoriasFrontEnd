@@ -40,7 +40,7 @@ class RequestStateModal extends Component {
     
   };
 
-  setContent(idRequestState){
+  setContent(idRequestState, approveHumanResources){
 
     let array = [];
 
@@ -48,6 +48,9 @@ class RequestStateModal extends Component {
       
       for(let i = 0; i < 5; i++){
         array.push(steps[i]);
+        if (i === 1 && approveHumanResources === 0 ){
+          array.pop(steps[i]);
+        }
       }
 
       return (
@@ -105,7 +108,8 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-    let real_steps = this.setContent(this.props.item.idRequestState);
+    console.log("Item", item);
+    let real_steps = this.setContent(this.props.item.idRequestState, this.props.item.approveHumanResources);
 
     //console.log(item);
     return (
@@ -178,6 +182,17 @@ class RequestStateModal extends Component {
                 </Col>
               </Row>
               <br/><br/>
+              <Row>
+                <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col">
+                  <b>Pre-cupo calculado</b><br/><br/>
+                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                      value={item.computedCapacity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
+                </Col>
+                <Col xs={12} sm={12} md={8} lg={16} className="request-item-initial-col">
+                  <b>Observaciones</b><br/><br/>
+                      {item.observation === "" ? "-" : item.observation}  
+                </Col>
+              </Row>
               {
                 item.idRequestState === 32 &&
                 <div className={"request-item-requested-alert"}>
@@ -201,11 +216,11 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.idRequestState === 45 &&
+                item.idRequestState === 7 &&
                 <div className={"request-item-requested-reject"}>
                   <Row className={"rejected-row"}>
                     <span>  
-                      {" "}¡Tu solicitud fue rechazada por este motivo: {item.observation} !
+                      {" "}Tu solicitud fue rechazada por este motivo: {item.observation}.
                     </span>
                   </Row>
                 </div>

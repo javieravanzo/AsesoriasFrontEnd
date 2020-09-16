@@ -168,6 +168,17 @@ class AccountState extends Component {
                                             decimalSeparator={','} prefix={'$'}/></b>
                       </Col>
                     </Row>
+                    <Row gutter={8} className={"information-col"}>
+                      <Col xs={12} sm={24} md={10} lg={10} style={{textAlign: "left"}}>
+                        <b>Pre-cupo calculado</b>
+                      </Col>
+                      <Col xs={12} sm={12} md={14} lg={14} style={{textAlign: "left"}}>
+                        <b style={{color: "#000"}}>
+                          <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                                            value={accountDetail.computedCapacity} thousandSeparator={'.'}
+                                            decimalSeparator={','} prefix={'$'}/></b>
+                      </Col>
+                    </Row>
                   </Card>
                 </Col>
               </Row>
@@ -187,6 +198,7 @@ class AccountState extends Component {
                                         decimalSeparator={','} prefix={'$'}/></b>
                   </Col>
                   </Row>
+                <br/>
                 <br/>
                 <b>Conceptos</b>
                 <br/>

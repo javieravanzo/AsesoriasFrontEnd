@@ -79,7 +79,9 @@ class ApproveRequest extends Component {
           phoneNumber: item.phoneNumber,
           filePath: item.filePath,
           workingSupport: item.workingSupport,
-          paymentSupport: item.paymentSupport
+          paymentSupport: item.paymentSupport,
+          computedCapacity: item.computedCapacity,
+          totalValue: item.totalValue,
         };
 
         if(this.filterData(row)) {
