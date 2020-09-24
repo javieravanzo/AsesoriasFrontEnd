@@ -1,21 +1,34 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal, Popover} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
-//Subcomponents
-//import FieldTitle from '../../../subcomponents/FieldTitle';
-
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
-//import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
+//Actions
 import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
+import {defineBadgeName, defineButtonClass} from '../../../../../configuration/constants';
 const Step = Steps.Step;
+
+
+const steps = [
+  <Step key={0} title={<Popover content="Solicitada">Sol.</Popover>} />,
+  <Step key={1} title={<Popover content="Aprobada Recursos Humanos">Aprob. Rec.</Popover>}/>,
+  <Step key={2} title={<Popover content="Aprobada Administración">Aprob. Adm.</Popover>} />,
+  <Step key={3} title={<Popover content="En desembolso">Des.</Popover>}/>,
+  <Step key={4} title={<Popover content="Finalizada">Fin.</Popover>} />,  
+  <Step key={5} title={<Popover content="Documentos errados">Documentos errados</Popover>}/>,
+  <Step key={6} title={<Popover content="Rechazada">Rechazada</Popover>} />,
+  <Step key={7} title={<Popover content="Devolución bancaria">Dev.</Popover>}/>,  
+  <Step key={8} title={<Popover content="Procesadas sin cambio">PSC.</Popover>}/>,
+  <Step key={9} title={<Popover content="Procesada documentos con cambio">PCC.</Popover>}/>,
+  <Step key={10} title={<Popover content="Rechazadas por el banco procesadas">Rech. B.</Popover>}/>,
+];
 
 class RequestOutLayState extends Component {
 
@@ -33,40 +46,6 @@ class RequestOutLayState extends Component {
       card_style_rejected: "rejected",
     };
     
-  };
-
-  defineBadgeName = (id) => {
-    if(id === 1){
-      return "Solicitada";
-    }else if(id === 2){
-      return "Evaluada";
-    }else if(id === 3){
-      return "Aprobada RR.HH.";
-    }else if(id === 4){
-      return "Aprobada Admon.";
-    }else if(id === 5){
-      return "Desembolsada";
-    }else if(id=== 6){
-      return "Rechazada"
-    }
-  };
-
-  defineButtonClass = (id) => {
-    if(id === 1){
-      return "#c1c1c1";
-    }else if(id === 2){
-      return "yellow";
-    }else if(id === 3){
-      return "#ffa962";
-    }else if(id === 4){
-      return "#62ffb5";
-    }else if(id === 5){
-      return "#6cff55 ";
-    }else if(id === 6){
-      return "#83ff62 ";
-    }else{
-      return "white";
-    }
   };
 
   onConfirmRequest = (idRequest) => {
@@ -96,14 +75,80 @@ class RequestOutLayState extends Component {
     this.setState({approve_modal: false});
   };
 
+  setContent(idRequestState, approveHumanResources){
+
+    let array = [];
+
+    if(idRequestState <= 5){
+      
+      for(let i = 0; i < 5; i++){
+        array.push(steps[i]);
+        if (i === 1 && approveHumanResources === 0 ){
+          array.pop(steps[i]);
+        }
+      }
+
+      return (
+        <Steps current={idRequestState-1} initial={0} size="small" >
+          {array}
+        </Steps>
+      );
+
+    }else{
+
+      if(idRequestState === 6){
+        array.push(steps[0]);
+        array.push(steps[5]);
+
+        return (
+          <Steps style={{textAlign: "left !important"}} current={1} initial={0} size="small" >
+            {array}
+          </Steps>
+        );
+      }
+
+      if(idRequestState === 7){
+        //State = Step-1 because arrays starts in 0.
+        array.push(steps[0]);
+        array.push(steps[6]);
+
+        return (
+          <Steps current={1} initial={0} size="small" >
+            {array}
+          </Steps>
+        );
+
+      }
+
+      if(idRequestState === 8){
+        //State = Step-1 because arrays starts in 0.
+        array.push(steps[0]);
+        array.push(steps[1]);
+        array.push(steps[2]);
+        array.push(steps[3]);
+        array.push(steps[7]);
+
+        return (
+          <Steps current={4}  initial={0} size="small" >
+            {array}
+          </Steps>
+        );
+
+      }
+
+    }    
+
+  };
+
   render(){
 
     let item = this.props.item;
     //let {transactionCode} = this.state;
     //console.log(transactionCode);
+    let real_steps = this.setContent(this.props.item.idRequestState, this.props.item.approveHumanResources);
 
     return (
-      <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.requestStateId), color: "black"} }>
+      <Badge count={defineBadgeName(item.requestStateId)} style={{backgroundColor: defineButtonClass(item.requestStateId), color: "black"} }>
             <div key={item.key} className={"request-state-item-requested"}>
               <Row>
                 <Col xs={24} sm={12} md={2} lg={2}>
@@ -116,7 +161,7 @@ class RequestOutLayState extends Component {
                   {"Solicitud No. " + item.idRequest} 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                    <b>Estado</b> <br/><br/>  {this.defineBadgeName(item.idRequestState)}
+                    <b>Estado</b> <br/><br/>  {defineBadgeName(item.idRequestState)}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                     <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
@@ -149,13 +194,7 @@ class RequestOutLayState extends Component {
                 </Row>
                 <br/><br/>
                 <Row>
-                  <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
-                    <Step title="Solicitada"/>
-                    <Step title="Evaluada"/>
-                    <Step title="Aprobar RR.H H."/>
-                    <Step title="Aprobar Admon."/>                 
-                    <Step title="Desembolsada"/>                    
-                  </Steps>
+                  {real_steps}   
                 </Row>
                 <br/><br/>
                 <Row>

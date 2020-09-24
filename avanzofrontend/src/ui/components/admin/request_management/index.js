@@ -7,6 +7,9 @@ import ApproveRequest from './approve_requests/ApproveRequest';
 import MakeOutlay from './make_outlay/MakeOutlay';
 import RejectedRequest from './rejected_requests/RejectedRequest';
 import PendingRequest from './pending_rrhh/PendingRequest';
+import BankRefunded from './bank_refunded/BankRefunded';
+import ProcessWithoutChange from './process_withoutChange/ProcessWithoutChange';
+
 
 //Styles
 import '../../../styles/admin/index.css';
@@ -43,30 +46,61 @@ class Customer_Management extends Component {
       <div className={"admin-div"}>
         <Row>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
-            <h2 className={'header-terms-title'}>Gestionar solicitudes</h2>
+            <h2 className={'header-terms-title'}>Gestionar créditos</h2>
           </Col>
         </Row>
         <Row style={{width: "80% !important", margin: "auto"}}>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
           <Tabs defaultActiveKey={parseInt(localStorage.role_id, 10) === 2 ? "1" : "2"}>
             {
+              parseInt(localStorage.role_id, 10) === 5 &&
+              <TabPane tab={<span> <Icon type="close-circle" />Devolución bancaria</span>} key="7">
+                <BankRefunded/>
+              </TabPane>
+            } 
+            {
+              parseInt(localStorage.role_id, 10) === 1 &&
+              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="1">
+                <MakeOutlay/>
+              </TabPane>
+            }            
+            {
               parseInt(localStorage.role_id, 10) === 2 &&
-              <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="1">
+              <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="2">
                 <ApproveRequest/>
               </TabPane>
             }
             {
-              parseInt(localStorage.role_id, 10) === 1 &&
-              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2">
-                <MakeOutlay/>
+              parseInt(localStorage.role_id, 10) === 5 &&
+              <TabPane tab={<span> <Icon type="check-circle" />Por aprobar</span>} key="3">
+                <ApproveRequest/>
+              </TabPane>
+            } 
+            {
+              parseInt(localStorage.role_id, 10) === 5 &&
+              <TabPane tab={<span> <Icon type="close-circle" />Sin procesar</span>} key="4">
+                <RejectedRequest/>
+              </TabPane>
+            }     
+            {
+              parseInt(localStorage.role_id, 10) !== 5 &&
+              <TabPane tab={<span> <Icon type="close-circle" />Solicitudes Rechazadas </span>} key="5">
+                <RejectedRequest/>
               </TabPane>
             }
-            <TabPane tab={<span> <Icon type="close-circle" />Solicitudes rechazadas </span>} key="3">
-              <RejectedRequest/>
-            </TabPane>
-            <TabPane tab={<span> <Icon type="team" />Pendientes RR.HH.</span>} key="4">
-              <PendingRequest/>
-            </TabPane>
+            {
+              parseInt(localStorage.role_id, 10) === 5 &&
+              <TabPane tab={<span> <Icon type="close-circle" />Procesadas sin cambios</span>} key="4">
+                <ProcessWithoutChange/>
+              </TabPane>
+            }
+            {
+              parseInt(localStorage.role_id, 10) !== 1 &&
+              <TabPane tab={<span> <Icon type="team" />Pendientes RR.HH.</span>} key="6">
+                <PendingRequest/>
+              </TabPane>
+            }
+            
           </Tabs>
           </Col>
         </Row>

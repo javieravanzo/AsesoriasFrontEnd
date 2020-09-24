@@ -13,7 +13,7 @@ import { allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modal
 import BaseURL from '../../../../../services/BaseURL';
 
 //Actions
-import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
+import {approveorRejectRequest, passToProcessWithDocuments, passToProcessWithoutChange} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
 import {defineBadgeName, defineButtonClass} from '../../../../../configuration/constants';
@@ -80,7 +80,16 @@ class RequestStateModal extends Component {
     this.setState({
       text: value,
     });
-};
+  };
+
+  functionToProcessWithDocuments = (idRequest) => {
+    this.props.passToProcessWithDocuments(idRequest);
+  };
+
+  functionToChangeWithoutDocuments = (idRequest) => {
+    this.props.passToProcessWithoutChange(idRequest);
+  };
+
 
   render(){
 
@@ -185,6 +194,27 @@ class RequestStateModal extends Component {
                   <b>Observación:  </b> {item.observation}
                 </Col>               
               </Row>
+              { 
+                parseInt(localStorage.role_id, 10) === 5 &&
+                <div>
+                  <br/>
+                  <Row gutter={12} className={"request-check-buttons-row"}>
+                    <Col xs={24} sm={12} md={7} lg={9}/>
+                    <Col xs={24} sm={12} md={8} lg={6}>
+                      <Button className={"request-check-button"} icon="close-circle" 
+                              onClick={() => this.functionToChangeWithoutDocuments(item.idRequest)}>
+                            Procesada sin cambio
+                      </Button> 
+                    </Col>
+                    <Col xs={24} sm={12} md={8} lg={8}>
+                      <Button className={"request-check-docs-button"} icon="check-circle" 
+                              onClick={() => this.functionToProcessWithDocuments(item.idRequest)}>
+                            Procesada documentos con cambio
+                      </Button> 
+                    </Col>
+                  </Row>
+                </div>
+              }
             </div>
           }
         </div>
@@ -207,6 +237,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     //getAllRequestToApprove: () => dispatch(getAllRequestToApprove( )),
+    passToProcessWithoutChange: (idRequest) => dispatch(passToProcessWithoutChange(idRequest)),
+    passToProcessWithDocuments: (idRequest) => dispatch(passToProcessWithDocuments(idRequest)),
     approveorRejectRequest: (data, userId) => dispatch(approveorRejectRequest(data, userId)),    
   }
 };

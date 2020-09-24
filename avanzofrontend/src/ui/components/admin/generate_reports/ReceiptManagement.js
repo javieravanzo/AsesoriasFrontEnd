@@ -135,7 +135,7 @@ class ReceiptManagement extends Component {
     return rows;
   };
 
-  sendReport(){
+  sendReport = () => {
     this.props.generateReport();
   };
 
@@ -143,6 +143,7 @@ class ReceiptManagement extends Component {
 
   render() {
 
+    console.log("RD", this.props.generateReportData);
     let tableData = [
       {
         key: 1,

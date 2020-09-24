@@ -193,6 +193,7 @@ class RequestStateModal extends Component {
                       {item.observation === "" ? "-" : item.observation}  
                 </Col>
               </Row>
+              <br/><br/>
               {
                 item.idRequestState === 32 &&
                 <div className={"request-item-requested-alert"}>

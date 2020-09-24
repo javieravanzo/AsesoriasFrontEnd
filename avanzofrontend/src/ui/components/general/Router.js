@@ -31,13 +31,20 @@ class Router extends Component {
     return (
       <Layout.Content className={"content"}>
         { 
-          (parseInt(localStorage.role_id, 10) === 2 || parseInt(localStorage.role_id, 10) === 1) &&
+          (parseInt(localStorage.role_id, 10) === 2 || parseInt(localStorage.role_id, 10) === 1 ) &&
           <Switch>
             <Route path={routes.admin_company_management} component={AdminCompanyManagement}/>
             <Route path={routes.admin_customer_management} component={AdminCustomerManagement}/>
             <Route path={routes.admin_request_management} component={AdminRequestManagement}/>
             <Route path={routes.admin_generate_reports} component={AdminGenerateReports}/>
             <Route render = {()=><Redirect to={routes.admin_company_management}/>}/>
+          </Switch>
+        }
+        {
+          ( parseInt(localStorage.role_id, 10) === 5) &&
+          <Switch>
+            <Route path={routes.admin_request_management} component={AdminRequestManagement}/>
+            <Route render = {()=><Redirect to={routes.admin_request_management}/>}/>
           </Switch>
         }
         { 

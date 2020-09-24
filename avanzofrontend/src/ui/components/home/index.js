@@ -341,6 +341,9 @@ class Home extends Component {
             {(isLogged && (role===2 || role===1)) &&
               <Redirect to={routes.admin_company_management}/>
             }
+            {(isLogged && (role===5)) &&
+              <Redirect to={routes.admin_request_management}/>
+            }
           </div>
         </div>
       );

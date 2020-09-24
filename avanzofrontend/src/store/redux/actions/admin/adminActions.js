@@ -291,6 +291,44 @@ export const getAllRequestToOutLay = (userId) => {
   }
 };
 
+export const getAllBankRefunded = (userId) => {
+  return dispatch => {
+    return adminServices.getAllBankRefundedRequest(userId)
+      .then(response => {
+        dispatch({
+          type: C.GET_REQUEST_BANK_REFUNDED,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REQUEST_BANK_REFUNDED,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes devueltas por el banco', err.data.message);
+      });
+  }
+};
+
+export const getAllProcessWithoutChange = () => {
+  return dispatch => {
+    return adminServices.getAllProcessWithoutChangeRequest()
+      .then(response => {
+        dispatch({
+          type: C.GET_REQUEST_BANK_REFUNDED,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REQUEST_BANK_REFUNDED,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes devueltas por el banco', err.data.message);
+      });
+  }
+};
+
+
+
 export const getAllCompanies = ( ) => {
   return dispatch => {
     return adminServices.getAllCompanies( )
@@ -455,6 +493,7 @@ export const generateReport = (client) => {
           type: C.GENERATE_BANK_REPORT,
           payload: response.data.data
         });
+        dispatch(resetValue());
       }).catch(err => {
         dispatch({
           type: C.GENERATE_BANK_REPORT,
@@ -462,5 +501,6 @@ export const generateReport = (client) => {
         });
         ERROR_MODAL('Error al realizar el proceso', err.message);
       });
+    
   }
 };

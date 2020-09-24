@@ -15,9 +15,9 @@ export const documentTypes = [
 
 /* ------------------ Request State ---------------- */
 export const requestState = {
-  APPROVED: 4,
-  RR_HH: 3,
-  OUTLAYED: 6,
+  APPROVED: 3,
+  RR_HH: 2,
+  OUTLAYED: 4,
   REJECTED: 7
 };
 

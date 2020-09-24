@@ -14,6 +14,36 @@ function approveorRejectRequest(data){
   });
 };
 
+function passToProcessWithoutChange(requestid){
+  return request({
+    url: '/Request/PassWithoutChanges',
+    method: 'PUT',
+    headers:{
+      requestid: requestid,
+    }
+  });
+};
+
+function passToProcessWithDocuments(requestid){
+  return request({
+    url: '/Request/PassWithDocuments',
+    method: 'PUT',
+    headers:{
+      requestid: requestid,
+    }
+  });
+};
+
+function passToOutlay(requestid){
+  return request({
+    url: '/Request/PassToOutLay',
+    method: 'PUT',
+    headers:{
+      requestid: requestid,
+    }
+  });
+};
+
 function getAllCustomer(companyId){
   return request({
     url: '/Customer/GetAll',
@@ -44,10 +74,9 @@ function getReportByCompany(companyId){
   });
 };
 
-
 const generalService = {
   approveorRejectRequest, getAllCustomer, getReportByCustomer, 
-  getReportByCompany
+  getReportByCompany, passToProcessWithoutChange, passToProcessWithDocuments, passToOutlay
 };
 
 export default generalService;

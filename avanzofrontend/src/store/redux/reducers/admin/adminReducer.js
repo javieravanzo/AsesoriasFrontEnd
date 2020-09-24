@@ -16,7 +16,11 @@ const initialState={
   rejectedRequest: null,
   pendingRHRequest: null,
   generateReportData: null,
-  countCustomerData: null
+  countCustomerData: null,
+  bankRefundedResponse: null,
+  withoutChangesResponse: null,
+  withDocumentsResponse: null,
+  processWithoutChangeReponse: null,
 };
 
 
@@ -87,7 +91,17 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         requestOutLayResponse: action.payload
-      };  
+      };
+    case C.GET_REQUEST_BANK_REFUNDED:
+      return{
+        ...state,
+        bankRefundedResponse: action.payload
+      };
+    case C.GET_REQUEST_PROCESS_WITHOUT_CHANGE:
+      return{
+        ...state,
+        processWithoutChangeReponse: action.payload
+      };
     case C.GENERATE_BANK_REPORT:
       return{
         ...state,
@@ -97,6 +111,16 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         countCustomerData: action.payload
+      }      
+    case C.PASS_WITHOUT_CHANGES_REQUEST:
+      return{
+        ...state,
+        withoutChangesResponse: action.payload
+      }
+    case C.PASS_WITH_DOCUMENTS_REQUEST:
+      return{
+        ...state,
+        withDocumentsResponse: action.payload
       }
     default:
       return state;

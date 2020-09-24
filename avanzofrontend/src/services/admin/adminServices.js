@@ -158,6 +158,20 @@ function getAllPendingRHRequest(){
   });
 };
 
+function getAllBankRefundedRequest(){
+  return request({
+    url: '/Request/GetAllBankRefunded',
+    method: 'GET'
+  });
+};
+
+function getAllProcessWithoutChangeRequest(){
+  return request({
+    url: '/Request/GetAllProcessWithoutChanges',
+    method: 'GET'
+  });
+};
+
 function getDateListToCustomer(companyid){
   return request({
     url: '/Customer/GetDateListToCustomer',
@@ -208,7 +222,8 @@ const adminService = {
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
-  getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport, getCustomersCountToApprove
+  getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport,
+  getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest
 };
 
 export default adminService;
