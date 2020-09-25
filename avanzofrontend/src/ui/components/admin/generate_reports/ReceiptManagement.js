@@ -144,7 +144,8 @@ class ReceiptManagement extends Component {
   render() {
 
     console.log("RD", this.props.generateReportData);
-    let tableData = [
+    let tableData = [];
+    /*let tableData = [
       {
         key: 1,
         company: "Emtelco",
@@ -201,7 +202,8 @@ class ReceiptManagement extends Component {
         quantity: 92870,
         date2: "28-06-19"
       }    
-    ];
+    ];*/
+
     //let {approve_modal} = this.state;
 
     return (
@@ -230,6 +232,7 @@ class ReceiptManagement extends Component {
         <Divider/>
         <Row>
           <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}
+            locale={{ emptyText: 'No hay reportes disponibles' }}
             pagination={{ itemRender: itemRender, showSizeChanger: true,
             pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
         </Row>

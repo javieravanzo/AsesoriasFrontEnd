@@ -54,7 +54,7 @@ class RequestStateModal extends Component {
       }
 
       return (
-        <Steps current={idRequestState-1} initial={0} size="small" >
+        <Steps current={approveHumanResources ? idRequestState-1 : idRequestState-2} initial={0} size="small" >
           {array}
         </Steps>
       );
@@ -206,7 +206,7 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.idRequestState === requestState.OUTLAYED &&
+                item.idRequestState === requestState.FINALIZED &&
                 <div className={"request-item-requested-confirm"}>
                   <Row>
                     <h3> 
@@ -217,7 +217,9 @@ class RequestStateModal extends Component {
                 </div>
               }
               {
-                item.idRequestState === 7 &&
+                (item.idRequestState === requestState.INVALID_DOCUMENTS || 
+                item.idRequestState === requestState.REJECTED) &&
+                
                 <div className={"request-item-requested-reject"}>
                   <Row className={"rejected-row"}>
                     <span>  

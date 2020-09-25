@@ -90,7 +90,7 @@ class Customer_Management extends Component {
             }
             {
               parseInt(localStorage.role_id, 10) === 5 &&
-              <TabPane tab={<span> <Icon type="close-circle" />Procesadas sin cambios</span>} key="4">
+              <TabPane tab={<span> <Icon type="close-circle" />Procesadas sin cambios</span>} key="8">
                 <ProcessWithoutChange/>
               </TabPane>
             }

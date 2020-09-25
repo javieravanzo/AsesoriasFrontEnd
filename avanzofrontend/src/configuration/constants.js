@@ -17,8 +17,9 @@ export const documentTypes = [
 export const requestState = {
   APPROVED: 3,
   RR_HH: 2,
-  OUTLAYED: 4,
-  REJECTED: 7
+  FINALIZED: 5,
+  INVALID_DOCUMENTS: 6,
+  REJECTED: 7,
 };
 
 /* ------------------ Document Types --------------------- */
