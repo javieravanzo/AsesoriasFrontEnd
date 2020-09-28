@@ -54,49 +54,49 @@ class Customer_Management extends Component {
           <Tabs defaultActiveKey={parseInt(localStorage.role_id, 10) === 2 ? "1" : "2"}>
             {
               parseInt(localStorage.role_id, 10) === 5 &&
-              <TabPane tab={<span> <Icon type="close-circle" />Devolución bancaria</span>} key="7">
+              <TabPane tab={<span> <Icon type="close-circle" />Devolución bancaria</span>} key="1">
                 <BankRefunded/>
               </TabPane>
             } 
             {
               parseInt(localStorage.role_id, 10) === 1 &&
-              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="1">
+              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2">
                 <MakeOutlay/>
               </TabPane>
             }            
             {
               parseInt(localStorage.role_id, 10) === 2 &&
-              <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="2">
+              <TabPane tab={<span> <Icon type="check-circle" />Aprobar solicitudes </span>} key="3">
                 <ApproveRequest/>
               </TabPane>
             }
             {
               parseInt(localStorage.role_id, 10) === 5 &&
-              <TabPane tab={<span> <Icon type="check-circle" />Por aprobar</span>} key="3">
+              <TabPane tab={<span> <Icon type="check-circle" />Por aprobar</span>} key="4">
                 <ApproveRequest/>
               </TabPane>
             } 
             {
               parseInt(localStorage.role_id, 10) === 5 &&
-              <TabPane tab={<span> <Icon type="close-circle" />Sin procesar</span>} key="4">
+              <TabPane tab={<span> <Icon type="close-circle" />Sin procesar</span>} key="5">
                 <RejectedRequest/>
               </TabPane>
             }     
             {
               parseInt(localStorage.role_id, 10) !== 5 &&
-              <TabPane tab={<span> <Icon type="close-circle" />Solicitudes Rechazadas </span>} key="5">
+              <TabPane tab={<span> <Icon type="close-circle" />Solicitudes Rechazadas </span>} key="6">
                 <RejectedRequest/>
               </TabPane>
             }
             {
               parseInt(localStorage.role_id, 10) === 5 &&
-              <TabPane tab={<span> <Icon type="close-circle" />Procesadas sin cambios</span>} key="8">
+              <TabPane tab={<span> <Icon type="close-circle" />Procesadas sin cambios</span>} key="7">
                 <ProcessWithoutChange/>
               </TabPane>
             }
             {
               parseInt(localStorage.role_id, 10) !== 1 &&
-              <TabPane tab={<span> <Icon type="team" />Pendientes RR.HH.</span>} key="6">
+              <TabPane tab={<span> <Icon type="team" />Pendientes RR.HH.</span>} key="8">
                 <PendingRequest/>
               </TabPane>
             }

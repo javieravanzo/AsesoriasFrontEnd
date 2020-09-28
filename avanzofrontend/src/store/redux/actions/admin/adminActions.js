@@ -314,12 +314,12 @@ export const getAllProcessWithoutChange = () => {
     return adminServices.getAllProcessWithoutChangeRequest()
       .then(response => {
         dispatch({
-          type: C.GET_REQUEST_BANK_REFUNDED,
+          type: C.GET_REQUEST_PROCESS_WITHOUT_CHANGE,
           payload: response.data
         });
       }).catch(err => {
         dispatch({
-          type: C.GET_REQUEST_BANK_REFUNDED,
+          type: C.GET_REQUEST_PROCESS_WITHOUT_CHANGE,
           payload: err,
         });
         ERROR_MODAL('Error al traer la lista de solicitudes devueltas por el banco', err.data.message);
@@ -488,7 +488,6 @@ export const generateReport = (client) => {
     dispatch(resetValue());
     return adminServices.generateBankReport()
       .then(response => {
-        console.log("ResponData", response.data);
         dispatch({
           type: C.GENERATE_BANK_REPORT,
           payload: response.data.data
@@ -498,6 +497,29 @@ export const generateReport = (client) => {
         dispatch({
           type: C.GENERATE_BANK_REPORT,
           payload: "",
+        });
+        ERROR_MODAL('Error al realizar el proceso', err.message);
+      });
+    
+  }
+};
+
+
+export const receiveBankFile = (data) => {
+  return dispatch => {
+    return adminServices.receiveBankFile(data)
+      .then(response => {
+        dispatch({
+          type: C.RECEIVE_BANK_FILE,
+          payload: response.data,
+          code: true,
+        });
+        SUCCESS_MODAL("Acción realizada existosamente", response.data.message);
+      }).catch(err => {
+        dispatch({
+          type: C.RECEIVE_BANK_FILE,
+          payload: "",
+          code: false,
         });
         ERROR_MODAL('Error al realizar el proceso', err.message);
       });

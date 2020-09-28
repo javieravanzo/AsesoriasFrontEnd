@@ -44,7 +44,7 @@ class RequestStateModal extends Component {
 
     let array = [];
 
-    if(idRequestState <= 5){
+    if(idRequestState < 5){
       
       for(let i = 0; i < 5; i++){
         array.push(steps[i]);
@@ -55,6 +55,21 @@ class RequestStateModal extends Component {
 
       return (
         <Steps current={approveHumanResources ? idRequestState-1 : idRequestState-2} initial={0} size="small" >
+          {array}
+        </Steps>
+      );
+
+    }else if(idRequestState === 5){
+
+      for(let i = 0; i < 5; i++){
+        array.push(steps[i]);
+        if (i === 1 && approveHumanResources === 0 ){
+          array.pop(steps[i]);
+        }
+      }
+
+      return (
+        <Steps current={6} initial={0} size="small" >
           {array}
         </Steps>
       );

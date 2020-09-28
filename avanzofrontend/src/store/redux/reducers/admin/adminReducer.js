@@ -21,6 +21,7 @@ const initialState={
   withoutChangesResponse: null,
   withDocumentsResponse: null,
   processWithoutChangeReponse: null,
+  receiveBankFileCode: null,
 };
 
 
@@ -121,6 +122,11 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         withDocumentsResponse: action.payload
+      }
+    case C.RECEIVE_BANK_FILE: 
+      return{
+        ...state,
+        receiveBankFileCode: action.payload
       }
     default:
       return state;

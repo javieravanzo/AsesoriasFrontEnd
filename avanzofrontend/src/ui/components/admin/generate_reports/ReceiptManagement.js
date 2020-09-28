@@ -5,14 +5,16 @@ import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Components
+import FieldTitle from '../../subcomponents/FieldTitle';
 
 //Styles
 import '../../../styles/admin/index.css';
+
 import BaseURL from '../../../../services/BaseURL';
 import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../../subcomponents/modalMessages';
 
 //Actions
-import {generateReport} from "../../../../store/redux/actions/admin/adminActions";
+import {generateReport, receiveBankFile} from "../../../../store/redux/actions/admin/adminActions";
 
 //Functions
 function itemRender(current, type, originalElement) {
@@ -88,6 +90,9 @@ class ReceiptManagement extends Component {
       approve_modal: null,
       reportData: null,
       nextState: null,
+      particular_modal: null,
+      bankFile: null,
+      outlayFile: null,
     };
 
     this.setData = this.setData.bind(this);
@@ -100,7 +105,12 @@ class ReceiptManagement extends Component {
       return {
         reportData: seeDocument(nextProps.generateReportData, BaseURL),
       };
-    }else{
+    }else if(nextProps.receiveBankFileCode !== null){
+      return {
+        particular_modal: false,
+      };
+    }
+    else{
       return {
         nextState: true,
       }
@@ -139,77 +149,50 @@ class ReceiptManagement extends Component {
     this.props.generateReport();
   };
 
-  
+  onChangeBankFile = (e) =>{
+
+    let fileType = e.target.files;
+
+    this.setState({
+      bankFile: fileType[0]
+    });
+
+  };
+
+  onChangeOutlayFile = (e) =>{
+
+    let fileType = e.target.files;
+
+    this.setState({
+      outlayFile: fileType[0]
+    });
+
+  };
+
+  onConfirmFiles = () => {
+    let data = {
+      write: this.state.outlayFile,
+      read: this.state.bankFile,
+    };
+
+    this.props.receiveBankFile(data);
+  };
 
   render() {
 
     console.log("RD", this.props.generateReportData);
     let tableData = [];
-    /*let tableData = [
-      {
-        key: 1,
-        company: "Emtelco",
-        customer: "Juan Rodríguez",
-        quantity: 150000,
-        date2: "21-06-19"
-      },
-      {
-        key: 2,
-        company: "Movistar",
-        customer: "David Estrada",
-        quantity: 250000,
-        date2: "22-06-19"
-      },
-      {
-        key: 3,
-        company: "Seguros L.",
-        customer: "Camilo Pinto",
-        quantity: 8500,
-        date2: "24-06-19"
-      },
-      {
-        key: 4,
-        company: "Emtelco",
-        customer: "Duvan Vergara",
-        quantity: 120000,
-        date2: "26-06-19"
-      },
-      {
-        key: 5,
-        company: "Claro",
-        customer: "Alvaro Martinez",
-        quantity: 275000,
-        date2: "27-06-19"
-      },
-      {
-        key: 6,
-        company: "Alianza Normativa",
-        customer: "Carlos Vargas",
-        quantity: 4870,
-        date2: "28-06-19"
-      },
-      {
-        key: 7,
-        company: "Claro",
-        customer: "Felipe Urrego",
-        quantity: 125870,
-        date2: "28-06-19"
-      },
-      {
-        key: 8,
-        company: "Seguros L.",
-        customer: "Julian Osorio",
-        quantity: 92870,
-        date2: "28-06-19"
-      }    
-    ];*/
-
     //let {approve_modal} = this.state;
 
     return (
       <div className={"company-div"}>
         <Row gutter={12}>
-          <Col xs={24} sm={0} md={6} lg={11}/>
+          <Col xs={0} sm={0} md={0} lg={6}/>
+          <Col xs={24} sm={12} md={6} lg={5}>
+            <Button icon="file-excel"  className={"create-customer-button"} onClick={() => this.setState({particular_modal: true})}>
+                Recepción Archivo Banco
+            </Button> 
+          </Col>
           <Col xs={24} sm={12} md={6} lg={5}> 
             <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
                     onClick={() => this.sendReport()}>
@@ -229,6 +212,43 @@ class ReceiptManagement extends Component {
             </Button> 
           </Col>
         </Row>
+        <Modal 
+          title="Cargar archivo generado por el banco"
+          visible={this.state.particular_modal}
+          okText={"Cargar archivos"}
+          cancelText={"Cancelar"}
+          width={650}
+          onOk={() => this.onConfirmFiles()}
+          okButtonProps={{disabled: (this.state.outlayFile === null && this.state.bankFile === null) ? true : false}}
+          onCancel={() => this.setState({particular_modal: false})}>
+            <div>
+              <div>
+                Suba los archivos de Excel con los formato correspondientes.
+                <b> Recuerde que el archivo debe tener unas condiciones y especificaciones obligatorias.</b>
+              </div>
+                
+              <br/>           
+              
+              <Row>
+                <Col xs={24} sm={24} md={24} lg={24}>
+                  <FieldTitle title={"Cargar archivo generado por el banco"}/>
+                  <input key={this.state.kBK} type="file" onChange={this.onChangeBankFile}/>
+                </Col>
+              </Row>
+              <br/>
+              <Row>
+                
+                <Col xs={24} sm={24} md={24} lg={24}>
+                  <FieldTitle title={"Cargar archivo de desembolsos generado por la plataforma"}/>
+                  <input key={this.state.kBK} type="file" onChange={this.onChangeOutlayFile}/>
+                </Col>
+              </Row>
+
+              <br/>
+            
+            </div>
+
+        </Modal>
         <Divider/>
         <Row>
           <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}
@@ -242,7 +262,7 @@ class ReceiptManagement extends Component {
           okText={"Generar"}
           cancelText={"Cancelar"}
           width={450}
-          onOk={() => this.onConfirmRequest()}
+          onOk={() => this.onConfirmFiles()}
           onCancel={() => this.setState({approve_modal: false})}>
             <div>
               Seleccionar el cliente para descargar el informe particular.   
@@ -266,17 +286,20 @@ class ReceiptManagement extends Component {
 
 ReceiptManagement.propTypes = {
   generateReportData: PropTypes.string,
+  receiveBankFileCode: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   return {
     generateReportData: state.admin.generateReportData,
+    receiveBankFileCode: state.admin.receiveBankFileCode,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     generateReport: ( ) => dispatch(generateReport( )),
+    receiveBankFile: (data) => dispatch(receiveBankFile(data))
   }
 };
 

@@ -217,13 +217,32 @@ function generateBankReport(){
 
 };
 
+function receiveBankFile(data){
+
+  var bodyFormData = new FormData();
+  
+  bodyFormData.append('write', data.write);
+  bodyFormData.append('read', data.read);
+
+  return request({
+    url: '/Reports/ReceiveBankReport',
+    method: 'POST',
+    data: bodyFormData
+  });
+
+};
+
+
+
+
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
   getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport,
-  getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest
+  getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest,
+  receiveBankFile
 };
 
 export default adminService;

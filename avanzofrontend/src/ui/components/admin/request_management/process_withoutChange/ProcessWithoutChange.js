@@ -126,10 +126,10 @@ class ProcessWithoutChanges extends Component {
   render(){
 
     let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
-    let tableData = this.setData(this.props.bankRefundedResponse);
+    let tableData = this.setData(this.props.processWithoutChangeReponse);
     //console.log("JSON", tableData, JSON.stringify(tableData));
     
-    if(this.props.bankRefundedResponse === null){
+    if(this.props.processWithoutChangeReponse === null){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
                 Cargando ...
                 <br/>
