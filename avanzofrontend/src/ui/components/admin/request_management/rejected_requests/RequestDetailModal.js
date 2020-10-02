@@ -143,19 +143,19 @@ class RequestStateModal extends Component {
                   <b>Cédula</b><br/><br/>
                   {item.identificationId}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                   <b>Empresa</b><br/><br/>
                   {item.socialReason}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                   <b>Saldo Usuario</b><br/><br/>
                     <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                    value={item.accumulatedQuantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
+                    value={item.totalRemainder} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={4} >
                   <b>Valor total</b><br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                      value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
+                      value={item.totalValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
                 
               </Row>

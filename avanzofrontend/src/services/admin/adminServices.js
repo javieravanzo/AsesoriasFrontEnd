@@ -151,6 +151,13 @@ function getAllRejectedRequest(){
   });
 };
 
+function getDefinitelyRejected(){
+  return request({
+    url: '/Request/GetAllDefinitelyRejected',
+    method: 'GET'
+  });
+};
+
 function getAllPendingRHRequest(){
   return request({
     url: '/Request/GetAllPendingRRHH',
@@ -171,6 +178,28 @@ function getAllProcessWithoutChangeRequest(){
     method: 'GET'
   });
 };
+
+function getAllProcessDocumentChanges(){
+  return request({
+    url: '/Request/GetAllRequestWithDocumentChanges',
+    method: 'GET'
+  });
+};
+
+function getAllProcessinBank(){
+  return request({
+    url: '/Request/GetAllProcessInBank',
+    method: 'GET'
+  });
+};
+
+function getAllFinalizedRequest(){
+  return request({
+    url: '/Request/GetAllFinalizedRequest',
+    method: 'GET'
+  });
+};
+
 
 function getDateListToCustomer(companyid){
   return request({
@@ -232,17 +261,14 @@ function receiveBankFile(data){
 
 };
 
-
-
-
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
   getAllCustomersToApprove, approveCustomer, updateCompany, activateCustomer, updateCustomer,
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
-  getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport,
+  getDefinitelyRejected, getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport,
   getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest,
-  receiveBankFile
+  receiveBankFile, getAllProcessDocumentChanges, getAllProcessinBank, getAllFinalizedRequest
 };
 
 export default adminService;

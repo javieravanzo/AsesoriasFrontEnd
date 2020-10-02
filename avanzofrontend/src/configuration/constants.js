@@ -19,7 +19,7 @@ export const requestState = {
   RR_HH: 2,
   FINALIZED: 5,
   INVALID_DOCUMENTS: 6,
-  REJECTED: 7,
+  REJECTED: 8,
 };
 
 /* ------------------ Document Types --------------------- */

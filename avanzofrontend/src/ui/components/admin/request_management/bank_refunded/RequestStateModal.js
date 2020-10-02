@@ -1,6 +1,6 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Badge, Button, Modal, Form, Select} from 'antd';
+import {Col, Row, Tooltip, Icon, Badge, Button, Modal, Form, Select, Divider} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
@@ -135,7 +135,7 @@ class RequestStateModal extends Component {
           {
             this.state.visible && 
             <div>
-              <br/><br/>
+              <Divider/>
               <Row>
                 <Col xs={24} sm={12} md={8} lg={6} >
                   <b>Información adicional</b>
@@ -151,12 +151,12 @@ class RequestStateModal extends Component {
                   <b>Cédula</b><br/><br/>
                   {item.identificationId}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                   <b>Pre-cupo calculado</b><br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.computedCapacity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                   <b>Saldo Usuario</b><br/><br/>
                     <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                     value={item.totalRemainder} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
@@ -199,18 +199,7 @@ class RequestStateModal extends Component {
                         Ver documento
                   </Button> 
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={5}>
-                  <Button className={"request-reject-button"} icon="close-circle" 
-                          onClick={() => this.setState({reject_modal: true})}>
-                        Rechazar crédito
-                  </Button> 
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={6}>
-                  <Button className={"request-check-docs-button"} icon="check-circle" 
-                          onClick={() => this.functionPassToOutlay(item.idRequest)}>
-                        Pasar a desembolsar
-                  </Button> 
-                </Col>
+                <Col xs={24} sm={12} md={6} lg={11}/>
                 
               </Row>
             </div>

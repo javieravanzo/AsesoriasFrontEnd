@@ -9,7 +9,11 @@ import generalServices from '../../../../services/general/generalServices';
 import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcomponents/modalMessages';
 
 //Actions
-import {getAllRequestToOutLay, getAllRequestToApprove, getAllRejectedRequest, getAllPendingRHRequest} from '../admin/adminActions';
+import {getAllRequestToOutLay, getAllRequestToApprove, getAllRejectedRequest,
+        getAllPendingRHRequest, getAllBankRefunded, getAllProcessWithoutChange,
+        getAllDefinitelyRejected, getAllProcessDocumentsChange } from '../admin/adminActions';
+
+import {getAllRequest} from '../company/companyActions';
 
 export const approveorRejectRequest = (data, userId) => {
   return dispatch => {
@@ -18,6 +22,10 @@ export const approveorRejectRequest = (data, userId) => {
         dispatch(getAllRequestToApprove());
         dispatch(getAllPendingRHRequest());
         dispatch(getAllRejectedRequest());
+        dispatch(getAllBankRefunded());
+        dispatch(getAllProcessWithoutChange());
+        dispatch(getAllDefinitelyRejected());
+        dispatch(getAllProcessDocumentsChange());
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: response.data
@@ -40,6 +48,7 @@ export const passToProcessWithoutChange = (requestid) => {
         dispatch(getAllRequestToApprove());
         dispatch(getAllPendingRHRequest());
         dispatch(getAllRejectedRequest());
+        dispatch(getAllProcessWithoutChange());
         dispatch({
           type: A.PASS_WITHOUT_CHANGES_REQUEST,
           payload: response.data
@@ -62,6 +71,7 @@ export const passToProcessWithDocuments = (requestid) => {
         dispatch(getAllRequestToApprove());
         dispatch(getAllPendingRHRequest());
         dispatch(getAllRejectedRequest());
+        dispatch(getAllProcessDocumentsChange());
         dispatch({
           type: A.PASS_WITH_DOCUMENTS_REQUEST,
           payload: response.data
@@ -105,12 +115,12 @@ export const approveorRejectRequestByCompany = (data, userId) => {
   return dispatch => {
     return generalServices.approveorRejectRequest(data)
       .then(response => {
-        dispatch(getAllRequestToApprove());
+        dispatch(getAllRequest());
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: response.data
         });
-        SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada exitosamente.")
+        SUCCESS_MODAL("Acción realizada exitosamente", response.data.message)
       }).catch(err => {
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,

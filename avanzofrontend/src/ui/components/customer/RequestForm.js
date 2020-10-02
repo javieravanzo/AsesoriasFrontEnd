@@ -377,7 +377,7 @@ class LoanRequest extends Component {
 
   };
 
-  onChangePaymentSupport  = (e) =>{
+  onChangePaymentSupport  = (e) => {
 
   let fileType = e.target.files;
 

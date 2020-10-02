@@ -1,22 +1,25 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Divider, Steps, Badge, Button, Modal} from 'antd';
+import {Col, Row, Tooltip, Icon, Divider, Badge, Button} from 'antd';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
-import { SUCCESS_MODAL, allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
+import { allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
 
 //Subcomponents
 import BaseURL from '../../../../../services/BaseURL';
 
 //Actions
+//import {approveorRejectRequest} from "../../../../../store/redux/actions/general/generalActions";
 import {approveorRejectRequestByCompany} from "../../../../../store/redux/actions/general/generalActions";
 
 //Constants
-const Step = Steps.Step;
+import {defineBadgeName, defineButtonClass} from '../../../../../configuration/constants';
+//const Step = Steps.Step;
+//const TextArea = Input.TextArea;
 
 class RequestStateModal extends Component {
 
@@ -32,57 +35,17 @@ class RequestStateModal extends Component {
       card_style_approved: "approved",
       card_style_rejected: "rejected",
       reject_modal: null,
+      text: "",
     };
     
-  };
-
-  defineBadgeName = (id) => {
-    if(id === 1){
-      return "Solicitada";
-    }else if(id === 2){
-      return "Evaluada";
-    }else if(id === 3){
-      return "Aprobada RR.HH.";
-    }else if(id === 4){
-      return "Aprobada Admon.";
-    }else if(id === 5){
-      return "Desembolsada";
-    }else if(id=== 6){
-      return "Rechazada"
-    }else if(id=== 7){
-      return "Finalizada"
-    }else if(id=== 8){
-      return "Devolución bancaria"
-    }
-  };
-
-  defineButtonClass = (id) => {
-    if(id === 1){
-      return "#c1c1c1";
-    }else if(id === 2){
-      return "yellow";
-    }else if(id === 3){
-      return "#ffa962";
-    }else if(id === 4){
-      return "#62ffb5";
-    }else if(id === 5){
-      return "#6cff55 ";
-    }else if(id === 6){
-      return "#ff4747";
-    }else{
-      return "white";
-    }
   };
 
   seeDocument = (filePath) => {
 
     let url = filePath;
-    //console.log(url);
-    let newUrl = url.split('.');
-    //console.log("URL", newUrl, newUrl[1]);
 
     if (url !== null) {
-      let newWindow = window.open( BaseURL +"/"+  newUrl[1], "blank");
+      let newWindow = window.open(BaseURL +"/"+ filePath, "blank");
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
         allowEmergingWindows();
       }
@@ -90,7 +53,6 @@ class RequestStateModal extends Component {
       WARNING_MODAL('Advertencia', 'El reporte no está disponible');
     }
 
-
   };
 
   onConfirmRequest = (idRequest) => {
@@ -98,19 +60,6 @@ class RequestStateModal extends Component {
       requestId: idRequest,
       approve: true,
     };
-    //console.log("D", data);
-    this.props.approveorRejectRequestByCompany(data, localStorage.user_id);
-    SUCCESS_MODAL("Acción realizada exitosamente", "La solicitud ha sido aprobada correctamente.");
-    this.setState({approve_modal: false});
-  
-  };
-
-  onConfirmRequest = (idRequest) => {
-    let data = {
-      requestId: idRequest,
-      approve: true,
-    };
-    //console.log("D", data);
     this.props.approveorRejectRequestByCompany(data, localStorage.user_id);
     this.setState({approve_modal: false});
   };
@@ -119,18 +68,38 @@ class RequestStateModal extends Component {
     let data = {
       requestId: idRequest,
       approve: false,
+      text: this.state.text
     };
     //console.log("D", data);
-    this.props.approveorRejectRequest(data, localStorage.user_id);
-    this.setState({approve_modal: false});
+    this.props.approveorRejectRequestByCompany(data, localStorage.user_id);
+    this.setState({reject_modal: false});
   };
+
+  inputChange = (e) => {
+
+    let value = e;
+    this.setState({
+      text: value,
+    });
+  };
+
+  functionToProcessWithDocuments = (idRequest) => {
+    this.props.passToProcessWithDocuments(idRequest);
+  };
+
+  functionToChangeWithoutDocuments = (idRequest) => {
+    this.props.passToProcessWithoutChange(idRequest);
+  };
+
 
   render(){
 
     let item = this.props.item;
-
+    
+    //let {text} = this.state;
+    
     return (
-        <Badge count={this.defineBadgeName(item.requestStateId)} style={{backgroundColor: this.defineButtonClass(item.idRequestState), color: "black"} }>
+        <Badge count={defineBadgeName(item.requestStateId)} style={{backgroundColor: defineButtonClass(item.idRequestState), color: "black"} }>
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={24} sm={12} md={2} lg={2}>
@@ -142,27 +111,17 @@ class RequestStateModal extends Component {
                 <b>Número de Solicitud</b> <br/><br/>
                 {"Solicitud No. " + item.idRequest} 
               </Col>
-              <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
-                  <b>Estado</b> <br/><br/>  {this.defineBadgeName(item.idRequestState)}
+              <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col" >
+                  <b>Estado</b> <br/><br/>  {defineBadgeName(item.idRequestState)}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
               </Col>
-              <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
-                  <b>Valor Total</b> <br/><br/>
+              <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
+                  <b>Monto</b> <br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
               </Col>
-              <Col xs={24} sm={12} md={2} lg={1}>
-                <Tooltip title="Aprobar solicitud">
-                  <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.setState({approve_modal: true})}/> 
-                </Tooltip>
-              </Col>
-              <Col xs={24} sm={12} md={2} lg={1}>
-                <Tooltip title="Rechazar solicitud">
-                  <Icon type={"close-circle"} className={"request-item-icon-reject"} onClick={() => this.setState({reject_modal: true})}/> 
-                </Tooltip>
-              </Col> 
             </Row>
           
           {
@@ -170,24 +129,6 @@ class RequestStateModal extends Component {
             <div>
               <Row>
                 <Divider/>
-                <Col xs={24} sm={12} md={8} lg={6} >
-                  <b>Flujo de aprobación</b>
-                </Col>  
-              </Row>
-              <br/><br/>
-              <Row>
-                <Steps current={item.idRequestState-1} size="small" className={"request-state-steps"}>
-                  <Step title="Solicitada"/>
-                  <Step title="Evaluada"/>
-                  <Step title="Aprobar RR.H H."/>
-                  <Step title="Aprobar Admon."/>                 
-                  <Step title="Desembolsada"/>
-                  <Step title="Finalizada"/>
-                  
-                </Steps>
-              </Row>
-              <br/><br/>
-              <Row>
                 <Col xs={24} sm={12} md={8} lg={6} >
                   <b>Información adicional</b>
                 </Col>  
@@ -202,37 +143,40 @@ class RequestStateModal extends Component {
                   <b>Cédula</b><br/><br/>
                   {item.identificationId}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Empresa</b><br/><br/>
-                    {item.Company_idCompany}
+                <Col xs={12} sm={12} md={7} lg={5}>
+                  <b>Empresa</b><br/><br/>
+                  {item.socialReason}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
-                    <b>Cargo</b><br/><br/>
-                    {item.profession}
+                <Col xs={12} sm={12} md={7} lg={5}>
+                  <b>Saldo Usuario</b><br/><br/>
+                    <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                    value={item.totalRemainder} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
-                    <b>Teléfono</b><br/><br/>
-                    {item.phoneNumber}
+                <Col xs={12} sm={12} md={8} lg={4} >
+                  <b>Valor total</b><br/><br/>
+                  <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
+                      value={item.totalValue} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
+                
               </Row>
               <br/>
               <br/>
               <Row>
-                <Col xs={12} sm={12} md={8} lg={4} >
-                  <b>Monto</b><br/><br/>
-                  {item.quantity} 
+                <Col xs={12} sm={12} md={7} lg={5}>
+                    <b>Teléfono</b><br/><br/>
+                    {item.phoneNumber}
                 </Col>
-                <Col xs={12} sm={12} md={8} lg={4} >
+                <Col xs={12} sm={12} md={8} lg={3} >
                     <b>Cuotas</b><br/><br/>
                     {item.split}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                     <b>Cuenta</b><br/><br/>
                     {item.account}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={6}>
+                <Col xs={12} sm={12} md={7} lg={4}>
                     <b>Tipo de Cuenta</b><br/><br/>
-                    {item.accountType}
+                    {item.accountType === "null" ? "-" : item.accountType}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={6}>
                     <b>Número de cuenta</b><br/><br/>
@@ -242,19 +186,19 @@ class RequestStateModal extends Component {
               <br/><br/>
               <Row gutter={4}>
                 <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
-                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath)} >
+                  <Button className={"request-document-button"} icon="file" onClick={() => this.seeDocument(item.filePath, item.paymentSupport, item.workingSupport)} >
                         Ver documento
                   </Button> 
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={5}>
                   <Button className={"request-reject-button"} icon="close-circle" 
-                          onClick={() => this.setState({approve_modal: true})}>
+                          onClick={() => this.onRejectRequest(item.idRequest)}>
                         Rechazar crédito
                   </Button> 
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={5}>
                   <Button className={"request-confirm-button"} icon="check-circle" 
-                          onClick={() => this.setState({approve_modal: true})}>
+                          onClick={() => this.onConfirmRequest(item.idRequest)}>
                         Aprobar crédito
                   </Button> 
                 </Col>
@@ -262,34 +206,6 @@ class RequestStateModal extends Component {
               </Row>
             </div>
           }
-
-          <Modal 
-            title="Aprobar crédito"
-            visible={this.state.approve_modal}
-            okText={"Aprobar"}
-            cancelText={"Cancelar"}
-            width={450}
-            onOk={() => this.onConfirmRequest(item.idRequest)}
-            onCancel={() => this.setState({approve_modal: false})}>
-              <div>
-                ¿Está seguro de realizar la aprobación del crédito? Esta acción será irreversible.                  
-              </div>
-
-          </Modal>
-          
-          <Modal 
-            title="Rechazar crédito"
-            visible={this.state.reject_modal}
-            okText={"Rechazar"}
-            cancelText={"Atrás"}
-            width={450}
-            onOk={() => this.onRejectRequest(item.idRequest)}
-            onCancel={() => this.setState({reject_modal: false})}>
-              <div>
-                ¿Está seguro de realizar el rechazo del crédito? Esta acción será irreversible.                  
-              </div>
-
-          </Modal>
         </div>
       </Badge>
     );
@@ -309,7 +225,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //getAllRequestToApprove: () => dispatch(getAllRequestToApprove( )),
     approveorRejectRequestByCompany: (data, userId) => dispatch(approveorRejectRequestByCompany(data, userId)),    
   }
 };

@@ -2,7 +2,7 @@
 import {companyTypes as C} from '../../types';
 
 const initialState={
-  requestList: [],
+  requestList: {},
 };
 
 export default function companyReducer(state = initialState, action){

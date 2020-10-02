@@ -100,6 +100,16 @@
   margin-left: auto;
 }
 
+.input-statemodal-request{
+  padding-top: 1px !important;
+  margin-top: 0px !important;
+  margin-bottom: 5px !important;
+}
+
+.account-customer-input{
+  width: 95% !important;
+}
+
 .request-item-requested-reject{
   background-color: #ffffff !important;
   margin-bottom: 0px;

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import RequestModal from "./RequestStateModal";
 
 //Actions
-import {getAllRequestToApprove} from "../../../../../store/redux/actions/admin/adminActions";
+import {getAllRequest} from "../../../../../store/redux/actions/company/companyActions";
 
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
@@ -30,7 +30,7 @@ class ApproveRequest extends Component {
       requestStateName: null
     };
 
-    this.props.getAllRequestToApprove();
+    this.props.getAllRequest();
     this.setData = this.setData.bind(this);
     this.filterData = this.filterData.bind(this);
 
@@ -74,6 +74,9 @@ class ApproveRequest extends Component {
           accountNumber: item.accountNumber,
           phoneNumber: item.phoneNumber,
           filePath: item.filePath,
+          socialReason: item.socialReason,
+          totalRemainder: item.totalRemainder,
+          totalValue: item.totalValue,
         };
 
         if(this.filterData(row)) {
@@ -118,9 +121,10 @@ class ApproveRequest extends Component {
   render(){
 
     let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
-    let tableData = this.setData(this.props.requestResponse);
+    let tableData = this.setData(this.props.requestList.request);
+    console.log("RL", this.props.requestList.request);
     
-    if(this.props.requestResponse === null){
+    if(JSON.stringify(this.props.requestList) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
                 Cargando ...
                 <br/>
@@ -173,18 +177,18 @@ class ApproveRequest extends Component {
 }
 
 ApproveRequest.propTypes = {
-  requestResponse: PropTypes.array,
+  requestList: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    requestResponse: state.admin.requestResponse,
+    requestList: state.company.requestList,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllRequestToApprove: () => dispatch(getAllRequestToApprove()),
+    getAllRequest: () => dispatch(getAllRequest()),
   }
 };
 

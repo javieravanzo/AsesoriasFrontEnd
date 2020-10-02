@@ -251,7 +251,7 @@ class RequestOutLayState extends Component {
                 </Row>
                 <br/><br/>
                 <Row gutter={4}>
-                  <Col xs={24} sm={12} md={18} lg={14} className={"document-col"}>
+                  <Col xs={24} sm={12} md={18} lg={13} className={"document-col"}>
                     <Button className={"request-document-button"} icon="file" >
                           Ver documento
                     </Button> 
@@ -262,7 +262,7 @@ class RequestOutLayState extends Component {
                           Rechazar crédito
                     </Button> 
                   </Col>
-                  <Col xs={24} sm={12} md={6} lg={5}>
+                  <Col xs={24} sm={12} md={6} lg={6}>
                     <Button className={"request-confirm-button"} icon="check-circle" 
                             onClick={() => this.setState({approve_modal: true})}>
                           Desembolsar crédito

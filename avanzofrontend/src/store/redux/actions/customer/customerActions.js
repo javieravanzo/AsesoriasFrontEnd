@@ -183,6 +183,54 @@ export const createRequest = (data, token) => {
   }
 };
 
+export const updateRequestDocument = (data) => {
+  return dispatch => {
+    return customerService.updateRequestDocuments(data)
+      .then(response => {
+        dispatch(getAllRequest(data.customerId));
+        dispatch(getAllRequestsWasRejected(data.customerId));
+        dispatch({
+          type: C.UPDATE_REQUEST_DOCUMENTS,
+          payload: response.data,
+          correct: true,
+        });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+        dispatch(resetValue());
+      }).catch(err => {
+        dispatch({
+          type: C.UPDATE_REQUEST_DOCUMENTS,
+          payload: err,
+          correct: false
+        });
+        ERROR_MODAL('Error al actualizar los documentos de la solicitud.', err.data.message);
+      });
+  }
+};
+
+export const updateRequestInformation = (data) => {
+  return dispatch => {
+    return customerService.updateRequestInformation(data)
+      .then(response => {
+        dispatch(getAllRequest(data.customerId));
+        dispatch(getAllRequestsWasRejected(data.customerId));
+        dispatch({
+          type: C.UPDATE_REQUEST_INFORMATION,
+          payload: response.data,
+          correct: true,
+        });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
+        dispatch(resetValue());
+      }).catch(err => {
+        dispatch({
+          type: C.UPDATE_REQUEST_INFORMATION,
+          payload: err,
+          correct: false
+        });
+        ERROR_MODAL('Error al realizar la acción', err.data.message);
+      });
+  }
+};
+
 export const getAllTransactions = (customerId) => {
   return dispatch => {
     return customerService.getAllTransactions(customerId)

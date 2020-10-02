@@ -135,6 +135,37 @@ function createRequest(data, token){
   }
 };
 
+function updateRequestDocuments(data){
+
+  var bodyFormData = new FormData();
+
+  bodyFormData.append('idRequest', data.idRequest);
+  bodyFormData.append('identificationId', data.identificationId);
+  bodyFormData.append('idCompany', data.idCompany);  
+  bodyFormData.append('paymentSupport', data.payment_support);
+  bodyFormData.append('workingSupport', data.working_support);
+  
+  return request({
+    url: '/Request/UpdateDocuments',
+    method: 'POST',
+    data: bodyFormData,
+  });
+  
+};
+
+function updateRequestInformation(data){
+  return request({
+    url: '/Request/UpdateInformation',
+    method: 'PUT',
+    headers: {
+      account: data.account,
+      accountNumber: data.accountNumber,
+      accountType: data.accountType,
+      idrequest: data.idRequest,
+    }
+  });
+};
+
 function getAllTransactions(customerId){
   return request({
     url: '/Transactions/GetTransactionsByUserId',
@@ -208,9 +239,10 @@ function checkCodes(userid, phonecode, emailcode){
 };
 
 const customerService = {
-  getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, createRequest,
-  getAllTransactions, getAllRequest, getAllRequestWasOutlayed, getAllRequestWasRejected,
-  getAccountDetail, generateCodes, checkCodes
+  getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, 
+  createRequest, getAllTransactions, getAllRequest, getAllRequestWasOutlayed, 
+  getAllRequestWasRejected, getAccountDetail, generateCodes, checkCodes, updateRequestInformation,
+  updateRequestDocuments
 };
 
 export default customerService;

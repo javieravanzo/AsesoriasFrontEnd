@@ -255,6 +255,24 @@ export const getAllRejectedRequest = () => {
   }
 };
 
+export const getAllDefinitelyRejected = () => {
+  return dispatch => {
+    return adminServices.getDefinitelyRejected()
+      .then(response => {
+        dispatch({
+          type: C.GET_DEFINITELY_REJECTED_REQUEST,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_DEFINITELY_REJECTED_REQUEST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes rechazadas por otros motivos', err.data.message);
+      });
+  }
+};
+
 export const getAllPendingRHRequest = () => {
   return dispatch => {
     return adminServices.getAllPendingRHRequest()
@@ -322,11 +340,64 @@ export const getAllProcessWithoutChange = () => {
           type: C.GET_REQUEST_PROCESS_WITHOUT_CHANGE,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes devueltas por el banco', err.data.message);
+        ERROR_MODAL('Error al traer la lista de solicitudes sin cambio', err.data.message);
       });
   }
 };
 
+export const getAllProcessDocumentsChange = () => {
+  return dispatch => {
+    return adminServices.getAllProcessDocumentChanges()
+      .then(response => {
+        dispatch({
+          type: C.GET_REQUEST_PROCESS_DOCUMENTS_CHANGE,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REQUEST_PROCESS_DOCUMENTS_CHANGE,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes procesadas con cambio', err.data.message);
+      });
+  }
+};
+
+export const getAllProcessForBank = () => {
+  return dispatch => {
+    return adminServices.getAllProcessinBank()
+      .then(response => {
+        dispatch({
+          type: C.GET_REQUEST_PROCESS_INBANK,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_REQUEST_PROCESS_INBANK,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes procesadas del banco', err.data.message);
+      });
+  }
+};
+
+export const getAllFinalizedRequest = () => {
+  return dispatch => {
+    return adminServices.getAllFinalizedRequest()
+      .then(response => {
+        dispatch({
+          type: C.GET_FINALIZED_REQUEST,
+          payload: response.data
+        });
+      }).catch(err => {
+        dispatch({
+          type: C.GET_FINALIZED_REQUEST,
+          payload: err,
+        });
+        ERROR_MODAL('Error al traer la lista de solicitudes finalizadas', err.data.message);
+      });
+  }
+};
 
 
 export const getAllCompanies = ( ) => {
@@ -437,10 +508,7 @@ export const getDateListToCustomer = (companyId) => {
   }
 };
 
-
-
 export const approveCustomers = (client, approve, cycleId) => {
-
   return dispatch => {
     return adminServices.approveCustomer(client, approve, cycleId)
       .then(response => {
@@ -459,7 +527,6 @@ export const approveCustomers = (client, approve, cycleId) => {
         ERROR_MODAL('Error al modificar el estado del cliente', err.data);
       });
   }
-
 };
 
 export const deleteClient = (client) => {
@@ -500,7 +567,6 @@ export const generateReport = (client) => {
         });
         ERROR_MODAL('Error al realizar el proceso', err.message);
       });
-    
   }
 };
 
@@ -523,6 +589,5 @@ export const receiveBankFile = (data) => {
         });
         ERROR_MODAL('Error al realizar el proceso', err.message);
       });
-    
   }
 };

@@ -176,12 +176,12 @@ class RequestStateModal extends Component {
                   <b>Cédula</b><br/><br/>
                   {item.identificationId}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                   <b>Pre-cupo calculado</b><br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.computedCapacity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={4}>
+                <Col xs={12} sm={12} md={7} lg={5}>
                   <b>Saldo Usuario</b><br/><br/>
                     <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                     value={item.totalRemainder} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/> 

@@ -14,6 +14,7 @@ const initialState={
   customerListToApprove: null, 
   customerDateList: null,
   rejectedRequest: null,
+  definitelyRejected: null,
   pendingRHRequest: null,
   generateReportData: null,
   countCustomerData: null,
@@ -22,6 +23,9 @@ const initialState={
   withDocumentsResponse: null,
   processWithoutChangeReponse: null,
   receiveBankFileCode: null,
+  processDocumentsChangeReponse: null,
+  processInBank: null,
+  finalizedRequest: null
 };
 
 
@@ -78,6 +82,11 @@ export default function adminReducer(state = initialState, action){
         ...state,
         rejectedRequest: action.payload
       };
+    case C.GET_DEFINITELY_REJECTED_REQUEST:
+      return{
+        ...state,
+        definitelyRejected: action.payload
+      };
     case C.GET_PENDINGRH_REQUEST:
       return{
         ...state,
@@ -103,6 +112,11 @@ export default function adminReducer(state = initialState, action){
         ...state,
         processWithoutChangeReponse: action.payload
       };
+    case C.GET_REQUEST_PROCESS_DOCUMENTS_CHANGE:
+      return{
+        ...state,
+        processDocumentsChangeReponse: action.payload
+      };  
     case C.GENERATE_BANK_REPORT:
       return{
         ...state,
@@ -123,10 +137,20 @@ export default function adminReducer(state = initialState, action){
         ...state,
         withDocumentsResponse: action.payload
       }
+    case C.GET_REQUEST_PROCESS_INBANK:
+      return{
+        ...state,
+        processInBank: action.payload
+      }
     case C.RECEIVE_BANK_FILE: 
       return{
         ...state,
         receiveBankFileCode: action.payload
+      }
+    case C.GET_FINALIZED_REQUEST:
+      return{
+        ...state,
+        finalizedRequest: action.payload
       }
     default:
       return state;

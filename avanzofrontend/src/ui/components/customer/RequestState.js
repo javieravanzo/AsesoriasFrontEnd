@@ -9,7 +9,8 @@ import RequestModal from "./RequestStateModal";
 //import MiniLoading from '../subcomponents/MiniLoading';
 
 //Actions
-import {getAllRequest, getAllOutlayedRequest, getAllRequestsWasRejected} from "../../../store/redux/actions/customer/customerActions";
+import {getAllRequest, getAllOutlayedRequest, 
+        getAllRequestsWasRejected, getOutlayData} from "../../../store/redux/actions/customer/customerActions";
 
 //Styles
 import '../../styles/customer/request-state.css';
@@ -31,7 +32,7 @@ class RequestState extends Component {
     this.props.getAllRequest(parseInt(localStorage.user_id, 10));
     this.props.getAllOutlayedRequest(parseInt(localStorage.user_id, 10));
     this.props.getAllRequestsWasRejected(parseInt(localStorage.user_id, 10));
-    
+    this.props.getOutlayData(parseInt(localStorage.user_id, 10), undefined);
 
   };
 
@@ -53,6 +54,7 @@ class RequestState extends Component {
   let tableData = this.props.requestList.request;
   let tableOutlayedData = this.props.outlayedRequestList.request;
   let tableRejectData = this.props.rejectedRequestList.request;
+  let company = this.props.rejectedRequestList.company;
   //console.log("TableData", tableData);
 
   if(JSON.stringify(tableData) === '{}' || JSON.stringify(tableData) === undefined ||
@@ -76,31 +78,31 @@ class RequestState extends Component {
           <Tabs defaultActiveKey="1">
             <TabPane tab={<span> <Icon type="unordered-list" />Solicitudes pendientes</span>} key="1">
               <List
-                locale={{ emptyText: 'No hay solicitudes pendientes' }}
+                locale={{ emptyText: 'No hay solicitudes pendientes.' }}
                 dataSource={tableData}
                 renderItem={(item, k) => (
                   <List.Item className={"request-state-list-item"}>
-                      <RequestModal item={item} key={k}/>
+                      <RequestModal item={item} key={k} company={company}/>
                   </List.Item>
                 )}/>
             </TabPane>
             <TabPane tab={<span> <Icon type="plus-circle" />Solicitudes finalizadas</span>} key="2">
               <List
-                  locale={{ emptyText: 'No hay solicitudes desembolsadas' }}
+                  locale={{ emptyText: 'No hay solicitudes finalizadas.' }}
                   dataSource={tableOutlayedData}
                   renderItem={(item, k) => (
                     <List.Item className={"request-state-list-item"}>
-                        <RequestModal item={item} key={k}/>
+                        <RequestModal item={item} key={k} company={company}/>
                     </List.Item>
                   )}/>
             </TabPane>
             <TabPane tab={<span> <Icon type="close-circle" />Solicitudes negadas</span>} key="3">
               <List
-                  locale={{ emptyText: 'No hay solicitudes rechazadas' }}
+                  locale={{ emptyText: 'No hay solicitudes rechazadas.' }}
                   dataSource={tableRejectData}
                   renderItem={(item, k) => (
                     <List.Item className={"request-state-list-item"}>
-                        <RequestModal item={item} key={k}/>
+                        <RequestModal item={item} key={k} company={company} outlayDataResponse={this.props.outlayDataResponse}/>
                     </List.Item>
                   )}/>
             </TabPane>
@@ -119,6 +121,7 @@ RequestState.propTypes = {
   requestList: PropTypes.object,
   outlayedRequestList: PropTypes.object,
   rejectedRequestList: PropTypes.object,
+  outlayDataResponse: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
@@ -126,6 +129,7 @@ const mapStateToProps = (state) => {
     requestList: state.customer.requestList,
     outlayedRequestList: state.customer.outlayedRequestList,
     rejectedRequestList: state.customer.rejectedRequestList,
+    outlayDataResponse: state.customer.outlayDataResponse,
   }
 };
 
@@ -134,7 +138,7 @@ const mapDispatchToProps = (dispatch) => {
     getAllRequest: (customerId) => dispatch(getAllRequest(customerId)),
     getAllOutlayedRequest: (customerId) => dispatch(getAllOutlayedRequest(customerId)),
     getAllRequestsWasRejected: (customerId) => dispatch(getAllRequestsWasRejected(customerId)),
-    
+    getOutlayData: (customerId, token) => dispatch(getOutlayData(customerId, token)),
   }
 };
 
