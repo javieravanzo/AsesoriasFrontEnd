@@ -246,6 +246,15 @@ function generateBankReport(){
 
 };
 
+function generatePendingByBankReport(){
+
+  return request({
+    url: '/Reports/PendingToFinalizeByBank',
+    method: 'GET',
+  });
+
+};
+
 function receiveBankFile(data){
 
   var bodyFormData = new FormData();
@@ -261,6 +270,46 @@ function receiveBankFile(data){
 
 };
 
+function generateGeneralPendingByRRHH(companyidtonotinclude){
+
+  return request({
+    url: '/Reports/PendingGeneralByRRHH',
+    method: 'GET',
+    headers: {
+      companyidtonotinclude: companyidtonotinclude
+    }
+  });
+
+};
+
+function generateParticularPendingByRRHH(companyidtoinclude){
+
+  return request({
+    url: '/Reports/PendingParticularByRRHH',
+    method: 'GET',
+    headers: {
+      companyidtoinclude: companyidtoinclude
+    }
+  });
+
+};
+
+function loadCompanyFile(data){
+
+  var bodyFormData = new FormData();
+  
+  bodyFormData.append('idCompany', data.idCompany);
+  bodyFormData.append('file', data.file);
+
+  return request({
+    url: '/Company/LoadMaxAmountToOutLayByClient',
+    method: 'POST',
+    data: bodyFormData
+  });
+
+};
+
+
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
   getAllRequest, getAllRequestToOutLay, getAllRequestToApprove, getAllCompanies, getAllCustomers,
@@ -268,7 +317,9 @@ const adminService = {
   getAllCompaniesWithSalaries, activateCompany, getDateListToCustomer, getAllRejectedRequest,
   getDefinitelyRejected, getAllPendingRHRequest, deleteClient, updateCompanySalaries, generateBankReport,
   getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest,
-  receiveBankFile, getAllProcessDocumentChanges, getAllProcessinBank, getAllFinalizedRequest
+  receiveBankFile, getAllProcessDocumentChanges, getAllProcessinBank, getAllFinalizedRequest,
+  generatePendingByBankReport, generateGeneralPendingByRRHH, generateParticularPendingByRRHH,
+  loadCompanyFile
 };
 
 export default adminService;

@@ -128,10 +128,8 @@ class CustomerManagement extends Component {
 
   render(){
 
-    let { registerInfo } = this.props;
-    console.log("CL", registerInfo);
+    let { registerInfo, outlayDataResponse } = this.props;
     let {getFieldDecorator} = this.props.form;
-    let { outlayDataResponse } = this.props;
     let { bankInfo, walletInfo } = outlayDataResponse;
     let {bank_account, money_wallet} = this.state;
     let cycles = this.props.customerDateList !== null ? this.props.customerDateList : [];

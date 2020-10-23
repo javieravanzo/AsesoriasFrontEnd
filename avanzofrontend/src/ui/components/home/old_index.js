@@ -232,7 +232,6 @@ class Home extends Component {
                    100: { style: { color: '#1c77ff', }, label: <p className={"right-marker"}>$300.000</p>}};*/
     const { getFieldDecorator } = this.props.form;
     let { companyList } = this.props;
-    console.log({CompanyList: this.props.companyList});
 
     return (
       <div >

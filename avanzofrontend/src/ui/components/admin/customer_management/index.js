@@ -30,12 +30,18 @@ class Customer_Management extends Component {
         <Row className={"admin-row-content"}>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
           <Tabs defaultActiveKey="1">
-            <TabPane tab={<span> <Icon type="unordered-list" />Ver clientes</span>} key="1">
-              <CustomerTable/>
-            </TabPane>            
-            <TabPane tab={<span> <Icon type="usergroup-add" /> Crear cliente </span>} key="2">
-              <CustomerManagement/>
-            </TabPane>
+            {
+              (parseInt(localStorage.role_id, 10) === 2 || parseInt(localStorage.role_id, 10) === 1 ) &&
+              <TabPane tab={<span> <Icon type="unordered-list" />Ver clientes</span>} key="1">
+                <CustomerTable/>
+              </TabPane>
+            }
+            {
+              (parseInt(localStorage.role_id, 10) === 2 || parseInt(localStorage.role_id, 10) === 1 ) &&
+              <TabPane tab={<span> <Icon type="usergroup-add" /> Crear cliente </span>} key="2">
+                            <CustomerManagement/>
+              </TabPane>
+            } 
             <TabPane tab={<span> <Icon type="check-circle" /> Aprobar cliente </span>} key="3">
               <ApproveCustomer/>
             </TabPane>

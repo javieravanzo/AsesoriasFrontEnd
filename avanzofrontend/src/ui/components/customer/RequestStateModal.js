@@ -144,8 +144,6 @@ class RequestStateModal extends Component {
 
   seeDocument = (filePath, paymentSupport, workingSupport) => {
 
-    console.log("FP", filePath, "PS", paymentSupport, "WS", workingSupport);
-
     let url = filePath;
 
     if (url !== null) {
@@ -242,8 +240,6 @@ class RequestStateModal extends Component {
   };
 
   updateRequestInfo = (idRequest, idCompany, identificationId) => {
-
-    console.log("Info", idRequest, idCompany, identificationId);
 
     let {account, accountNumber, accountType} = this.state;
 

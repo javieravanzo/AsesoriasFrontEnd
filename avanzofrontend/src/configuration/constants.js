@@ -69,6 +69,8 @@ export const defineBadgeName = (id) => {
     return "Procesada documentos con cambio";
   }else if(id === 11){
     return "Rechazadas por el banco procesadas";
+  }else if(id === 12){
+    return "Pendientes desembolsar por banco";
   }
 };
 

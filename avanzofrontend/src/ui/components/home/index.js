@@ -257,8 +257,6 @@ class Home extends Component {
     let role = parseInt(localStorage.getItem("role_id"), 10);
     let isLogged = this.props.isLogin !== undefined ? this.props.isLogin : false;
     let { registerInfo } = this.props;
-    console.log({registerInfo: this.props.registerInfo});
-
     
       return (    
         <div>

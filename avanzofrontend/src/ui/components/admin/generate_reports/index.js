@@ -4,6 +4,7 @@ import {Row, Col, Tabs, Icon} from 'antd';
 
 //Components
 import ReceiptManagement from "./ReceiptManagement";
+import PendingBank from "./PendingBank";
 
 //Styles
 import '../../../styles/admin/index.css';
@@ -28,8 +29,11 @@ class GenerateReports extends Component {
         <Row className={"admin-row-content"}>
           <Col xxl={24} lg={24} md={24} sm={24} xs={24}>
             <Tabs defaultActiveKey="1">
-              <TabPane tab={<span> <Icon type="dollar" />Administrar cobros</span>} key="1">
+              <TabPane tab={<span> <Icon type="dollar" />Gestionar desembolsos</span>} key="1">
                 <ReceiptManagement/>
+              </TabPane>
+              <TabPane tab={<span> <Icon type="ellipsis" />Gestionar pendientes finalizar por banco</span>} key="2">
+                <PendingBank/>
               </TabPane>
             </Tabs>
           </Col>

@@ -126,7 +126,6 @@ export const getCompanies = () => {
   return dispatch => {
     return registerService.getCompanies()
       .then(response => {
-        console.log("GetCompanies", response.data);
         dispatch({
           type: C.GET_COMPANIES,
           payload: response.data,
@@ -137,7 +136,6 @@ export const getCompanies = () => {
           type: C.GET_COMPANIES,
           payload: [],
         });
-        console.log({Error: err});
         ERROR_MODAL('Ocurrió un error al traer el listado de empresas',  'No es posible traer el listado de empresas.');
       });
   }

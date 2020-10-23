@@ -43,6 +43,7 @@ class Router extends Component {
         {
           ( parseInt(localStorage.role_id, 10) === 5) &&
           <Switch>
+            <Route path={routes.admin_customer_management} component={AdminCustomerManagement}/>
             <Route path={routes.admin_request_management} component={AdminRequestManagement}/>
             <Route render = {()=><Redirect to={routes.admin_request_management}/>}/>
           </Switch>

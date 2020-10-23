@@ -1,7 +1,8 @@
 //Libraries
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import {Card, Row, Col, DatePicker, Form, Input, Icon, Button, Select, Checkbox, Modal} from 'antd';
+import {Card, Row, Col, DatePicker, Form, Input, Icon, Button, Select, Checkbox,
+         Modal} from 'antd';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 

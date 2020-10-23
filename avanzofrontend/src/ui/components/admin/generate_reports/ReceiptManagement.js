@@ -29,7 +29,6 @@ function itemRender(current, type, originalElement) {
 function seeDocument(file, BaseURL){
 
   let newFile = BaseURL + file;
-  console.log("B", file);
 
   if (file !== null && file !== "") {
     let newWindow = window.open(newFile, "_blank");
@@ -101,7 +100,6 @@ class ReceiptManagement extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if(nextProps.generateReportData !== null){
-      console.log("GRD", nextProps.generateReportData);
       return {
         reportData: seeDocument(nextProps.generateReportData, BaseURL),
       };
@@ -180,14 +178,13 @@ class ReceiptManagement extends Component {
 
   render() {
 
-    console.log("RD", this.props.generateReportData);
     let tableData = [];
     //let {approve_modal} = this.state;
 
     return (
       <div className={"company-div"}>
         <Row gutter={12}>
-          <Col xs={0} sm={0} md={0} lg={6}/>
+          <Col xs={0} sm={0} md={12} lg={14}/>
           <Col xs={24} sm={12} md={6} lg={5}>
             <Button icon="file-excel"  className={"create-customer-button"} onClick={() => this.setState({particular_modal: true})}>
                 Recepción Archivo Banco
@@ -197,18 +194,6 @@ class ReceiptManagement extends Component {
             <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
                     onClick={() => this.sendReport()}>
                   Archivo de desembolsos
-            </Button> 
-          </Col>
-          <Col xs={24} sm={12} md={6} lg={4}> 
-            <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
-                    onClick={() => this.setState({approve_modal: true})}>
-                  Informe individual
-            </Button> 
-          </Col>
-          <Col xs={24} sm={12} md={6} lg={4}> 
-            <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
-                    onClick={() => this.onConfirmRequest()}>
-                  Informe masivo
             </Button> 
           </Col>
         </Row>

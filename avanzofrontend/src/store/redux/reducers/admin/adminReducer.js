@@ -17,6 +17,7 @@ const initialState={
   definitelyRejected: null,
   pendingRHRequest: null,
   generateReportData: null,
+  pendingToFinalizeByBank: null,
   countCustomerData: null,
   bankRefundedResponse: null,
   withoutChangesResponse: null,
@@ -25,9 +26,11 @@ const initialState={
   receiveBankFileCode: null,
   processDocumentsChangeReponse: null,
   processInBank: null,
-  finalizedRequest: null
+  finalizedRequest: null,
+  generateGeneralByRRHH: null,
+  generateParticularByRRHH: null,
+  loadScoringFile: null,
 };
-
 
 export default function adminReducer(state = initialState, action){
   switch (action.type) {
@@ -36,6 +39,10 @@ export default function adminReducer(state = initialState, action){
       ...state,
         companyResponse: null,
         generateReportData: null,
+        pendingToFinalizeByBank: null,
+        generateParticularByRRHH: null,
+        generateGeneralByRRHH: null,
+        loadScoringFile: null
       };
     case C.REGISTER_ADMIN:
       return{
@@ -121,7 +128,12 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         generateReportData: action.payload
-      }
+      };
+    case C.GENERATE_PENDING_BY_BANK_REPORT:
+      return{
+        ...state,
+        pendingToFinalizeByBank: action.payload
+      };
     case C.GET_CUSTOMERS_COUNT_TO_APPROVE:
       return{
         ...state,
@@ -147,11 +159,26 @@ export default function adminReducer(state = initialState, action){
         ...state,
         receiveBankFileCode: action.payload
       }
+    case C.GENERATE_GENERAL_BY_RRHH: 
+      return{
+        ...state,
+        generateGeneralByRRHH: action.payload
+      }
+    case C.GENERATE_PARTICULAR_BY_RRHH: 
+      return{
+        ...state,
+        generateParticularByRRHH: action.payload
+      }
     case C.GET_FINALIZED_REQUEST:
       return{
         ...state,
         finalizedRequest: action.payload
       }
+    case C.LOAD_REPORT_BY_COMPANY:
+      return{
+        ...state,
+        loadScoringFile: action.code
+      }    
     default:
       return state;
   }

@@ -82,7 +82,8 @@ export default function customerReducer(state = initialState, action){
     case C.CREATE_REQUEST:
       return{
         ...state,
-        requestResponse: action.correct
+        requestResponse: action.correct,
+        checkCodesResponse: null,
       };
     case C.GET_ACCOUNT_DETAIL:
       return{
@@ -94,6 +95,8 @@ export default function customerReducer(state = initialState, action){
         ...state,
         generateCodesResponse: action.code,
         generateCodesData: action.payload,
+        requestResponse: null,
+        checkCodesResponse: null,
       };
     case C.CHECK_CODES:
       return{

@@ -116,7 +116,9 @@ class LoanRequest extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    //console.log("Props", nextProps.checkCodesResponse, nextProps.generateCodesResponse);
+    console.log("R", nextProps.requestResponse);
+    console.log("GCodes", nextProps.generateCodesResponse);
+    console.log("ChCodes", nextProps.checkCodesResponse);
     //console.log("Cond", (nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null));
     if(JSON.stringify(nextProps.requestDataResponse) !== '{}' && nextProps.generateCodesResponse === null){
       //console.log("Entro1");
@@ -132,14 +134,16 @@ class LoanRequest extends Component {
           flagState: true
         }
       }
-    }else if(nextProps.generateCodesResponse === true && nextProps.checkCodesResponse === null){
+    
+    }else if(nextProps.generateCodesResponse === true && nextProps.checkCodesResponse === null && nextProps.requestResponse === null){
       //console.log("Entro2");
       return {
         confirmed_data: false,
         enterCodes: true,
         loadConfirmation: false,
+        oneRequestCreated: null,
       };
-    }else if(nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null){
+    }else if(nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null && nextProps.requestResponse === null){
       //console.log("Entro3");
       return {
         loadConfirmation: false,
@@ -149,17 +153,24 @@ class LoanRequest extends Component {
       return {
         flagState: nextProps.createRequest(prevState.form_data, nextProps.location.state ? nextProps.location.state.token : undefined),
         oneRequestCreated: true,
-        enterCodes: false,
       };
+    }else if(nextProps.requestResponse === true){
+      return {
+        enterCodes: false,
+        loadCodes: false,
+      };  
     }else if(nextProps.requestResponse === false){
       //console.log("Entro5");
       return {
+
         loadCodes: false,
+        enterCodes: false,
       };
     }else if(nextProps.checkCodesResponse === false){
       //console.log("Entro6");
       return {
         loadCodes: false,
+        enterCodes: false,
       };
     }else{
       //console.log("Entro7");
@@ -357,6 +368,8 @@ class LoanRequest extends Component {
           general_deduction: values.general_deduction,
         };
 
+        console.log("Supports", data);
+
         this.setState({
           form_data: data,
           confirmed_data: true,
@@ -371,6 +384,8 @@ class LoanRequest extends Component {
   onChangeWorking = (e) =>{
     let fileType = e.target.files;
 
+    console.log("FTWL", fileType);
+
     this.setState({
       workingDocument: fileType[0]
     });
@@ -380,6 +395,8 @@ class LoanRequest extends Component {
   onChangePaymentSupport  = (e) => {
 
   let fileType = e.target.files;
+
+  console.log("FTPS", fileType);
 
     this.setState({
       paymentDocument: fileType[0]
@@ -523,6 +540,7 @@ class LoanRequest extends Component {
     
     let { bankInfo, walletInfo } = outlayDataResponse;
     
+    //console.log("Props", this.props);
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>

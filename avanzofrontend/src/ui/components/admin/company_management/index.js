@@ -5,7 +5,7 @@ import {Row, Col, Tabs, Icon} from 'antd';
 //Components
 import CreateCompanyForm from './CreateCompany';
 import CompanyTable from './CompanyTable';
-//import CustomerManagement from '../customer_management/CreateCustomer';
+import ManageCompany from './ManageCompany';
 
 //Styles
 import '../../../styles/admin/index.css';
@@ -53,6 +53,9 @@ class Administrator extends Component {
             </TabPane>
             <TabPane tab={<span> <Icon type="plus-circle" /> Crear empresa </span>} key="2">
               <CreateCompanyForm/>
+            </TabPane>
+            <TabPane tab={<span> <Icon type="team" /> Administrar empresas</span>} key="3">
+              <ManageCompany/>
             </TabPane>
           </Tabs>
           </Col>

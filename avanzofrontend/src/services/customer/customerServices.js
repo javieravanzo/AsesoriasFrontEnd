@@ -226,7 +226,7 @@ function generateCodes(email, phonenumber, clientid){
 }
 
 function checkCodes(userid, phonecode, emailcode){
-  console.log("Services PC", phonecode, "EC", emailcode);
+  
   return request({
     url: '/Request/ValidateCodes',
     method: 'GET',

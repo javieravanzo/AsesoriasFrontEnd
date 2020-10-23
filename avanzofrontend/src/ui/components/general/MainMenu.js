@@ -91,7 +91,7 @@ class MainMenu extends Component {
                 </Menu.Item>
               }
               {
-                (role === 2 || role === 1 ) && 
+                (role === 2 || role === 1 || role === 5 ) && 
                 <Menu.Item className={"menu-admin-customer"}>
                   <NavLink to={routes.admin_customer_management}>
                     <Icon type="idcard"/>Gestionar Clientes

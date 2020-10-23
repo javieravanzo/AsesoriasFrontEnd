@@ -343,7 +343,7 @@ export const generateCodes = (email, phonenumber, clientid) => {
 };  
 
 export const checkCodes = (userid, phonecode, emailcode) => {
-  console.log("Actions PC", phonecode, "EC", emailcode);
+  
   return dispatch => {
     return customerService.checkCodes(userid, phonecode, emailcode)
       .then(response => {

@@ -132,6 +132,7 @@ class CreateCompany extends Component {
             nit: values.nit,
             socialReason: values.socialReason,
             password: values.password,
+            databaseExchange: values.databaseExchange,
             companyMembers: [
               {
                 memberName: values.memberName + "-" + values.memberLastName,
@@ -446,7 +447,7 @@ class CreateCompany extends Component {
                     
                     </Row>
                     <Row gutter={12} className={"form-request-rows"}>
-                      <Col xs={12} sm={12} md={5} lg={10}>
+                      <Col xs={12} sm={12} md={8} lg={8}>
                           <FieldTitle title={"Máxima cantidad a prestar"}/>
                           <FormItem >
                             {getFieldDecorator('defaultAmount',
@@ -459,7 +460,7 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      <Col xs={12} sm={12} md={5} lg={10}>
+                      <Col xs={12} sm={12} md={8} lg={8}>
                         <FieldTitle title={"Cantidad de cuotas máxima"}/>
                         <FormItem >
                           {getFieldDecorator('maximumSplit',
@@ -468,6 +469,21 @@ class CreateCompany extends Component {
                             ]})(
                               <Input onChange={(e) => this.validationNumbers(e)} className={"form-input-number"} 
                               placeholder={"No. máximo de cuotas"} />
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
+                      <Col xs={12} sm={12} md={8} lg={8}>
+                        <FieldTitle title={"Cruce de base de datos"}/>
+                        <FormItem >
+                          {getFieldDecorator('databaseExchange',
+                            {rules: [
+                              {required: true, message: 'Ingresa el cruce de base de datos.'}
+                            ]})(
+                              <Select placeholder={"¿Cruce de base de datos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                  <Select.Option value={true}>Sí</Select.Option>
+                                  <Select.Option value={false}>No</Select.Option>
+                              </Select>
                             )
                           }
                         </FormItem>  

@@ -133,6 +133,10 @@
   width: 65% !important;
 }
 
+.select-report-rrhh{
+  width: 100% !important;
+  margin-top: 20px !important;
+}
 
 
 @media only screen and (max-width:500px) {

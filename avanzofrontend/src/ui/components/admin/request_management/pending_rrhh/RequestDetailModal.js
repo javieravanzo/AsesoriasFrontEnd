@@ -97,8 +97,8 @@ class RequestStateModal extends Component {
                     <Icon type={"plus-circle"} className={"request-item-icon"} onClick={() => this.setState({visible: !this.state.visible})}/> 
                   </Tooltip>
                 </Col>
-              <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col">
-                <b>Número de Solicitud</b> <br/><br/>
+              <Col xs={12} sm={12} md={8} lg={4} className="request-item-initial-col">
+                <b>Número Solicitud</b> <br/><br/>
                 {"Solicitud No. " + item.idRequest} 
               </Col>
               <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col" >
@@ -107,10 +107,14 @@ class RequestStateModal extends Component {
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
               </Col>
-              <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
+              <Col xs={12} sm={12} md={7} lg={4}  className="request-item-initial-col">
                   <b>Monto</b> <br/><br/>
                   <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                       value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
+              </Col>
+              <Col xs={12} sm={12} md={7} lg={3}  className="request-item-initial-col">
+                  <b>Correo envíado</b> <br/><br/>
+                  { parseInt(item.sendRRHHEmail,10) === 0 ? "No" : "Sí" }
               </Col>
             </Row>
           

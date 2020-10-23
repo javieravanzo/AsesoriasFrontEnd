@@ -153,6 +153,7 @@ export const activateCustomer = (clientId, status) => {
           type: C.ACTIVATE_CUSTOMER,
           payload: response.data
         });
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
         dispatch({
           type: C.ACTIVATE_CUSTOMER,
@@ -570,6 +571,25 @@ export const generateReport = (client) => {
   }
 };
 
+export const generatePendingByBankReport = (client) => {
+  return dispatch => {
+    dispatch(resetValue());
+    return adminServices.generatePendingByBankReport()
+      .then(response => {
+        dispatch({
+          type: C.GENERATE_PENDING_BY_BANK_REPORT,
+          payload: response.data.data
+        });
+        dispatch(resetValue());
+      }).catch(err => {
+        dispatch({
+          type: C.GENERATE_PENDING_BY_BANK_REPORT,
+          payload: "",
+        });
+        ERROR_MODAL('Error al realizar el proceso', err.message);
+      });
+  }
+};
 
 export const receiveBankFile = (data) => {
   return dispatch => {
@@ -584,6 +604,72 @@ export const receiveBankFile = (data) => {
       }).catch(err => {
         dispatch({
           type: C.RECEIVE_BANK_FILE,
+          payload: "",
+          code: false,
+        });
+        ERROR_MODAL('Error al realizar el proceso', err.message);
+      });
+  }
+};
+
+export const generalPendingByRRHH = (companyidtonotinclude) => {
+  return dispatch => {
+    return adminServices.generateGeneralPendingByRRHH(companyidtonotinclude)
+      .then(response => {
+        dispatch({
+          type: C.GENERATE_GENERAL_BY_RRHH,
+          payload: response.data,
+          code: true,
+        });
+        dispatch(resetValue());
+        SUCCESS_MODAL("Acción realizada existosamente", "El archivo ha sido descargado exitosamente.");
+      }).catch(err => {
+        dispatch({
+          type: C.GENERATE_GENERAL_BY_RRHH,
+          payload: "",
+          code: false,
+        });
+        ERROR_MODAL('Error al realizar el proceso', err.message);
+      });
+  }
+};
+
+export const particularPendingByRRHH = (companyidtoinclude) => {
+  return dispatch => {
+    return adminServices.generateParticularPendingByRRHH(companyidtoinclude)
+      .then(response => {
+        dispatch({
+          type: C.GENERATE_PARTICULAR_BY_RRHH,
+          payload: response.data,
+          code: true,
+        });
+        dispatch(resetValue());
+        SUCCESS_MODAL("Acción realizada existosamente", "El archivo ha sido descargado exitosamente.");
+      }).catch(err => {
+        dispatch({
+          type: C.GENERATE_PARTICULAR_BY_RRHH,
+          payload: "",
+          code: false,
+        });
+        ERROR_MODAL('Error al realizar el proceso', err.message);
+      });
+  }
+};
+
+export const loadCompanyScoringFile = (data) => {
+  return dispatch => {
+    dispatch(resetValue());
+    return adminServices.loadCompanyFile(data)
+      .then(response => {
+        dispatch({
+          type: C.LOAD_REPORT_BY_COMPANY,
+          payload: response.data,
+          code: true,
+        });
+        SUCCESS_MODAL("Acción realizada existosamente", "El archivo ha sido cargado exitosamente.");
+      }).catch(err => {
+        dispatch({
+          type: C.LOAD_REPORT_BY_COMPANY,
           payload: "",
           code: false,
         });

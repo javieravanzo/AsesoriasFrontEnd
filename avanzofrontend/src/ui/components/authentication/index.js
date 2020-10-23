@@ -59,7 +59,7 @@ class Login extends Component {
 
   render() {
 
-    console.log("Width: ", this.state.width);
+    //console.log("Width: ", this.state.width);
     
      return (
       <div className='login'>
