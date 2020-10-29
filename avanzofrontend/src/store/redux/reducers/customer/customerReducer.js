@@ -19,6 +19,7 @@ const initialState={
   generateCodesResponse: null,
   generateCodesData: null,
   checkCodesResponse: null,
+  updateRequestDocuments: null
 };
 
 export default function customerReducer(state = initialState, action){
@@ -85,6 +86,11 @@ export default function customerReducer(state = initialState, action){
         requestResponse: action.correct,
         checkCodesResponse: null,
       };
+    case C.UPDATE_REQUEST_DOCUMENTS:
+      return{
+        ...state,
+        updateRequestDocuments: action.correct,
+      };
     case C.GET_ACCOUNT_DETAIL:
       return{
         ...state,
@@ -111,6 +117,7 @@ export default function customerReducer(state = initialState, action){
         checkCodesResponse: null,
         generateCodesData: null,
         outlayDatesList: {},
+        updateRequestDocuments: null
       }
     default:
       return state;

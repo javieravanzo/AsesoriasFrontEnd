@@ -11,7 +11,7 @@ import { ERROR_MODAL, SUCCESS_MODAL } from '../../../../ui/components/subcompone
 //Actions
 import {getAllRequestToOutLay, getAllRequestToApprove, getAllRejectedRequest,
         getAllPendingRHRequest, getAllBankRefunded, getAllProcessWithoutChange,
-        getAllDefinitelyRejected, getAllProcessDocumentsChange } from '../admin/adminActions';
+        getAllDefinitelyRejected, getAllProcessDocumentsChange, resetValue } from '../admin/adminActions';
 
 import {getAllRequest} from '../company/companyActions';
 
@@ -28,13 +28,16 @@ export const approveorRejectRequest = (data, userId) => {
         dispatch(getAllProcessDocumentsChange());
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
-          payload: response.data
+          payload: response.data, 
+          code: true
         });
+        dispatch(resetValue());
         SUCCESS_MODAL("Acción realizada exitosamente", response.data.message)
       }).catch(err => {
         dispatch({
           type: C.APPROVE_REJECT_REQUEST,
           payload: err,
+          code: true
         });
         ERROR_MODAL('Error al aprobar o rechazar la solicitud', err.data.message);
       });

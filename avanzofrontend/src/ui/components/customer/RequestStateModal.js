@@ -55,11 +55,27 @@ class RequestStateModal extends Component {
       payment_support: null,
       account: null,
       accountNumber: null,
-      accountType: null
+      accountType: null,
+      loadingUpdateButton: null,
+      learn: null
     };
 
     //this.props.getOutlayData(parseInt(localStorage.user_id, 10), undefined);
     
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+
+    if(nextProps.updateRequestDocuments !== null){
+      return {
+        loadingUpdateButton: null,
+        approve_modal: null
+      };
+    }else{
+      return {
+        learn: true,
+      };
+    }
   };
 
   setContent(idRequestState, approveHumanResources){
@@ -234,6 +250,9 @@ class RequestStateModal extends Component {
         idCompany: idCompany,
         identificationId: identificationId,
       };
+      this.setState({
+        loadingUpdateButton: true
+      });
       this.props.updateRequestDocument(newData);
     }
 
@@ -255,6 +274,9 @@ class RequestStateModal extends Component {
         idCompany: idCompany,
         identificationId: identificationId,
       };
+      this.setState({
+        loadingUpdateButton: true
+      });
       this.props.updateRequestInformation(newData);
     }
 
@@ -263,8 +285,8 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-    //console.log("ITEM", item);
-    
+    //console.log("ITEM", this.state.loadingUpdateButton);
+    //console.log("TPS", this.props.updateRequestDocuments);
     let { bankInfo, walletInfo } = this.props.outlayDataResponse;
     
     let real_steps = this.setContent(this.props.item.idRequestState, this.props.item.approveHumanResources);
@@ -377,7 +399,7 @@ class RequestStateModal extends Component {
                     {
                       (item.idRequestState !== requestState.REJECTED && item.idRequestState !== 11) &&
                         
-                      item.accountType
+                      item.accountType !== null ? item.accountType : "N/A"
                     }
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={8} className="request-item-initial-col">
@@ -523,8 +545,12 @@ class RequestStateModal extends Component {
                     okText={"Aceptar"}
                     cancelText={"Cancelar"}
                     width={450}
-                    onOk={() => this.sendNewDocuments(item.idRequest, item.Company_idCompany, item.identificationId)}
-                    onCancel={() => this.setState({approve_modal: false})}>
+                    onCancel={() => this.setState({approve_modal: false})}
+                    footer={
+                      <Button key='submit' type='primary' loading={this.state.loadingUpdateButton} onClick={() => this.sendNewDocuments(item.idRequest, item.Company_idCompany, item.identificationId)}>
+                        Aceptar
+                      </Button>
+                    }>
                       <div>
                         ¿Está seguro de actualizar la información de la solicitud y 
                         enviar los documentos corregidos?                  
@@ -546,11 +572,13 @@ class RequestStateModal extends Component {
 
 RequestStateModal.propTypes = {
   outlayDataResponse: PropTypes.object,
+  updateRequestDocuments: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
   return {
     outlayDataResponse: state.customer.outlayDataResponse,
+    updateRequestDocuments: state.customer.updateRequestDocuments
   }
 };
 

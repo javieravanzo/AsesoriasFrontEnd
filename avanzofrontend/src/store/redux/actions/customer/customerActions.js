@@ -139,6 +139,7 @@ export const generateDocuments = (customerId, split, quantity) => {
 
 export const resetValue = () => {
   return dispatch => {
+    console.log("Entro al reset");
     dispatch({
       type: C.RESET_VALUES
     });
@@ -188,20 +189,21 @@ export const updateRequestDocument = (data) => {
     return customerService.updateRequestDocuments(data)
       .then(response => {
         dispatch(getAllRequest(data.customerId));
-        dispatch(getAllRequestsWasRejected(data.customerId));
+        dispatch(getAllRequestsWasRejected(data.customerId));   
         dispatch({
           type: C.UPDATE_REQUEST_DOCUMENTS,
           payload: response.data,
           correct: true,
         });
-        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
         dispatch(resetValue());
+        SUCCESS_MODAL('Acción realizada exitosamente', response.data.message);
       }).catch(err => {
         dispatch({
           type: C.UPDATE_REQUEST_DOCUMENTS,
           payload: err,
           correct: false
         });
+        dispatch(resetValue());
         ERROR_MODAL('Error al actualizar los documentos de la solicitud.', err.data.message);
       });
   }

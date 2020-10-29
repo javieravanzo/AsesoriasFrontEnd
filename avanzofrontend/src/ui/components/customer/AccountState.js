@@ -175,7 +175,7 @@ class AccountState extends Component {
                       <Col xs={12} sm={12} md={14} lg={14} style={{textAlign: "left"}}>
                         <b style={{color: "#000"}}>
                           <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                            value={accountDetail.computedCapacity} thousandSeparator={'.'}
+                                            value={accountDetail.computedCapacity !== null ? accountDetail.computedCapacity : " - "} thousandSeparator={'.'}
                                             decimalSeparator={','} prefix={'$'}/></b>
                       </Col>
                     </Row>

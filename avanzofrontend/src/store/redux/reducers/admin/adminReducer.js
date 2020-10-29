@@ -1,6 +1,7 @@
 
 ///Types
 import {adminTypes as C} from '../../types';
+import {generalTypes as G} from '../../types';
 
 const initialState={
   registerAdminResponse: null,
@@ -30,6 +31,7 @@ const initialState={
   generateGeneralByRRHH: null,
   generateParticularByRRHH: null,
   loadScoringFile: null,
+  approveRejectedResponse: null,
 };
 
 export default function adminReducer(state = initialState, action){
@@ -42,7 +44,9 @@ export default function adminReducer(state = initialState, action){
         pendingToFinalizeByBank: null,
         generateParticularByRRHH: null,
         generateGeneralByRRHH: null,
-        loadScoringFile: null
+        loadScoringFile: null,
+        approveRejectedResponse: null
+        
       };
     case C.REGISTER_ADMIN:
       return{
@@ -83,6 +87,12 @@ export default function adminReducer(state = initialState, action){
       return{
         ...state,
         customerListToApprove: action.payload
+      };
+    case G.APPROVE_REJECT_REQUEST:
+      console.log("AC", action.code);
+      return{
+        ...state,
+        approveRejectedResponse: action.code
       };
     case C.GET_REJECTED_REQUEST:
       return{

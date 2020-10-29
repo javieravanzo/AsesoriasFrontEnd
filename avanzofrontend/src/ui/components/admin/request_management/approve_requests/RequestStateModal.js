@@ -37,8 +37,22 @@ class RequestStateModal extends Component {
       card_style_rejected: "rejected",
       reject_modal: null,
       text: "",
+      not_visible: null,
     };
     
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("APR", nextProps.approveRejectedResponse);
+    if(nextProps.approveRejectedResponse !== null){
+      return {
+        visible: null,
+      };
+    }else{
+      return {
+        not_visible: true,
+      };
+    }
   };
 
   seeDocument = (filePath, paymentSupport, workingSupport) => {
@@ -100,6 +114,8 @@ class RequestStateModal extends Component {
 
   render(){
 
+    console.log("AR", this.props.approveRejectedResponse);
+    console.log("Visible", this.state.visible, this.props.item.idRequest);
     let item = this.props.item;
     //let {text} = this.state;
     
@@ -284,11 +300,13 @@ class RequestStateModal extends Component {
 
 RequestStateModal.propTypes = {
   customerList: PropTypes.array,
+  approveRejectedResponse: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
   return {
     customerList: state.admin.customerList,
+    approveRejectedResponse: state.admin.approveRejectedResponse,
   }
 };
 
