@@ -285,7 +285,7 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-    //console.log("ITEM", this.state.loadingUpdateButton);
+    console.log("ITEM", item.accountType);
     //console.log("TPS", this.props.updateRequestDocuments);
     let { bankInfo, walletInfo } = this.props.outlayDataResponse;
     
@@ -379,7 +379,7 @@ class RequestStateModal extends Component {
                 <Col xs={12} sm={12} md={8} lg={8} className="request-item-initial-col">
                     <b>Tipo de Cuenta</b><br/><br/>
                     {
-                      ((item.idRequestState === requestState.REJECTED || item.idRequestState === 11) && this.state.bank_account) &&
+                      ((item.idRequestState === requestState.REJECTED || item.idRequestState === 11) && this.state.bank_account && item.accountType !== "null") &&
                         
                       <Select className={"account-customer-input"} onChange={this.changeBankType} defaultValue={item.accountType} placeholder={"Tipo de cuenta"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                         {bankTypeAccountInfo.map((accountType, i) =>(
@@ -395,12 +395,17 @@ class RequestStateModal extends Component {
                       ((item.idRequestState === requestState.REJECTED || item.idRequestState === 11) && this.state.money_wallet) &&
                         "-"
                     } 
-                      
+
                     {
-                      (item.idRequestState !== requestState.REJECTED && item.idRequestState !== 11) &&
-                        
-                      item.accountType !== null ? item.accountType : "N/A"
+                      (item.accountType === "null") &&
+                      "N/A"
                     }
+
+                    {
+                      (this.state.bank_account && item.accountType !== "null") &&
+                      item.accountType
+                    }  
+                    
                 </Col>
                 <Col xs={12} sm={12} md={8} lg={8} className="request-item-initial-col">
                     <b>Número de cuenta</b><br/><br/>
