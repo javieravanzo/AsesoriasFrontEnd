@@ -61,8 +61,9 @@ class Customer_Management extends Component {
               </TabPane>
             } 
             {
-              parseInt(localStorage.role_id, 10) === 1 &&
-              <TabPane tab={<span> <Icon type="dollar" />Desembolsar solicitudes </span>} key="2">
+              (parseInt(localStorage.role_id, 10) === 1 || parseInt(localStorage.role_id, 10) === 2 || 
+               parseInt(localStorage.role_id, 10) === 5) &&
+              <TabPane tab={<span> <Icon type="dollar" />En desembolso</span>} key="2">
                 <MakeOutlay/>
               </TabPane>
             }            

@@ -197,16 +197,37 @@ class LoanRequest extends Component {
   };
 
   onChangeFee = (e) => {
-    const input = e.target.value;
+    /*const input = e.target.value;
     e.target.value = input.replace(/[^0-9]/g, '');
     if(e.target.value !== ''){
       this.setState({
         fee: e.target.value
       });
-    }    
+    }*/
+    //const input = e;
+    //e = input.replace(/[^0-9]/g, '');
+    if(this.props.requestDataResponse.fixedFee === 1){
+      if(e !== this.props.requestDataResponse.maximumSplit){
+        WARNING_MODAL("El número de cuotas es fijo para tu empresa, por favor ingresa el número indicado.");
+      }else{
+        this.setState({
+          fee: e
+        });
+      }
+    }else if(e <= this.props.requestDataResponse.maximumSplit){
+      if(e !== ''){
+        this.setState({
+          fee: e
+        });
+      }
+    }else if(e > this.props.requestDataResponse.maximumSplit){
+      WARNING_MODAL("Advertencia", "Por favor ingresa un número igual o menor al máximo de cuotas por empresa.");
+    }
+    
   };
 
   sendReportInfo = (e, maximumSplit) => {
+    console.log("E",e, maximumSplit);
     if(e <= maximumSplit){
       if( this.state.fee !== null){
         this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
@@ -536,7 +557,8 @@ class LoanRequest extends Component {
     const { getFieldDecorator } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
-          paymentSupport, phoneNumber, accountNumber, accountType, accountBank } = requestDataResponse;
+          paymentSupport, phoneNumber, accountNumber, accountType, accountBank, fixedFee } = requestDataResponse;
+    console.log("FF", fixedFee, fixedFee === 1);
     
     let { bankInfo, walletInfo } = outlayDataResponse;
     
@@ -636,14 +658,16 @@ class LoanRequest extends Component {
                         
                       </Row>
                       <FieldTitle title={"Número de cuotas"}/>
-                      <span className={"text-fees"}>*La cantidad máxima de cuotas de acuerdo con tu empresa es <span className={"fees-number-text"}>{maximumSplit}</span>.</span>
+                      <span className={"text-fees"}>*La cantidad máxima/fijo de cuotas de acuerdo con tu empresa es <span className={"fees-number-text"}>{maximumSplit}</span>.</span>
                       <FormItem className={"fees-item"}>
                         {getFieldDecorator('fees',
-                          {rules: [
+                          { 
+                            initialValue: this.state.sliderValue,
+                            rules: [
                             {required: true, message: 'Por favor ingresa un número de cuotas'}
                           ]})(
                             <Row>
-                              <Input className={"form-input-number"} placeholder={"Número de cuotas"} max={maximumSplit}
+                              <InputNumber className={"form-input-number"} max={maximumSplit} min={fixedFee === 1 ? maximumSplit : 1}
                               onChange={(e) => this.onChangeFee(e)} onBlur={(e) => this.sendReportInfo(e.target.value, maximumSplit)}
                               disabled={sliderValue < 80000 ? true : false} />
                             </Row>

@@ -160,10 +160,10 @@ class RequestOutLayState extends Component {
                   <b>Número de Solicitud</b> <br/><br/>
                   {"Solicitud No. " + item.idRequest} 
                 </Col>
-                <Col xs={12} sm={12} md={8} lg={5} className="request-item-initial-col" >
+                <Col xs={12} sm={12} md={8} lg={6} className="request-item-initial-col" >
                     <b>Estado</b> <br/><br/>  {defineBadgeName(item.idRequestState)}
                 </Col>
-                <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
+                <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
                     <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
                 </Col>
                 <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
@@ -171,16 +171,7 @@ class RequestOutLayState extends Component {
                     <CurrencyFormat  displayType={'text'} style={{width: "100%"}}
                         value={item.quantity} thousandSeparator={'.'} decimalSeparator={','} prefix={'$'}/>
                 </Col>
-                <Col xs={24} sm={12} md={2} lg={1}>
-                  <Tooltip title="Desembolsar solicitud">
-                    <Icon type={"check-circle"} className={"request-item-icon-approve"} onClick={() => this.setState({approve_modal: true})}/> 
-                  </Tooltip>
-                </Col>
-                <Col xs={24} sm={12} md={2} lg={1}>
-                  <Tooltip title="Rechazar solicitud">
-                    <Icon type={"close-circle"} className={"request-item-icon-reject"} onClick={() => this.setState({reject_modal: true})}/> 
-                  </Tooltip>
-                </Col> 
+         
               </Row>
             
             {
@@ -256,18 +247,7 @@ class RequestOutLayState extends Component {
                           Ver documento
                     </Button> 
                   </Col>
-                  <Col xs={24} sm={12} md={6} lg={5}>
-                    <Button className={"request-reject-button"} icon="close-circle" 
-                            onClick={() => this.setState({reject_modal: true})}>
-                          Rechazar crédito
-                    </Button> 
-                  </Col>
-                  <Col xs={24} sm={12} md={6} lg={6}>
-                    <Button className={"request-confirm-button"} icon="check-circle" 
-                            onClick={() => this.setState({approve_modal: true})}>
-                          Desembolsar crédito
-                    </Button> 
-                  </Col>
+                  <Col xs={24} sm={12} md={6} lg={11}/>
                   
                 </Row>
               </div>
