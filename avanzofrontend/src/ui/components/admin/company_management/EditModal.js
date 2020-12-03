@@ -128,8 +128,9 @@ class EditCompanyModal extends Component {
       economyActivity: this.state.economyActivity===null ? item.economyActivity : this.state.economyActivity,
       maximumSplit: this.state.maximumSplit===null ? item.maximumSplit : this.state.maximumSplit,
       defaultAmount: this.state.defaultAmount===null ? item.defaultAmount : this.state.defaultAmount, 
-      approveHumanResources: this.state.approveHumanResources===null ? item.approveHumanResources : this.state.approveHumanResources,
+      approveHumanResources: this.state.approveHumanResources===null ? item.approveHumanResources : this.state.approveHumanResources === "Sí" ? 1 : 0,
       email: this.state.email===null ? item.email : this.state.email,
+      fixedFee: this.state.fixedFee===null ? item.fixedFee : this.state.fixedFee === "Sí" ? 1 : 0,
       companySalaries: this.state.companySalaries.length>0 ? this.state.companySalaries : this.props.companySalaryResponse,
       idCompany: item.idCompany,
       idUser: item.idUser,
@@ -254,6 +255,18 @@ class EditCompanyModal extends Component {
     });
   };
 
+  changeFixedFee = (e) => {
+    this.setState({
+      fixedFee: e,
+    });
+  };
+
+  changeApproveRRHH = (e) => {
+    this.setState({
+      approveHumanResources: e,
+    });
+  }
+
   changeReportDate = (e, param) => {
     let setter = e.target.value;
     e.target.value = setter.replace(/[^0-9,]/g, '');
@@ -344,7 +357,7 @@ class EditCompanyModal extends Component {
               <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
                 ¿Aprueba RR.HH.?
                 <br/>
-                <Select className={"company-edit-nit"} defaultValue={this.props.item.approveHumanResources ? "Sí" : "No"} placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                <Select className={"company-edit-nit"} onChange={(e) => this.changeApproveRRHH(e)} defaultValue={this.props.item.approveHumanResources ? "Sí" : "No"} placeholder={"¿Aprueba Recursos Humanos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                   <Select.Option value={"Sí"}>Sí</Select.Option>
                   <Select.Option value={"No"}>No</Select.Option>
                 </Select>
@@ -358,6 +371,14 @@ class EditCompanyModal extends Component {
                 Cantidad de cuotas máxima:
                 <br/>
                 <InputNumber className={"company-edit-nit"} defaultValue={this.props.item.maximumSplit} placeholder={"Cantidad de cuotas"} onChange={(e) => this.inputServiceSplit(e, 'maximumSplit')}/>
+              </Col>
+              <Col xxl={12} lg={8} md={12} sm={12} xs={12}>
+                ¿Tiene cuotas fijas?
+                <br/>
+                <Select className={"company-edit-nit"} onChange={(e) => this.changeFixedFee(e)} defaultValue={this.props.item.fixedFee ? "Sí" : "No"} placeholder={"¿Tiene cuotas fijas?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                  <Select.Option value={"Sí"}>Sí</Select.Option>
+                  <Select.Option value={"No"}>No</Select.Option>
+                </Select>  
               </Col>
             </Row>
             <br/>

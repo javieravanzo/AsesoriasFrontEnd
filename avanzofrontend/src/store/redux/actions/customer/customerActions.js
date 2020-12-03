@@ -139,7 +139,6 @@ export const generateDocuments = (customerId, split, quantity) => {
 
 export const resetValue = () => {
   return dispatch => {
-    console.log("Entro al reset");
     dispatch({
       type: C.RESET_VALUES
     });

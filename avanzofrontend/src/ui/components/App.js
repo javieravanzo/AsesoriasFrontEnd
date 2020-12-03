@@ -68,7 +68,6 @@ class App extends Component {
   render(){
 
     let signedIn = (this.props.location.pathname).includes('integration-form') ? true: this.isSignedIn();
-    //console.log("Route", this.props.location.pathname);
     
     if((this.props.location.pathname).includes('integration-form')){
       return(
@@ -76,7 +75,7 @@ class App extends Component {
           <Layout className={'back-home'}>
             <Switch>         
               <Route exact path={routes.integration_form} component={IFormRequest}/>
-              <Route render = {()=><IFormRequest/>}/>
+              <Route render = {()=><IFormRequest fromapp={true} />}/>
             </Switch>
           </Layout>
         </div>

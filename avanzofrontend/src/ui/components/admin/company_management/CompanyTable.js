@@ -123,6 +123,7 @@ class CompanyTable extends Component {
           quantity: item.defaultAmount,
           approveHumanResources: item.approveHumanResources,
           email: item.email,
+          fixedFee: item.fixedFee === 1 ? "Sí" : "No",
           status: item.status === 1 ? "Activo" : "Inactivo",
           actions: <TableButtons item={item}/>
         };

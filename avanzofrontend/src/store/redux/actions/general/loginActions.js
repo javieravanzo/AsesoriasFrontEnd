@@ -30,6 +30,7 @@ export const login = (email, password) => {
         .then(response => {
           let data = response.data;
           let user_info = response.data.user_info;
+          
           saveLocalStorage(data.access_token, data.expires_on, user_info.name, user_info.roleId,
              user_info.roleName, user_info.email, user_info.idUser);
           dispatch({
@@ -44,7 +45,8 @@ export const login = (email, password) => {
             type: loginTypes.LOGGING,
             payload: false,
           });
-          ERROR_MODAL("Error al realizar la acción", err.data.message);
+          let error = err.data === undefined ? "No es posible acceder a la plataforma en este momento." : err.data.message;
+          ERROR_MODAL("Error al realizar la acción", error);
         });
   }
 };

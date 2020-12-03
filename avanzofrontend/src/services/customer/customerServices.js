@@ -116,6 +116,8 @@ function createRequest(data, token){
   bodyFormData.append('salary_base', data.salary_base);
   bodyFormData.append('biweekly_salary', data.biweekly_salary);
   bodyFormData.append('general_deduction', data.general_deduction);
+  bodyFormData.append('fromapp', data.fromapp);
+
   
   if (token === undefined){
     return request({

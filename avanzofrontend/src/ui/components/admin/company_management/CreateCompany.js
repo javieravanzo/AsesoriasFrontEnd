@@ -133,6 +133,7 @@ class CreateCompany extends Component {
             socialReason: values.socialReason,
             password: values.password,
             databaseExchange: values.databaseExchange,
+            fixedFee: values.fixedFee,
             companyMembers: [
               {
                 memberName: values.memberName + "-" + values.memberLastName,
@@ -398,7 +399,7 @@ class CreateCompany extends Component {
                   </Panel>
                   <Panel header="Información de créditos" key="2">
                     <Row gutter={8} className={"form-request-rows"}>
-                      <Col xs={12} sm={12} md={5} lg={8}>
+                      <Col xs={12} sm={12} md={8} lg={6}>
                           <FieldTitle title={"¿Aprueba Recursos Humanos?"}/>
                           <FormItem >
                             {getFieldDecorator('approveHumanResources',
@@ -413,7 +414,7 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      <Col xs={12} sm={12} md={5} lg={8}>
+                      <Col xs={12} sm={12} md={8} lg={6}>
                           <FieldTitle title={"¿Comprobante de pago?"}/>
                           <FormItem >
                             {getFieldDecorator('paymentSupport',
@@ -428,7 +429,7 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                      <Col xs={12} sm={12} md={5} lg={8}>
+                      <Col xs={12} sm={12} md={8} lg={6}>
                           <FieldTitle title={"¿Certificado laboral?"}/>
                           <FormItem >
                             {getFieldDecorator('workingSupport',
@@ -443,7 +444,21 @@ class CreateCompany extends Component {
                           }
                         </FormItem>  
                       </Col>
-                    
+                      <Col xs={12} sm={12} md={8} lg={6}>
+                        <FieldTitle title={"Cruce de base de datos"}/>
+                        <FormItem >
+                          {getFieldDecorator('databaseExchange',
+                            {rules: [
+                              {required: true, message: 'Ingresa el cruce de base de datos.'}
+                            ]})(
+                              <Select placeholder={"¿Cruce de base de datos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                                  <Select.Option value={true}>Sí</Select.Option>
+                                  <Select.Option value={false}>No</Select.Option>
+                              </Select>
+                            )
+                          }
+                        </FormItem>  
+                      </Col>
                     
                     </Row>
                     <Row gutter={12} className={"form-request-rows"}>
@@ -474,13 +489,13 @@ class CreateCompany extends Component {
                         </FormItem>  
                       </Col>
                       <Col xs={12} sm={12} md={8} lg={8}>
-                        <FieldTitle title={"Cruce de base de datos"}/>
+                        <FieldTitle title={"Cuota Fija"}/>
                         <FormItem >
-                          {getFieldDecorator('databaseExchange',
+                          {getFieldDecorator('fixedFee',
                             {rules: [
-                              {required: true, message: 'Ingresa el cruce de base de datos.'}
+                              {required: true, message: 'Ingresa si es una cuota fija o no.'}
                             ]})(
-                              <Select placeholder={"¿Cruce de base de datos?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
+                              <Select placeholder={"¿Es una cuota fija?"} showSearch={true} allowClear={true} autoClearSearchValue={true}>
                                   <Select.Option value={true}>Sí</Select.Option>
                                   <Select.Option value={false}>No</Select.Option>
                               </Select>

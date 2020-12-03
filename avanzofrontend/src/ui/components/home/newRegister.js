@@ -82,7 +82,7 @@ class NewRegister extends Component {
           }else{
             
             let data = values;
-            console.log("Data", data);
+            
             data.company = values.company.split('*')[1];
             data.documentId = documentId;
             data.paymentReport = paymentReport;
@@ -211,6 +211,8 @@ class NewRegister extends Component {
 
     const { getFieldDecorator } = this.props.form;
     let { registerInfo } = this.props;
+    let companies = registerInfo.companyRow === undefined ? [] : registerInfo.companyRow;
+    let companyCycles = registerInfo.cycles === undefined ? [] : registerInfo.cycles;
 
     return (
       <div>
@@ -258,6 +260,7 @@ class NewRegister extends Component {
                           })(
                             <Select placeholder="Selecciona tu tipo de documento" allowClear={true} showSearch={true}
                               notFoundContent={"No hay tipos de documento"}>
+      
                               {documentTypes.map((type, i) => (
                                 <Select.Option key={i} value={type.id}>
                                   {type.name}
@@ -344,7 +347,7 @@ class NewRegister extends Component {
                           })(
                             <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
                               notFoundContent={"No hay empresas disponibles"}>
-                              {registerInfo.companyRow.map((type, i) => (
+                              {companies.map((type, i) => (
                                 <Select.Option key={i} value={type.socialReason+"*"+type.idCompany}>
                                   {type.socialReason}
                                 </Select.Option>))
@@ -416,8 +419,7 @@ class NewRegister extends Component {
                           })(
                             <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
                               notFoundContent={"No hay ciclos de pago disponibles"}>
-                              {
-                              registerInfo.cycles.map((type, i) => (
+                              {companyCycles.map((type, i) => (
                                 <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
                                   {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
                                 </Select.Option>))

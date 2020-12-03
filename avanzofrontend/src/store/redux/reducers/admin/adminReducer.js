@@ -89,7 +89,6 @@ export default function adminReducer(state = initialState, action){
         customerListToApprove: action.payload
       };
     case G.APPROVE_REJECT_REQUEST:
-      console.log("AC", action.code);
       return{
         ...state,
         approveRejectedResponse: action.code

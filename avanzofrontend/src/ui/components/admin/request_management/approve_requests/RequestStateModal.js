@@ -43,7 +43,6 @@ class RequestStateModal extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("APR", nextProps.approveRejectedResponse);
     if(nextProps.approveRejectedResponse !== null){
       return {
         visible: null,
@@ -114,8 +113,6 @@ class RequestStateModal extends Component {
 
   render(){
 
-    console.log("AR", this.props.approveRejectedResponse);
-    console.log("Visible", this.state.visible, this.props.item.idRequest);
     let item = this.props.item;
     //let {text} = this.state;
     

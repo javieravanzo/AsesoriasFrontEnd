@@ -116,9 +116,6 @@ class LoanRequest extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("R", nextProps.requestResponse);
-    console.log("GCodes", nextProps.generateCodesResponse);
-    console.log("ChCodes", nextProps.checkCodesResponse);
     //console.log("Cond", (nextProps.generateCodesResponse === false && nextProps.checkCodesResponse === null));
     if(JSON.stringify(nextProps.requestDataResponse) !== '{}' && nextProps.generateCodesResponse === null){
       //console.log("Entro1");
@@ -227,7 +224,6 @@ class LoanRequest extends Component {
   };
 
   sendReportInfo = (e, maximumSplit) => {
-    console.log("E",e, maximumSplit);
     if(e <= maximumSplit){
       if( this.state.fee !== null){
         this.props.getOultayDatesList(parseInt(localStorage.user_id, 10), this.state.fee, this.state.sliderValue);
@@ -387,9 +383,10 @@ class LoanRequest extends Component {
           salary_base: values.salary_base,
           biweekly_salary: values.biweekly_salary,
           general_deduction: values.general_deduction,
+          fromapp: this.props.location.state.fromapp !== null ? true : false,
         };
 
-        console.log("Supports", data);
+        //console.log("Supports", this.props.location.state);
 
         this.setState({
           form_data: data,
@@ -405,8 +402,6 @@ class LoanRequest extends Component {
   onChangeWorking = (e) =>{
     let fileType = e.target.files;
 
-    console.log("FTWL", fileType);
-
     this.setState({
       workingDocument: fileType[0]
     });
@@ -416,8 +411,6 @@ class LoanRequest extends Component {
   onChangePaymentSupport  = (e) => {
 
   let fileType = e.target.files;
-
-  console.log("FTPS", fileType);
 
     this.setState({
       paymentDocument: fileType[0]
@@ -558,11 +551,7 @@ class LoanRequest extends Component {
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank, fixedFee } = requestDataResponse;
-    console.log("FF", fixedFee, fixedFee === 1);
-    
     let { bankInfo, walletInfo } = outlayDataResponse;
-    
-    //console.log("Props", this.props);
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
