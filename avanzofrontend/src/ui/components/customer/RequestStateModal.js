@@ -92,7 +92,7 @@ class RequestStateModal extends Component {
       }
 
       return (
-        <Steps current={approveHumanResources ? idRequestState-1 : idRequestState-2} initial={0} size="small" >
+        <Steps current={approveHumanResources ? idRequestState-1 : idRequestState === 1 ? idRequestState-1 : idRequestState-2} initial={0} size="small" >
           {array}
         </Steps>
       );
@@ -285,7 +285,6 @@ class RequestStateModal extends Component {
   render(){
 
     let item = this.props.item;
-    console.log("ITEM", item.accountType);
     //console.log("TPS", this.props.updateRequestDocuments);
     let { bankInfo, walletInfo } = this.props.outlayDataResponse;
     

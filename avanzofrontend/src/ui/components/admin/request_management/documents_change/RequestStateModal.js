@@ -43,7 +43,7 @@ class RequestStateModal extends Component {
 
   seeDocument = (filePath, paymentSupport, workingSupport) => {
 
-    console.log("FP", filePath, "PS", paymentSupport, "WS", workingSupport);
+    //console.log("FP", filePath, "PS", paymentSupport, "WS", workingSupport);
 
     let url = filePath;
 

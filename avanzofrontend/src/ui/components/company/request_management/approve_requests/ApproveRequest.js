@@ -122,7 +122,6 @@ class ApproveRequest extends Component {
 
     let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
     let tableData = this.setData(this.props.requestList.request);
-    console.log("RL", this.props.requestList.request);
     
     if(JSON.stringify(this.props.requestList) === '{}'){
       return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>

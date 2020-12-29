@@ -82,7 +82,7 @@ class NewRegister extends Component {
           }else{
             
             let data = values;
-            console.log("Data", data);
+            
             data.company = values.company.split('*')[1];
             data.documentId = documentId;
             data.paymentReport = paymentReport;
@@ -227,6 +227,8 @@ class NewRegister extends Component {
 
     const { getFieldDecorator } = this.props.form;
     let { registerInfo } = this.props;
+    let companies = registerInfo.companyRow === undefined ? [] : registerInfo.companyRow;
+    let companyCycles = registerInfo.cycles === undefined ? [] : registerInfo.cycles;
 
     return (
       <div>
@@ -274,6 +276,7 @@ class NewRegister extends Component {
                           })(
                             <Select placeholder="Selecciona tu tipo de documento" allowClear={true} showSearch={true}
                               notFoundContent={"No hay tipos de documento"}>
+      
                               {documentTypes.map((type, i) => (
                                 <Select.Option key={i} value={type.id}>
                                   {type.name}
@@ -378,7 +381,7 @@ class NewRegister extends Component {
                           })(
                             <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
                               notFoundContent={"No hay empresas disponibles"}>
-                              {registerInfo.companyRow.map((type, i) => (
+                              {companies.map((type, i) => (
                                 <Select.Option key={i} value={type.socialReason+"*"+type.idCompany}>
                                   {type.socialReason}
                                 </Select.Option>))
@@ -467,10 +470,30 @@ class NewRegister extends Component {
                         <input key={this.state.kBK} type="file" data-tipo="cedula" onChange={this.onChange}
                               accept=".pdf, application/pdf"/>
                       </Col>
+<<<<<<< HEAD
                       <Col lg={12}  md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Cargar certificado laboral</p>
                         <input key={this.state.kBK} type="file" data-tipo="certificado" onChange={this.onChange}
                               accept=".pdf, application/pdf"/>
+=======
+                      <Col lg={12} md={12} sm={24} xs={24}>
+                        <p className={"form-names"}>Período de nómina</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('salary', {
+                            rules: [ 
+                              {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
+                          })(
+                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
+                              notFoundContent={"No hay ciclos de pago disponibles"}>
+                              {companyCycles.map((type, i) => (
+                                <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
+                                  {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
+                                </Select.Option>))
+                              }
+                            </Select>
+                          )}
+                        </FormItem>
+>>>>>>> 805564b0f1e1ac1495d290843f715678a6d8b4e4
                       </Col>
                     </Row>
                     <Row>

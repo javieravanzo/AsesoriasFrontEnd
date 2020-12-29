@@ -42,12 +42,12 @@ class IFormRequest extends Component {
 
   render(){
 
-    //console.log("IR", this.props.location.pathname);    
+    //console.log("integrationRegisterResponse", this.props.integrationRegisterResponse);
 
     if(this.props.integrationRegisterResponse){   
       return (
         <div>
-          <Redirect to={{pathname: routes.customer_form_request}}/>
+          <Redirect to={{pathname: routes.customer_form_request, state: {fromapp: true}}}/>
         </div>
       );
     }else{

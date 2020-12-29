@@ -260,8 +260,12 @@ class Home extends Component {
     
       return (    
         <div>
-          <IconFont className={"network-fb-icon"} type="icon-facebook" />
-          <InstagramOutlined className={"network-ig-icon"} />
+          <a className={"page-link"} href="https://www.facebook.com/avanzo.co" target="_blank" rel="noopener noreferrer">
+            <IconFont className={"network-fb-icon"} type="icon-facebook" />
+          </a>
+          <a className={"page-link"} href="https://www.instagram.com/avanzocreditos" target="_blank" rel="noopener noreferrer">
+            <InstagramOutlined className={"network-ig-icon"} />
+          </a>
           <div className="home-main-div" >
               <Row className="home-header-row">
                 <Col xxl={6} lg={6} md={8} sm={10} xs={12}>
