@@ -11,7 +11,7 @@ import routes from '../../../configuration/routing/Routes';
 
 //Actions
 import {newRegister, getCompanies} from "../../../store/redux/actions/general/loginActions";
-import {documentTypes, citys} from "../../../configuration/constants";
+import {documentTypes, citys, genders} from "../../../configuration/constants";
 
 //Styles
 import '../../styles/home/home.css'
@@ -87,7 +87,7 @@ class NewRegister extends Component {
             data.documentId = documentId;
             data.paymentReport = paymentReport;
             data.sliderValue = this.state.sliderValue;
-            
+            console.log(data);
             //Actions
             this.props.newRegister(data);
           }
@@ -105,22 +105,38 @@ class NewRegister extends Component {
     });
   };
 
+
+
+
   onChange(e) {
     //let { documentId, photo, paymentReport } = this.state;
     let fileType = e.target.files;
-    for (let file in fileType){
+    console.log(fileType);
+    let tipo =  e.target.getAttribute("data-tipo");
+    switch(tipo){
+      case 'cedula':
+      this.setState({
+        documentId: fileType[0]
+      });
+      break;
+      case 'certificado':
+        this.setState({
+          paymentReport: fileType[0]
+        });
+      break;
+      default:
+        
+      break;
+    }
+    /*for (let file in fileType){
       //console.log(file===0);
       if(parseInt(file,10) === 0){
-        this.setState({
-          documentId: fileType[0]
-        });
+        
       }
       if(parseInt(file,10) === 1){
-        this.setState({
-          paymentReport: fileType[1]
-        });
+        
       }
-    }
+    }*/
     //console.log(fileType);
     /*if (status !== 'uploading') {
       //console.log(info.file, info.fileList);
@@ -321,7 +337,27 @@ class NewRegister extends Component {
                               )}
                         </FormItem>
                       </Col>
-                      <Col lg={12} md={12} sm={12} xs={12}>
+                      <Col lg={12} md={12} sm={12} xs={12}>                     
+                        <p className={"form-names"}>Género</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('gender', {
+                            rules: [{ required: true, message: 'Por favor ingresa tu género' }],
+                          })(
+                            <Select placeholder="Selecciona tu género" allowClear={true} showSearch={true}
+                              notFoundContent={"No hay géneros"}>
+                              {genders.map((type, i) => (
+                                <Select.Option key={i} value={type.id}>
+                                  {type.name}
+                                </Select.Option>))
+                              }
+                          </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                    </Row>
+                    <Row gutter={4}>
+                      <Col lg={12} md={12} sm={12} xs={12}>                     
+
                         <p className={"form-names"}>Fecha de Nacimiento</p>
                         <FormItem className='home-form-item'>
                           {getFieldDecorator('birthDate',
@@ -333,8 +369,6 @@ class NewRegister extends Component {
                           }
                         </FormItem>
                       </Col>
-                    </Row>
-                    <Row gutter={4}>
                       <Col lg={12} md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Empresa</p>
                         <FormItem className='home-form-item'>
@@ -353,6 +387,32 @@ class NewRegister extends Component {
                           )}
                         </FormItem>
                       </Col>
+                    </Row>
+                   
+                    
+                    
+                    <Row gutter={4}>
+
+                    <Col lg={12} md={12} sm={24} xs={24}>
+                        <p className={"form-names"}>Período de nómina</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('salary', {
+                            rules: [ 
+                              {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
+                          })(
+                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
+                              notFoundContent={"No hay ciclos de pago disponibles"}>
+                              {
+                              registerInfo.cycles.map((type, i) => (
+                                <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
+                                  {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
+                                </Select.Option>))
+                              }
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                     
                       <Col lg={12} md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Ciudad de residencia</p>
                         <FormItem className='home-form-item'>
@@ -403,28 +463,14 @@ class NewRegister extends Component {
                     
                     <Row className={"upload-documents"}>
                       <Col lg={12}  md={12} sm={24} xs={24}>
-                        <p className={"form-names"}>Cargar cédula y certificado laboral</p>
-                        <input key={this.state.kBK} type="file" multiple="multiple" onChange={this.onChange}
+                        <p className={"form-names"}>Cargar cédula</p>
+                        <input key={this.state.kBK} type="file" data-tipo="cedula" onChange={this.onChange}
                               accept=".pdf, application/pdf"/>
                       </Col>
-                      <Col lg={12} md={12} sm={24} xs={24}>
-                        <p className={"form-names"}>Período de nómina</p>
-                        <FormItem className='home-form-item'>
-                          {getFieldDecorator('salary', {
-                            rules: [ 
-                              {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
-                          })(
-                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
-                              notFoundContent={"No hay ciclos de pago disponibles"}>
-                              {
-                              registerInfo.cycles.map((type, i) => (
-                                <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
-                                  {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
-                                </Select.Option>))
-                              }
-                            </Select>
-                          )}
-                        </FormItem>
+                      <Col lg={12}  md={12} sm={24} xs={24}>
+                        <p className={"form-names"}>Cargar certificado laboral</p>
+                        <input key={this.state.kBK} type="file" data-tipo="certificado" onChange={this.onChange}
+                              accept=".pdf, application/pdf"/>
                       </Col>
                     </Row>
                     <Row>

@@ -117,7 +117,7 @@ class LoginForm extends Component {
           </div>
         </div>
         <div className={"bottom-title"}>
-          Avanzo © 2020
+          Avanzo © 2021
         </div>
         {(isLogged && (role===4)) &&
           <Redirect to={routes.customer}/>

@@ -33,7 +33,8 @@ function newRegister(data) {
   bodyFormData.append('company', data.company);
   bodyFormData.append('password', data.password);
   bodyFormData.append('documentId', data.documentId);  
-  bodyFormData.append('paymentReport', data.paymentReport); 
+  bodyFormData.append('paymentReport', data.paymentReport);
+  bodyFormData.append('gender', data.gender);   
   
   return request({
     url: '/Account/NewRegister',

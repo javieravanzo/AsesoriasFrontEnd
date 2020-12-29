@@ -13,6 +13,14 @@ export const documentTypes = [
   {id: 3, name: "Pasaporte", code: "3"},
 ];
 
+/* ------------------ Gender Types --------------------- */
+export const genders = [
+  {id: 1, name: "Femenino", code: "1"},
+  {id: 2, name: "Masculino", code: "2"},
+  {id: 3, name: "Otro", code: "3"},
+];
+
+
 /* ------------------ Request State ---------------- */
 export const requestState = {
   APPROVED: 3,
