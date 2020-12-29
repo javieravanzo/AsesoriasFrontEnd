@@ -396,7 +396,7 @@ class NewRegister extends Component {
                     
                     <Row gutter={4}>
 
-                    <Col lg={12} md={12} sm={24} xs={24}>
+                    {/*<Col lg={12} md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Período de nómina</p>
                         <FormItem className='home-form-item'>
                           {getFieldDecorator('salary', {
@@ -407,6 +407,25 @@ class NewRegister extends Component {
                               notFoundContent={"No hay ciclos de pago disponibles"}>
                               {
                               registerInfo.cycles.map((type, i) => (
+                                <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
+                                  {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
+                                </Select.Option>))
+                              }
+                            </Select>
+                          )}
+                        </FormItem>
+                            </Col>*/}
+
+                      <Col lg={12} md={12} sm={24} xs={24}>
+                        <p className={"form-names"}>Período de nómina</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('salary', {
+                            rules: [ 
+                              {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
+                          })(
+                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
+                              notFoundContent={"No hay ciclos de pago disponibles"}>
+                              {companyCycles.map((type, i) => (
                                 <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
                                   {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
                                 </Select.Option>))
@@ -470,31 +489,11 @@ class NewRegister extends Component {
                         <input key={this.state.kBK} type="file" data-tipo="cedula" onChange={this.onChange}
                               accept=".pdf, application/pdf"/>
                       </Col>
-<<<<<<< HEAD
                       <Col lg={12}  md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Cargar certificado laboral</p>
                         <input key={this.state.kBK} type="file" data-tipo="certificado" onChange={this.onChange}
                               accept=".pdf, application/pdf"/>
-=======
-                      <Col lg={12} md={12} sm={24} xs={24}>
-                        <p className={"form-names"}>Período de nómina</p>
-                        <FormItem className='home-form-item'>
-                          {getFieldDecorator('salary', {
-                            rules: [ 
-                              {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
-                          })(
-                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
-                              notFoundContent={"No hay ciclos de pago disponibles"}>
-                              {companyCycles.map((type, i) => (
-                                <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
-                                  {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
-                                </Select.Option>))
-                              }
-                            </Select>
-                          )}
-                        </FormItem>
->>>>>>> 805564b0f1e1ac1495d290843f715678a6d8b4e4
-                      </Col>
+                      </Col>        
                     </Row>
                     <Row>
                     <FormItem className='home-form-item'>
