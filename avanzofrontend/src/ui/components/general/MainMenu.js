@@ -69,7 +69,8 @@ class MainMenu extends Component {
     //let {role} = this.props;
     let role = parseInt(localStorage.role_id, 10);
     //console.log("Props",  this.props.countCustomerData.count);
-
+    let menu = JSON.parse(localStorage.menu);
+    console.log(menu);
     return(
       <Layout className="layout" >
         <Header className={"header-menu1"} >         
@@ -82,7 +83,17 @@ class MainMenu extends Component {
               <Menu.Item className={"menu-logout"} onClick={() => this.setState({visible: true})}>
                 <Icon type="poweroff" />Cerrar sesión
               </Menu.Item>
-              {
+
+              {menu.map((it, index) =>
+                <Menu.Item className={it.className} key={index}>
+                  <NavLink to={it.serviceRoute}>
+                    <Icon type={it.serviceIcon}/>{it.serviceName}
+                  </NavLink>
+                </Menu.Item>
+              )}
+
+
+                {/*              
                 (role === 2 || role === 1 ) && 
                 <Menu.Item className={"menu-admin-report"}>
                   <NavLink to={routes.admin_generate_reports}>
@@ -171,7 +182,7 @@ class MainMenu extends Component {
                   </NavLink>
                 </Menu.Item>
               }
-              
+              */}
             </Menu>
             
         </Header>

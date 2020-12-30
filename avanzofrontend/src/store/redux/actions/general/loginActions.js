@@ -10,7 +10,7 @@ import { initializeClient } from '../../../../services/requestWrapper';
 import loginServices from '../../../../services/general/loginServices'; 
 import registerService from '../../../../services/customer/registerServices'; 
 
-function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName, email, userId){
+function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName, email, userId, menu){
 
   localStorage.setItem('access_token', access_token);
   localStorage.setItem('expires_on', expires_on);
@@ -18,6 +18,7 @@ function saveLocalStorage(access_token, expires_on, user_name, roleId, roleName,
   localStorage.setItem('role_id', roleId);
   localStorage.setItem('email', email);  
   localStorage.setItem('user_id', userId);
+  localStorage.setItem('menu', menu);
 
   initializeClient();
 };
@@ -30,9 +31,8 @@ export const login = (email, password) => {
         .then(response => {
           let data = response.data;
           let user_info = response.data.user_info;
-          
           saveLocalStorage(data.access_token, data.expires_on, user_info.name, user_info.roleId,
-             user_info.roleName, user_info.email, user_info.idUser);
+             user_info.roleName, user_info.email, user_info.idUser, JSON.stringify(data.menu));
           dispatch({
             type: loginTypes.LOGGING,
             payload: true,
