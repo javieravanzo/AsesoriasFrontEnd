@@ -110,6 +110,7 @@ class LoanRequest extends Component {
     };    
 
     this.props.resetValue();
+
     this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
     this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
 
@@ -352,6 +353,7 @@ class LoanRequest extends Component {
   };
 
   checkRequest = (interestValue, adminValue) => {
+    console.log(this.props.location);
     this.props.form.validateFields((err, values) => {
       if (err){
         this.setState({
@@ -361,7 +363,6 @@ class LoanRequest extends Component {
       }else if (values.account_numberConfirmation !== values.account_number){
         WARNING_MODAL("Error al realizar la acción", "Los números de cuenta no coinciden.")
       }else{
-
         let data = {
           file: this.state.trimmedDataURL,
           quantity: values.quantity,
@@ -383,7 +384,7 @@ class LoanRequest extends Component {
           salary_base: values.salary_base,
           biweekly_salary: values.biweekly_salary,
           general_deduction: values.general_deduction,
-          fromapp: this.props.location.state.fromapp !== null ? true : false,
+          fromapp: this.props.location.state == null ? false: this.props.location.state.fromapp !== null ? true : false,
         };
 
         //console.log("Supports", this.props.location.state);

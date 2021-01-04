@@ -70,7 +70,7 @@ class MainMenu extends Component {
     let role = parseInt(localStorage.role_id, 10);
     //console.log("Props",  this.props.countCustomerData.count);
     let menu = JSON.parse(localStorage.menu);
-    console.log(menu);
+
     return(
       <Layout className="layout" >
         <Header className={"header-menu1"} >         
