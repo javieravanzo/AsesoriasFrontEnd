@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import CurrencyFormat from "react-currency-format";
 import connect from 'react-redux/es/connect/connect';
 import { Divider, Form, Select, Button, Col, Row, InputNumber, Table, Slider, Modal, 
-         Statistic, Typography, Card, Switch, Spin, Input} from 'antd';
+         Statistic, Typography, Card, Switch, Spin, Input, Icon, Tooltip} from 'antd';
+
 //import SignaturePad from 'react-signature-canvas';
 
 //Subcomponents
@@ -27,6 +28,7 @@ import efecty from "../../assets/efecty.PNG";
 import davivienda from "../../assets/davivienda.PNG";
 import bancolombia from "../../assets/bancolombia.PNG";
 
+const Option  = Select.Option;
 //Constants
 const FormItem = Form.Item;
 //const { Panel } = Collapse;
@@ -107,12 +109,20 @@ class LoanRequest extends Component {
       oneRequestCreated: null,
       loadConfirmation: null,
       loadCodes: null,
+      partialCapacity:  0,
+      tempPartial :  0,
+      maximumAmount:0,
+      request_overdraft:false,
+      request_observation:null
     };    
 
+    console.log(this.state.partialCapacity);
     this.props.resetValue();
 
     this.props.getRequestData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
     this.props.getOutlayData(parseInt(localStorage.user_id, 10), this.props.location.state ? this.props.location.state.token : undefined);
+
+   
 
   };
 
@@ -125,7 +135,10 @@ class LoanRequest extends Component {
           sliderValue: Math.round(nextProps.requestDataResponse.partialCapacity) < 80000 ? 80000 : Math.round(nextProps.requestDataResponse.partialCapacity),
           bank_name: nextProps.requestDataResponse.accountBank,
           bank_number: nextProps.requestDataResponse.accountNumber,
-          bank_type: nextProps.requestDataResponse.accountType
+          bank_type: nextProps.requestDataResponse.accountType,
+          partialCapacity:  nextProps.requestDataResponse.partialCapacity,
+          tempPartial :  nextProps.requestDataResponse.partialCapacity,
+          maximumAmount : nextProps.requestDataResponse.maximumAmount
         };
       }else{
         return{
@@ -363,6 +376,14 @@ class LoanRequest extends Component {
       }else if (values.account_numberConfirmation !== values.account_number){
         WARNING_MODAL("Error al realizar la acción", "Los números de cuenta no coinciden.")
       }else{
+
+        if(this.state.request_overdraft === true){
+          if(this.state.request_observation == null){
+            ERROR_MODAL("Error al realizar la acción", "Por favor seleccione una observación válida para el sobregiro.");
+            return false;
+          }
+        }
+
         let data = {
           file: this.state.trimmedDataURL,
           quantity: values.quantity,
@@ -385,8 +406,10 @@ class LoanRequest extends Component {
           biweekly_salary: values.biweekly_salary,
           general_deduction: values.general_deduction,
           fromapp: this.props.location.state == null ? false: this.props.location.state.fromapp !== null ? true : false,
+          request_overdraft : this.state.request_overdraft,
+          request_observation : this.state.request_observation,
         };
-
+        console.log(data);
         //console.log("Supports", this.props.location.state);
 
         this.setState({
@@ -543,7 +566,48 @@ class LoanRequest extends Component {
 
   };
 
+  onChangeSwitch = (e) =>{
+    if(e === true){
+       this.setState({
+        partialCapacity: this.state.maximumAmount*2,
+        request_overdraft: true
+      });
+    }else{
+      this.setState({
+        partialCapacity: this.state.tempPartial,
+        request_overdraft: false, 
+        request_observation : ""
+      });
+    }
+  }
+
+  InputObservacion = () => { 
+      return (
+        <div>
+         Observación: <Select defaultValue={null} style={{ width: '100%' }} onChange={this.handleObservacion}>
+            <Option value={null}>Elige una opción</Option>
+            <Option value={"Ya me fue descontado"}>Ya me fue descontado</Option>
+            <Option value={"Me descontaron el doble"}>Me descontaron doble</Option>
+            <Option value={"Otro"}>
+              Otro
+            </Option>
+          </Select>
+          <br/>
+        </div>
+      );
+  };
+
+  handleObservacion = (e) =>{
+    if(e != null){
+      this.setState({
+        request_observation : e
+      });
+    }
+  }
+
   render(){
+    
+   
    
     let signature = false;
     let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes, emailConfirmation, phoneConfirmation} = this.state;
@@ -552,6 +616,7 @@ class LoanRequest extends Component {
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank, fixedFee } = requestDataResponse;
+  
     let { bankInfo, walletInfo } = outlayDataResponse;
 
     if(JSON.stringify(this.props.requestDataResponse) === '{}' || JSON.stringify(this.props.outlayDataResponse) === '{}'){
@@ -576,7 +641,9 @@ class LoanRequest extends Component {
                 <div>
                   <Row gutter={2}>
                     <Col span={24}>
-                      <Statistic className={"customer-credit-card"} title={<h3>Cupo disponible</h3>} value={partialCapacity} prefix={"$"}/>
+                      <Statistic className={"customer-credit-card"} title={<h3>Cupo disponible   <Tooltip title="Puedes solicitar un préstamo dando click en 'sobregiro' que supere el cupo si te han realizado un descuento y aún no aparece actualizado aquí.">
+                      <Icon type="question-circle"/>
+  </Tooltip></h3>} value={partialCapacity} prefix={"$"}/>
                     </Col>
                   </Row>    
                 </div>
@@ -608,9 +675,9 @@ class LoanRequest extends Component {
                           rules: [
                             {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                           ]})(
-                              <InputNumber step={10000} className={"form-input-number"} max={partialCapacity < 80000 ? 80000 : partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000}
+                              <InputNumber step={10000} className={"form-input-number"} max={this.state.partialCapacity < 80000 ? 80000 : this.state.partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000}
                                     formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
-                                    placeholder={"Monto requerido"} onBlur={(e) => this.handleQuantityBlur(e)} onChange={this.handleQuantity} disabled={this.state.quantityBlur}/>
+                                    placeholder={"Monto requerido"} onBlur={(e) => this.handleQuantityBlur(e)} onChange={this.handleQuantity} disabled={this.state.quantityBlur} />
                           )
                         }
                       </FormItem>
@@ -628,7 +695,7 @@ class LoanRequest extends Component {
                               {initialValue: this.state.sliderValue, rules: [
                                 {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                               ]})(
-                                <Slider max={partialCapacity <= 80000 ? 80000 : partialCapacity} min={80000} step={10000} className={"slider-amount"}
+                                <Slider max={this.state.partialCapacity <= 80000 ? 80000 : this.state.partialCapacity} min={80000} step={10000} className={"slider-amount"}
                                         tipFormatter={
                                           function (d) { 
                                             return format(d); 
@@ -641,11 +708,19 @@ class LoanRequest extends Component {
                         <Col xxl={5} lg={5} md={8} sm={8} xs={5}>
                           <h3>
                           <span className={"request-title-amount"}><CurrencyFormat  displayType={'text'} style={{width: "100%"}}
-                                                value={partialCapacity < 80000 ? 80000 : partialCapacity} thousandSeparator={'.'}
+                                                value={this.state.partialCapacity < 80000 ? 80000 : this.state.partialCapacity} thousandSeparator={'.'}
                                                 decimalSeparator={','} prefix={'$'}/></span>
                           </h3>
                         </Col>
                         
+                      </Row>
+                      <Row>
+                        <Col xxl={14} lg={14} md={8} sm={8} xs={14}>
+                           <b>Sobregiro</b> <Switch onChange={this.onChangeSwitch} />
+                           <br/>
+                           { this.state.request_overdraft ? <this.InputObservacion /> : null }
+                           <br/>
+                        </Col>
                       </Row>
                       <FieldTitle title={"Número de cuotas"}/>
                       <span className={"text-fees"}>*La cantidad máxima/fijo de cuotas de acuerdo con tu empresa es <span className={"fees-number-text"}>{maximumSplit}</span>.</span>
