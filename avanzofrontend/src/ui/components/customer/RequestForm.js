@@ -569,7 +569,7 @@ class LoanRequest extends Component {
   onChangeSwitch = (e) =>{
     if(e === true){
        this.setState({
-        partialCapacity: this.state.maximumAmount*2,
+        partialCapacity: this.state.maximumAmount,
         request_overdraft: true
       });
     }else{
