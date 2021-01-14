@@ -17,7 +17,7 @@ import {newRegister, getCompanies} from "../../../store/redux/actions/general/lo
 import {login} from "../../../store/redux/actions/general/loginActions";
 
 //Assets
-import icon from "../../assets/authentication/avanzoMenu.jpg";
+import icon from "../../assets/authentication/avanzoMenu.png";
 import home from "../../assets/home3.PNG";
 
 //Styles
@@ -51,6 +51,7 @@ class Home extends Component {
       clicked: false,
       email: null,
       password: null,
+      registroForm:false
     };
     
     this.next = this.next.bind(this);
@@ -58,6 +59,8 @@ class Home extends Component {
     this.onChange = this.onChange.bind(this);
     this.handleSliderChange = this.handleSliderChange.bind(this);
     this.carousel = React.createRef();
+
+    this.showLoginForm = this.showLoginForm.bind(this);
 
     this.props.getCompanies();
 
@@ -82,6 +85,7 @@ class Home extends Component {
     //console.log("entro");
     let { documentId, photo, paymentReport, checkBox1 } = this.state;
     this.props.form.validateFields((err, values) => {
+
       if (err ){
         ERROR_MODAL("Error al realizar la acción", "Por favor, ingresa datos válidos, carga los archivos correspondientes y acepta los términos y condiciones.");
       }else if(documentId === null && photo === null && paymentReport === null ){
@@ -249,6 +253,21 @@ class Home extends Component {
     this.setState({ password: password.target.value })
   };
 
+  showRegisterForm = ()=>{
+
+    this.setState({
+      registroForm: true
+    });
+   
+  }
+
+  showLoginForm(){
+    this.setState({
+      registroForm: false
+    });   
+  }
+  
+
   render() {
 
     /*const marks = {0: { style: { color: '#000', }, label: <p className={"left-marker"}>$80.000</p>},
@@ -267,7 +286,7 @@ class Home extends Component {
             <InstagramOutlined className={"network-ig-icon"} />
           </a>
           <div className="home-main-div" >
-              <Row className="home-header-row">
+              <Row className="home-header-row all-margin">
                 <Col xxl={6} lg={6} md={8} sm={10} xs={12}>
                   <img src={icon} alt="menulogo" className="home-menu-logo" />
                 </Col>
@@ -275,10 +294,18 @@ class Home extends Component {
                 <Col xxl={8} lg={8} md={6} sm={10} xs={12} className="home-header-third-col">
                   <span className="home-menu-text">{"Centro de ayuda     |    Políticas de uso"}</span>
                 </Col>
-              </Row>
+              </Row>{
+                  (this.state.registroForm === false) ? ( 
+              
+             
               <Row className="home-second-row">
                   <Card className={"customer-home-card"}>
-                    <Col xxl={11} lg={11} md={12} sm={24} xs={24} className="home-second-row-col1">
+                  <svg id="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+	<path className="elementor-shape-fill" d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
+	c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
+	c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"></path>
+</svg>
+                    <Col xxl={11} lg={11} md={12} sm={24} xs={24} className="home-second-row-col1 left-margin z-index-2">
                       <Row className={"home-left-col-row"}>
                         <span className={"home-zero-text"}>Bienvenido, si ya estás registrado en nuestra plataforma, inicia sesión.</span>
                       </Row>
@@ -314,7 +341,7 @@ class Home extends Component {
 
                         <Button type="primary" htmlType="submit" className="home-login-button" 
                                 onClick={() => this.sendMessage()}>Iniciar sesión</Button>
-                        <p className="home-text-register"><u><a href="#register">Registrarse</a></u></p>
+                        <p className="home-text-register"><u><a href="#" onClick={this.showRegisterForm}>Registrarse</a></u></p>
                         <br/>
                       </Form>
                     </Col>
@@ -323,10 +350,12 @@ class Home extends Component {
                       <br/>
                     </Col>
                   </Card>
-                </Row>
+                </Row>):null
+              }
+              {
+                (this.state.registroForm === true) ?(JSON.stringify(registerInfo) !== '{}' &&
+                <Register registerInfo={registerInfo} showLoginForm={this.showLoginForm}/>):null
               
-              {JSON.stringify(registerInfo) !== '{}' && 
-                <Register registerInfo={registerInfo}/>
               }
 
             {

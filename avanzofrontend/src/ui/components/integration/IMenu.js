@@ -6,7 +6,7 @@ import {withRouter, NavLink} from 'react-router-dom';
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
-//import icon from "../../assets/authentication/avanzoMenu.jpg";
+//import icon from "../../assets/authentication/avanzoMenu.png";
 
 //Styles
 import '../../styles/integration/integrationmenu.css';

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 //Subcomponents
 import routes from "../../../configuration/routing/Routes";
-import icon from "../../assets/authentication/avanzoMenu.jpg";
+import icon from "../../assets/authentication/avanzoMenu.png";
 
 //Actions
 import {getCustomersCountToApprove} from "../../../store/redux/actions/admin/adminActions";

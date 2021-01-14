@@ -24,3 +24,96 @@ code {
   background-color: #e2e2e2;
   border-radius: 25px;
 }
+
+.ant-input, .ant-select-selection--single{
+      color: #1d70b7 !important;
+    border-radius: 25px;
+    box-shadow: 3px 3px 3px 0px rgba(68, 68, 68, 0.1), -3px -3px 3px 0px #fff;
+    border: 0;
+    background: transparent;
+    height: 40px;
+}
+
+.home-zero-text, .home-register-row-text{
+  color: #37477E !important;
+    font-size: 1.5em !important;
+    font-weight: 700;
+}
+
+.home-zero-input-text{
+    color: #1d70b7 !important;
+    font-weight: 400 !important;
+    font-size: 18px !important;
+}
+
+.ant-btn-primary{
+  background-color: #10CFBD !important;
+  border-radius: 25px;
+  border:none;
+  height:40px;
+  color: #ffffff !important;
+}
+
+#wave{
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  fill: #6a92ee;
+  position: absolute;
+  bottom: -3px;
+  width: 100%;
+  z-index: 1;
+}
+
+.ant-card-body {
+  padding: 0;
+  background:#ededed;
+}
+
+.all-margin{
+  padding-left: 10%;
+    padding-right: 10%;
+}
+
+.left-margin{
+  padding-left: 10%;
+}
+
+.right-margin{
+
+    padding-right: 10%;
+}
+
+.z-index-2{
+  z-index:2;
+}
+
+.home-main-div{
+  width:100%;
+}
+
+div#register {
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.ant-select-selection__placeholder {
+    padding-top: 5px;
+}
+
+form.ant-form.ant-form-horizontal.form-home .ant-col {
+  padding: 0px 10px;
+}
+
+.form-home p.form-names {
+  padding-left: 10px;
+  padding-bottom: 3px;
+  padding-top: 10px;
+  color: #1d70b7;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.ant-row.home-main-row {
+  padding-bottom: 0;
+}

@@ -12,7 +12,7 @@ import routes from '../../../configuration/routing/Routes';
 import {newRegister, getCompanies} from "../../../store/redux/actions/general/loginActions";
 
 //Assets
-import icon from "../../assets/authentication/avanzoMenu.jpg";
+import icon from "../../assets/authentication/avanzoMenu.png";
 import home from "../../assets/home2.PNG";
 
 //Styles
