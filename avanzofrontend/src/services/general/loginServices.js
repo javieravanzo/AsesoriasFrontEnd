@@ -45,8 +45,11 @@ function changePassword(data, token){
 }; 
 
 
+
 const loginService = {
   login, logout, forgetPassword, changePassword
 };
+
+
 
 export default loginService;

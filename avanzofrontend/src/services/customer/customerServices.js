@@ -240,6 +240,8 @@ function checkCodes(userid, phonecode, emailcode){
   });
 };
 
+
+
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, 
   createRequest, getAllTransactions, getAllRequest, getAllRequestWasOutlayed, 

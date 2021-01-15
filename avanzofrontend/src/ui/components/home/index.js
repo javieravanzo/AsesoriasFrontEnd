@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import {Card, Row, Col, Form, Input, Icon, Button} from 'antd';
 import { createFromIconfontCN } from '@ant-design/icons';
-import { InstagramOutlined } from '@ant-design/icons';
+import { InstagramOutlined, LinkedinOutlined } from '@ant-design/icons';
+
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 
@@ -279,12 +280,19 @@ class Home extends Component {
     
       return (    
         <div>
-          <a className={"page-link"} href="https://www.facebook.com/avanzo.co" target="_blank" rel="noopener noreferrer">
-            <IconFont className={"network-fb-icon"} type="icon-facebook" />
-          </a>
-          <a className={"page-link"} href="https://www.instagram.com/avanzocreditos" target="_blank" rel="noopener noreferrer">
-            <InstagramOutlined className={"network-ig-icon"} />
-          </a>
+          <div className="redes">
+            <a href="https://www.facebook.com/avanzo.co" target="_blank" rel="noopener noreferrer">
+              <IconFont className={"facebook-icon"} type="icon-facebook" /> 
+            </a>
+            <a href="https://www.instagram.com/avanzocreditos" target="_blank" rel="noopener noreferrer">
+              <InstagramOutlined className={"instagram-icon"} />
+            </a>
+            <a href="https://www.linkedin.com/company/avanzocreditos/" target="_blank" rel="noopener noreferrer">           
+              <LinkedinOutlined className={"linkedin-icon"} />  
+            </a>
+          </div>
+          
+         
           <div className="home-main-div" >
               <Row className="home-header-row all-margin">
                 <Col xxl={6} lg={6} md={8} sm={10} xs={12}>

@@ -17,6 +17,11 @@ import {documentTypes, citys, genders} from "../../../configuration/constants";
 import '../../styles/home/home.css'
 import { ERROR_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
 
+
+//Services
+import loginServices from '../../../services/general/loginServices'; 
+import registerService from '../../../services/customer/registerServices';
+
 //Constants
 const FormItem = Form.Item;
 
@@ -230,7 +235,76 @@ class NewRegister extends Component {
   showLogin(){
     this.props.showLoginForm();   
   }
+
+  validationDocument = (e) =>{
+    const target = e.currentTarget;
+    const data = e.target.value
+    if(data.length > 0){
+        return registerService.checkDocument(data)
+          .then(response => {
+            console.log(response);
+            if(response.data){              
+              ERROR_MODAL("Este número de documento ya fue registrado", "");
+            }
+          }).catch(err => {
+            console.log(err);
+            /*dispatch({
+              type: C.NEW_REGISTER,
+              payload: false,
+              correct: false,
+            });
+            ERROR_MODAL('Error al registrar el usuario',  err.data.message);*/
+          });
+    }
+    
+  }  
+
+  validationEmail = (e) =>{
+    const target = e.currentTarget;
+    const data = e.target.value
+    if(data.length > 0){
+        return registerService.checkEmail(data)
+          .then(response => {
+            console.log(response);
+            if(response.data){              
+              ERROR_MODAL("Este correo electrónico ya fue registrado", "");
+            }
+          }).catch(err => {
+            console.log(err);
+            /*dispatch({
+              type: C.NEW_REGISTER,
+              payload: false,
+              correct: false,
+            });
+            ERROR_MODAL('Error al registrar el usuario',  err.data.message);*/
+          });
+    }
+    
+  }  
+
   
+  validationPhone = (e) =>{
+    const target = e.currentTarget;
+    const data = e.target.value
+    if(data.length > 0){
+        return registerService.checkPhone(data)
+          .then(response => {
+            console.log(response);
+            if(response.data){              
+              ERROR_MODAL("Este teléfono ya fue registrado", "");
+            }
+          }).catch(err => {
+            console.log(err);
+            /*dispatch({
+              type: C.NEW_REGISTER,
+              payload: false,
+              correct: false,
+            });
+            ERROR_MODAL('Error al registrar el usuario',  err.data.message);*/
+          });
+    }
+    
+  }  
 
   render() {
 
@@ -309,7 +383,7 @@ class NewRegister extends Component {
                             initialValue: '',
                             rules: [{ required: true, message: 'Por favor ingrese tu número de cédula' }],
                           })(
-                              <Input onChange={this.validationNumbers} maxLength={12}  prefix={<Icon type="idcard" className={'icon-prefix'} />}
+                              <Input onChange={this.validationNumbers} onBlur={this.validationDocument} maxLength={12}  prefix={<Icon type="idcard" className={'icon-prefix'} />}
                                           placeholder="Número de documento" className={"input-number"}/>
                           )}
                         </FormItem>
@@ -324,7 +398,7 @@ class NewRegister extends Component {
                               {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                               {required: true, message: 'Por favor, ingrese tu correo electrónico.' }],
                           })(
-                              <Input maxLength={35} prefix={<Icon type="mail" className={'icon-prefix'} />}
+                              <Input maxLength={35} onBlur={this.validationEmail} prefix={<Icon type="mail" className={'icon-prefix'} />}
                                     placeholder="Correo electrónico"/>
                           )}
                         </FormItem>
@@ -337,7 +411,7 @@ class NewRegister extends Component {
                               {type: 'email', message: 'Por favor, ingrese un correo electrónico válido.'},
                               {required: true, message: 'Por favor, ingrese tu correo electrónico de nuevo.' }],
                           })(
-                              <Input maxLength={35} prefix={<Icon type="mail" className={'icon-prefix'} />}
+                              <Input maxLength={35} onBlur={this.validationEmail} prefix={<Icon type="mail" className={'icon-prefix'} />}
                                     placeholder="Confirmar correo electrónico"/>
                           )}
                         </FormItem>
@@ -351,7 +425,7 @@ class NewRegister extends Component {
                             initialValue: '',
                             rules: [{ required: true, message: 'Por favor ingrese el celular' }],
                           })(
-                          <Input onChange={this.validationNumbers} maxLength={10} placeholder="Número de celular"
+                          <Input onChange={this.validationNumbers} onBlur={this.validationPhone} maxLength={10} placeholder="Número de celular"
                               className={"input-number"}/>
                               )}
                         </FormItem>

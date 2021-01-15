@@ -117,3 +117,67 @@ form.ant-form.ant-form-horizontal.form-home .ant-col {
 .ant-row.home-main-row {
   padding-bottom: 0;
 }
+
+.instagram-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 24px;
+  vertical-align: middle;
+  background: #d6249f;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+  box-shadow: 0px 3px 10px rgba(0,0,0,.25);
+}
+
+.facebook-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 24px;
+vertical-align: middle;
+  background: #0055d4;
+  box-shadow: 0px 3px 10px rgba(0,0,0,.25);
+}
+
+.linkedin-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 24px;
+vertical-align: middle;
+  background: #0E76A8;
+  box-shadow: 0px 3px 10px rgba(0,0,0,.25);
+}
+
+.redes a {
+  display: block !important;
+  width: 40px;
+  height: 40px;
+}
+
+.redes {
+  position: fixed;
+  z-index: 999;
+  bottom: 30%;
+  left:2px;
+}
+
+.redes span:hover {
+  transform:scale(1.1);
+}
+

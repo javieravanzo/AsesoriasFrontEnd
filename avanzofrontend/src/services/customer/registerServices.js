@@ -50,9 +50,33 @@ function getCompanies(){
   });
 };
 
+function checkDocument(documento){
+  
+  return request({
+    url: '/validations/validate_document_number/'+documento,
+    method: 'GET',
+  });
+};
+
+function checkEmail(correo){
+  
+  return request({
+    url: '/validations/validate_email/'+correo,
+    method: 'GET',
+  });
+};
+
+function checkPhone(telefono){
+  
+  return request({
+    url: '/validations/validate_phone_number/'+telefono,
+    method: 'GET',
+  });
+};
+
 
 const registerService = {
-  register, getDocumentTypes, newRegister, getCompanies
+  register, getDocumentTypes, newRegister, getCompanies, checkDocument, checkEmail, checkPhone
 };
 
 export default registerService;
