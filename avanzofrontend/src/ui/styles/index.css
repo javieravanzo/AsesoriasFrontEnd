@@ -101,6 +101,10 @@ div#register {
     padding-top: 5px;
 }
 
+.ant-select-selection-selected-value {
+  margin-top: 5px;
+}
+
 form.ant-form.ant-form-horizontal.form-home .ant-col {
   padding: 0px 10px;
 }

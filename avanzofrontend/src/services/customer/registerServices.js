@@ -74,9 +74,17 @@ function checkPhone(telefono){
   });
 };
 
+function getCycles(companyId){
+  
+  return request({
+    url: '/Company/GetCyclesByCompanyId/'+companyId,
+    method: 'GET',
+  });
+};
+
 
 const registerService = {
-  register, getDocumentTypes, newRegister, getCompanies, checkDocument, checkEmail, checkPhone
+  register, getDocumentTypes, newRegister, getCompanies, checkDocument, checkEmail, checkPhone, getCycles
 };
 
 export default registerService;

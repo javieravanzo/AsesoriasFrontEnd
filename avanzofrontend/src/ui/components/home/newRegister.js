@@ -18,8 +18,7 @@ import '../../styles/home/home.css'
 import { ERROR_MODAL, WARNING_MODAL, allowEmergingWindows } from '../subcomponents/modalMessages';
 
 
-//Services
-import loginServices from '../../../services/general/loginServices'; 
+//Services 
 import registerService from '../../../services/customer/registerServices';
 
 //Constants
@@ -41,6 +40,8 @@ class NewRegister extends Component {
       visibleTermModal: false,
       clicked: false,
       registroForm:true,
+      ciclos:[],
+      selected:[],
     };
     
     this.next = this.next.bind(this);
@@ -119,7 +120,6 @@ class NewRegister extends Component {
   onChange(e) {
     //let { documentId, photo, paymentReport } = this.state;
     let fileType = e.target.files;
-    console.log(fileType);
     let tipo =  e.target.getAttribute("data-tipo");
     switch(tipo){
       case 'cedula':
@@ -237,12 +237,12 @@ class NewRegister extends Component {
   }
 
   validationDocument = (e) =>{
-    const target = e.currentTarget;
+    
     const data = e.target.value
     if(data.length > 0){
         return registerService.checkDocument(data)
           .then(response => {
-            console.log(response);
+            
             if(response.data){              
               ERROR_MODAL("Este número de documento ya fue registrado", "");
             }
@@ -260,12 +260,12 @@ class NewRegister extends Component {
   }  
 
   validationEmail = (e) =>{
-    const target = e.currentTarget;
+    
     const data = e.target.value
     if(data.length > 0){
         return registerService.checkEmail(data)
           .then(response => {
-            console.log(response);
+            
             if(response.data){              
               ERROR_MODAL("Este correo electrónico ya fue registrado", "");
             }
@@ -284,35 +284,54 @@ class NewRegister extends Component {
 
   
   validationPhone = (e) =>{
-    const target = e.currentTarget;
+    
     const data = e.target.value
     if(data.length > 0){
         return registerService.checkPhone(data)
           .then(response => {
-            console.log(response);
+            
             if(response.data){              
               ERROR_MODAL("Este teléfono ya fue registrado", "");
             }
           }).catch(err => {
             console.log(err);
-            /*dispatch({
-              type: C.NEW_REGISTER,
-              payload: false,
-              correct: false,
-            });
-            ERROR_MODAL('Error al registrar el usuario',  err.data.message);*/
+           
           });
     }
     
   }  
 
+  
+
+  loadCycles = (e) =>{
+    let companyId = e.split("*")[1];
+    if(parseInt(companyId) > 0){
+      return registerService.getCycles(companyId)
+        .then(response => {
+          console.log(response);
+          this.setState({
+            ciclos: response.data.cycles,            
+          });
+          this.props.form.setFieldsValue({
+            salary: undefined
+          })
+          
+        }).catch(err => {
+          console.log(err);
+         
+        });
+  }
+  }
+
+
   render() {
 
     const { getFieldDecorator } = this.props.form;
     let { registerInfo } = this.props;
+    
     let companies = registerInfo.companyRow === undefined ? [] : registerInfo.companyRow;
-    let companyCycles = registerInfo.cycles === undefined ? [] : registerInfo.cycles;
-
+    //let companyCycles = registerInfo.cycles === undefined ? [] : registerInfo.cycles;
+    
     return (
       <div>
         <Row className={"home-main-row"}>
@@ -470,7 +489,7 @@ class NewRegister extends Component {
                               {required: true, message: 'Por favor, ingrese tu empresa.' }],
                           })(
                             <Select placeholder="Selecciona tu empresa" allowClear={true} showSearch={true}
-                              notFoundContent={"No hay empresas disponibles"}>
+                              notFoundContent={"No hay empresas disponibles"} onChange={this.loadCycles}>
                               {companies.map((type, i) => (
                                 <Select.Option key={i} value={type.socialReason+"*"+type.idCompany}>
                                   {type.socialReason}
@@ -510,12 +529,13 @@ class NewRegister extends Component {
                         <p className={"form-names"}>Período de nómina</p>
                         <FormItem className='home-form-item'>
                           {getFieldDecorator('salary', {
+                            initialValue : this.state.selected,
                             rules: [ 
                               {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
                           })(
                             <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
                               notFoundContent={"No hay ciclos de pago disponibles"}>
-                              {companyCycles.map((type, i) => (
+                              {this.state.ciclos.map((type, i) => (
                                 <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
                                   {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
                                 </Select.Option>))
