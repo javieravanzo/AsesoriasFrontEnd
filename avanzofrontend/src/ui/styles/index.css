@@ -94,7 +94,7 @@ code {
 
 div#register {
     padding-top: 40px;
-    padding-bottom: 60px;
+    padding-bottom: 120px;
 }
 
 .ant-select-selection__placeholder {
@@ -185,3 +185,6 @@ vertical-align: middle;
   transform:scale(1.1);
 }
 
+.home-main-row {
+  padding-top: 10px;
+}

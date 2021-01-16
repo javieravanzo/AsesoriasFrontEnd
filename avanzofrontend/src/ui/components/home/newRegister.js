@@ -96,7 +96,7 @@ class NewRegister extends Component {
             data.documentId = documentId;
             data.paymentReport = paymentReport;
             data.sliderValue = this.state.sliderValue;
-            console.log(data);
+            data.birthDate = this.convert(data.birthDate);
             //Actions
             this.props.newRegister(data);
           }
@@ -106,6 +106,13 @@ class NewRegister extends Component {
 
       }     
     });
+  };
+
+  convert = (str) => {
+    var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
   };
 
   handleSliderChange = (e) => {
@@ -136,24 +143,7 @@ class NewRegister extends Component {
         
       break;
     }
-    /*for (let file in fileType){
-      //console.log(file===0);
-      if(parseInt(file,10) === 0){
-        
-      }
-      if(parseInt(file,10) === 1){
-        
-      }
-    }*/
-    //console.log(fileType);
-    /*if (status !== 'uploading') {
-      //console.log(info.file, info.fileList);
-    }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }*/
+    
   };
 
   onChangeField(e, param){
@@ -288,8 +278,7 @@ class NewRegister extends Component {
     const data = e.target.value
     if(data.length > 0){
         return registerService.checkPhone(data)
-          .then(response => {
-            
+          .then(response => {            
             if(response.data){              
               ERROR_MODAL("Este teléfono ya fue registrado", "");
             }
