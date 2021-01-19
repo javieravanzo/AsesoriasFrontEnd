@@ -69,7 +69,11 @@ class MainMenu extends Component {
     //let {role} = this.props;
     let role = parseInt(localStorage.role_id, 10);
     //console.log("Props",  this.props.countCustomerData.count);
-    let menu = JSON.parse(localStorage.menu);
+    let menu = [];
+    if(localStorage.menu != undefined){
+      menu = JSON.parse(localStorage.menu);
+    }
+    
 
     return(
       <Layout className="layout" >
@@ -93,96 +97,7 @@ class MainMenu extends Component {
               )}
 
 
-                {/*              
-                (role === 2 || role === 1 ) && 
-                <Menu.Item className={"menu-admin-report"}>
-                  <NavLink to={routes.admin_generate_reports}>
-                    <Icon type="file"/>Generar Reportes
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (role === 2 || role === 1 || role === 5 ) && 
-                <Menu.Item className={"menu-admin-customer"}>
-                  <NavLink to={routes.admin_customer_management}>
-                    <Icon type="idcard"/>Gestionar Clientes
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (role === 2 || role === 1 || role === 5 ) && 
-                <Menu.Item className={"menu-admin-loan"}>
-                  <NavLink to={routes.admin_request_management}>
-                    <Icon type="percentage"/>Gestionar Créditos
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (role === 2 || role === 1 ) && 
-                <Menu.Item className={"menu-admin-home"}>
-                  <NavLink to={routes.admin_company_management}>
-                    <Icon type="cluster"/>Gestionar Empresas
-                  </NavLink>
-                  
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 3) && 
-                <Menu.Item className={"menu-admin-customer"}>
-                  <NavLink to={routes.company_generate_reports}>
-                    <Icon type="file-text"/>Generar informes
-                  </NavLink>
-                </Menu.Item>
-              } 
-              {
-                (parseInt(role,10) === 3) && 
-                <Menu.Item className={"menu-admin-customer"}>
-                  <NavLink to={routes.company_request_management}>
-                    <Icon type="file-done"/>Gestionar solicitudes
-                  </NavLink>  
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item className={"menu-user-request"}>
-                  <NavLink to={routes.customer_account}>
-                    <Icon type="control"/>Cuenta
-                  </NavLink>
-                </Menu.Item>
-              }            
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item className={"menu-user-transactions"}>
-                  <NavLink to={routes.customer_transactions}>
-                    <Icon type="profile"/>Transacciones
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item className={"menu-user-request"}>
-                  <NavLink to={routes.customer_review_requests}>
-                    <Icon type="schedule"/>Revisar solicitudes
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item className={"menu-user-loan"}>
-                  <NavLink to={routes.customer_form_request}>
-                    <Icon type="dollar"/>Solicitar préstamo
-                  </NavLink>
-                </Menu.Item>
-              }
-              {
-                (parseInt(role,10) === 4) && 
-                <Menu.Item className={"menu-user-home"}>
-                  <NavLink to={routes.customer}>
-                    <Icon type="home"/>Inicio
-                  </NavLink>
-                </Menu.Item>
-              }
-              */}
+               
             </Menu>
             
         </Header>

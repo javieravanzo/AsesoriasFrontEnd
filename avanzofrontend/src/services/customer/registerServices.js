@@ -34,8 +34,19 @@ function newRegister(data) {
   bodyFormData.append('password', data.password);
   bodyFormData.append('documentId', data.documentId);  
   bodyFormData.append('paymentReport', data.paymentReport);
-  bodyFormData.append('gender', data.gender);   
+  bodyFormData.append('gender', data.gender); 
+  bodyFormData.append('vehicle', data.vehicle); 
+  if(!data.vehicle){
+    bodyFormData.append('vehicle_type', null);
+    bodyFormData.append('license_plate_vehicle', null); 
+  }else{
+    bodyFormData.append('vehicle_type', data.vehicle_type);
+    bodyFormData.append('license_plate_vehicle', data.license_plate_vehicle); 
+  }   
+  bodyFormData.append('clie_address', data.clie_address); 
+  bodyFormData.append('clie_from', data.clie_from); 
   
+  console.log(bodyFormData);
   return request({
     url: '/Account/NewRegister',
     method: 'POST',

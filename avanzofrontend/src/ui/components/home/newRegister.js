@@ -42,6 +42,8 @@ class NewRegister extends Component {
       registroForm:true,
       ciclos:[],
       selected:[],
+      vehicle:0,
+      otro:false
     };
     
     this.next = this.next.bind(this);
@@ -50,7 +52,7 @@ class NewRegister extends Component {
     this.handleSliderChange = this.handleSliderChange.bind(this);
     this.carousel = React.createRef();
 
-
+    
     this.showLogin = this.showLogin.bind(this);
     //this.props.getCompanies();
 
@@ -83,6 +85,11 @@ class NewRegister extends Component {
         ERROR_MODAL("Error al realizar la acción", "Por favor, acepta los términos y condiciones.");
       }else{
         if(documentId !== null && paymentReport !== null ){
+
+          if(values.email !== values.emailConfirmation){
+            WARNING_MODAL("Los correos no coinciden");
+            return false;
+          }
   
           if(values.password !== values.confirmPassword){
             WARNING_MODAL("Las contraseñas no coinciden");
@@ -97,6 +104,10 @@ class NewRegister extends Component {
             data.paymentReport = paymentReport;
             data.sliderValue = this.state.sliderValue;
             data.birthDate = this.convert(data.birthDate);
+            if(values.clie_from === "Otro"){
+              data.clie_from = values.clie_from_otro;
+            }
+            
             //Actions
             this.props.newRegister(data);
           }
@@ -228,12 +239,16 @@ class NewRegister extends Component {
 
   validationDocument = (e) =>{
     
-    const data = e.target.value
+    let data = e.target.value
+
     if(data.length > 0){
         return registerService.checkDocument(data)
           .then(response => {
             
-            if(response.data){              
+            if(response.data){   
+              setTimeout(function(){
+                document.getElementById("identificationId").value = "";  
+              }, 500) 
               ERROR_MODAL("Este número de documento ya fue registrado", "");
             }
           }).catch(err => {
@@ -256,7 +271,10 @@ class NewRegister extends Component {
         return registerService.checkEmail(data)
           .then(response => {
             
-            if(response.data){              
+            if(response.data){  
+              setTimeout(function(){
+                document.getElementById("email").value = "";  
+              }, 500)          
               ERROR_MODAL("Este correo electrónico ya fue registrado", "");
             }
           }).catch(err => {
@@ -279,7 +297,10 @@ class NewRegister extends Component {
     if(data.length > 0){
         return registerService.checkPhone(data)
           .then(response => {            
-            if(response.data){              
+            if(response.data){ 
+              setTimeout(function(){
+                document.getElementById("phoneNumber").value = "";  
+              }, 500)              
               ERROR_MODAL("Este teléfono ya fue registrado", "");
             }
           }).catch(err => {
@@ -312,6 +333,19 @@ class NewRegister extends Component {
   }
   }
 
+  showVehicleComponent = (e) => {
+    this.setState({
+      vehicle: e,
+    });
+  }
+
+  showOtro = (e) => {
+    if(e === "Otro"){
+      this.setState({
+        otro: true,
+      });
+    }
+  }
 
   render() {
 
@@ -471,6 +505,88 @@ class NewRegister extends Component {
                         </FormItem>
                       </Col>
                       <Col lg={12} md={12} sm={24} xs={24}>
+                        <p className={"form-names"}>Dirección</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('clie_address', { initialValue: '',
+                            rules: [ 
+                              {required: true, message: 'Por favor, ingresa tu dirección.' }],
+                          })(
+                              <Input maxLength={200} prefix={<Icon type="home" className={'icon-prefix'} />}
+                                    placeholder="Dirección"/>
+                          )}
+                        </FormItem>
+                      </Col>
+                      <Col lg={12} md={12} sm={24} xs={24}>
+                        <p className={"form-names"}>¿Tienes Vehículo?</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('vehicle', {
+                            rules: [ 
+                              {required: true, message: 'Por favor, selecciona una opción.' }],
+                          })(
+                            <Select placeholder="Selecciona" onChange={this.showVehicleComponent}>
+   
+                                <Select.Option value={1}>
+                                  Sí
+                                </Select.Option>
+                                <Select.Option value={0}>
+                                  No
+                                </Select.Option>
+                            </Select>
+                          )}
+                        </FormItem>
+                      </Col>
+                      {
+                        (this.state.vehicle === 1)? (<div><Col lg={12} md={12} sm={24} xs={24}>
+                          <p className={"form-names"}>¿Qué tipo de vehículo?</p>
+                          <FormItem className='home-form-item'>
+                            {getFieldDecorator('vehicle_type', {
+                              rules: [ 
+                                {required: true, message: 'Por favor, selecciona una opción.' }],
+                            })(
+                              <Select placeholder="Selecciona">
+                                  <Select.Option value={"Moto"}>
+                                    Moto
+                                  </Select.Option>
+                                  <Select.Option value={"Auto familiar"}>
+                                    Auto familiar
+                                  </Select.Option>
+                                  <Select.Option value={"Campero o Camioneta"}>
+                                    Campero o Camioneta
+                                  </Select.Option>
+                                  <Select.Option value={"Carga o Mixto"}>
+                                    Carga o Mixto
+                                  </Select.Option>
+                                  <Select.Option value={"Oficial Especial"}>
+                                    Oficial Especial
+                                  </Select.Option>
+                                  <Select.Option value={"Vehículo 6 o más Pasajeros"}>
+                                    Vehículo 6 o más Pasajeros
+                                  </Select.Option>
+                                  <Select.Option value={"Auto de Negocio o Taxi"}>
+                                    Auto de Negocio o Taxi
+                                  </Select.Option>
+                                  <Select.Option value={"Bus o Buseta (Público"}>
+                                    Bus o Buseta (Público)
+                                  </Select.Option>
+                                  <Select.Option value={"Servicio Público Intermunicipal"}>
+                                    Servicio Público Intermunicipal
+                                  </Select.Option>
+                              </Select>
+                            )}
+                          </FormItem>
+                        </Col><Col lg={12} md={12} sm={12} xs={12}>
+                        <p className={"form-names"}>Placa de tu Vehículo</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('license_plate_vehicle', {
+                            initialValue: '',
+                            rules: [{ required: true, message: 'Por favor ingresa la placa de tu vehículo' }],
+                          })(
+                          <Input maxLength={6} placeholder="Placa de tu Vehículo" className={""}/>
+                              )}
+                        </FormItem>
+                      </Col></div>):''
+                      }
+                      <Col lg={12} md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Empresa</p>
                         <FormItem className='home-form-item'>
                           {getFieldDecorator('company', {
@@ -493,27 +609,6 @@ class NewRegister extends Component {
                     
                     
                     <Row gutter={4}>
-
-                    {/*<Col lg={12} md={12} sm={24} xs={24}>
-                        <p className={"form-names"}>Período de nómina</p>
-                        <FormItem className='home-form-item'>
-                          {getFieldDecorator('salary', {
-                            rules: [ 
-                              {required: true, message: 'Por favor, ingresa tu período de nómina.' }],
-                          })(
-                            <Select placeholder="Selecciona tu ciclo de pagos" allowClear={true} showSearch={true}
-                              notFoundContent={"No hay ciclos de pago disponibles"}>
-                              {
-                              registerInfo.cycles.map((type, i) => (
-                                <Select.Option key={type.idCompanySalaries} value={type.idCompanySalaries}>
-                                  {"Pago " + type.companyRateName + " - " + type.companyPaymentDates}
-                                </Select.Option>))
-                              }
-                            </Select>
-                          )}
-                        </FormItem>
-                            </Col>*/}
-
                       <Col lg={12} md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Período de nómina</p>
                         <FormItem className='home-form-item'>
@@ -594,6 +689,49 @@ class NewRegister extends Component {
                               accept=".pdf, application/pdf"/>
                       </Col>        
                     </Row>
+
+                    <Row gutter={4}>
+                      <Col lg={12} md={10} sm={24} xs={24}>
+                      <p className={"form-names"}>¿Dónde nos conociste?</p>
+                          <FormItem className='home-form-item'>
+                            {getFieldDecorator('clie_from', {
+                              rules: [ 
+                                {required: true, message: 'Por favor, selecciona una opción.' }],
+                            })(
+                              <Select placeholder="Selecciona" onChange={this.showOtro}>
+                                  <Select.Option value={"Por mi empresa"}>
+                                    Por mi empresa
+                                  </Select.Option>
+                                  <Select.Option value={"Redes Sociales"}>
+                                    Redes Sociales
+                                  </Select.Option>
+                                  <Select.Option value={"Recomendación"}>
+                                    Recomendación
+                                  </Select.Option>
+                                  <Select.Option value={"Volantes"}>
+                                    Volantes
+                                  </Select.Option>
+                                  <Select.Option value={"Otro"}>
+                                    Otro
+                                  </Select.Option>
+                              </Select>
+                            )}
+                          </FormItem>
+                      </Col>
+                      {(this.state.otro) ? (<Col lg={12} md={12} sm={12} xs={12}>
+                        <p className={"form-names"}>¿Dónde?</p>
+                        <FormItem className='home-form-item'>
+                          {getFieldDecorator('clie_from_otro', {
+                            initialValue: '',
+                            rules: [{ required: true, message: 'Por favor ingresa en donde nos conociste' }],
+                          })(
+                          <Input maxLength={200} placeholder="Cuéntanos dónde." className={""}/>
+                              )}
+                        </FormItem>
+                      </Col>):''
+                      }
+                </Row>   
+
                     <Row>
                     <FormItem className='home-form-item'>
                       {getFieldDecorator('checkBox1', { initialValue: '',
@@ -614,6 +752,8 @@ class NewRegister extends Component {
                           </Row>
                       )}
                     </FormItem>
+
+
                   </Row>
                   
                     <Row className={"button-home-row"}>
