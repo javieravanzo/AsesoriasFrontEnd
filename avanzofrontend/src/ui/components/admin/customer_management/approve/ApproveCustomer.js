@@ -1,14 +1,20 @@
 //Libraries
 import React, {Component} from 'react';
-import {Row, List, Spin, Col, Input} from 'antd';
+import {Row, List, Spin, Col, Input, Modal} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Components
 import RequestModalCard from "./RequestModalCard";
 
+//Subcomponents
+import { ERROR_MODAL} from '../../../subcomponents/modalMessages';
+
 //Actions
 import {getAllCustomersToApprove} from "../../../../../store/redux/actions/admin/adminActions";
+
+//Services 
+import adminServices from '../../../../../services/admin/adminServices';
 
 class ApproveCustomer extends Component{
 
@@ -22,7 +28,8 @@ class ApproveCustomer extends Component{
       socialReason: null,
       identificationId: null,
       email: null,
-      loadInfo: false
+      loadInfo: false, 
+      razones : []
     };
 
     this.props.getAllCustomersToApprove();
@@ -99,62 +106,88 @@ class ApproveCustomer extends Component{
     return true;
   };
 
+  
+  
+  getReasons = () =>{
+    let token = localStorage.access_token;
+    return adminServices.getReasons(token )
+      .then(response => {
+        this.setState({
+          razones: response.data
+        })
+  
+      }).catch(err => {
+        ERROR_MODAL('Error al traer la lista de razones de rechazo', err.data);
+      });
+  }
+
   render(){
+    this.getReasons();
     
-    let {name, identificationId, lastName, socialReason, email} = this.state;
-    //console.log("CLA", this.props.customerListToApprove);
-    let tableData = this.setData(this.props.customerListToApprove);
-    //console.log("TD", tableData, JSON.stringify(tableData) === '[]', JSON.stringify(tableData));
+    if (!this.state.razones){
+      return <div></div>
+    }
+    if(this.state.razones){
 
-    if(this.props.customerListToApprove === null){
-      return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
-                Cargando ...
-                <br/>
-                <br/>
-                <Spin size="large" />
-              </div>);
-    }else{
-      return(
-        <div>
-          <Row gutter={8} className={"approve-request-filter"}>
-            <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
-              <p className="field-title-visible">Nombres </p>
-              <Input placeholder={"Nombres"} value={name} onChange={(e) => this.setState({name: e.target.value})}/>
-            </Col>
-            <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
-              <p className="field-title-visible">Apellidos</p>
-              <Input placeholder={"Apellidos"} value={lastName} onChange={(e) => this.setState({lastName: e.target.value})}/>
-            </Col>
-
-            <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
-              <p className="field-title-visible">No. Identificación</p>
-              <Input placeholder={"No. Identificación"} value={identificationId} onChange={(e) => this.setState({identificationId: e.target.value})}/>
-            </Col>
-
-            <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
-              <p className="field-title-visible">Empresa</p>
-              <Input placeholder={"Empresa"} value={socialReason} onChange={(e) => this.setState({socialReason: e.target.value})}/>
-            </Col>
-
-            <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
-              <p className="field-title-visible">Email</p>
-              <Input placeholder={"Email"} value={email} onChange={(e) => this.setState({email: e.target.value})}/>
-            </Col>
-          </Row>
-          <br/>
-          <Row>
-            <List
-              dataSource={tableData}
-              renderItem={(item, k) => (
-                <List.Item className={"request-state-list-item"}>
-                    <RequestModalCard item={item} key={k}/>
-                </List.Item>
-              )}
-              locale={{emptyText: "No hay clientes para aprobar."}}
-              />
-          </Row>
-        </div>
-      );
+      let {name, identificationId, lastName, socialReason, email} = this.state;
+      //console.log("CLA", this.props.customerListToApprove);
+      let tableData = this.setData(this.props.customerListToApprove);
+      //console.log("TD", tableData, JSON.stringify(tableData) === '[]', JSON.stringify(tableData));
+  
+      if(this.props.customerListToApprove === null){
+        return (<div style={{marginTop: '50px', color: "#1c77ff", fontSize:"20px", textAlign: "center"}}>
+                  Cargando ...
+                  <br/>
+                  <br/>
+                  <Spin size="large" />
+                </div>);
+      }else{
+        return(
+          <div>
+            <Row gutter={8} className={"approve-request-filter"}>
+              <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
+                <p className="field-title-visible">Nombres </p>
+                <Input placeholder={"Nombres"} value={name} onChange={(e) => this.setState({name: e.target.value})}/>
+              </Col>
+              <Col className="filter"  xs={12} sm={12} md={8} lg={4}>
+                <p className="field-title-visible">Apellidos</p>
+                <Input placeholder={"Apellidos"} value={lastName} onChange={(e) => this.setState({lastName: e.target.value})}/>
+              </Col>
+  
+              <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
+                <p className="field-title-visible">No. Identificación</p>
+                <Input placeholder={"No. Identificación"} value={identificationId} onChange={(e) => this.setState({identificationId: e.target.value})}/>
+              </Col>
+  
+              <Col className="filter"  xs={12} sm={12} md={8} lg={5}>
+                <p className="field-title-visible">Empresa</p>
+                <Input placeholder={"Empresa"} value={socialReason} onChange={(e) => this.setState({socialReason: e.target.value})}/>
+              </Col>
+  
+              <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
+                <p className="field-title-visible">Email</p>
+                <Input placeholder={"Email"} value={email} onChange={(e) => this.setState({email: e.target.value})}/>
+              </Col>
+            </Row>
+            <br/>
+            <Row>
+              <List
+                dataSource={tableData}
+                renderItem={(item, k) => (
+                  <List.Item className={"request-state-list-item"}>
+                      <RequestModalCard item={item} key={k} reasons={this.state.razones}/>
+                  </List.Item>
+                )}
+                locale={{emptyText: "No hay clientes para aprobar."}}
+                />
+            </Row>
+          </div>); 
+    
+    
+    }
+    
+   
+      
     }
   }
 

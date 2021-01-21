@@ -318,7 +318,6 @@ class NewRegister extends Component {
     if(parseInt(companyId) > 0){
       return registerService.getCycles(companyId)
         .then(response => {
-          console.log(response);
           this.setState({
             ciclos: response.data.cycles,            
           });
