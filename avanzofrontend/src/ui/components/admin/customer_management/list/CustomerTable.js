@@ -38,11 +38,11 @@ const table = [
   },
   {
     title: <div className={"table-p"}>Fecha Creación</div>,
-    dataIndex: 'createdDate',
+    dataIndex: 'createdAt',
     width: "60px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
+    sorter: (a, b) =>{ return a.createdAt.localeCompare(b.createdAt)},
   },
   {
     title: <div className={"table-p"}>Empresa</div>,
@@ -93,7 +93,7 @@ class CustomerTable extends Component {
       name: null, 
       identificationId: null,
       email: null, 
-      createdDate: null,
+      createdAt: null,
       totalRemainder: null,
       socialReason: null
     };
@@ -118,7 +118,7 @@ class CustomerTable extends Component {
           name: item.name + " " + item.lastName,
           identificationId: item.identificationId,
           email: item.email,
-          createdDate: item.createdDate,
+          createdAt: item.createdAt,
           totalRemainder: item.totalRemainder,
           socialReason: item.socialReason,
           platformState: parseInt(item.platformState, 10) === 1 ? "Activo" : "Inactivo",
