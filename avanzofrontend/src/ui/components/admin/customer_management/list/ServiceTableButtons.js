@@ -5,9 +5,11 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
 //Actions
-import {activateCustomer, updateCustomer, deleteClient} from "../../../../../store/redux/actions/admin/adminActions";
+import {activateCustomer, updateCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+import customerService from '../../../../../services/customer/customerServices';
 
 //Styles
+import { SUCCESS_MODAL } from '../../../subcomponents/modalMessages';
 
 class TableButtons extends Component {
   
@@ -55,7 +57,18 @@ class TableButtons extends Component {
   };
 
   changeStateUser(e){
-    console.log(e);
+    if(e !== undefined){
+      let userId = e.idUser;
+      return customerService.disableUser(userId)
+      .then(response => {
+       if(response.status === 200){
+        SUCCESS_MODAL(response.data.message);
+       }
+      }).catch(err => {
+        console.log(err);
+       
+      });
+    }
   }; 
 
   handleEdit(item){
@@ -98,7 +111,7 @@ class TableButtons extends Component {
           </Col>
           <Col span={6}  className={"delete-col"}>
             <Tooltip title={"Activar/Desactivar usuario"}>
-              <Icon className={"icon-button delete-icon"} onClick={() => this.this.deleteUser(this.props.item)}
+              <Icon className={"icon-button delete-icon"} onClick={() => this.changeStateUser(this.props.item)}
                 type={"close-circle"} style={{ fontSize: '16px'}}/>
             </Tooltip>
           </Col>           

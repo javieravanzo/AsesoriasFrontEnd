@@ -468,7 +468,8 @@ export const getAllCustomersToApprove = ( ) => {
           type: C.GET_CUSTOMERS_TO_APPROVE,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de clientes', err.data);
+        ERROR_MODAL('Error al traer la lista de clientes para aprobar',null);
+        console.log(err);
       });
   }
 };
@@ -486,7 +487,9 @@ export const getCustomersCountToApprove = ( ) => {
           type: C.GET_CUSTOMERS_COUNT_TO_APPROVE,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la cantidad de clientes por aprobar', err.data);
+        ERROR_MODAL('Error al traer la cantidad de clientes por aprobar', null);
+        console.log(err)
+        
       });
   }
 };
@@ -525,7 +528,8 @@ export const approveCustomers = (client, approve, cycleId, rere_id) => {
           type: C.APPROVE_CUSTOMERS,
           payload: err,
         });
-        ERROR_MODAL('Error al modificar el estado del cliente', err.data);
+        ERROR_MODAL('Error al modificar el estado del cliente', null);
+        console.log(err);
       });
   }
 };
