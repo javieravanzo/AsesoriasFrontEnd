@@ -7,14 +7,12 @@ import PropTypes from 'prop-types';
 //Components
 import RequestModalCard from "./RequestModalCard";
 
-//Subcomponents
-import { ERROR_MODAL} from '../../../subcomponents/modalMessages';
+
 
 //Actions
 import {getAllCustomersToApprove} from "../../../../../store/redux/actions/admin/adminActions";
 
-//Services 
-import adminServices from '../../../../../services/admin/adminServices';
+
 
 class ApproveCustomer extends Component{
 
@@ -29,7 +27,6 @@ class ApproveCustomer extends Component{
       identificationId: null,
       email: null,
       loadInfo: false, 
-      razones : []
     };
 
     this.props.getAllCustomersToApprove();
@@ -108,26 +105,8 @@ class ApproveCustomer extends Component{
 
   
   
-  getReasons = () =>{
-    let token = localStorage.access_token;
-    return adminServices.getReasons(token )
-      .then(response => {
-        this.setState({
-          razones: response.data
-        })
-  
-      }).catch(err => {
-        ERROR_MODAL('Error al traer la lista de razones de rechazo', err.data);
-      });
-  }
-
+ 
   render(){
-    this.getReasons();
-    
-    if (!this.state.razones){
-      return <div></div>
-    }
-    if(this.state.razones){
 
       let {name, identificationId, lastName, socialReason, email} = this.state;
       //console.log("CLA", this.props.customerListToApprove);
@@ -175,7 +154,7 @@ class ApproveCustomer extends Component{
                 dataSource={tableData}
                 renderItem={(item, k) => (
                   <List.Item className={"request-state-list-item"}>
-                      <RequestModalCard item={item} key={k} reasons={this.state.razones}/>
+                      <RequestModalCard item={item} key={k} reasons={this.props.razones}/>
                   </List.Item>
                 )}
                 locale={{emptyText: "No hay clientes para aprobar."}}
@@ -190,8 +169,6 @@ class ApproveCustomer extends Component{
       
     }
   }
-
-}
 
 ApproveCustomer.propTypes = {
   customerListToApprove: PropTypes.array,

@@ -211,7 +211,7 @@ function getDateListToCustomer(companyid){
   });
 };
 
-function approveCustomer(client, approve, cycleId){
+function approveCustomer(client, approve, cycleId, rere_id){
 
   return request({
     url: '/Customer/ApproveorReject',
@@ -219,7 +219,8 @@ function approveCustomer(client, approve, cycleId){
     headers: {
       clientId: parseInt(client, 10),
       approve: approve,
-      cycleId: cycleId
+      cycleId: cycleId,
+      rere_id: rere_id
     }
   });
 

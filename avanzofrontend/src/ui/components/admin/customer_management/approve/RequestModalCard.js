@@ -5,7 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-import { allowEmergingWindows, WARNING_MODAL, ERROR_MODAL} from '../../../subcomponents/modalMessages';
+import { allowEmergingWindows, WARNING_MODAL} from '../../../subcomponents/modalMessages';
 import BaseURL from '../../../../../services/BaseURL';
 
 //Actions
@@ -18,7 +18,7 @@ import '../../../../styles/admin/request_management/request-state.css';
 
 //Constants
 //const Step = Steps.Step;
-const FormItem = Form.Item;
+
 
 class RequestModalCard extends Component {
 
@@ -35,6 +35,7 @@ class RequestModalCard extends Component {
       card_style_rejected: "rejected",
       reject_modal: null,
       cycle: null,
+      reason: null
     };
 
     
@@ -109,8 +110,12 @@ class RequestModalCard extends Component {
   };
 
   onRejectRequest = () => {
-    this.props.approveCustomers(this.props.item.idNewClient, false, -1);
-    this.setState({reject_modal: false});
+      if(this.state.reason === undefined){
+        WARNING_MODAL("Advertencia", "Por favor seleecione una razón de rechazo");
+      }else{
+        this.props.approveCustomers(this.props.item.idNewClient, false, -1, this.state.reason);
+        this.setState({reject_modal: false});
+      }      
   };
 
   validationInputNumbers = (e) => {
@@ -124,6 +129,14 @@ class RequestModalCard extends Component {
       cycle: e
     });
   };
+
+  
+  changeReason = (e) => {
+    this.setState({
+      reason: e
+    });
+  };
+  
 
 
   render(){
@@ -269,15 +282,18 @@ class RequestModalCard extends Component {
               <div>
                 ¿Está seguro de realizar el rechazo del cliente? El usuario será envíado a un estado de rechazado o pendiente de evaluación particular.     
                 <br/><br/>
+                <Row>
                   <p className={"form-names"}>Razón:</p>
                     <Select placeholder="Selecciona" allowClear={true} showSearch={true}
-                      notFoundContent={"No hay razones disponibles"} className={"full-width"}>
+                      notFoundContent={"No hay razones disponibles"} className={"col-md-12"} onChange={this.changeReason}>
                       {this.props.reasons.map((type, i) => (
                         <Select.Option key={type.rere_id} value={type.rere_id}>
                           {type.rere_description}
                         </Select.Option>))
                       }
-                    </Select>      
+                    </Select> 
+                </Row>
+                       
               </div>
           </Modal>
         </div>
@@ -301,7 +317,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   
   return {
-    approveCustomers: (client, approve, cycleId) => dispatch(approveCustomers(client, approve, cycleId)), 
+    approveCustomers: (client, approve, cycleId, rere_id) => dispatch(approveCustomers(client, approve, cycleId, rere_id)), 
     getDateListToCustomer: (companyId) => dispatch(getDateListToCustomer(companyId)),    
   }
   
