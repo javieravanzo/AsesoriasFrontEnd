@@ -29,7 +29,7 @@ class TableButtons extends Component {
       delete: null,
     };
 
-    this.chanteStateUser = this.chanteStateUser.bind(this);
+    this.changeStateUser = this.changeStateUser.bind(this);
     this.inputServiceName = this.inputServiceName.bind(this);
     this.inputServiceTime = this.inputServiceTime.bind(this);
     this.inputService = this.inputService.bind(this);
