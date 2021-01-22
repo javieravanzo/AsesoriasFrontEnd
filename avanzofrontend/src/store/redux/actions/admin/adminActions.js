@@ -522,7 +522,7 @@ export const approveCustomers = (client, approve, cycleId, rere_id) => {
           type: C.APPROVE_CUSTOMERS,
           payload: response.data
         });
-        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data);
+        SUCCESS_MODAL("Acción realizada satisfactoriamente", response.data.message);
       }).catch(err => {
         dispatch({
           type: C.APPROVE_CUSTOMERS,
