@@ -57,11 +57,11 @@ const table = [
   },  
   {
     title: <div className={"table-p"}>Fecha Creación</div>,
-    dataIndex: 'registeredDate',
+    dataIndex: 'createdAt',
     width: "100px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.registeredDate.localeCompare(b.registeredDate)},
+    sorter: (a, b) =>{ return a.createdAt.localeCompare(b.createdAt)},
   },
   {
     title: " ",
@@ -118,7 +118,7 @@ class CompanyTable extends Component {
           key: i,
           socialReason: item.socialReason,
           nit: item.nit,
-          registeredDate: item.registeredDate,
+          createdAt: item.createdAt,
           split: item.maximumSplit,
           quantity: item.defaultAmount,
           approveHumanResources: item.approveHumanResources,
