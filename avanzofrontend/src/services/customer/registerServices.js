@@ -46,7 +46,7 @@ function newRegister(data) {
   bodyFormData.append('clie_address', data.clie_address); 
   bodyFormData.append('clie_from', data.clie_from); 
   
-  console.log(bodyFormData);
+  
   return request({
     url: '/Account/NewRegister',
     method: 'POST',

@@ -309,6 +309,16 @@ function loadCompanyFile(data){
 
 };
 
+function getReasons(token){
+  return request({
+    url: '/Request/GetAllRejectionReasons',
+    method: 'GET', 
+    headers: { 
+      'Authorization': 'Bearer ' + token 
+    }
+  });
+}
+
 
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
@@ -319,7 +329,7 @@ const adminService = {
   getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest,
   receiveBankFile, getAllProcessDocumentChanges, getAllProcessinBank, getAllFinalizedRequest,
   generatePendingByBankReport, generateGeneralPendingByRRHH, generateParticularPendingByRRHH,
-  loadCompanyFile
+  loadCompanyFile, getReasons
 };
 
 export default adminService;

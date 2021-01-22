@@ -1,11 +1,11 @@
 //Libraries
 import React, {Component} from 'react';
-import {Col, Row, Tooltip, Icon, Button, Modal, Select, InputNumber} from 'antd';
+import {Col, Row, Tooltip, Icon, Button, Modal, Select, InputNumber, Form} from 'antd';
 import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-import { allowEmergingWindows, WARNING_MODAL } from '../../../subcomponents/modalMessages';
+import { allowEmergingWindows, WARNING_MODAL, ERROR_MODAL} from '../../../subcomponents/modalMessages';
 import BaseURL from '../../../../../services/BaseURL';
 
 //Actions
@@ -14,8 +14,11 @@ import {approveCustomers, getDateListToCustomer} from "../../../../../store/redu
 //Styles
 import '../../../../styles/admin/request_management/request-state.css';
 
+
+
 //Constants
 //const Step = Steps.Step;
+const FormItem = Form.Item;
 
 class RequestModalCard extends Component {
 
@@ -33,10 +36,13 @@ class RequestModalCard extends Component {
       reject_modal: null,
       cycle: null,
     };
-   
+
+    
     this.props.getDateListToCustomer(this.props.item.idCompany);
 
   };
+
+
 
   defineBadgeName = (id) => {
     if(id === 1){
@@ -119,13 +125,16 @@ class RequestModalCard extends Component {
     });
   };
 
-  render(){
 
+  render(){
+ 
     let item = this.props.item;
     let cycles = this.props.customerDateList !== null ? this.props.customerDateList : [];
+    
     //console.log("item", this.props.item);
 
     return (
+     
           <div key={item.key} className={"request-state-item-requested"}>
             <Row>
               <Col xs={24} sm={12} md={2} lg={2}>
@@ -258,7 +267,17 @@ class RequestModalCard extends Component {
             onOk={() => this.onRejectRequest()}
             onCancel={() => this.setState({reject_modal: false})}>
               <div>
-                ¿Está seguro de realizar el rechazo del cliente? El usuario será envíado a un estado de rechazado o pendiente de evaluación particular.               
+                ¿Está seguro de realizar el rechazo del cliente? El usuario será envíado a un estado de rechazado o pendiente de evaluación particular.     
+                <br/><br/>
+                  <p className={"form-names"}>Razón:</p>
+                    <Select placeholder="Selecciona" allowClear={true} showSearch={true}
+                      notFoundContent={"No hay razones disponibles"} className={"full-width"}>
+                      {this.props.reasons.map((type, i) => (
+                        <Select.Option key={type.rere_id} value={type.rere_id}>
+                          {type.rere_description}
+                        </Select.Option>))
+                      }
+                    </Select>      
               </div>
           </Modal>
         </div>
@@ -280,10 +299,13 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
+  
   return {
     approveCustomers: (client, approve, cycleId) => dispatch(approveCustomers(client, approve, cycleId)), 
-    getDateListToCustomer: (companyId) => dispatch(getDateListToCustomer(companyId)),
+    getDateListToCustomer: (companyId) => dispatch(getDateListToCustomer(companyId)),    
   }
+  
+  
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestModalCard);

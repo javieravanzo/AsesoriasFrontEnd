@@ -112,6 +112,7 @@ class CustomerTable extends Component {
       for (let i = 0; i < linkList.length; i++) {
       
         let item = linkList[i];
+        
         let row = {
           key: i,
           name: item.name + " " + item.lastName,
@@ -211,7 +212,7 @@ class CustomerTable extends Component {
 
                 </Row>
                 <Divider className={"second-divider"}/>
-                  <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}
+                  <Table className={"new-table"} rowClassName={(record) => (record.platformState !== "Activo")?"back-red":""} dataSource={tableData} columns={table} rowKey={'key'}
                     locale={{ emptyText: 'No hay clientes todavía' }} pagination={{ itemRender: itemRender, showSizeChanger: true,
                     pageSizeOptions: ["5", "10", "15", "20"] }} size={'small'} scroll={{x:'500px'|true}}/>
               </Card>
