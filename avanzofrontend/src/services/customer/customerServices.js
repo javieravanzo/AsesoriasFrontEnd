@@ -240,13 +240,29 @@ function checkCodes(userid, phonecode, emailcode){
   });
 };
 
+function disableUser(userid){
+  
+  return request({
+    url: '/User/updateState',
+    method: 'PUT',
+    data: {
+      userId: userid,
+      state:false
+    },
+    /*headers: {
+      userid: userid,
+      state:true
+    }*/
+  });
+};
+
 
 
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, 
   createRequest, getAllTransactions, getAllRequest, getAllRequestWasOutlayed, 
   getAllRequestWasRejected, getAccountDetail, generateCodes, checkCodes, updateRequestInformation,
-  updateRequestDocuments
+  updateRequestDocuments, disableUser
 };
 
 export default customerService;
