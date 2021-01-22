@@ -509,9 +509,9 @@ export const getDateListToCustomer = (companyId) => {
   }
 };
 
-export const approveCustomers = (client, approve, cycleId) => {
+export const approveCustomers = (client, approve, cycleId, rere_id) => {
   return dispatch => {
-    return adminServices.approveCustomer(client, approve, cycleId)
+    return adminServices.approveCustomer(client, approve, cycleId, rere_id)
       .then(response => {
         dispatch(getAllCustomersToApprove());
         dispatch(getCustomersCountToApprove());

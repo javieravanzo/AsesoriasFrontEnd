@@ -7,19 +7,56 @@ import CustomerManagement from './create/CreateCustomer';
 import ApproveCustomer from './approve/ApproveCustomer';
 import CustomerTable from './list/CustomerTable';
 
+//Subcomponents
+import { ERROR_MODAL} from '../../subcomponents/modalMessages';
+
 //Styles
 import '../../../styles/admin/index.css';
 
-//Assets
+//Services 
+import adminServices from '../../../../services/admin/adminServices';
 
 //Constants
 const { TabPane } = Tabs;
 
 
+
+
 class Customer_Management extends Component {
 
-  render() {
+  constructor(props){
+    
+    super(props);
 
+    this.state = {
+      razones : [] 
+    };
+  
+  };
+
+  getRazones = () =>{
+    if(this.state.razones.length == 0){
+      let token = localStorage.access_token;
+      return adminServices.getReasons(token )
+        .then(response => {
+          this.setState({
+            razones: response.data
+          })
+    
+        }).catch(err => {
+          ERROR_MODAL('Error al traer la lista de razones de rechazo', err.data);
+        });
+    }    
+  }
+
+  render() {
+    this.getRazones();
+
+    if (!this.state.razones){     
+      return <div></div>
+    }
+
+    if(this.state.razones){
     return (
       <div className={"admin-div"}>
         <Row>
@@ -43,13 +80,14 @@ class Customer_Management extends Component {
               </TabPane>
             } 
             <TabPane tab={<span> <Icon type="check-circle" /> Aprobar cliente </span>} key="3">
-              <ApproveCustomer/>
+              <ApproveCustomer razones={this.state.razones}/>
             </TabPane>
           </Tabs>
           </Col>
         </Row>
       </div>
     );
+   }
   }
 }
 

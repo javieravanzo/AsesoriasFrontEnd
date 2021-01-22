@@ -29,6 +29,7 @@ class TableButtons extends Component {
       delete: null,
     };
 
+    this.chanteStateUser = this.chanteStateUser.bind(this);
     this.inputServiceName = this.inputServiceName.bind(this);
     this.inputServiceTime = this.inputServiceTime.bind(this);
     this.inputService = this.inputService.bind(this);
@@ -53,13 +54,9 @@ class TableButtons extends Component {
     this.props.activateCustomer(item.idClient, parseInt(item.platformState, 10) === 1 ? false : true);    
   };
 
-  deleteUser(e){
-    let item = e;
-    this.props.deleteClient(item.idClient);   
-    this.setState({
-      delete: false
-    });
-  };
+  changeStateUser(e){
+    console.log(e);
+  }; 
 
   handleEdit(item){
     let data = {
@@ -100,8 +97,8 @@ class TableButtons extends Component {
             </Tooltip>
           </Col>
           <Col span={6}  className={"delete-col"}>
-            <Tooltip title={"Eliminar cliente"}>
-              <Icon className={"icon-button delete-icon"} onClick={() => this.setState({delete: true})}
+            <Tooltip title={"Activar/Desactivar usuario"}>
+              <Icon className={"icon-button delete-icon"} onClick={() => this.this.deleteUser(this.props.item)}
                 type={"close-circle"} style={{ fontSize: '16px'}}/>
             </Tooltip>
           </Col>           
@@ -160,8 +157,8 @@ class TableButtons extends Component {
               
             </Row>
         </Modal>
-        <Modal
-          title={"Eliminar cliente"}
+        {/*<Modal
+          title={"Activar/ cliente"}
           visible={this.state.delete}
           okText={"Aceptar"}
           cancelText={"Cancelar"}
@@ -171,7 +168,7 @@ class TableButtons extends Component {
           <p>
             ¿Está seguro de eliminar el cliente? Este proceso será irreversible.
           </p>
-        </Modal>
+        </Modal>*/}
       </div>
     );
   };
@@ -191,7 +188,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     activateCustomer: (clientId, status) => dispatch(activateCustomer(clientId, status)),
     updateCustomer: (data) => dispatch(updateCustomer(data)),
-    deleteClient: (clientid) => dispatch(deleteClient(clientid))
   }
 };
 
