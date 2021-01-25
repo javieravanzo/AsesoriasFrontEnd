@@ -240,14 +240,14 @@ function checkCodes(userid, phonecode, emailcode){
   });
 };
 
-function disableUser(userid){
+function disableUser(userid, accion){
   
   return request({
     url: '/User/updateState',
     method: 'PUT',
     data: {
       userId: userid,
-      state:false
+      state:accion
     },
     /*headers: {
       userid: userid,

@@ -122,6 +122,7 @@ class CustomerTable extends Component {
           totalRemainder: item.totalRemainder,
           socialReason: item.socialReason,
           platformState: parseInt(item.platformState, 10) === 1 ? "Activo" : "Inactivo",
+          userState: parseInt(item.userState) === 1 ? "Activo" : "Inactivo",
           actions: <TableButtons item={item}/>
         };
 

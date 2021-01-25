@@ -57,11 +57,19 @@ class TableButtons extends Component {
   };
 
   changeStateUser(e){
+  
     if(e !== undefined){
       let userId = e.idUser;
-      return customerService.disableUser(userId)
+      let accion = false;
+      if(e.userState == 0){
+        accion = true;
+      }else{
+        accion = false;
+      }
+      return customerService.disableUser(userId, accion)
       .then(response => {
        if(response.status === 200){
+      
         SUCCESS_MODAL(response.data.message);
        }
       }).catch(err => {
@@ -111,8 +119,8 @@ class TableButtons extends Component {
           </Col>
           <Col span={6}  className={"delete-col"}>
             <Tooltip title={"Activar/Desactivar usuario"}>
-              <Icon className={"icon-button delete-icon"} onClick={() => this.changeStateUser(this.props.item)}
-                type={"close-circle"} style={{ fontSize: '16px'}}/>
+              <Icon className={(this.props.item.userState === 1)?"icon-button delete-icon color-red":"color-green icon-button delete-icon"} onClick={() => this.changeStateUser(this.props.item)}
+                type={(this.props.item.userState === 1)?"close-circle":"check-circle"} style={{ fontSize: '16px'}}/>
             </Tooltip>
           </Col>           
         </Row>
