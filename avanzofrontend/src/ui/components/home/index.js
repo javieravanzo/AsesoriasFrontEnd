@@ -347,10 +347,16 @@ class Home extends Component {
                           </FormItem>
                         </Row>
 
-                        <Button type="primary" htmlType="submit" className="home-login-button" 
+                        <Row>
+                          <Button type="primary" htmlType="submit" className="home-login-button" 
                                 onClick={() => this.sendMessage()}>Iniciar sesión</Button>
-                        <p className="home-text-register"><u><a href="#" onClick={this.showRegisterForm}>Registrarse</a></u></p>
-                        <br/>
+                        </Row>
+                        <Row>
+                        <Button type="primary" htmlType="submit" className="home-login-button" 
+                      onClick={this.showRegisterForm}>Registrarme</Button>
+                        </Row>
+                        
+                        
                       </Form>
                     </Col>
                     <Col xxl={12} lg={12} md={12} sm={24} xs={24} className="home-second-row-col2">

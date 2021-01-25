@@ -122,7 +122,7 @@ class RequestStateModal extends Component {
                   <b>Estado</b> <br/><br/>  {defineBadgeName(item.idRequestState)}
               </Col>
               <Col xs={12} sm={12} md={7} lg={6}  className="request-item-initial-col">
-                  <b>Fecha de Solicitud</b> <br/><br/> {(item.createdDate).split("T")[0]}
+                  <b>Fecha de Solicitud</b> <br/><br/> {(item.createdAt).split("T")[0]}
               </Col>
               <Col xs={12} sm={12} md={7} lg={5}  className="request-item-initial-col">
                   <b>Monto</b> <br/><br/>

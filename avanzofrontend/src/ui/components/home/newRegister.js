@@ -761,7 +761,13 @@ class NewRegister extends Component {
                         <p className={"login-button-text"}>Enviar datos</p>
                        
                       </Button>
-                      <p className="home-text-register"><u><a href="#" onClick={this.showLogin}>Ya estoy registrado, Iniciar Sesión</a></u></p>
+                    </Row><br/>
+                    <Row className={"button-home-row mt3"}>  
+                      <Button type="primary" htmlType="button" className={"home-form-button"}
+                              onClick={this.showLogin}>
+                        <p className={"login-button-text"}>Ya estoy registrado, Iniciar Sesión</p>
+                       
+                      </Button>
                     </Row>
                     <Modal
                       title={"Términos y condiciones de uso de la página web - Autorización de la política de tratamiento de datos"}

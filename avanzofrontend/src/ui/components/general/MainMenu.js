@@ -8,7 +8,7 @@ import connect from 'react-redux/es/connect/connect';
 import PropTypes from 'prop-types';
 
 //Subcomponents
-import routes from "../../../configuration/routing/Routes";
+//import routes from "../../../configuration/routing/Routes";
 import icon from "../../assets/authentication/avanzoMenu.png";
 
 //Actions
@@ -70,7 +70,7 @@ class MainMenu extends Component {
     let role = parseInt(localStorage.role_id, 10);
     //console.log("Props",  this.props.countCustomerData.count);
     let menu = [];
-    if(localStorage.menu != undefined){
+    if(localStorage.menu !== undefined){
       menu = JSON.parse(localStorage.menu);
     }
     

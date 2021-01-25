@@ -46,7 +46,7 @@ class PendingRequest extends Component {
       visible: null,
       idRequest: null,
       idRequestState: null,
-      createdDate: null,
+      createdAt: null,
       quantity: null,
       identificationId: null,
       requestStateName: null,
@@ -109,7 +109,7 @@ class PendingRequest extends Component {
           key: i,
           idRequest: item.idRequest,
           idRequestState: item.idRequestState,
-          createdDate: item.createdDate,
+          createdAt: item.createdAt,
           quantity: item.quantity,
           accumulatedQuantity: item.accumulatedQuantity, 
           interestValue: item.interestValue,
@@ -141,9 +141,9 @@ class PendingRequest extends Component {
   };
 
   filterData(toCompare){
-    let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
+    let {idRequest, identificationId, requestStateName, quantity, createdAt} = this.state;
 
-    if(idRequest === null && identificationId === null && quantity === null && requestStateName === null && createdDate === null){
+    if(idRequest === null && identificationId === null && quantity === null && requestStateName === null && createdAt === null){
       return true;
     }
 
@@ -163,7 +163,7 @@ class PendingRequest extends Component {
       return false;
     }
 
-    if(createdDate !== null && !toCompare.createdDate.toString().toUpperCase().includes(createdDate.toUpperCase())) {
+    if(createdAt !== null && !toCompare.createdAt.toString().toUpperCase().includes(createdAt.toUpperCase())) {
       return false;
     }   
 
@@ -195,7 +195,7 @@ class PendingRequest extends Component {
 
   render(){
 
-    let {idRequest, identificationId, requestStateName, quantity, createdDate} = this.state;
+    let {idRequest, identificationId, requestStateName, quantity, createdAt} = this.state;
     let tableData = this.setData(this.props.pendingRHRequest);
     let { registerInfo, pendingRHRequest } = this.props;
     
@@ -298,7 +298,7 @@ class PendingRequest extends Component {
 
             <Col className="filter"  xs={12} sm={12} md={8} lg={6}>
               <p className="field-title-visible">Fecha Solicitud</p>
-              <Input placeholder={"Fecha Solicitud"} value={createdDate} onChange={(e) => this.setState({createdDate: e.target.value})}/>
+              <Input placeholder={"Fecha Solicitud"} value={createdAt} onChange={(e) => this.setState({createdAt: e.target.value})}/>
             </Col>
           </Row>
           <br/>

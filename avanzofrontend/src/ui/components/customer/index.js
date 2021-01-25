@@ -35,11 +35,11 @@ const table = [
   },
   {
     title: <div className={"table-p"}>Fecha de Transacción</div>,
-    dataIndex: 'createdDate',
+    dataIndex: 'createdAt',
     width: "150px",
     align: "center",
     render: text => <div className={"table-p"}>{text.split("T")[0]}</div>,
-    sorter: (a, b) =>{ return a.createdDate.localeCompare(b.createdDate)},
+    sorter: (a, b) =>{ return a.createdAt.localeCompare(b.createdAt)},
   }
 ];
 

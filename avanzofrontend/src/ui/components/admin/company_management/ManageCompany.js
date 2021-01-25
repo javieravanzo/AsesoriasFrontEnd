@@ -71,7 +71,7 @@ class ManageCompany extends Component {
           key: i,
           socialReason: item.socialReason,
           nit: item.nit,
-          registeredDate: item.registeredDate,
+          createdAt: item.createdAt,
           split: item.maximumSplit,
           quantity: item.defaultAmount,
           approveHumanResources: item.approveHumanResources,

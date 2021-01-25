@@ -44,7 +44,7 @@ class ApproveCustomer extends Component{
         let item = linkList[i];
         let row = {
           key: i,
-          createdDate: item.createdDate,
+          createdAt: item.createdAt,
           email: item.email,
           idNewClient: item.idNewClient,
           identificationId: item.identificationId,
