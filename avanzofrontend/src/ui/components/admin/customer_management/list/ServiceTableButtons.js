@@ -6,6 +6,8 @@ import connect from "react-redux/es/connect/connect";
 
 //Actions
 import {activateCustomer, updateCustomer} from "../../../../../store/redux/actions/admin/adminActions";
+
+//Services
 import customerService from '../../../../../services/customer/customerServices';
 
 //Styles
@@ -57,26 +59,29 @@ class TableButtons extends Component {
   };
 
   changeStateUser(e){
-  
+    
     if(e !== undefined){
       let userId = e.idUser;
       let accion = false;
       if(e.userState == 0){
         accion = true;
+        e.userState = true;
       }else{
         accion = false;
+        e.userState = false;
       }
       return customerService.disableUser(userId, accion)
       .then(response => {
-       if(response.status === 200){
-      
+       if(response.status === 200){   
         SUCCESS_MODAL(response.data.message);
+        this.props.handler(e);
        }
       }).catch(err => {
         console.log(err);
        
       });
     }
+  
   }; 
 
   handleEdit(item){

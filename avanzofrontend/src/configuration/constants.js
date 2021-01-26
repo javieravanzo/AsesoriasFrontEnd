@@ -103,3 +103,145 @@ export const defineButtonClass = (id) => {
     return "#b3b3b3";
   }
 };
+
+
+
+/*Bncos*/
+export const banks = [
+  {
+    "id": 1,
+    "nombre": "BANCO DE BOGOTÁ"
+  },
+  {
+    "id": 2,
+    "nombre": "BANCO POPULAR"
+  },
+  {
+    "id": 3,
+    "nombre": "BANCO CORPBANCA"
+  },
+  {
+    "id": 4,
+    "nombre": "BANCOLOMBIA"
+  },
+  {
+    "id": 5,
+    "nombre": "CITIBANK"
+  },
+  {
+    "id": 6,
+    "nombre": "BANCO GNB SUDAMERIS"
+  },
+  {
+    "id": 7,
+    "nombre": "BBVA COLOMBIA"
+  },
+  {
+    "id": 8,
+    "nombre": "ITAÚ"
+  },
+  {
+    "id": 9,
+    "nombre": "BANCO COLPATRIA"
+  },
+  {
+    "id": 10,
+    "nombre": "BANCO DE OCCIDENTE"
+  },
+  {
+    "id": 11,
+    "nombre": "BANCO CAJA SOCIAL"
+  },
+  {
+    "id": 12,
+    "nombre": "BANCO AGRARIO"
+  },
+  {
+    "id": 13,
+    "nombre": "BNP PARIBAS"
+  },
+  {
+    "id": 14,
+    "nombre": "BANCO DAVIVIENDA"
+  },
+  {
+    "id": 15,
+    "nombre": "BANCO AV VILLAS"
+  },
+  {
+    "id": 16,
+    "nombre": "BANCO PROCREDIT"
+  },
+  {
+    "id": 17,
+    "nombre": "BANCO PICHINCHA"
+  },
+  {
+    "id": 18,
+    "nombre": "BANCOOMEVA"
+  },
+  {
+    "id": 19,
+    "nombre": "BANCO FALABELLA"
+  },
+  {
+    "id": 20,
+    "nombre": "BANCO FINANDINA"
+  },
+  {
+    "id": 21,
+    "nombre": "BANCO MULTIBANK"
+  },
+  {
+    "id": 22,
+    "nombre": "BANCO SANTANDER DE NEGOCIOS COLOMBIA"
+  },
+  {
+    "id": 23,
+    "nombre": "COOPCENTRAL"
+  },
+  {
+    "id": 24,
+    "nombre": "BANCO COMPARTIR"
+  },
+  {
+    "id": 25,
+    "nombre": "CORFICOLOMBIANA"
+  },
+  {
+    "id": 26,
+    "nombre": "FINANCIERA JURIDISCOOP"
+  },
+  {
+    "id": 27,
+    "nombre": "COOPERATIVA FINANCIERA DE ANTIOQUIA"
+  },
+  {
+    "id": 28,
+    "nombre": "COTRAFA COOPERATIVA FINANCIERA"
+  },
+  {
+    "id": 29,
+    "nombre": "CONFIAR"
+  },
+  {
+    "id": 30,
+    "nombre": "COLTEFINANCIERA"
+  },
+  {
+    "id": 31,
+    "nombre": "DAVIPLATA"
+  },
+  {
+    "id": 32,
+    "nombre": "NEQUI"
+  },
+  {
+    "id": 33,
+    "nombre": "EFECTY"
+  },
+  {
+    "id": 34,
+    "nombre": "AVANZOAPP"
+  }
+ ];

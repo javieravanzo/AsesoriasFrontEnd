@@ -11,10 +11,17 @@ import FieldTitle from '../../subcomponents/FieldTitle';
 import '../../../styles/admin/index.css';
 
 import BaseURL from '../../../../services/BaseURL';
-import { SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../../subcomponents/modalMessages';
+import { ERROR_MODAL,SUCCESS_MODAL, WARNING_MODAL, allowEmergingWindows } from '../../subcomponents/modalMessages';
 
 //Actions
 import {generateReport, receiveBankFile} from "../../../../store/redux/actions/admin/adminActions";
+
+//constants
+import {banks} from "../../../../configuration/constants";
+
+
+//services 
+import adminService from '../../../../services/admin/adminServices';
 
 //Functions
 function itemRender(current, type, originalElement) {
@@ -92,6 +99,10 @@ class ReceiptManagement extends Component {
       particular_modal: null,
       bankFile: null,
       outlayFile: null,
+      modalBancos:null, 
+      bancoSeleccionado:null, 
+      modalLink:null,
+      link: "#"
     };
 
     this.setData = this.setData.bind(this);
@@ -176,6 +187,29 @@ class ReceiptManagement extends Component {
     this.props.receiveBankFile(data);
   };
 
+  getFile = ()=>{
+    let bankid =this.state.bancoSeleccionado;
+    let token = localStorage.access_token;
+    if(bankid !== undefined){
+      return adminService.getFileBank(token, bankid)
+      .then(response => {
+       if(response.status === 200){   
+        
+         this.setState({modalLink:true, link:response.data.data, modalBancos:false});
+       }
+      }).catch(err => {
+        console.log(err);
+        ERROR_MODAL(err.data.message);
+      });
+    }
+  }
+
+  onChangeBank = (e)=>{
+    this.setState({
+      bancoSeleccionado:e
+    });
+  }
+
   render() {
 
     let tableData = [];
@@ -192,7 +226,7 @@ class ReceiptManagement extends Component {
           </Col>
           <Col xs={24} sm={12} md={6} lg={5}> 
             <Button icon="file" style={{backgroundColor: "#005fc5", color: "white", marginLeft: "20px !important"}} 
-                    onClick={() => this.sendReport()}>
+                    onClick={() => this.setState({modalBancos: true})}>
                   Archivo de desembolsos
             </Button> 
           </Col>
@@ -234,6 +268,41 @@ class ReceiptManagement extends Component {
             </div>
 
         </Modal>
+        
+        <Modal
+          title={"Selecciona el banco"}
+          visible={this.state.modalBancos}
+          okText={"Aceptar"}
+          cancelText={"Cancelar"}
+          width={500}
+          onOk={() => this.getFile()}
+          onCancel={() => this.setState({modalBancos: false})}>
+          <p>
+            Selecciona un banco:
+            <Select placeholder="Selecciona" allowClear={true} showSearch={true}
+                      notFoundContent={"No hay razones disponibles"} className={"col-md-12"} onChange={this.onChangeBank}>
+              {banks.map((type, i) => (
+                <Select.Option key={type.id} value={type.id}>
+                  {type.nombre}
+                </Select.Option>))
+              }
+            </Select> 
+
+          </p>
+        </Modal>
+        
+        <Modal
+          title={"Descarga el archivo"}
+          visible={this.state.modalLink}
+          okText={"Cerrar"}
+          width={500}
+          onOk={() => this.setState({modalLink: false})}
+          >
+          <p>
+             <a href={BaseURL+"../files/writes"+this.state.link} target={"_blank"}>Descargar Archivo</a>
+          </p>
+        </Modal>
+        
         <Divider/>
         <Row>
           <Table className={"new-table"} dataSource={tableData} columns={table} rowKey={'key'}

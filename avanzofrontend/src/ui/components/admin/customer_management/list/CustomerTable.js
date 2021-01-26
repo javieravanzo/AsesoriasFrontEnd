@@ -101,6 +101,7 @@ class CustomerTable extends Component {
     this.setData = this.setData.bind(this);
     this.inputLinkName = this.inputLinkName.bind(this);
 
+
     this.props.getAllCustomers();
 
   };
@@ -123,7 +124,7 @@ class CustomerTable extends Component {
           socialReason: item.socialReason,
           platformState: parseInt(item.platformState, 10) === 1 ? "Activo" : "Inactivo",
           userState: parseInt(item.userState) === 1 ? "Activo" : "Inactivo",
-          actions: <TableButtons item={item}/>
+          actions: <TableButtons item={item} handler={this.handlerDel} />
         };
 
         if(this.filterData(row)) {
@@ -171,6 +172,12 @@ class CustomerTable extends Component {
       linkName: e.target.value,
     });    
   };
+
+  handlerDel = (e)=>{
+    if(e){
+      this.props.getAllCustomers();
+    }    
+  }
 
   render() {
 

@@ -233,7 +233,7 @@ export const getAllRequestToApprove = () => {
           type: C.GET_REQUEST_TO_APPROVE,
           payload: err,
         });
-        ERROR_MODAL('Error al traer la lista de solicitudes para aprobar', err.data.message);
+        ERROR_MODAL('Error al traer la lista de solicitudes para aprobar', err.message);
       });
   }
 };

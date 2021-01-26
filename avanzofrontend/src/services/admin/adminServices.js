@@ -320,6 +320,16 @@ function getReasons(token){
   });
 }
 
+function getFileBank(token,bank_id ){
+  return request({
+    url: '/Reports/GenerateBankReport/'+bank_id,
+    method: 'GET', 
+    headers: { 
+      'Authorization': 'Bearer ' + token 
+    }
+  });
+}
+
 
 const adminService = {
   registerAdmin, createCompany, createCustomer, createMultipleCustomer, 
@@ -330,7 +340,7 @@ const adminService = {
   getCustomersCountToApprove, getAllBankRefundedRequest, getAllProcessWithoutChangeRequest,
   receiveBankFile, getAllProcessDocumentChanges, getAllProcessinBank, getAllFinalizedRequest,
   generatePendingByBankReport, generateGeneralPendingByRRHH, generateParticularPendingByRRHH,
-  loadCompanyFile, getReasons
+  loadCompanyFile, getReasons,  getFileBank
 };
 
 export default adminService;

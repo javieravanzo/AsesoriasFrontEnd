@@ -257,12 +257,19 @@ function disableUser(userid, accion){
 };
 
 
+function getAllCustomers(){
+  return request({
+    url: '/Customer/GetAllWithCompany',
+    method: 'GET'
+  });
+};
+
 
 const customerService = {
   getHomeData, getRequestData, getOutLayData, getOultayDatesList, generateDocuments, 
   createRequest, getAllTransactions, getAllRequest, getAllRequestWasOutlayed, 
   getAllRequestWasRejected, getAccountDetail, generateCodes, checkCodes, updateRequestInformation,
-  updateRequestDocuments, disableUser
+  updateRequestDocuments, disableUser, getAllCustomers
 };
 
 export default customerService;
