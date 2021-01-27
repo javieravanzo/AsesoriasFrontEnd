@@ -366,7 +366,7 @@ class LoanRequest extends Component {
   };
 
   checkRequest = (interestValue, adminValue) => {
-    console.log(this.props.location);
+    
     this.props.form.validateFields((err, values) => {
       if (err){
         this.setState({
@@ -402,9 +402,9 @@ class LoanRequest extends Component {
           idCompany: this.props.requestDataResponse.idCompany,  
           identificationId: this.props.requestDataResponse.identificationId,
           loanData: this.props.outlayDatesList.datesList[0].quantity,
-          salary_base: values.salary_base,
-          biweekly_salary: values.biweekly_salary,
-          general_deduction: values.general_deduction,
+          salary_base: (values.salary_base).replace(/,/g,""),
+          biweekly_salary: (values.biweekly_salary).replace(/,/g,""),
+          general_deduction: (values.general_deduction).replace(/,/g,""),
           fromapp: this.props.location.state == null ? false: this.props.location.state.fromapp !== null ? true : false,
           request_overdraft : this.state.request_overdraft,
           request_observation : this.state.request_observation,
@@ -425,6 +425,8 @@ class LoanRequest extends Component {
 
   onChangeWorking = (e) =>{
     let fileType = e.target.files;
+
+    
 
     this.setState({
       workingDocument: fileType[0]
@@ -604,6 +606,21 @@ class LoanRequest extends Component {
       });
     }
   }
+  formRef = React.createRef();
+  onFormat = (e) =>{
+    let value = e.target.value;
+    let name = e.target.getAttribute("data-input");
+    
+    if(value != undefined){
+      value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      switch(name){
+        case 'salary_base':
+            this.formRef.current.setFieldsValue({salary_base:value});    
+          console.log(name);
+        break;
+      }
+    }
+  }
 
   render(){
     
@@ -612,7 +629,7 @@ class LoanRequest extends Component {
     let signature = false;
     let {fee, sliderValue, bank_account, money_wallet, confirmed_data, enterCodes, emailConfirmation, phoneConfirmation} = this.state;
     let feeCondition = fee !== null && this.defineDocumentsCondition();
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, setFieldsValue } = this.props.form;
     let { requestDataResponse, outlayDataResponse, outlayDatesList } = this.props;
     let { interestValue, adminValue, partialCapacity, maximumSplit, workingSupport,
           paymentSupport, phoneNumber, accountNumber, accountType, accountBank, fixedFee } = requestDataResponse;
@@ -676,8 +693,8 @@ class LoanRequest extends Component {
                             {required: false, message: 'Por favor ingresa una cantidad de dinero específica'}
                           ]})(
                               <InputNumber step={10000} className={"form-input-number"} max={this.state.partialCapacity < 80000 ? 80000 : this.state.partialCapacity} min={partialCapacity < 80000 ? partialCapacity : 80000}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
-                                    placeholder={"Monto requerido"} onBlur={(e) => this.handleQuantityBlur(e)} onChange={this.handleQuantity} disabled={this.state.quantityBlur} />
+                                    
+                                    placeholder={"Monto requerido"} onBlur={(e) => this.handleQuantityBlur(e)} onChange={this.handleQuantity} disabled={this.state.quantityBlur} readOnly />
                           )
                         }
                       </FormItem>
@@ -1008,11 +1025,23 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Sueldo Base"}/>
                           <FormItem>
                             {getFieldDecorator('salary_base',
-                              {rules: [
-                                {required: false, message: 'Por favor ingresa un sueldo base'}
+                              {
+                             
+                              normalize : (value) =>{                 
+                                if(value != undefined){
+                                  let last = value.slice(-1);  
+                                  if(!isNaN(last)){
+                                    return value.toString().replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+                                  }else{
+                                    return value.toString().replace(last,"").replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+                                  }
+                                }  
+                              },                           
+                              rules: [
+                                {required: false, message: 'Por favor ingresa un sueldo base',}
                               ]})(
-                                <InputNumber className={"form-input-number"} min={0}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                <Input prefix={"$"} className={"form-input-number"} min={0} 
+                                 data-input="salary_base"
                                     placeholder={"Sueldo Base"}/>
                               )
                             }
@@ -1022,11 +1051,21 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Total Ingresos"}/>
                           <FormItem>
                             {getFieldDecorator('biweekly_salary',
-                              {rules: [
+                              { 
+                                normalize : (value) =>{                 
+                                  if(value != undefined){
+                                    let last = value.slice(-1);  
+                                    if(!isNaN(last)){
+                                      return value.toString().replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+                                    }else{
+                                      return value.toString().replace(last,"").replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+                                    }
+                                  }  
+                                },rules: [
                                 {required: false, message: 'Por favor ingresa un total ingresos'}
                               ]})(
-                                <InputNumber className={"form-input-number"} min={0}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                <Input className={"form-input-number"} min={0}
+                                    prefix={"$"} 
                                     placeholder={"Total Devengado"}/>
                               )
                             }
@@ -1036,11 +1075,20 @@ class LoanRequest extends Component {
                           <FieldTitle title={"Total Deducciones"}/>
                             <FormItem >
                               {getFieldDecorator('general_deduction',
-                                {rules: [
+                                { normalize : (value) =>{                 
+                                  if(value != undefined){
+                                    let last = value.slice(-1);  
+                                    if(!isNaN(last)){
+                                      return value.toString().replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+                                    }else{
+                                      return value.toString().replace(last,"").replace(/,/g,"").replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+                                    }
+                                  }  
+                                },  rules: [
                                   {required: false, message: 'Por favor ingresa tus deducciones por nómina' }
                                 ]})(
-                                  <InputNumber className={"form-input-number"} min={0}
-                                    formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 
+                                  <Input prefix={"$"} className={"form-input-number"} min={0}
+                                  
                                     placeholder={"Total Deducciones"}/>
                                 )
                               }

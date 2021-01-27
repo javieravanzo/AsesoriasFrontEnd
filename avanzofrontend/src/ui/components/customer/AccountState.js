@@ -132,7 +132,7 @@ class AccountState extends Component {
                       </Col>
                       <Col xs={12} sm={12} md={14} lg={14} style={{textAlign: "left"}}>
                         <b style={{color: "#000"}}>
-                          {accountDetail.createdAt.split("T")[0]}  
+                          {(accountDetail.createdAt)?accountDetail.createdAt.split("T")[0]:''}  
                         </b>
                       </Col>
                     </Row>

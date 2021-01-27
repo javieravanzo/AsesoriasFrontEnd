@@ -139,21 +139,28 @@ class NewRegister extends Component {
     //let { documentId, photo, paymentReport } = this.state;
     let fileType = e.target.files;
     let tipo =  e.target.getAttribute("data-tipo");
-    switch(tipo){
-      case 'cedula':
-      this.setState({
-        documentId: fileType[0]
-      });
-      break;
-      case 'certificado':
+    console.log(fileType[0].size);
+    if(fileType[0].size < 3000000){
+      switch(tipo){
+        case 'cedula':
         this.setState({
-          paymentReport: fileType[0]
+          documentId: fileType[0]
         });
-      break;
-      default:
-        
-      break;
-    }
+        break;
+        case 'certificado':
+          this.setState({
+            paymentReport: fileType[0]
+          });
+        break;
+        default:
+          
+        break;
+      }
+    }else{
+      document.getElementById(tipo).value = "";  
+      ERROR_MODAL("Error al cargar archivo", "El tamaño del archivo debe ser inferior a 3MB");
+      
+    } 
     
   };
 
@@ -208,7 +215,9 @@ class NewRegister extends Component {
   };
 
   openTermsandConditions = () => {
-    this.setState({
+    
+    
+    /*this.setState({
       visibleTermModal: true
     });
     
@@ -224,7 +233,7 @@ class NewRegister extends Component {
       }
     }else {
       WARNING_MODAL('Advertencia', 'Los términos y condiciones no están disponibles. Intenta más tarde.');
-    }
+    }*/
 
     this.setState({
       visibleTermModal: true
@@ -679,13 +688,13 @@ class NewRegister extends Component {
                     <Row className={"upload-documents"}>
                       <Col lg={12}  md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Cargar cédula</p>
-                        <input key={this.state.kBK} type="file" data-tipo="cedula" onChange={this.onChange}
-                              accept=".pdf, application/pdf"/>
+                        <input key={this.state.kBK} type="file" id="cedula" data-tipo="cedula" onChange={this.onChange}
+                              accept="image/png, image/jpeg, application/pdf"/>
                       </Col>
                       <Col lg={12}  md={12} sm={24} xs={24}>
                         <p className={"form-names"}>Cargar certificado laboral</p>
-                        <input key={this.state.kBK} type="file" data-tipo="certificado" onChange={this.onChange}
-                              accept=".pdf, application/pdf"/>
+                        <input key={this.state.kBK} type="file" id="certificado" data-tipo="certificado" onChange={this.onChange}
+                              accept="image/png, image/jpeg, application/pdf"/>
                       </Col>        
                     </Row>
 
@@ -744,7 +753,7 @@ class NewRegister extends Component {
                                   <Checkbox className={'checkbox-terms-conditions'} onChange={(e) => this.onChangeField(e, 'checkBox1')}/>
                                 </Col>
                                 <Col lg={22} md={22} sm={22} xs={22}>
-                                  <span className={"form-names-terms"}>{""} Acepto los <u onClick={() => this.openTermsandConditions()}>Términos, Condiciones de uso y Autorización de tratamiento de datos.</u></span>
+                                  <span className={"form-names-terms mano"}><u onClick={() => this.openTermsandConditions()}>Acepto los Términos, Condiciones de uso y Autorización de tratamiento de datos.</u></span>
                                 </Col>
                               </Row>
                             </Col>
@@ -778,18 +787,171 @@ class NewRegister extends Component {
                         <Button key='submit' type='primary' disabled={this.state.clicked && this.props.newRegisterResponse === null} onClick={() => this.setState({visibleTermModal: false, clicked: true})}>
                           Aceptar
                         </Button>}>
-                      <div>
-                        <p className={"terms-conditions"}>
-                          <br/>
-                          AVANZO solicita a los visitantes y usuarios de la página web la lectura de los términos, las condiciones de uso de la página web y la autorización de tratamiento de datos antes de iniciar su
-                          navegación o utilizar los servicios ofrecidos a través de este portal web. El acceso y navegación en la página web,
-                          así como el registro en la plataforma tecnológica de AVANZO, se encuentra precedido de un “click” en el botón Aceptar,
-                          lo cual constituye el conocimiento de la autorización del tratamiento de datos y la aceptación expresa del <b>usuario </b>
-                          de estos términos y condiciones. 
-                          <br/><br/>
-                          En caso de no estar de acuerdo con estas condiciones sugerimos al visitante y usuario que se abstenga de acceder o navegar por la página web.
-                          <br/>
-                          </p>
+                      <div className="terms-conditions">
+                        <p><strong>T&Eacute;RMINOS Y CONDICIONES DE USO DE LA P&Aacute;GINA WEB DE AVANZO </strong></p>
+<p><strong>&nbsp;</strong></p>
+<p>VICTORIA INVERSIONES S.A.S. (en adelante, AVANZO) a trav&eacute;s de su portal web www.avanzo.co (en adelante "p&aacute;gina web") brinda la plataforma tecnol&oacute;gica para efectuar solicitudes de cupos de cr&eacute;dito rotativo y desembolsos, los cuales son cancelados a trav&eacute;s de la modalidad de libranza o descuento directo autorizado por el Usuario.&nbsp;</p>
+<p>&nbsp;</p>
+<p>AVANZO solicita al visitante y Usuario de la p&aacute;gina web la lectura de estos t&eacute;rminos y condiciones antes de iniciar su navegaci&oacute;n o utilizar los servicios ofrecidos a trav&eacute;s de este portal web. El acceso y navegaci&oacute;n en la p&aacute;gina web, as&iacute; como el registro en la plataforma tecnol&oacute;gica de AVANZO, se encuentra precedido de un &ldquo;click&rdquo; en el bot&oacute;n acepto, lo cual constituye el conocimiento y la aceptaci&oacute;n expresa del Usuario de estos t&eacute;rminos y condiciones. En caso de no estar de acuerdo con estas condiciones sugerimos al visitante y Usuario que se abstenga de acceder o navegar por la p&aacute;gina web.&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.&nbsp;&nbsp;&nbsp; Definiciones&nbsp;</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Los t&eacute;rminos que a continuaci&oacute;n se mencionan, se interpretan de acuerdo al siguiente alcance:&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li><strong>Cuenta de Usuario: </strong>Una​ vez el Usuario se registra en la p&aacute;gina web, dispone de una cuenta a trav&eacute;s de la cual accede a los servicios ofrecidos por AVANZO.&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>Cupo de Cr&eacute;dito Rotativo:</strong> Cupo de cr&eacute;dito que una vez aprobado, se mantiene disponible para ser desembolsado y transferido a favor del Usuario hasta completar el cupo total disponible, el cual se ir&aacute; liberando a medida en que se realizan los pagos de los desembolsos solicitados.</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>Empleador o Entidad Pagadora: </strong>Es​ la persona jur&iacute;dica, que tiene a su cargo la obligaci&oacute;n del pago del salario o cualquiera que sea la denominaci&oacute;n de la remuneraci&oacute;n, en raz&oacute;n de la ejecuci&oacute;n de un trabajo o labor.</li>
+</ul>
+<p><strong>&nbsp;</strong></p>
+<ul>
+<li><strong>Libranza o Descuento directo:</strong> Es la autorizaci&oacute;n dada por el Usuario a la Entidad Pagadora, para que realice el descuento de su salario u honorarios disponibles, con el objeto de que las sumas descontadas sean giradas a favor de AVANZO como pago de los desembolsos realizados al Usuario.</li>
+</ul>
+<p><strong>&nbsp;</strong></p>
+<ul>
+<li><strong>Usuario: </strong>Corresponde​ a la persona natural asalariada o contratada por prestaci&oacute;n de servicios que solicita el cupo de cr&eacute;dito rotativo ofrecido por AVANZO a trav&eacute;s de la p&aacute;gina web, efectuando el pago de los desembolsos que se realicen a su favor a trav&eacute;s del descuento sobre su salario u honorarios, previa autorizaci&oacute;n para el efecto al Empleador o Entidad Pagadora.</li>
+</ul>
+<p><strong>&nbsp;</strong></p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.&nbsp;&nbsp;&nbsp; Uso de la p&aacute;gina web, sus contenidos y sus servicios&nbsp;</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Se encuentra prohibido el uso de la p&aacute;gina web con fines il&iacute;citos contra AVANZO o contra terceros que, de cualquier forma, puedan resultar perjudicados o la realizaci&oacute;n de cualquier actividad que impida el normal funcionamiento de la p&aacute;gina web o la prestaci&oacute;n de los servicios ofrecidos a trav&eacute;s de &eacute;sta.&nbsp;</p>
+<p>&nbsp;</p>
+<p>Los contenidos incluidos en la p&aacute;gina web son de propiedad exclusiva de AVANZO. Est&aacute; prohibida su copia o reproducci&oacute;n total o parcial, su traducci&oacute;n, inclusi&oacute;n, transmisi&oacute;n, almacenamiento o acceso a trav&eacute;s de medios digitales o de cualquier otro sistema sin autorizaci&oacute;n previa y escrita de AVANZO.&nbsp;</p>
+<p>&nbsp;</p>
+<p>Los enlaces (links) a otras p&aacute;ginas o portales de Internet, son ofrecidos como un servicio al Usuario. No obstante, se aclara que AVANZO no ha estado involucrada en la construcci&oacute;n de dichas p&aacute;ginas de internet y por ende no es responsable de su contenido o del uso o adquisici&oacute;n de los servicios ofrecidos en las mismas.&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p>Los elementos y cualquier informaci&oacute;n protegida por la propiedad intelectual, son de titularidad exclusiva de AVANZO, en consecuencia, se encuentra prohibida su reproducci&oacute;n o uso a cualquier t&iacute;tulo sin autorizaci&oacute;n previa y escrita de AVANZO.&nbsp;</p>
+<p>&nbsp;</p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.&nbsp;&nbsp;&nbsp; Informaci&oacute;n entregada a AVANZO</h2>
+<p>&nbsp;</p>
+<p>La informaci&oacute;n suministrada por el Usuario a trav&eacute;s de la p&aacute;gina web en cada uno de sus canales de contacto y/o de registro ser&aacute; utilizada exclusivamente para atender las solicitudes de los Usuarios y la prestaci&oacute;n del servicio ofrecido por AVANZO. Particularmente, la informaci&oacute;n personal ser&aacute; tratada conforme a la Pol&iacute;tica de Tratamiento de Datos Personales publicada en el enlace https://avanzo.co/politicas-tratamiento-datos-personales/​ ,​ en la cual se establece la manera en que son tratados los datos personales compartidos por el Usuario y de terceros. As&iacute; mismo, en dicha pol&iacute;tica se informan los derechos a favor de los Titulares de informaci&oacute;n personal, y la forma de ejercerlos ante AVANZO.&nbsp;</p>
+<p>&nbsp;</p>
+<p>En todo caso, AVANZO de forma previa a cualquier actividad sobre datos personales, solicitar&aacute; autorizaci&oacute;n al Titular, para que este conozca las finalidades particulares del tratamiento por parte de la entidad y sus derechos, lo anterior en cumplimiento de la Ley 1581 de 2012 y sus Decretos reglamentarios.</p>
+<p>&nbsp;</p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.&nbsp;&nbsp;&nbsp; Sobre los servicios ofrecidos a trav&eacute;s de la p&aacute;gina web&nbsp;</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Cualquier persona podr&aacute; acceder a la p&aacute;gina web a trav&eacute;s de un dispositivo electr&oacute;nico con conexi&oacute;n internet. Si un Usuario desea acceder a los servicios ofrecidos por AVANZO, deber&aacute; registrarse en la plataforma y crear una cuenta, autorizando previamente el tratamiento de la informaci&oacute;n personal.&nbsp;</p>
+<p>&nbsp;</p>
+<h2>3.1. Registro</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Corresponde al paso inicial para efectuar la solicitud de cupo de cr&eacute;dito rotativo. Al efectuar el registro como Usuario, AVANZO solicitar&aacute; el suministro de determinada informaci&oacute;n para la gesti&oacute;n de los servicios. Por ende, el Usuario se compromete a brindar informaci&oacute;n veraz y completa, as&iacute; como a actualizarla cuando ello sea pertinente.&nbsp;</p>
+<p>&nbsp;</p>
+<p>Dentro de la informaci&oacute;n solicitada para el registro se encuentran los datos personales del Usuario, los cuales ser&aacute;n tratados conforme a la autorizaci&oacute;n otorgada por su parte y a la Pol&iacute;tica de Tratamiento de Datos Personales de AVANZO.&nbsp;</p>
+<p>&nbsp;</p>
+<p>Si el Usuario no efect&uacute;a el registro, podr&aacute; navegar por las diferentes secciones de la p&aacute;gina web y explorar su contenido, sin poder acceder a los servicios ofrecidos. <strong>&nbsp;</strong></p>
+<p><strong>&nbsp;</strong></p>
+<h2>3.2. Usuario y contrase&ntilde;a&nbsp;</h2>
+<p>&nbsp;</p>
+<p>Cada una de las Cuentas de Usuario registradas en la p&aacute;gina web tendr&aacute; tanto un usuario que constituye la identificaci&oacute;n en el sistema, como una clave o contrase&ntilde;a de acceso a la cuenta, la cual es configurada por el Usuario durante su registro en la p&aacute;gina web. Una vez efectuado el registro, el Usuario se compromete a adoptar las medidas de seguridad necesarias para impedir el acceso a su cuenta por parte de terceros no autorizados. En consecuencia, el Usuario ser&aacute; responsable por la confidencialidad de la informaci&oacute;n contenida en su cuenta, as&iacute; como de las acciones que se puedan realizar a trav&eacute;s de la misma por falta de cuidado o negligencia de su parte en el manejo de su usuario y/o contrase&ntilde;a.&nbsp;</p>
+<p>&nbsp;</p>
+<p>El Usuario deber&aacute; informar a AVANZO sobre cualquier actividad anormal o uso no autorizado de su cuenta y/o contrase&ntilde;a, correo electr&oacute;nico, n&uacute;mero de identificaci&oacute;n u cualquier otra informaci&oacute;n que lo identifique ante AVANZO, de forma inmediata al conocimiento de los hechos, a trav&eacute;s de los canales de contacto establecidos en el numeral 12 de estos t&eacute;rminos y condiciones. Una vez notificado, AVANZO tomar&aacute; las medidas conducentes para realizar a m&aacute;s tardar dentro de las 24 horas siguientes al aviso, el bloqueo de la Cuenta de Usuario sobre la cual se recibe la notificaci&oacute;n&nbsp;</p>
+<p>&nbsp;</p>
+<h2>3.3. Ingreso a la Cuenta de Usuario</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Efectuado el registro en la p&aacute;gina web, el Usuario podr&aacute; iniciar sesi&oacute;n en el bot&oacute;n dispuesto para el efecto en la plataforma. As&iacute; mismo, a trav&eacute;s de la Cuenta de Usuario &eacute;ste podr&aacute; efectuar la solicitud de cupo de cr&eacute;dito rotativo y desembolsos sobre el mismo, as&iacute; como conocer las condiciones particulares y cargos que apliquen a cada uno de los desembolsos. De igual forma, a trav&eacute;s de su cuenta, el Usuario podr&aacute; conocer la informaci&oacute;n vinculada a su perfil, debiendo actualizarla o editarla cuando ello sea necesario para la correcta prestaci&oacute;n de los servicios.&nbsp;</p>
+<p>&nbsp;</p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Olvido de contrase&ntilde;a</h2>
+<p><strong>&nbsp;</strong></p>
+<p>En el evento de no poder acceder a la cuenta por olvido de su contrase&ntilde;a, el Usuario podr&aacute; ir a la secci&oacute;n de &ldquo;Iniciar Sesi&oacute;n&rdquo; y seleccionar la opci&oacute;n de &ldquo;Olvid&eacute; mi contrase&ntilde;a&rdquo;, siguiendo el procedimiento establecido por AVANZO para la asignaci&oacute;n y/o restablecimiento de la nueva contrase&ntilde;a.&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.&nbsp;&nbsp;&nbsp; Pautas a tener en cuenta durante la navegaci&oacute;n en la p&aacute;gina web&nbsp;</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Con el fin de garantizar el buen uso de la p&aacute;gina web, el Usuario se compromete a cumplir las siguientes pautas que instruir&aacute;n su conducta en la plataforma dispuesta por AVANZO:&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li>Observar los presentes T&eacute;rminos y Condiciones, la Pol&iacute;tica de Tratamiento de Datos Personales y cualquier otra pol&iacute;tica establecida por AVANZO que se encuentre publicada en la p&aacute;gina web para su conocimiento.</li>
+<li>Usar el contenido de la p&aacute;gina web o los servicios ofrecidos en la misma de forma diligente y para fines l&iacute;citos.</li>
+<li>Adoptar las medidas de seguridad necesarias para evitar el acceso no autorizado a la Cuenta de Usuario en la p&aacute;gina web.</li>
+<li>No usar la p&aacute;gina web como medio para desarrollar actividades ilegales o no autorizadas tanto en Colombia, como en cualquier otro pa&iacute;s.</li>
+<li>Abstenerse de enviar correos electr&oacute;nicos no deseados (spam) a otros Usuarios de la p&aacute;gina web, como tambi&eacute;n transmitir virus o cualquier c&oacute;digo de naturaleza destructiva por medio de la misma.</li>
+<li>No alterar, bloquear o realizar cualquier acto que impida el correcto funcionamiento de la p&aacute;gina web, tales como y sin limitarse a: ataques inform&aacute;ticos, interceptaci&oacute;n de comunicaciones, usurpaci&oacute;n de identidad o falsedad en documentos.</li>
+<li>Presentar las peticiones, quejas o reclamos de forma respetuosa a trav&eacute;s de los canales de contacto establecidos por AVANZO tanto en la Pol&iacute;tica de Tratamiento de Datos Personales como en la p&aacute;gina web y los presentes t&eacute;rminos y condiciones.</li>
+</ul>
+<p><strong>&nbsp;</strong></p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.&nbsp;&nbsp;&nbsp; Responsabilidad del Usuario</h2>
+<p><strong>&nbsp;</strong></p>
+<p>El uso de la p&aacute;gina web se realizar&aacute; bajo responsabilidad del Usuario, en consecuencia, este ser&aacute; responsable por:&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li>Las operaciones realizadas a trav&eacute;s de la p&aacute;gina web sin requisito distinto a que estas sean efectuadas a trav&eacute;s de las funcionalidades habilitadas en la p&aacute;gina web y empleando la Cuenta de Usuario, la contrase&ntilde;a de acceso y cualquier otra seguridad adicional establecida por AVANZO.</li>
+<li>Los actos derivados del acceso no autorizado por terceros, como consecuencia de la falta de cuidado o negligencia del Usuario respecto a la custodia de su Usuario y contrase&ntilde;a de acceso.</li>
+<li>Disponer de, al menos, un dispositivo electr&oacute;nico con conexi&oacute;n a internet para acceder a la p&aacute;gina web y poder utilizar los servicios.</li>
+</ul>
+<p>&nbsp;</p>
+<p>El Usuario deber&aacute; mantener indemne a AVANZO por todo concepto o reclamaci&oacute;n judicial o extrajudicial que se llegare a presentar con ocasi&oacute;n al incumplimiento por parte del Usuario de lo establecido en estos t&eacute;rminos y condiciones.&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7.&nbsp;&nbsp;&nbsp; Derechos de AVANZO</h2>
+<p><strong>&nbsp;</strong></p>
+<p>En su calidad de propietario de la p&aacute;gina web, AVANZO se reserva el derecho a ejercer las siguientes facultades:&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li>Modificar unilateralmente, en cualquier tiempo y por cualquier causa los presentes t&eacute;rminos y condiciones, as&iacute; como el dise&ntilde;o y funcionalidad de la p&aacute;gina web. En tal caso, AVANZO informar&aacute; de las modificaciones realizadas a los Usuarios, a trav&eacute;s de correo electr&oacute;nico y/o la p&aacute;gina web. Efectuadas las modificaciones, cualquier uso por parte del Usuario representar&aacute; su aceptaci&oacute;n a las mismas.</li>
+<li>Denegar el registro en la p&aacute;gina web a cualquier persona, en cualquier momento y por las razones que considere a su sano criterio.</li>
+<li>Cerrar Cuentas de Usuarios que, en concepto de AVANZO, puedan no estar haciendo un adecuado uso de la p&aacute;gina web o los servicios ofrecidos a trav&eacute;s de ella.</li>
+<li>Decidir sobre el contenido publicado en la p&aacute;gina web y removerlo cuando as&iacute; lo considere pertinente por ser ofensivo o ir en contrav&iacute;a de las normas legales o afectar derechos de terceros.</li>
+</ul>
+<p><strong>&nbsp;</strong></p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8.&nbsp;&nbsp;&nbsp; Responsabilidad de AVANZO</h2>
+<p><strong>&nbsp;</strong></p>
+<p>AVANZO realizar&aacute; sus mejores esfuerzos para que la p&aacute;gina web funcione correctamente las veinticuatro (24) horas del d&iacute;a y el Usuario pueda utilizar sus servicios sin interrupci&oacute;n, sin perjuicio de las limitaciones y restricciones establecidas e informadas previamente por AVANZO al Usuario, o de las limitaciones de los dispositivos o conexiones del USUARIO para acceder a la p&aacute;gina web.&nbsp;</p>
+<p>&nbsp;</p>
+<p>AVANZO podr&aacute; interrumpir o suspender, sin que esto genere una responsabilidad de AVANZO frente al Usuario, los servicios de la p&aacute;gina web por razones t&eacute;cnicas, de seguridad, por problemas que puedan presentarse por cortes en los servicios de conexi&oacute;n a internet, energ&iacute;a, por fuerza mayor o caso fortuito o hecho de un tercero no imputable a AVANZO.&nbsp;</p>
+<p>&nbsp;</p>
+<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9.&nbsp;&nbsp;&nbsp; Exclusi&oacute;n de garant&iacute;as y responsabilidades&nbsp;</h2>
+<p><strong>&nbsp;</strong></p>
+<p>AVANZO no otorga garant&iacute;a ni se hace responsable, en ning&uacute;n caso, de los da&ntilde;os y perjuicios de cualquier naturaleza que pudieren resultar de los siguientes hechos:</p>
+<p>&nbsp;</p>
+<ul>
+<li>La falta de disponibilidad, mantenimiento y continuidad del funcionamiento de la p&aacute;gina web por causas no imputables a AVANZO. Cuando ello sea razonablemente posible, AVANZO advertir&aacute; previamente las interrupciones o limitaciones en el funcionamiento de la p&aacute;gina web.</li>
+<li>La falta de utilidad, adecuaci&oacute;n o validez de la p&aacute;gina web y/o de sus servicios o contenidos para satisfacer expectativas del usuario.</li>
+<li>El uso negligente, il&iacute;cito o fraudulento o contrario a los presentes t&eacute;rminos y condiciones por parte de uno o varios Usuarios.</li>
+<li>El incumplimiento por parte de terceros de sus obligaciones o compromisos en relaci&oacute;n con los servicios prestados a trav&eacute;s de la p&aacute;gina web.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>10. Seguridad en internet&nbsp;</h2>
+<p><strong>&nbsp;</strong></p>
+<p>AVANZO har&aacute; sus mejores esfuerzos para mantener la seguridad y confidencialidad de la p&aacute;gina web, sin embargo AVANZO no controla ni garantiza, y por lo tanto no se hace responsable, por la presencia de c&oacute;digos maliciosos ni de otros elementos en los contenidos de la p&aacute;gina web y que hagan su aparici&oacute;n a pesar del cumplimiento de sus deberes y debida diligencia, de manera que puedan producir alteraciones en el sistema inform&aacute;tico (software y hardware) del Usuario o en los documentos electr&oacute;nicos almacenados en el sistema inform&aacute;tico del Usuario.&nbsp;</p>
+<p>&nbsp;</p>
+<p>Se entiende por c&oacute;digo malicioso el nombre que se le da a cualquier programa que ingresa a un dispositivo sin el conocimiento y la autorizaci&oacute;n inequ&iacute;voca del responsable del mismo, dentro de los cuales se encuentran, los denominados <em>virus;</em>​<em> troyanos; gusanos; phishing; pharming; rootkits; backdoor (puertas traseras), keyloggers (capturadores de teclado), screen loggers, bootnets, sniffers (husmeadores de tr&aacute;fico de la red)</em>​, entre otros.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>11. Uso de cookies</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Las cookies son peque&ntilde;os archivos que se almacenan en el dispositivo electr&oacute;nico del Usuario para habilitar algunas funcionalidades de la plataforma tecnol&oacute;gica de AVANZO. Cualquier navegador que visite la p&aacute;gina web podr&aacute; recibir cookies de AVANZO o de terceros, como entidades aliadas o proveedores de servicios.&nbsp;</p>
+<p>&nbsp;</p>
+<p>AVANZO podr&aacute; utilizar <em>cookies</em>​<em> persistentes</em> para reconocer al Usuario ya existente y facilitar el uso de los servicios sin necesidad de volver a iniciar sesi&oacute;n en la Cuenta de Usuario. As&iacute; mismo, AVANZO podr&aacute; utilizar <em>cookies de sesi&oacute;n</em> para mantener el seguimiento de los movimientos del Usuario en la p&aacute;gina web, con el fin de no solicitar la informaci&oacute;n que el Usuario ha brindado previamente.&nbsp;</p>
+<p>&nbsp;</p>
+<p>La funcionalidad de cookies deber&aacute; ser autorizada por el Usuario, mediante un &ldquo;click&rdquo; en el bot&oacute;n acepto dispuesto en la p&aacute;gina web, lo cual constituye el conocimiento y la aceptaci&oacute;n expresa del Usuario respecto al uso de cookies.&nbsp;</p>
+<p>&nbsp;</p>
+<h2>12. Ayuda al Usuario</h2>
+<p>&nbsp;</p>
+<p>El Usuario podr&aacute; solicitar asistencia o elevar peticiones, quejas o reclamos a trav&eacute;s de los siguientes canales de contacto:&nbsp;</p>
+<p>&nbsp;</p>
+<ul>
+<li>Env&iacute;o de correo electr&oacute;nico a <a href="mailto:operaciones@avanzo.co">operaciones@avanzo.co</a> .​</li>
+<li>Directamente en las oficinas ubicadas en la direcci&oacute;n ​Cra. 18 #No. 86a - 14, Bogot&aacute;, Cundinamarca 2.6&nbsp;km, las cuales ser&aacute;n recibidas en el siguiente horario: de lunes a viernes de 8am-6pm.</li>
+<li>A trav&eacute;s de la l&iacute;nea telef&oacute;nica (1) 4824824</li>
+</ul>
+<p>&nbsp;</p>
+<h2>13. Ley aplicable y jurisdicci&oacute;n</h2>
+<p><strong>&nbsp;</strong></p>
+<p>Estos t&eacute;rminos y condiciones han sido dispuestos de conformidad con las leyes colombianas. Si cualquier disposici&oacute;n de estos t&eacute;rminos y condiciones pierde validez, por cualquier raz&oacute;n, todas las dem&aacute;s disposiciones conservar&aacute;n su fuerza obligatoria, car&aacute;cter vinculante y mantendr&aacute;n todos sus efectos.&nbsp;</p>
+<p>&nbsp;</p>
+<p>Cualquier controversia, acci&oacute;n o reclamaci&oacute;n, que surja de la interpretaci&oacute;n o aplicaci&oacute;n de los presentes t&eacute;rminos y condiciones, se someter&aacute; a decisi&oacute;n de los jueces de la Rep&uacute;blica de Colombia.&nbsp;</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<h2 style={{textAlign: "center"}}>AUTORIZACI&Oacute;N TRATAMIENTO DE DATOS - REGISTRO CUENTA DE USUARIO EN P&Aacute;GINA WEB</h2>
+<p>&nbsp;</p>
+<p>Autorizo expresamente a VICTORIA INVERSIONES S.A.S. como Responsable del tratamiento de la informaci&oacute;n para utilizar mi nombre, tel&eacute;fono de contacto, correo electr&oacute;nico, informaci&oacute;n financiera y dem&aacute;s datos personales compartidos con la compa&ntilde;&iacute;a por medio de este formulario con el fin de: a) Realizar estudios pre-scoring y consultas en Centrales de Riesgos con el fin de validar la posibilidad de otorgar un cupo de cr&eacute;dito rotativo y desembolsos sobre el mismo; b) Realizar gestiones de conocimiento a trav&eacute;s de diferentes medios como p&aacute;ginas p&uacute;blicas de listados de personas involucradas en actividades ilegales, lavado de activos o financiaci&oacute;n del terrorismo as&iacute; como contactando a las posibles referencias aportadas c) Verificaci&oacute;n o actualizaci&oacute;n de informaci&oacute;n a trav&eacute;s de correo f&iacute;sico o electr&oacute;nico, mensajes de texto MMS/SMS y/o telef&oacute;nicamente, o cualquier otro medio de comunicaci&oacute;n o transmisi&oacute;n de datos accesible a la entidad; d) Almacenar mi informaci&oacute;n en sus bases de datos con el fin de gestionar la relaci&oacute;n contractual conmigo como titular de la informaci&oacute;n, incluyendo actividades de desembolsos de los cr&eacute;ditos solicitados, actividades de gesti&oacute;n de recuperaci&oacute;n de cartera, confirmaci&oacute;n y actualizaci&oacute;n de datos ya sea directamente o con terceros; e) Enviarme correspondencia, correos electr&oacute;nicos, mensajes de texto MMS/SMS y cualquier otro tipo de comunicaciones en desarrollo de actividades publicitarias, de mercadeo, ofrecimiento de productos o servicios nuevos y actuales que puedan ser considerados de mi inter&eacute;s; f) Compartir esta informaci&oacute;n con terceros conforme se haga necesario para realizar actividades comprendidas dentro del objeto social de la compa&ntilde;&iacute;a y/o para el ejercicio de actividades relacionadas con estas mismas finalidades; g) Realizar encuestas de satisfacci&oacute;n y percepci&oacute;n sobre los productos y servicios de la compa&ntilde;&iacute;a por cualquier medio; h) Atender mis peticiones, quejas o reclamos, o requerimientos realizados por autoridades en ejercicio de sus funciones; i) Conservar la informaci&oacute;n para fines hist&oacute;ricos y/o estad&iacute;sticos. <br /> <br />Declaro que como Titular de la informaci&oacute;n puedo informarme sobre el tratamiento que se le da a mi informaci&oacute;n personal por medio de la pol&iacute;tica de tratamiento de datos personales publicada en el siguiente link https://avanzo.co/politicas-tratamiento-datos-personales/ . <br /> <br />Conozco que, de acuerdo con la legislaci&oacute;n colombiana vigente en materia de protecci&oacute;n de datos personales, como Titular de la informaci&oacute;n tengo derecho a solicitar, conocer, actualizar, rectificar y/o suprimir mi informaci&oacute;n personal de las bases de datos de la entidad, esto &uacute;ltimo, siempre y cuando no tenga una relaci&oacute;n contractual u obligaci&oacute;n legal vigente con la compa&ntilde;&iacute;a. Igualmente, podr&eacute; solicitar prueba y/o revocar el consentimiento otorgado para el tratamiento de mis datos personales, conocer el uso que se le da a mi informaci&oacute;n y acceder gratuitamente<br />a los datos objeto de tratamiento al menos una vez al mes a traves de una solicitud enviada al correo <a href="mailto:operaciones@avanzo.co">operaciones@avanzo.co</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
                       </div>
                     </Modal>
                   </Form>

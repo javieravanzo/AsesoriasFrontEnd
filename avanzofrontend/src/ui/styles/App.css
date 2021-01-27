@@ -54,3 +54,13 @@
 .has-error .ant-input-number, .has-error .ant-time-picker-input, .has-error .ant-input, .has-error .ant-input:hover{
   border-color: #40a9ff !important;
 }
+
+.terms-conditions {
+  height: 300px !important;
+  overflow-y: auto;
+  padding: 20px ;
+}
+
+.mano{
+  cursor:pointer;
+}
